@@ -3,7 +3,7 @@
 **English** | [中文](README.zh-CN.md)
 
 > Part of the **Shopkeeper's Kit** (掌柜帮手) series · category **[Info]**: changes no stats, but tells you in advance who will visit today, which makes the game somewhat easier. See the [repository home page](../../README.md) for the series and its categories.
-> By chaos5090 · developed with assistance from [Claude Code](https://claude.com/claude-code) (Anthropic's AI coding assistant). Mod ID: `chaos5090.visitor-forecast`.
+> By ChaosN · developed with assistance from [Claude Code](https://claude.com/claude-code) (Anthropic's AI coding assistant). Mod ID: `chaos5090.visitor-forecast`.
 
 **The in-game UI is Chinese only.**
 
@@ -20,6 +20,12 @@ After each forecast the mod **automatically verifies** that the game state is ex
 > The forecast is based on your display case, reputation, events and save state **at the moment you press the key**. If you change the display case or sign, press F9 again (or **Re-forecast** (重新预测) in the window).
 
 ---
+
+## Screenshots
+
+Left: visitors who will certainly come today (what they want to buy or sell, budget). Right: other possible visitors and the chance of each. (The UI is currently Chinese only.)
+
+<img src="docs/images/forecast-certain.jpg" alt="Certain visitors" width="49%"> <img src="docs/images/forecast-chance.jpg" alt="Other visitors and their chances" width="49%">
 
 ## Installation
 

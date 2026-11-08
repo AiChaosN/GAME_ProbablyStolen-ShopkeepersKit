@@ -2,7 +2,7 @@
 
 [English](README.md) | **中文**
 
-chaos5090 为《Probably Stolen》做的 mod 系列。每个 mod 名字前标出**分类**，看一眼就知道它会不会影响游戏平衡。
+ChaosN 为《Probably Stolen》做的 mod 系列。每个 mod 名字前标出**分类**，看一眼就知道它会不会影响游戏平衡。
 
 由 [Claude Code](https://claude.com/claude-code)（Anthropic 的 AI 编程助手）协助开发：设计与取舍由作者决定，代码、逆向分析和文档由 Claude Code 协助完成。
 
@@ -33,7 +33,7 @@ chaos5090 为《Probably Stolen》做的 mod 系列。每个 mod 名字前标出
 
 - 游戏内名称与创意工坊标题：`【分类】掌柜帮手·<中文名> | [<英文分类>] Shopkeeper's Kit: <英文名>`
 - mod ID：`chaos5090.<英文名小写连字符>`。发布后不要再改，因为游戏按 ID 保存配置（`ModConfigs/<ID>.json`）
-- 作者字段统一写 `chaos5090`；Claude Code 协助的说明写在简介和 README 里
+- 作者字段统一写 `ChaosN`；Claude Code 协助的说明写在简介和 README 里
 - 热键避开常见 mod 已占用的键：F5 客户需求高亮、F6 智能整理、F8 作弊菜单、F10 物品名称常显
 
 ## 共同约定
@@ -53,6 +53,12 @@ chaos5090 为《Probably Stolen》做的 mod 系列。每个 mod 名字前标出
 ## 发布到创意工坊
 
 用 Valve 的 SteamCMD 上传，步骤和准备脚本见 [`workshop/`](workshop/README.zh-CN.md)。
+
+## 欢迎参与
+
+欢迎提问题和 PR，后续版本也会继续更新：
+- 遇到 bug、游戏更新后 mod 不能用了、想要新功能，都可以在 [Issues](https://github.com/AiChaosN/GAME_ProbablyStolen-ShopkeepersKit/issues) 里说。报 bug 时附上游戏版本、mod 版本和游戏日志里相关的几行（`%USERPROFILE%\AppData\LocalLow\Questing Goose Studio\Probably Stolen\Player.log`），会快很多。
+- 修 bug、改进功能、补翻译、新 mod 的点子，都欢迎直接提 [Pull Request](https://github.com/AiChaosN/GAME_ProbablyStolen-ShopkeepersKit/pulls)。提交前请按上面的“共同约定”用 `tools/ScanCheck` 跑一遍，并在游戏里实际试过。
 
 ## 许可证
 

@@ -3,7 +3,7 @@
 [English](README.md) | **中文**
 
 > **掌柜帮手 / Shopkeeper's Kit** 系列 · 分类 **【便利】**：不改任何数值、不给额外信息，只帮你省操作。系列与分类说明见 [仓库首页](../../README.zh-CN.md)。
-> 作者 chaos5090 · 由 [Claude Code](https://claude.com/claude-code)（Anthropic 的 AI 编程助手）协助开发。mod ID：`chaos5090.sort-to-boxes`。
+> 作者 ChaosN · 由 [Claude Code](https://claude.com/claude-code)（Anthropic 的 AI 编程助手）协助开发。mod ID：`chaos5090.sort-to-boxes`。
 
 《Probably Stolen》（v0.46D）的代码 mod，管两件麻烦事：
 
@@ -11,6 +11,22 @@
 2. **卖货**：买家来了，按一下就把他会买的货全部摆上柜台；或者你放一件上去，同款的自动跟上。
 
 界面中英双语，跟随游戏的语言设置（中文显示中文，其他语言显示英文）。物品名、箱子名用游戏自己的翻译。
+
+## 截图
+
+**分类面板**：点储藏区标题栏上的“分类”按钮打开，勾整类或单件；最上面可以设“不参与上柜台”。
+
+![分类面板](docs/images/box-labels.jpg)
+
+**箱子上的小图标**：右下角显示箱子里装的是什么。
+
+<img src="docs/images/box-icons.jpg" alt="箱子上的小图标" width="64%"> <img src="docs/images/box-icon-closeup.jpg" alt="小图标特写" width="22%">
+
+**卖货**：左边是一键把顾客会买的货摆上柜台（绿框是摆上去的，柜台放不下的件数会提示出来）；右边是拖一罐合成肉上柜台，另外 4 罐同款自动跟上。
+
+<img src="docs/images/sell-buyable.jpg" alt="一键摆上顾客会买的货" width="45%"> <img src="docs/images/bring-identical.jpg" alt="放一件带同款" width="52%">
+
+截图里的快捷键是改过的（`;` 和 `'`），默认是 F7 和 F4。
 
 ## 按键一览
 

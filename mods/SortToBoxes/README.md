@@ -3,7 +3,7 @@
 **English** | [中文](README.zh-CN.md)
 
 > Part of the **Shopkeeper's Kit** (掌柜帮手) series · category **[QoL]** (【便利】): no stat changes and no extra information, it only saves you clicks. See the [repository home](../../README.md) for the series and categories.
-> By chaos5090 · developed with assistance from [Claude Code](https://claude.com/claude-code) (Anthropic's AI coding assistant). Mod ID: `chaos5090.sort-to-boxes`.
+> By ChaosN · developed with assistance from [Claude Code](https://claude.com/claude-code) (Anthropic's AI coding assistant). Mod ID: `chaos5090.sort-to-boxes`.
 
 A code mod for *Probably Stolen* (v0.46D) that takes care of two chores:
 
@@ -11,6 +11,22 @@ A code mod for *Probably Stolen* (v0.46D) that takes care of two chores:
 2. **Selling**: when a buyer arrives, one key press puts everything they would buy onto the counter. Or put one item up yourself and its identical copies follow.
 
 The in-game UI is in Chinese and English and follows the game's language (Chinese when the game is in Chinese, English otherwise). Item and box names use the game's own translations.
+
+## Screenshots
+
+**Category panel**: open it with the "Sort" button on the storage window's title bar; tick whole categories or single items. The option at the top keeps the box out of the counter.
+
+![Category panel](docs/images/box-labels.jpg)
+
+**Box badges**: the bottom-right corner shows what's inside each box.
+
+<img src="docs/images/box-icons.jpg" alt="Box badges" width="64%"> <img src="docs/images/box-icon-closeup.jpg" alt="Badge close-up" width="22%">
+
+**Selling**: left, one key puts everything the buyer would buy on the counter (green outlines; the message says how many didn't fit). Right, drag one can of synthetic meat onto the counter and the other 4 identical cans follow.
+
+<img src="docs/images/sell-buyable.jpg" alt="Put what the buyer wants on the counter" width="45%"> <img src="docs/images/bring-identical.jpg" alt="Bring identical items" width="52%">
+
+The screenshots use rebound keys (`;` and `'`); the defaults are F7 and F4. The game was in Chinese.
 
 ## Keys
 

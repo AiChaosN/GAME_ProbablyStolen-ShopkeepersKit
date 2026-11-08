@@ -1,6 +1,8 @@
 [h1]【情报】掌柜帮手·访客预测[/h1]
 [b]不改任何数值，但会提前告诉你今天谁会来，游戏会因此简单一些。[/b] 界面目前只有中文。
 
+[img]https://raw.githubusercontent.com/AiChaosN/GAME_ProbablyStolen-ShopkeepersKit/main/mods/VisitorForecast/docs/images/forecast-certain.jpg[/img]
+
 [h2]功能[/h2]
 [list]
 [*]每天开门前按 [b]F9[/b]（可在游戏“选项”里改）：在沙盒里把当天的顾客生成跑几百遍，列出今天[b]必来[/b]和[b]可能来[/b]的顾客。
@@ -13,8 +15,9 @@
 [h2]安装[/h2]
 订阅后：主菜单 → 改装件 → 选中本 mod → 审阅并启用 → 重启游戏。不需要任何特殊权限。
 
-掌柜帮手系列 · 作者 chaos5090 · 由 Claude Code（Anthropic 的 AI 编程助手）协助开发。
+掌柜帮手系列 · 作者 ChaosN · 由 Claude Code（Anthropic 的 AI 编程助手）协助开发。
 源码（MIT）：https://github.com/AiChaosN/GAME_ProbablyStolen-ShopkeepersKit
+欢迎在 GitHub 上提问题（Issues）和 PR；游戏更新后 mod 不能用了，也请告诉我。
 
 ------------------------------------------------------------
 
@@ -33,5 +36,6 @@
 [h2]Install[/h2]
 After subscribing: main menu → Mods → select this mod → Review and enable → restart the game. No special capabilities required.
 
-Part of Shopkeeper's Kit by chaos5090. Developed with assistance from Claude Code (Anthropic's AI coding assistant).
+Part of Shopkeeper's Kit by ChaosN. Developed with assistance from Claude Code (Anthropic's AI coding assistant).
 Source (MIT): https://github.com/AiChaosN/GAME_ProbablyStolen-ShopkeepersKit
+Issues and pull requests are welcome on GitHub, including reports when a game update breaks the mod.

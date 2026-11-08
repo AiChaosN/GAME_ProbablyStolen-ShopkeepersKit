@@ -3,9 +3,15 @@
 [English](README.md) | **中文**
 
 > **掌柜帮手 / Shopkeeper's Kit** 系列 · 分类 **【修复】**：修游戏 bug，会稍微影响平衡。系列与分类说明见 [仓库首页](../../README.zh-CN.md)。
-> 作者 chaos5090 · 由 [Claude Code](https://claude.com/claude-code)（Anthropic 的 AI 编程助手）协助开发。mod ID：`chaos5090.counter-overflow`。
+> 作者 ChaosN · 由 [Claude Code](https://claude.com/claude-code)（Anthropic 的 AI 编程助手）协助开发。mod ID：`chaos5090.counter-overflow`。
 
 界面中英双语，跟随游戏的语言设置（中文显示中文，其他语言显示英文）。
+
+## 截图
+
+柜台放不下的货自动分到下一页。顾客头顶上方是翻页条：第几页、别的页上还有几件；按 `,` `.` 或点按钮翻页。
+
+<img src="docs/images/pages-1.jpg" alt="第 1 页" width="49%"> <img src="docs/images/pages-2.jpg" alt="第 2 页" width="49%">
 
 ## 修的是什么 bug
 
@@ -100,6 +106,7 @@
 
 ## 更新记录
 
+- **1.2.2**：作者名改为 ChaosN，加上截图和创意工坊预览图（功能没有变化）。
 - **1.2.1**：主菜单里不再反复触发游戏新建存档对象（原来用 `PlayerStore.Instance` 判断是否在店里，而它在没有存档时会新建一个，于是在构造函数里报空引用）。
 - **1.2.0**：界面中英双语，跟随游戏语言（提示、翻页条、设置项）。
 - **1.1.3**：按键设置里可以直接填符号或字母（例如 / 或 K）。

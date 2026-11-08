@@ -2,7 +2,7 @@
 
 **English** | [中文](README.zh-CN.md)
 
-A series of mods for *Probably Stolen* by chaos5090. Every mod name starts with a **category** tag, so you can tell at a glance whether it affects game balance.
+A series of mods for *Probably Stolen* by ChaosN. Every mod name starts with a **category** tag, so you can tell at a glance whether it affects game balance.
 
 Developed with assistance from [Claude Code](https://claude.com/claude-code) (Anthropic's AI coding assistant): the author makes the design calls; Claude Code helps with the code, the reverse engineering and the documentation.
 
@@ -33,7 +33,7 @@ Each mod's page has the full steps. In short: copy the `dist/<name>/` folder int
 
 - In-game name and Workshop title: `【分类】掌柜帮手·<Chinese name> | [<category>] Shopkeeper's Kit: <English name>`
 - Mod ID: `chaos5090.<english-name-in-kebab-case>`. Never change it after release: the game stores settings by ID (`ModConfigs/<ID>.json`)
-- The author field is always `chaos5090`; the Claude Code credit goes in the description and README
+- The author field is always `ChaosN`; the Claude Code credit goes in the description and README
 - Hotkeys avoid keys taken by popular mods: F5 Client Demand Highlight, F6 Smart Inventory Arrange, F8 Cheat Menu, F10 Show Item Names
 
 ## Conventions
@@ -53,6 +53,12 @@ Builds reference the assemblies in your local `Probably Stolen_Data/Managed`; th
 ## Publishing to the Workshop
 
 Uploads go through Valve's SteamCMD; see [`workshop/`](workshop/README.md) for the steps and the prepare script.
+
+## Contributing
+
+Issues and pull requests are welcome, and the mods will keep getting updates:
+- Bugs, a mod that stopped working after a game update, feature ideas: open an [issue](https://github.com/AiChaosN/GAME_ProbablyStolen-ShopkeepersKit/issues). For bugs, the game version, mod version and the relevant lines of the game log (`%USERPROFILE%\AppData\LocalLow\Questing Goose Studio\Probably Stolen\Player.log`) help a lot.
+- Fixes, improvements, translations and new mod ideas are welcome as [pull requests](https://github.com/AiChaosN/GAME_ProbablyStolen-ShopkeepersKit/pulls). Before submitting, run `tools/ScanCheck` as described under Conventions and try the change in the game.
 
 ## License
 

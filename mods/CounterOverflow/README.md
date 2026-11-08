@@ -3,9 +3,15 @@
 **English** | [中文](README.zh-CN.md)
 
 > Part of the **Shopkeeper's Kit** (掌柜帮手) series · category **[Fix]** (【修复】): fixes a game bug, with a small effect on balance. See the [repository home](../../README.md) for the series and categories.
-> By chaos5090 · developed with assistance from [Claude Code](https://claude.com/claude-code) (Anthropic's AI coding assistant). Mod ID: `chaos5090.counter-overflow`.
+> By ChaosN · developed with assistance from [Claude Code](https://claude.com/claude-code) (Anthropic's AI coding assistant). Mod ID: `chaos5090.counter-overflow`.
 
 The in-game UI is in Chinese and English and follows the game's language (Chinese when the game is in Chinese, English otherwise).
+
+## Screenshots
+
+Items that don't fit on the counter go onto the next page. The page bar above the customer's head shows the page number and how many items are on other pages; press `,` `.` or click the buttons to turn pages. (The game was in Chinese.)
+
+<img src="docs/images/pages-1.jpg" alt="Page 1" width="49%"> <img src="docs/images/pages-2.jpg" alt="Page 2" width="49%">
 
 ## The bug
 
@@ -100,6 +106,7 @@ Each page is an invisible grid with the counter's shape at the time, so an item'
 
 ## Changelog
 
+- **1.2.2**: Author name changed to ChaosN; screenshots and a Workshop preview added (no functional changes).
 - **1.2.1**: No longer makes the game try to create a new save object in the main menu (it used `PlayerStore.Instance` to check whether a run is loaded; that getter creates one when none exists, which crashed in the constructor with a null reference).
 - **1.2.0**: UI in Chinese and English, following the game language (notifications, page bar, settings).
 - **1.1.3**: key settings accept a plain symbol or letter (e.g. / or K).

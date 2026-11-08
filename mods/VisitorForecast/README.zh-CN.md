@@ -3,7 +3,7 @@
 [English](README.md) | **中文**
 
 > **掌柜帮手 / Shopkeeper's Kit** 系列 · 分类 **【情报】**：不改任何数值，但会提前告诉你今天谁会来，游戏会因此简单一些。系列与分类说明见 [仓库首页](../../README.zh-CN.md)。
-> 作者 chaos5090 · 由 [Claude Code](https://claude.com/claude-code)（Anthropic 的 AI 编程助手）协助开发。mod ID：`chaos5090.visitor-forecast`。
+> 作者 ChaosN · 由 [Claude Code](https://claude.com/claude-code)（Anthropic 的 AI 编程助手）协助开发。mod ID：`chaos5090.visitor-forecast`。
 
 《Probably Stolen》（v0.46D，Unity 2021.3 Mono）的代码 mod。**每天开门前**按 **F9**，它会在一个“沙盒”里把开门那一刻的顾客生成流程跑几百遍，告诉你今天：
 
@@ -18,6 +18,12 @@
 > 预测基于**按键那一刻**的展示柜、声望、事件和存档状态。改动展示柜/招牌后请再按 F9（或窗口里的“重新预测”）。
 
 ---
+
+## 截图
+
+左：今天一定会来的客人（来意、想买卖什么、预算）；右：其他可能来的客人和各自的概率。
+
+<img src="docs/images/forecast-certain.jpg" alt="必来的客人" width="49%"> <img src="docs/images/forecast-chance.jpg" alt="其他客人的概率" width="49%">
 
 ## 安装
 
