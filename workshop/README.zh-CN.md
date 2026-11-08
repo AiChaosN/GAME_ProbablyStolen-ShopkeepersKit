@@ -21,7 +21,7 @@
 4. **构建并准备**（在 WSL 里、仓库根目录）：
    ```bash
    (cd mods/SortToBoxes && ./build.sh)          # 每个要上传的 mod 都先构建
-   python3 -I workshop/prepare.py SortToBoxes   # 默认“私密”，只有你自己看得见
+   python3 -I workshop/prepare.py SortToBoxes   # 新建时默认“私密”，只有你自己看得见；更新已有物品时不改可见性
    ```
    不写 mod 名就是三个都准备。它会打印出下一步要运行的命令。
 5. **上传**（在 Windows 的 PowerShell 里）：运行上一步打印的命令，例如

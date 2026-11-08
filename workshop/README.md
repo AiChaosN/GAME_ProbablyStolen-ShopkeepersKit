@@ -21,7 +21,7 @@ Logging into Steam needs your own password and Steam Guard code, so you run the 
 4. **Build and prepare** (in WSL, at the repo root):
    ```bash
    (cd mods/SortToBoxes && ./build.sh)          # build every mod you upload first
-   python3 -I workshop/prepare.py SortToBoxes   # private by default: only you can see it
+   python3 -I workshop/prepare.py SortToBoxes   # new items are private by default; updates keep the current visibility
    ```
    Without a mod name it prepares all three. It prints the command for the next step.
 5. **Upload** (in Windows PowerShell): run the printed command, e.g.

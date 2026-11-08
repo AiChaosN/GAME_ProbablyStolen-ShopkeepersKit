@@ -7,6 +7,8 @@
     python3 -I workshop/prepare.py SortToBoxes           # 只准备一个
     python3 -I workshop/prepare.py --visibility public --note "1.4.2：……"
 
+可见性：新建物品默认私密；更新已有物品时不写可见性（保留你在网页上设的），除非用 --visibility 指定。
+
 上传目录：local.env 里的 UPLOAD_DIR（WSL 写法，必须在 Windows 盘上，例如 /mnt/c/ShopkeepersKit-upload），
 不设时默认 /mnt/c/ShopkeepersKit-upload。
 物品编号：workshop/ids.json。steamcmd 第一次上传成功后会把新物品的编号写回上传目录里的 VDF；
@@ -49,7 +51,8 @@ def vdf_str(s: str) -> str:
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("mods", nargs="*", default=MODS)
-    ap.add_argument("--visibility", choices=list(VIS), default="private")
+    ap.add_argument("--visibility", choices=list(VIS), default=None,
+                    help="不给时：新建物品用 private；更新已有物品不改可见性")
     ap.add_argument("--note", default=None, help="更新说明（changenote）；不给时写 “v<版本号>”")
     a = ap.parse_args()
 
@@ -108,8 +111,10 @@ def main():
         ]
         if preview:
             lines.append(f'\t"previewfile"\t{vdf_str(win_path(preview))}')
+        vis = a.visibility or ("private" if pid == "0" else None)
+        if vis:
+            lines.append(f'\t"visibility"\t{vdf_str(VIS[vis])}')
         lines += [
-            f'\t"visibility"\t{vdf_str(VIS[a.visibility])}',
             f'\t"title"\t\t{vdf_str(title)}',
             f'\t"description"\t{vdf_str(desc_file.read_text(encoding="utf-8").strip())}',
             f'\t"changenote"\t{vdf_str(a.note or ("v" + version))}',
@@ -118,7 +123,7 @@ def main():
         vdf = upload / f"{mod}.vdf"
         vdf.write_text("\n".join(lines), encoding="utf-8")
         state = "新建" if pid == "0" else f"更新 {pid}"
-        print(f"{mod} {version}：{state}，{a.visibility}，预览图 {'有' if preview else '没有（workshop/previews/' + mod + '.png）'}")
+        print(f"{mod} {version}：{state}，{('可见性 ' + vis) if vis else '可见性不变'}，预览图 {'有' if preview else '没有（workshop/previews/' + mod + '.png）'}")
         print(f"  内容：{win_path(content)}\n  配置：{win_path(vdf)}")
         commands.append(f'+workshop_build_item "{win_path(vdf)}"')
 
