@@ -152,6 +152,141 @@ namespace SortToBoxes
             return result;
         }
 
+        // ---------------------------------------------------------------- “同款”与“不出售”
+
+        // 水和水里的杂质：水质（纯净水……地沟水）就由这些决定，而杂质多少是隐藏信息，要检测才知道，所以不拿它们来区分
+        private static readonly HashSet<string> WaterFamily = new HashSet<string>(StringComparer.Ordinal)
+        {
+            "water", "heavy_metal", "organic_waste", "microplastic", "microbe", "chemical_contaminant",
+            "physical_contaminant", "mineral", "chlorine", "debris",
+        };
+
+        /// <summary>只读一个 tag 的整数值（读物品自己的 modifiedState，不会像 TagSystem.GetTag 那样顺手新建条目）。</summary>
+        private static int ReadInt(GameItem it, string tag)
+        {
+            try
+            {
+                var dict = it?.modifiedState?.dict;
+                if (dict != null && tag != null && dict.TryGetValue(tag, out var st) && st != null) return st.GetInt();
+            }
+            catch { }
+            return 0;
+        }
+
+        /// <summary>瓶子里装的“别的液体”（水和杂质以外的：酒精、试剂、提取物……），按 id 排序；不是液体容器或没有时为空。</summary>
+        internal static List<string> ProductLiquids(GameItem it)
+        {
+            var r = new List<string>();
+            try
+            {
+                if (it == null || !it.IsTag("LIQUID_CONTAINER_TAG")) return r;
+                foreach (var l in Liquid.Liquids)
+                {
+                    if (l == null || string.IsNullOrEmpty(l.identifier) || WaterFamily.Contains(l.identifier)) continue;
+                    if (ReadInt(it, l.currentPart) > 0) r.Add(l.identifier);
+                }
+            }
+            catch { }
+            r.Sort(StringComparer.Ordinal);
+            return r;
+        }
+
+        /// <summary>
+        /// 物品提示里看得到的等级（水质、药品纯度、品相等带“等级”的特征）：检测过的显示真实等级，没检测过的显示表面等级，
+        /// 和玩家在游戏里看到的一样，不会泄露没检测出来的信息。
+        /// </summary>
+        internal static List<string> VisibleGrades(GameItem it)
+        {
+            var r = new List<string>();
+            try
+            {
+                var feats = it?.itemFeatures;
+                if (feats == null) return r;
+                foreach (var f in feats)
+                {
+                    if (f == null || !f.useCondition || f.isDisabled) continue;
+                    string d = f.IsExposed() ? f.GetBaseRealDisplay() : f.GetBaseFakeDisplay();
+                    if (!string.IsNullOrEmpty(d)) r.Add((f.category ?? "") + "=" + d);
+                }
+            }
+            catch { }
+            r.Sort(StringComparer.Ordinal);
+            return r;
+        }
+
+        /// <summary>
+        /// “同款”的判断依据：同一种物品，且类型标签、看得到的等级、瓶子里的“别的液体”都一样。
+        /// 所以装酒精的瓶子和装水的瓶子不算同款，表面等级不同的水也不算。
+        /// </summary>
+        internal static string VariantKey(GameItem it)
+        {
+            if (it == null) return "";
+            var types = new List<string>();
+            try { if (it.itemTypes != null) types.AddRange(it.itemTypes.Where(t => !string.IsNullOrEmpty(t))); } catch { }
+            types.Sort(StringComparer.Ordinal);
+            return (it.identifier ?? "") + "|" + string.Join(",", types) + "|" + string.Join(",", ProductLiquids(it)) + "|" + string.Join(";", VisibleGrades(it));
+        }
+
+        /// <summary>
+        /// 你自己调配的混合液：普通瓶子里装了水以外的液体（不是正规的化学成品、也不是酒瓶）。
+        /// 游戏把装液体的瓶子都当“水”卖，这种瓶子摆上柜台会被买水的顾客按水价收走，所以 F4 不摆。
+        /// </summary>
+        internal static bool IsOwnMixture(GameItem it)
+        {
+            try
+            {
+                if (it == null || !it.IsTag("LIQUID_CONTAINER_TAG")) return false;
+                if (it.IsTag("CHEMICAL_PRODUCT_TAG") || it.IsTag("WINE_CONTAINER_TAG")) return false;
+                return ProductLiquids(it).Count > 0;
+            }
+            catch { return false; }
+        }
+
+        internal const string NoSellTag = "CHAOS5090_STB_NO_SELL";
+
+        /// <summary>箱子是否设成了“不参与上柜台”（存在箱子自己的 tag 上，随存档保存）。</summary>
+        internal static bool IsNoSellBox(GameItem box)
+        {
+            try
+            {
+                var dict = box?.state?.dict;
+                return dict != null && dict.TryGetValue(NoSellTag, out var st) && st != null && st.IsEnabled();
+            }
+            catch { return false; }
+        }
+
+        internal static void SetNoSell(GameItem box, bool on)
+        {
+            if (box == null) return;
+            try
+            {
+                if (on) box.EnableTag(NoSellTag);
+                else box.DisableTag(NoSellTag);
+            }
+            catch (Exception e)
+            {
+                Log.Warn("保存“不参与上柜台”失败: " + e.Message);
+            }
+        }
+
+        /// <summary>这件货是否在某个“不参与上柜台”的箱子里（含箱中箱）。</summary>
+        internal static bool InNoSellBox(GameItem it)
+        {
+            try
+            {
+                var inv = it?.parentInventory;
+                for (int depth = 0; depth < 8 && inv != null; depth++)
+                {
+                    var parent = inv.GetParentItem();
+                    if (parent == null) return false;
+                    if (IsBox(parent) && IsNoSellBox(parent)) return true;
+                    inv = parent.parentInventory;
+                }
+            }
+            catch { }
+            return false;
+        }
+
         internal static int Uid(GameItem it)
         {
             try { return it.GetUniqueID(); }

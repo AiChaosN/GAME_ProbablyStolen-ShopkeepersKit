@@ -18,6 +18,7 @@ namespace SortToBoxes
         internal bool AutoSameOnCounter = true;
         internal bool BoxButtons = true;
         internal bool BoxIcons = true;
+        internal bool OnlyAffordable = true;
 
         private ConfigEntry<string> hotkeyEntry;
         private ConfigEntry<string> sellHotkeyEntry;
@@ -25,6 +26,7 @@ namespace SortToBoxes
         private ConfigEntry<bool> sameEntry;
         private ConfigEntry<bool> buttonsEntry;
         private ConfigEntry<bool> iconsEntry;
+        private ConfigEntry<bool> affordEntry;
 
         internal void Init(string modId)
         {
@@ -49,7 +51,11 @@ namespace SortToBoxes
             iconsEntry = cfg.Define("boxIcons", true, "General", () => Lang.T("在箱子上显示里面物品的小图标", "Show a content badge on boxes"),
                 tooltip: () => Lang.T("仓库里的箱子（储藏区等）右下角画一个小角标：箱子里第一件物品的图标；空箱子勾了分类时用同类物品的图标或类别颜色。只影响显示。",
                     "Draw a small badge in the bottom-right corner of each box in storage: the icon of its first item; an empty box with categories ticked shows an item of that category or the category's color. Display only."));
+            affordEntry = cfg.Define("onlyAffordable", true, "General", () => Lang.T("上柜台时只摆顾客买得起的", "Counter key: only items the buyer can afford"),
+                tooltip: () => Lang.T("开启时，F4 只把当前顾客预算买得起的货摆上柜台（买不起的摆上去他也不会买）。关闭则买不起的也摆，排在后面。",
+                    "When on, F4 only puts items within the current buyer's budget on the counter (they won't buy the rest anyway). When off, unaffordable items are added after the others."));
             hotkeyEntry.OnChanged += _ => Apply();
+            affordEntry.OnChanged += _ => Apply();
             iconsEntry.OnChanged += _ => Apply();
             sellHotkeyEntry.OnChanged += _ => Apply();
             autoEntry.OnChanged += _ => Apply();
@@ -111,6 +117,7 @@ namespace SortToBoxes
                 AutoSameOnCounter = sameEntry?.Value ?? true;
                 BoxButtons = buttonsEntry?.Value ?? true;
                 BoxIcons = iconsEntry?.Value ?? true;
+                OnlyAffordable = affordEntry?.Value ?? true;
             }
             catch (Exception e)
             {

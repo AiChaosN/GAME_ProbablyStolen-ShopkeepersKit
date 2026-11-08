@@ -76,12 +76,20 @@ Not boxes: the trash can, the dossier, seed packets, locked supply crates, machi
 
 The counter can hold many items at once, but the customer negotiates **one item at a time** (the last item placed comes first; when it's sold the next one is up). Put everything up once and you only need to click "sell" for each.
 
-- **F4**: put everything the current buyer would buy onto the counter. "Would buy" uses the game's own rule, the same function the game uses to decide whether a customer wants an item. Items the customer can afford go first, more valuable first, so they get the space if the counter fills up.
+- **F4**: put everything the current buyer would buy onto the counter. "Would buy" uses the game's own rule, the same function the game uses to decide whether a customer wants an item. By default only items the customer **can afford** are put up (they won't buy the rest anyway; turn off `onlyAffordable` to change this), more valuable first, so they get the space if the counter fills up.
 - **F4 while pointing at an item**: put all identical items from storage and boxes onto the counter, with or without a customer present.
-- **Bring identical items** (on by default): while a buyer is at the counter, when you move one item from storage or a box onto the counter (drag it or Shift+click it), its identical copies in your stock follow automatically. Only the move "from your stock to the counter" triggers this; items the game itself moves to the counter, for example when a barter completes, do not.
+- **Bring identical items** (on by default): while a buyer is at the counter, when you move one item from storage or a box onto the counter (drag it or Shift+click it), its **identical** copies in your stock follow automatically. Only the move "from your stock to the counter" triggers this; items the game itself moves to the counter, for example when a barter completes, do not.
 - When you're done, point at the counter and press **F7**: what's left goes back to boxes or storage.
 
-Never put on the counter: pinned items; equipment the game marks as important (appraisal guides, newspapers, scanners, backpacks, machines, storage bays, ...); items in the display case.
+**Identical** means the same item with everything you can see in its tooltip matching: type labels, grades (water quality, drug purity, condition; the tested grade if tested, otherwise the apparent grade, so nothing hidden is revealed), and whether the bottle holds any liquid other than water, and which. A bottle of alcohol and a bottle of water are not identical, nor are waters with different apparent grades.
+
+Never put on the counter:
+- pinned items;
+- anything in a box marked **Keep out of the counter** (top of the box's category panel): put your own equipment (water purifiers, scanners, ...) and things you won't sell in such a box;
+- **your own mixtures**: a plain bottle holding liquids other than water (alcohol, reagents, ...). The game treats every liquid bottle as "water", so a water buyer would take it at water prices. Proper chemical products and wine bottles are not affected;
+- equipment the game marks as important (appraisal guides, newspapers, backpacks, machines, storage bays, ...); items in the display case.
+
+Drug purity takes care of itself: the game decides which purity each customer accepts, so substandard drugs never count as "would buy".
 
 ## What never moves
 
@@ -115,6 +123,7 @@ In game: Mods screen → select this mod → **设置** (Settings). Or edit `%US
 | `autoSameOnCounter` | `true` | Bring identical items when you place one on the counter (also Shift+F4 in game) |
 | `boxButtons` | `true` | Show the 分类 button in open box windows' title bar (left of ×) |
 | `boxIcons` | `true` | Draw the icon of a box's contents on the box |
+| `onlyAffordable` | `true` | F4 only puts items the buyer can afford on the counter |
 
 ## Other mods
 
@@ -141,6 +150,7 @@ In game: Mods screen → select this mod → **设置** (Settings). Or edit `%US
 
 ## Changelog
 
+- **1.5.0**: "identical" now compares what you can see (types, grades such as water quality and drug purity, non-water liquids in a bottle), so alcohol bottles no longer follow water bottles; F4 by default only puts items the buyer can afford and never your own mixtures; boxes can be marked "keep out of the counter".
 - **1.4.2**: No longer makes the game try to create a new save object in the main menu (it used `PlayerStore.Instance` to check whether a run is loaded; that getter creates one when none exists, which crashed in the constructor with a null reference). The Sort button now matches the close button × (light gray, dark outline, dark red text); the old beige-on-cream was hard to read.
 - **1.4.1**: fixed repeated null-reference errors when recording seen items (the game's item-tree walk doesn't check for null nodes; the mod now uses its own); every box/item walk now skips null nodes; the Sort button explicitly enables its image and text and logs its position the first few times it's created (to track down the invisible button).
 - **1.4.0**: UI in Chinese and English, following the game language (notifications, category panel, the Sort button, category names, settings).

@@ -44,16 +44,20 @@ namespace SortToBoxes
         }
 
         /// <summary>
-        /// 把当前买家会买的货全部摆上柜台。买得起的排前面，同档里贵的先放（柜台放不下时，先保证这些）。
-        /// 不摆：玩家装备类（游戏标为 IMPORTANT 的：鉴定指南、扫描仪、背包、机器…）、钉住的、展示柜里的。
+        /// 把当前买家会买的货全部摆上柜台（贵的先放，柜台放不下时先保证这些）。
+        /// 不摆：玩家装备类（游戏标为 IMPORTANT 的：鉴定指南、扫描仪、背包、机器…）、钉住的、展示柜里的、
+        /// “不参与上柜台”的箱子里的、你自己调配的混合液（普通瓶子里装了水以外的液体）；
+        /// 默认也不摆顾客买不起的（onlyAffordable）。
         /// </summary>
         internal static SortReport PutBuyable(StoreClient client)
         {
             var report = new SortReport();
             var counter = Stock.Counter;
             if (counter == null || client == null) return report;
+            bool onlyAffordable = SortToBoxesMod.Config?.OnlyAffordable ?? true;
             var goods = Stock.AllGoods()
-                .Where(it => !it.IsTag("IMPORTANT_TAG") && Wants(client, it))
+                .Where(it => !it.IsTag("IMPORTANT_TAG") && !Stock.InNoSellBox(it) && !Stock.IsOwnMixture(it) && Wants(client, it))
+                .Where(it => !onlyAffordable || Affordable(client, it))
                 .Select(it => new { it, ok = Affordable(client, it), v = Value(it) })
                 .OrderByDescending(p => p.ok)
                 .ThenByDescending(p => p.v)
@@ -63,14 +67,18 @@ namespace SortToBoxes
             return report;
         }
 
-        /// <summary>把与 sample 一模一样（同一物品 id）的货全部摆上柜台（sample 本身除外）。</summary>
-        internal static SortReport PutSame(string identifier, GameItem exclude)
+        /// <summary>
+        /// 把 sample 的同款全部摆上柜台（exclude 除外）。同款 = Stock.VariantKey 相同：同一种物品，
+        /// 且类型标签、看得到的等级（水质、药品纯度……）、瓶子里的“别的液体”都一样。
+        /// “不参与上柜台”的箱子里的不拿。
+        /// </summary>
+        internal static SortReport PutSame(string variantKey, GameItem exclude)
         {
             var report = new SortReport();
             var counter = Stock.Counter;
-            if (counter == null || string.IsNullOrEmpty(identifier)) return report;
+            if (counter == null || string.IsNullOrEmpty(variantKey)) return report;
             var goods = Stock.AllGoods()
-                .Where(it => !ReferenceEquals(it, exclude) && it.identifier == identifier)
+                .Where(it => !ReferenceEquals(it, exclude) && !Stock.InNoSellBox(it) && Stock.VariantKey(it) == variantKey)
                 .ToList();
             PutOnCounter(goods, counter, report);
             return report;

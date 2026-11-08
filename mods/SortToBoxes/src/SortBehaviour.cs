@@ -54,8 +54,9 @@ namespace SortToBoxes
         internal void QueueSame(GameItem moved)
         {
             if (moved == null || string.IsNullOrEmpty(moved.identifier)) return;
-            if (sameQueue.Any(p => p.Key == moved.identifier)) return;
-            sameQueue.Add(new KeyValuePair<string, GameItem>(moved.identifier, moved));
+            string key = Stock.VariantKey(moved);   // 同款按看得到的标签区分（酒精瓶 ≠ 水瓶，不同等级的水 ≠ 同款）
+            if (sameQueue.Any(p => p.Key == key)) return;
+            sameQueue.Add(new KeyValuePair<string, GameItem>(key, moved));
             sameQueuedFrame = Time.frameCount;
         }
 
@@ -193,7 +194,7 @@ namespace SortToBoxes
             var item = HoveredItem();
             if (item != null && !string.IsNullOrEmpty(item.identifier) && GeneralHelper.IsItemOwned(item) && !Stock.IsFixture(item))
             {
-                var r = Counter.PutSame(item.identifier, null);
+                var r = Counter.PutSame(Stock.VariantKey(item), null);
                 Notify(r.Considered == 0 ? Lang.T("仓库和箱子里没有 " + Stock.Name(item) + " 的同款", "No more " + Stock.Name(item) + " in storage or boxes")
                                           : Summary(r, Kind.Counter, Lang.T(Stock.Name(item) + " 的同款", "copies of " + Stock.Name(item))));
                 LogReport("同款上柜台：" + Stock.Name(item), r);
@@ -221,7 +222,7 @@ namespace SortToBoxes
                 var r = Counter.PutSame(job.Key, job.Value);
                 placed += r.Placed;
                 noRoom += r.NoRoom + r.Partial;
-                if (r.Considered > 0) LogReport("放一件带同款：" + job.Key, r);
+                if (r.Considered > 0) LogReport("放一件带同款：" + (job.Value?.identifier ?? "?"), r);
             }
             if (placed > 0 || noRoom > 0)
             {
