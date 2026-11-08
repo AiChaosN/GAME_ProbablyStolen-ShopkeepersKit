@@ -23,7 +23,7 @@ Developed with assistance from [Claude Code](https://claude.com/claude-code) (An
 | [Counter Overflow](mods/CounterOverflow/README.md) | [Fix] | , / . | Items a seller can't fit on the counter go onto extra pages instead of being destroyed: page bar above the counter, each page keeps its layout, items you take off can always go back | `chaos5090.counter-overflow` |
 | [Visitor Forecast](mods/VisitorForecast/README.md) | [Info] | F9 | Before opening, forecasts who will visit today (faction, intent, wanted goods, budget, probability) | `chaos5090.visitor-forecast` |
 
-The in-game UI of all mods is currently Chinese only.
+Sort To Boxes and Counter Overflow show their UI in Chinese or English, following the game's language; Visitor Forecast is currently Chinese only.
 
 ## Install
 

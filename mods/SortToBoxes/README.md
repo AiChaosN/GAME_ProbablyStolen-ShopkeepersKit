@@ -10,7 +10,7 @@ A code mod for *Probably Stolen* (v0.46D) that takes care of two chores:
 1. **Storing**: customers sell you all kinds of things. One key press sends each item into the right box (food box, household goods box, ...).
 2. **Selling**: when a buyer arrives, one key press puts everything they would buy onto the counter. Or put one item up yourself and its identical copies follow.
 
-The in-game UI (notifications and the category panel) is Chinese only.
+The in-game UI is in Chinese and English and follows the game's language (Chinese when the game is in Chinese, English otherwise). Item and box names use the game's own translations.
 
 ## Keys
 
@@ -141,6 +141,7 @@ In game: Mods screen → select this mod → **设置** (Settings). Or edit `%US
 
 ## Changelog
 
+- **1.4.0**: UI in Chinese and English, following the game language (notifications, category panel, the Sort button, category names, settings).
 - **1.3.1**: fixed 1.3.0's manifest (an unescaped `&` in the English description made the game skip the whole mod); hotkeys can be bound in the game's Options, and the settings also accept a plain symbol (e.g. /).
 - **1.3.0**: the mod's own 13 categories (each item in exactly one) replace the game's fragmented types; the category panel groups by category, ticking a whole category ticks every item under it and unticking clears them all; types ticked in 1.2 are converted to their category.
 - **1.2.1**: the 分类 button moved into the box window's title bar, right next to the close button × (attached to the window itself, so no more gap).

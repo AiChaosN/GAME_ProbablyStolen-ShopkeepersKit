@@ -5,7 +5,7 @@
 > Part of the **Shopkeeper's Kit** (掌柜帮手) series · category **[Fix]** (【修复】): fixes a game bug, with a small effect on balance. See the [repository home](../../README.md) for the series and categories.
 > By chaos5090 · developed with assistance from [Claude Code](https://claude.com/claude-code) (Anthropic's AI coding assistant). Mod ID: `chaos5090.counter-overflow`.
 
-The in-game UI is Chinese only.
+The in-game UI is in Chinese and English and follows the game's language (Chinese when the game is in Chinese, English otherwise).
 
 ## The bug
 
@@ -100,6 +100,7 @@ Each page is an invisible grid with the counter's shape at the time, so an item'
 
 ## Changelog
 
+- **1.2.0**: UI in Chinese and English, following the game language (notifications, page bar, settings).
 - **1.1.3**: key settings accept a plain symbol or letter (e.g. / or K).
 - **1.1.2**: fixed ESC not opening the menu while goods were paged (the page bar sat in the game's paper UI layer, where ESC treats it as a panel to close first; it reappeared every frame and swallowed ESC).
 - **1.1.1**: the page bar moved below the notification above the customer's head, so it no longer overlaps the goods and the customer.

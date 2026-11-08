@@ -20,12 +20,20 @@ namespace SortToBoxes
             "tool", "module", "farming", "animal", "paper", "luxury", Other,
         };
 
-        private static readonly Dictionary<string, string> Names = new Dictionary<string, string>(StringComparer.Ordinal)
+        private static readonly Dictionary<string, string> NamesZh = new Dictionary<string, string>(StringComparer.Ordinal)
         {
             { "food", "食物" }, { "drink", "饮料与水" }, { "household", "日用品" }, { "medical", "医疗" },
             { "chemical", "化学" }, { "weapon", "武器与弹药" }, { "material", "材料" }, { "tool", "工具与设备" },
             { "module", "模组" }, { "farming", "种子与农业" }, { "animal", "养殖" }, { "paper", "文件证件" },
             { "luxury", "奢侈品与收藏" }, { Other, "其他" },
+        };
+
+        private static readonly Dictionary<string, string> NamesEn = new Dictionary<string, string>(StringComparer.Ordinal)
+        {
+            { "food", "Food" }, { "drink", "Drinks & water" }, { "household", "Household" }, { "medical", "Medical" },
+            { "chemical", "Chemistry" }, { "weapon", "Weapons & ammo" }, { "material", "Materials" }, { "tool", "Tools & equipment" },
+            { "module", "Modules" }, { "farming", "Seeds & farming" }, { "animal", "Husbandry" }, { "paper", "Documents & cards" },
+            { "luxury", "Luxury & collectibles" }, { Other, "Other" },
         };
 
         // 小色块用的颜色：借游戏给代表性类型配的颜色（TypeHelper.GetTypeColor）
@@ -37,7 +45,11 @@ namespace SortToBoxes
             { "luxury", "LUXURY_ITEM" },
         };
 
-        internal static string Name(string key) => key != null && Names.TryGetValue(key, out var n) ? n : "其他";
+        internal static string Name(string key)
+        {
+            var names = Lang.Zh ? NamesZh : NamesEn;
+            return key != null && names.TryGetValue(key, out var n) ? n : names[Other];
+        }
 
         internal static string ColorType(string key) => key != null && ColorTypes.TryGetValue(key, out var t) ? t : "";
 

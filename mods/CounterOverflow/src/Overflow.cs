@@ -243,8 +243,11 @@ namespace CounterOverflow
             if (pages.Count == 1 && (pages[0] == null || pages[0].childItems.Count == 0)) pages[0] = null;
             Version++;
             Log.Info("翻到第 " + (current + 1) + "/" + pages.Count + " 页：摆出 " + up + " 件" + (stuck > 0 ? "，" + stuck + " 件柜台放不下" : ""));
-            string msg = pages.Count > 1 ? "第 " + (current + 1) + "/" + pages.Count + " 页" : "货都在柜台上了";
-            if (stuck > 0) msg += "（本页有 " + stuck + " 件放不下：柜台上有别的东西占着位置）";
+            bool zh = Lang.Zh;
+            string msg = pages.Count > 1 ? (zh ? "第 " + (current + 1) + "/" + pages.Count + " 页" : "Page " + (current + 1) + "/" + pages.Count)
+                                         : (zh ? "货都在柜台上了" : "All goods are on the counter");
+            if (stuck > 0) msg += zh ? "（本页有 " + stuck + " 件放不下：柜台上有别的东西占着位置）"
+                                     : " (" + stuck + " item(s) on this page don't fit: something else is in their place)";
             return msg;
         }
 

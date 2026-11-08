@@ -119,18 +119,19 @@ namespace CounterOverflow
         internal void Init(string modId)
         {
             var cfg = ModHelper.GetConfig(modId);
-            enabledEntry = cfg.Define("enabled", true, "General", () => "柜台放不下的货分页显示（不销毁）",
-                tooltip: () => "关闭后恢复原版：顾客往柜台摆货时，放不下的直接销毁。");
-            prevEntry = cfg.Define("prevKey", DefaultPrev, "General", () => "上一页",
+            enabledEntry = cfg.Define("enabled", true, "General", () => Lang.T("柜台放不下的货分页显示（不销毁）", "Page goods that don't fit (don't destroy them)"),
+                tooltip: () => Lang.T("关闭后恢复原版：顾客往柜台摆货时，放不下的直接销毁。", "Off = base game: goods that don't fit on the counter are destroyed."));
+            prevEntry = cfg.Define("prevKey", DefaultPrev, "General", () => Lang.T("上一页", "Previous page"),
                 choices: null,
-                tooltip: () => "Unity KeyCode 名称，默认 Comma（逗号键 , 键帽上是 <）。也可以在游戏的“选项”里按键绑定。");
-            nextEntry = cfg.Define("nextKey", DefaultNext, "General", () => "下一页",
+                tooltip: () => Lang.T("Unity KeyCode 名称或直接填符号，默认 Comma（逗号键 , 键帽上是 <）。也可以在游戏的“选项”里按键绑定。", "Unity KeyCode name or a symbol; default Comma (the , key with < on it). You can also bind it in the game's Options."));
+            nextEntry = cfg.Define("nextKey", DefaultNext, "General", () => Lang.T("下一页", "Next page"),
                 choices: null,
-                tooltip: () => "Unity KeyCode 名称，默认 Period（句号键 . 键帽上是 >）。也可以在游戏的“选项”里按键绑定。");
-            barEntry = cfg.Define("pageBar", true, "General", () => "显示翻页条",
-                tooltip: () => "货分成多页时，在顾客头上的提示框正下方显示“上一页 / 第 1/3 页 / 下一页”，可以直接点。");
-            testEntry = cfg.Define("testMode", false, "Test", () => "测试模式",
-                tooltip: () => "开启后，柜台前有顾客时按 Ctrl+下一页键，会让顾客按原版流程再往柜台摆一批大件设备，用来制造柜台溢出、测试分页。这些货可以照常买，测试完请关掉。");
+                tooltip: () => Lang.T("Unity KeyCode 名称或直接填符号，默认 Period（句号键 . 键帽上是 >）。也可以在游戏的“选项”里按键绑定。", "Unity KeyCode name or a symbol; default Period (the . key with > on it). You can also bind it in the game's Options."));
+            barEntry = cfg.Define("pageBar", true, "General", () => Lang.T("显示翻页条", "Show the page bar"),
+                tooltip: () => Lang.T("货分成多页时，在顾客头上的提示框正下方显示“上一页 / 第 1/3 页 / 下一页”，可以直接点。", "When goods are paged, show \"Prev / Page 1/3 / Next\" right below the notification above the customer; the buttons are clickable."));
+            testEntry = cfg.Define("testMode", false, "Test", () => Lang.T("测试模式", "Test mode"),
+                tooltip: () => Lang.T("开启后，柜台前有顾客时按 Ctrl+下一页键，会让顾客按原版流程再往柜台摆一批大件设备，用来制造柜台溢出、测试分页。这些货可以照常买，测试完请关掉。",
+                    "When on, press Ctrl+next-page key with a customer at the counter to make them lay out an extra batch of large equipment through the normal game code, overflowing the counter to test paging. Those items can be bought, so turn this off afterwards."));
             enabledEntry.OnChanged += _ => Apply();
             prevEntry.OnChanged += _ => Apply();
             nextEntry.OnChanged += _ => Apply();
@@ -146,11 +147,11 @@ namespace CounterOverflow
             try
             {
                 const string section = "keys";
-                ModHelper.AddGameOptionSection(modId, section, () => "掌柜帮手·柜台不丢货");
-                ModHelper.AddGameOptionKeyBind(modId, section, "prev_page", () => "柜台上一页", () => PrevKey, k => SetKey(prevEntry, k, true),
-                    () => "顾客的货分成多页时，翻到上一页。默认 ,（逗号）");
-                ModHelper.AddGameOptionKeyBind(modId, section, "next_page", () => "柜台下一页", () => NextKey, k => SetKey(nextEntry, k, false),
-                    () => "顾客的货分成多页时，翻到下一页。默认 .（句号）");
+                ModHelper.AddGameOptionSection(modId, section, () => Lang.T("掌柜帮手·柜台不丢货", "Shopkeeper's Kit: Counter Overflow"));
+                ModHelper.AddGameOptionKeyBind(modId, section, "prev_page", () => Lang.T("柜台上一页", "Counter: previous page"), () => PrevKey, k => SetKey(prevEntry, k, true),
+                    () => Lang.T("顾客的货分成多页时，翻到上一页。默认 ,（逗号）", "When a customer's goods are paged, go to the previous page. Default , (comma)"));
+                ModHelper.AddGameOptionKeyBind(modId, section, "next_page", () => Lang.T("柜台下一页", "Counter: next page"), () => NextKey, k => SetKey(nextEntry, k, false),
+                    () => Lang.T("顾客的货分成多页时，翻到下一页。默认 .（句号）", "When a customer's goods are paged, go to the next page. Default . (period)"));
             }
             catch (Exception e)
             {

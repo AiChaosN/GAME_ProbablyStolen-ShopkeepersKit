@@ -29,20 +29,26 @@ namespace SortToBoxes
         internal void Init(string modId)
         {
             var cfg = ModHelper.GetConfig(modId);
-            hotkeyEntry = cfg.Define("hotkey", DefaultHotkey, "General", () => "归箱热键",
+            hotkeyEntry = cfg.Define("hotkey", DefaultHotkey, "General", () => Lang.T("归箱热键", "Sort hotkey"),
                 choices: null,
-                tooltip: () => "Unity KeyCode 名称（例如 F7、Insert），也可以直接填一个符号或字母；在游戏“选项”里还能按一下键绑定。热键：仓库散件归箱；指着柜台：把柜台上你的货放回箱子/仓库；Ctrl+热键 指着箱子：设置箱子分类；Shift+热键：开关“买下时自动归箱”。");
-            sellHotkeyEntry = cfg.Define("sellHotkey", DefaultSellHotkey, "General", () => "上柜台热键",
+                tooltip: () => Lang.T("Unity KeyCode 名称（例如 F7、Insert），也可以直接填一个符号或字母；在游戏“选项”里还能按一下键绑定。热键：仓库散件归箱；指着柜台：把柜台上你的货放回箱子/仓库；Ctrl+热键 指着箱子：设置箱子分类；Shift+热键：开关“买下时自动归箱”。",
+                    "Unity KeyCode name (e.g. F7, Insert) or just a symbol or letter; you can also bind it by pressing a key in the game's Options. Key: sort loose items in storage; pointing at the counter: put your items there back into boxes/storage; Ctrl+key on a box: pick its categories; Shift+key: toggle auto-sort on purchase."));
+            sellHotkeyEntry = cfg.Define("sellHotkey", DefaultSellHotkey, "General", () => Lang.T("上柜台热键", "Counter hotkey"),
                 choices: null,
-                tooltip: () => "热键：把当前买家会买的货全部摆上柜台；指着某件货：把它的同款全部摆上柜台；Shift+热键：开关“放一件上柜台时带上同款”。");
-            autoEntry = cfg.Define("autoOnPurchase", false, "General", () => "买下顾客的货时自动归箱",
-                tooltip: () => "成交（收购、批发、以物易物）时游戏把货移进仓库后，直接送进对应的箱子；没有对应箱子或放不下就留在仓库。");
-            sameEntry = cfg.Define("autoSameOnCounter", true, "General", () => "放一件上柜台时带上同款",
-                tooltip: () => "柜台前有买家时，你从仓库或箱子里拿一件货放上柜台，库存里一模一样的货会自动跟着摆上去。");
-            buttonsEntry = cfg.Define("boxButtons", true, "General", () => "箱子窗口标题栏显示“分类”按钮",
-                tooltip: () => "打开箱子时，在窗口标题栏的关闭按钮（×）左边显示一个“分类”按钮，点它设置这个箱子收哪些货。关掉后仍可用 Ctrl+归箱热键 指着箱子设置。");
-            iconsEntry = cfg.Define("boxIcons", true, "General", () => "在箱子上显示里面物品的小图标",
-                tooltip: () => "仓库里的箱子（储藏区等）正中间画一个小图标：箱子里第一件物品的图标；空箱子勾了分类时用同类物品的图标或类型颜色。只影响显示。");
+                tooltip: () => Lang.T("热键：把当前买家会买的货全部摆上柜台；指着某件货：把它的同款全部摆上柜台；Shift+热键：开关“放一件上柜台时带上同款”。",
+                    "Key: put everything the current buyer would buy on the counter; pointing at an item: put all identical items on the counter; Shift+key: toggle \"bring identical items when placing one\"."));
+            autoEntry = cfg.Define("autoOnPurchase", false, "General", () => Lang.T("买下顾客的货时自动归箱", "Auto-sort goods you buy"),
+                tooltip: () => Lang.T("成交（收购、批发、以物易物）时游戏把货移进仓库后，直接送进对应的箱子；没有对应箱子或放不下就留在仓库。",
+                    "When a deal (purchase, wholesale, barter) moves goods into storage, send them straight to their box; without a matching box, or if it's full, they stay in storage."));
+            sameEntry = cfg.Define("autoSameOnCounter", true, "General", () => Lang.T("放一件上柜台时带上同款", "Bring identical items when placing one"),
+                tooltip: () => Lang.T("柜台前有买家时，你从仓库或箱子里拿一件货放上柜台，库存里一模一样的货会自动跟着摆上去。",
+                    "While a buyer is at the counter, moving one item from storage or a box onto the counter brings all identical items from your stock with it."));
+            buttonsEntry = cfg.Define("boxButtons", true, "General", () => Lang.T("箱子窗口标题栏显示“分类”按钮", "Show the Sort button in box windows"),
+                tooltip: () => Lang.T("打开箱子时，在窗口标题栏的关闭按钮（×）左边显示一个“分类”按钮，点它设置这个箱子收哪些货。关掉后仍可用 Ctrl+归箱热键 指着箱子设置。",
+                    "When a box is open, show a Sort button left of the close button (×) in its title bar; click it to choose what the box takes. Without it, use Ctrl+sort hotkey while pointing at the box."));
+            iconsEntry = cfg.Define("boxIcons", true, "General", () => Lang.T("在箱子上显示里面物品的小图标", "Show a content badge on boxes"),
+                tooltip: () => Lang.T("仓库里的箱子（储藏区等）右下角画一个小角标：箱子里第一件物品的图标；空箱子勾了分类时用同类物品的图标或类别颜色。只影响显示。",
+                    "Draw a small badge in the bottom-right corner of each box in storage: the icon of its first item; an empty box with categories ticked shows an item of that category or the category's color. Display only."));
             hotkeyEntry.OnChanged += _ => Apply();
             iconsEntry.OnChanged += _ => Apply();
             sellHotkeyEntry.OnChanged += _ => Apply();
@@ -76,13 +82,13 @@ namespace SortToBoxes
         {
             try
             {
-                ModHelper.AddGameOptionSection(modId, "keys", () => "掌柜帮手·归类入箱");
-                ModHelper.AddGameOptionKeyBind(modId, "keys", "hotkey", () => "归箱（Shift：开关买下自动归箱，Ctrl：箱子分类）", () => Hotkey,
+                ModHelper.AddGameOptionSection(modId, "keys", () => Lang.T("掌柜帮手·归类入箱", "Shopkeeper's Kit: Sort To Boxes"));
+                ModHelper.AddGameOptionKeyBind(modId, "keys", "hotkey", () => Lang.T("归箱（Shift：开关买下自动归箱，Ctrl：箱子分类）", "Sort (Shift: toggle auto-sort on purchase, Ctrl: box categories)"), () => Hotkey,
                     k => { if (k != KeyCode.None) hotkeyEntry?.Set(k.ToString()); },
-                    () => "仓库散件归箱；指着柜台：把柜台上你的货放回箱子/仓库。默认 F7");
-                ModHelper.AddGameOptionKeyBind(modId, "keys", "sell_hotkey", () => "上柜台（Shift：开关放一件带同款）", () => SellHotkey,
+                    () => Lang.T("仓库散件归箱；指着柜台：把柜台上你的货放回箱子/仓库。默认 F7", "Sort loose items in storage; pointing at the counter: put your items back into boxes/storage. Default F7"));
+                ModHelper.AddGameOptionKeyBind(modId, "keys", "sell_hotkey", () => Lang.T("上柜台（Shift：开关放一件带同款）", "Counter (Shift: toggle bring identical items)"), () => SellHotkey,
                     k => { if (k != KeyCode.None) sellHotkeyEntry?.Set(k.ToString()); },
-                    () => "把当前买家会买的货摆上柜台；指着某件货：把它的同款摆上柜台。默认 F4");
+                    () => Lang.T("把当前买家会买的货摆上柜台；指着某件货：把它的同款摆上柜台。默认 F4", "Put everything the current buyer would buy on the counter; pointing at an item: put its copies on the counter. Default F4"));
             }
             catch (Exception e)
             {

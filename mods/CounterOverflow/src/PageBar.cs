@@ -14,6 +14,7 @@ namespace CounterOverflow
         private CustomUIElement label, prevButton, nextButton;
         private int shownVersion = -1;
         private KeyCode shownPrev, shownNext;
+        private bool shownZh;
         private readonly Vector3[] corners = new Vector3[4];
         private int errors;
         private bool disabled;
@@ -33,7 +34,7 @@ namespace CounterOverflow
                     return;
                 }
                 var cfg = OverflowMod.Config;
-                if (root != null && cfg != null && (cfg.PrevKey != shownPrev || cfg.NextKey != shownNext)) Destroy(); // 换了按键：重建按钮文字
+                if (root != null && cfg != null && (cfg.PrevKey != shownPrev || cfg.NextKey != shownNext || Lang.Zh != shownZh)) Destroy(); // 换了按键或游戏语言：重建按钮文字
                 if (root == null) Create();
                 if (root == null) return;
                 if (!root.gameObject.activeSelf) root.gameObject.SetActive(true);
@@ -80,15 +81,17 @@ namespace CounterOverflow
             try { meta = CustomUIManager.IsMetaLayer(layerId); } catch { }
             var b = mgr.BuildInto(rt, meta, "chaos5090_counter_overflow_pagebar");
             b.BeginRow(10f, TextAnchor.MiddleCenter);
-            b.AddButton("< 上一页 (" + OverflowConfig.KeyLabel(cfg.PrevKey) + ")", OverflowBehaviour.Prev);
+            bool zh = Lang.Zh;
+            b.AddButton((zh ? "< 上一页 (" : "< Prev (") + OverflowConfig.KeyLabel(cfg.PrevKey) + ")", OverflowBehaviour.Prev);
             prevButton = b.Last;
-            b.AddLabel("第 1/1 页");
+            b.AddLabel(zh ? "第 1/1 页" : "Page 1/1");
             label = b.Last;
-            b.AddButton("(" + OverflowConfig.KeyLabel(cfg.NextKey) + ") 下一页 >", OverflowBehaviour.Next);
+            b.AddButton("(" + OverflowConfig.KeyLabel(cfg.NextKey) + (zh ? ") 下一页 >" : ") Next >"), OverflowBehaviour.Next);
             nextButton = b.Last;
             b.End();
             shownPrev = cfg.PrevKey;
             shownNext = cfg.NextKey;
+            shownZh = zh;
             root = rt;
             shownVersion = -1;
         }
@@ -98,7 +101,9 @@ namespace CounterOverflow
             shownVersion = Overflow.Version;
             int count = Overflow.PageCount, cur = Overflow.CurrentPage;
             int hidden = Overflow.HiddenCount();
-            try { label?.SetText("第 " + (cur + 1) + "/" + count + " 页" + (hidden > 0 ? " · 还有 " + hidden + " 件没摆出" : "")); } catch { }
+            string text = Lang.Zh ? "第 " + (cur + 1) + "/" + count + " 页" + (hidden > 0 ? " · 还有 " + hidden + " 件没摆出" : "")
+                                  : "Page " + (cur + 1) + "/" + count + (hidden > 0 ? " · " + hidden + " more not shown" : "");
+            try { label?.SetText(text); } catch { }
             try { if (prevButton?.button != null) prevButton.button.interactable = cur > 0; } catch { }
             try { if (nextButton?.button != null) nextButton.button.interactable = cur < count - 1; } catch { }
         }

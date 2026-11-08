@@ -31,7 +31,7 @@ namespace SortToBoxes
                 var mgr = CustomUIManager.Instance;
                 if (mgr == null)
                 {
-                    SortBehaviour.Notify("现在打不开分类面板（界面还没准备好）");
+                    SortBehaviour.Notify(Lang.T("现在打不开分类面板（界面还没准备好）", "Can't open the category panel right now (UI not ready)"));
                     return;
                 }
 
@@ -44,11 +44,16 @@ namespace SortToBoxes
 
                 // 库存里每种物品有几件（显示在名字后面）
                 var stockCount = new Dictionary<string, int>(StringComparer.Ordinal);
+                var liveNames = new Dictionary<string, string>(StringComparer.Ordinal);   // 手上有的货用游戏当前语言的名字
                 foreach (var it in Stock.AllGoods())
                 {
                     if (string.IsNullOrEmpty(it.identifier)) continue;
                     stockCount.TryGetValue(it.identifier, out int n);
                     stockCount[it.identifier] = n + Math.Max(1, it.unitCount);
+                    if (!liveNames.ContainsKey(it.identifier))
+                    {
+                        try { liveNames[it.identifier] = it.GetDisplayName(false); } catch { }
+                    }
                 }
 
                 // 箱里现有物品的大类
@@ -64,26 +69,29 @@ namespace SortToBoxes
                 // 见过的物品按大类分组；勾过但还没见过实物的类也列出来，方便取消
                 var groups = SeenItems.All
                     .GroupBy(i => string.IsNullOrEmpty(i.Cat) ? Categories.Other : i.Cat)
-                    .ToDictionary(g => g.Key, g => g.OrderBy(i => i.Name, StringComparer.CurrentCulture).ToList(), StringComparer.Ordinal);
+                    .ToDictionary(g => g.Key, g => g.OrderBy(i => liveNames.TryGetValue(i.Id, out var ln) ? ln : i.Name, StringComparer.CurrentCulture).ToList(), StringComparer.Ordinal);
                 foreach (var key in selected.Where(t => t.StartsWith("#")).Select(t => t.Substring(1)))
                     if (!groups.ContainsKey(key)) groups[key] = new List<SeenItems.Info>();
                 var order = groups.Keys
                     .OrderBy(k => { int i = Array.IndexOf(Categories.Order, k); return i < 0 ? 999 : i; })
                     .ToList();
 
-                var b = mgr.CreateWindow(WindowId, "箱子分类 · " + Stock.Name(box), LayerId())
+                bool zh = Lang.Zh;
+                var b = mgr.CreateWindow(WindowId, (zh ? "箱子分类 · " : "Box categories · ") + Stock.Name(box), LayerId())
                     .SetSize(760f, 640f)
                     .SetDraggable(true)
                     .SetCloseOnEscape();
-                b.AddLabel("勾“整类”：这一类的货全部进这个箱子，包括以后才见到的同类；也可以只勾其中几件。一个都不勾 = 按箱子里现有的东西自动判断。");
-                b.AddLabel("只列出你在这个存档里见过的货，见过的越多，列表越长。名字后面的 ×N 是仓库和箱子里现有的件数。");
+                b.AddLabel(zh ? "勾“整类”：这一类的货全部进这个箱子，包括以后才见到的同类；也可以只勾其中几件。一个都不勾 = 按箱子里现有的东西自动判断。"
+                               : "Tick \"whole category\" to send every item of that category to this box, including ones you only see later; or tick just some items. Nothing ticked = decide by what the box already holds.");
+                b.AddLabel(zh ? "只列出你在这个存档里见过的货，见过的越多，列表越长。名字后面的 ×N 是仓库和箱子里现有的件数。"
+                               : "Only items you have seen in this save are listed; the list grows as you see more. ×N after a name is how many you have in storage and boxes.");
                 string now = inBox.Count == 0
-                    ? "箱子现在是空的"
-                    : "箱里现有：" + string.Join("、", inBox.OrderByDescending(kv => kv.Value).Take(6).Select(kv => Categories.Name(kv.Key) + " " + kv.Value));
+                    ? (zh ? "箱子现在是空的" : "The box is empty")
+                    : (zh ? "箱里现有：" : "In the box: ") + string.Join(zh ? "、" : ", ", inBox.OrderByDescending(kv => kv.Value).Take(6).Select(kv => Categories.Name(kv.Key) + " " + kv.Value));
                 b.AddLabel(now);
 
                 b.BeginScroll(420f);
-                if (order.Count == 0) b.AddLabel("还没有见过任何货。");
+                if (order.Count == 0) b.AddLabel(zh ? "还没有见过任何货。" : "You haven't seen any goods yet.");
                 foreach (var cat in order)
                 {
                     var items = groups[cat];
@@ -93,7 +101,9 @@ namespace SortToBoxes
                     CustomUIElement catToggle = null;
 
                     b.AddSeparator();
-                    b.AddToggle("【" + Categories.Name(cat) + "】整类" + (items.Count > 0 ? "（见过 " + items.Count + " 种）" : ""), catOn, on =>
+                    string catLabel = zh ? "【" + Categories.Name(cat) + "】整类" + (items.Count > 0 ? "（见过 " + items.Count + " 种）" : "")
+                                         : "[" + Categories.Name(cat) + "] whole category" + (items.Count > 0 ? " (" + items.Count + " seen)" : "");
+                    b.AddToggle(catLabel, catOn, on =>
                     {
                         selected.Remove(catKey);
                         foreach (var info in items) selected.Remove(BoxLabels.ItemKey(info.Id));   // 整类勾着时不需要逐件记
@@ -113,7 +123,8 @@ namespace SortToBoxes
                         b.BeginRow(4f, TextAnchor.MiddleLeft);
                         var icon = SeenItems.Icon(info);
                         if (icon != null) b.AddImage(icon, 28f, 28f);
-                        b.AddToggle((string.IsNullOrEmpty(info.Name) ? id : info.Name) + (have > 0 ? " ×" + have : ""), catOn || selected.Contains(key), on =>
+                        string shown = liveNames.TryGetValue(id, out var live) && !string.IsNullOrEmpty(live) ? live : (string.IsNullOrEmpty(info.Name) ? id : info.Name);
+                        b.AddToggle(shown + (have > 0 ? " ×" + have : ""), catOn || selected.Contains(key), on =>
                         {
                             if (on)
                             {
@@ -140,12 +151,12 @@ namespace SortToBoxes
                 b.End();
 
                 b.BeginRow(8f, TextAnchor.MiddleCenter);
-                b.AddButton("全部取消（改回自动判断）", () =>
+                b.AddButton(zh ? "全部取消（改回自动判断）" : "Clear all (decide automatically)", () =>
                 {
                     BoxLabels.Set(box, null);
                     Open(box);
                 });
-                b.AddButton("完成", () =>
+                b.AddButton(zh ? "完成" : "Done", () =>
                 {
                     try { mgr.CloseWindow(WindowId); } catch { }
                 });
@@ -157,7 +168,7 @@ namespace SortToBoxes
             catch (Exception e)
             {
                 Log.Error("打开分类面板失败: " + Log.Describe(e));
-                SortBehaviour.Notify("打开分类面板失败，详见日志");
+                SortBehaviour.Notify(Lang.T("打开分类面板失败，详见日志", "Failed to open the category panel; see the log"));
             }
         }
     }

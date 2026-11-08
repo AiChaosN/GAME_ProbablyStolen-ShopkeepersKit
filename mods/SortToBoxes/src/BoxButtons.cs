@@ -146,7 +146,7 @@ namespace SortToBoxes
                 text.SetParent(node);
                 text.gameObject.name = NodeName + "_Text";
                 var t = text.text;
-                t.text = "分类";
+                t.text = Lang.T("分类", "Sort");
                 t.fontStyle = FontStyles.Bold;
                 t.alignment = TextAlignmentOptions.Center;
                 t.enableWordWrapping = false;
@@ -197,7 +197,17 @@ namespace SortToBoxes
             if (node == null || e.Window == null) return;
             var rt = node.rectTransform;
             float textW = 32f;
-            try { if (e.Text?.text != null) textW = Mathf.Ceil(e.Text.text.preferredWidth); } catch { }
+            try
+            {
+                var t = e.Text?.text;
+                if (t != null)
+                {
+                    string want = Lang.T("分类", "Sort");   // 游戏里切换语言后跟着变
+                    if (t.text != want) t.text = want;
+                    textW = Mathf.Ceil(t.preferredWidth);
+                }
+            }
+            catch { }
             float width = textW + PadX * 2f;
 
             var close = CloseButton(e.Window);

@@ -23,7 +23,7 @@ chaos5090 为《Probably Stolen》做的 mod 系列。每个 mod 名字前标出
 | [掌柜帮手·柜台不丢货 Counter Overflow](mods/CounterOverflow/README.zh-CN.md) | 【修复】 | , / . | 卖家摆货时柜台放不下的货不再被销毁，分到后面的页：柜台上方有翻页条，每页记住货的位置，拿下来的货随时能放回去 | `chaos5090.counter-overflow` |
 | [掌柜帮手·访客预测 Visitor Forecast](mods/VisitorForecast/README.zh-CN.md) | 【情报】 | F9 | 开门前预测今天谁会来（阵营、来意、想要什么、预算、概率） | `chaos5090.visitor-forecast` |
 
-所有 mod 的界面目前只有中文。
+归类入箱、柜台不丢货的界面中英双语，跟随游戏的语言设置；访客预测目前只有中文。
 
 ## 安装
 

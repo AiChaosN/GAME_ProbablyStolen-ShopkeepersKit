@@ -19,7 +19,7 @@ namespace SortToBoxes
 
         internal sealed class Info
         {
-            internal string Id, Type, Name, Atlas, Sprite, Cat;
+            internal string Id, Type, Name, Atlas, Sprite, Cat, NameLang;   // NameLang：名字是用哪种语言记的（zh/en）
         }
 
         private static readonly Dictionary<string, Info> seen = new Dictionary<string, Info>(StringComparer.Ordinal);
@@ -68,9 +68,19 @@ namespace SortToBoxes
 
         private static void Add(GameItem it)
         {
-            if (it == null || string.IsNullOrEmpty(it.identifier) || seen.ContainsKey(it.identifier)) return;
+            if (it == null || string.IsNullOrEmpty(it.identifier)) return;
+            string lang = Lang.Zh ? "zh" : "en";
+            if (seen.TryGetValue(it.identifier, out var known))
+            {
+                // 游戏换了语言：再次见到时把名字更新成当前语言
+                if (known.NameLang != lang)
+                {
+                    try { known.Name = it.GetDisplayName(false); known.NameLang = lang; dirty = true; } catch { }
+                }
+                return;
+            }
             if (Stock.IsFixture(it)) return;   // 箱子、机器、设施本身不归箱，不列
-            var info = new Info { Id = it.identifier, Type = Stock.PrimaryType(it) ?? "", Cat = Categories.Of(it) };
+            var info = new Info { Id = it.identifier, Type = Stock.PrimaryType(it) ?? "", Cat = Categories.Of(it), NameLang = lang };
             try { info.Name = it.GetDisplayName(false); } catch { info.Name = it.identifier; }   // 原名，不用标签机起的名字
             try { info.Atlas = it.spriteAtlasPath ?? ""; info.Sprite = it.spritePath ?? ""; } catch { info.Atlas = info.Sprite = ""; }
             seen[info.Id] = info;
@@ -93,7 +103,8 @@ namespace SortToBoxes
                 var f = line.Split('\t');
                 if (f.Length < 5 || string.IsNullOrEmpty(f[0])) continue;
                 string cat = f.Length >= 6 && f[5].Length > 0 ? f[5] : Categories.Of(f[0], new[] { f[1] });
-                seen[f[0]] = new Info { Id = f[0], Type = f[1], Name = f[2], Atlas = f[3], Sprite = f[4], Cat = cat };
+                string nameLang = f.Length >= 7 ? f[6] : "";
+                seen[f[0]] = new Info { Id = f[0], Type = f[1], Name = f[2], Atlas = f[3], Sprite = f[4], Cat = cat, NameLang = nameLang };
             }
         }
 
@@ -103,7 +114,7 @@ namespace SortToBoxes
             foreach (var i in seen.Values.OrderBy(x => x.Id, StringComparer.Ordinal))
             {
                 sb.Append(Clean(i.Id)).Append('\t').Append(Clean(i.Type)).Append('\t').Append(Clean(i.Name)).Append('\t')
-                  .Append(Clean(i.Atlas)).Append('\t').Append(Clean(i.Sprite)).Append('\t').Append(Clean(i.Cat)).Append('\n');
+                  .Append(Clean(i.Atlas)).Append('\t').Append(Clean(i.Sprite)).Append('\t').Append(Clean(i.Cat)).Append('\t').Append(Clean(i.NameLang)).Append('\n');
             }
             try
             {
