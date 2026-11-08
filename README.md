@@ -12,6 +12,7 @@ Developed with assistance from [Claude Code](https://claude.com/claude-code) (An
 |---|---|---|
 | **[QoL]** 【便利】 | No stat changes and no extra information; only saves you clicks | None |
 | **[Info]** 【情报】 | No stat changes, but shows information the game doesn't tell you directly | Some: more information makes the game easier |
+| **[Fix]** 【修复】 | Fixes a game bug so the game works as intended | Some: you may get things the bug used to eat |
 | **[Gameplay]** 【玩法】 | Changes numbers or game mechanics | Yes (no such mod yet) |
 
 ## Mods
@@ -19,6 +20,7 @@ Developed with assistance from [Claude Code](https://claude.com/claude-code) (An
 | Name | Category | Keys | Summary | Mod ID |
 |---|---|---|---|---|
 | [Sort To Boxes](mods/SortToBoxes/README.md) | [QoL] | F7 / F4 | Storing: loose items in storage go into the box matching their first item type; boxes can be tagged with categories and show an icon of their contents; optional auto-sort on purchase. Selling: one key puts everything the buyer wants on the counter; placing one item brings its identical copies | `chaos5090.sort-to-boxes` |
+| [Counter Overflow](mods/CounterOverflow/README.md) | [Fix] | F3 | Items a seller can't fit on the counter are queued instead of destroyed: they fill in as space frees up, F3 flips to the next batch | `chaos5090.counter-overflow` |
 | [Visitor Forecast](mods/VisitorForecast/README.md) | [Info] | F9 | Before opening, forecasts who will visit today (faction, intent, wanted goods, budget, probability) | `chaos5090.visitor-forecast` |
 
 The in-game UI of all mods is currently Chinese only.
@@ -32,7 +34,7 @@ Each mod's page has the full steps. In short: copy the `dist/<name>/` folder int
 - In-game name and Workshop title: `【分类】掌柜帮手·<Chinese name> | [<category>] Shopkeeper's Kit: <English name>`
 - Mod ID: `chaos5090.<english-name-in-kebab-case>`. Never change it after release: the game stores settings by ID (`ModConfigs/<ID>.json`)
 - The author field is always `chaos5090`; the Claude Code credit goes in the description and README
-- Hotkeys avoid keys taken by popular mods: F5 Client Demand Highlight, F6 Smart Inventory Arrange, F8 Cheat Menu
+- Hotkeys avoid keys taken by popular mods: F5 Client Demand Highlight, F6 Smart Inventory Arrange, F8 Cheat Menu, F10 Show Item Names
 
 ## Conventions
 

@@ -12,6 +12,7 @@ chaos5090 为《Probably Stolen》做的 mod 系列。每个 mod 名字前标出
 |---|---|---|
 | **【便利】** QoL | 不改任何数值，也不给额外信息，只帮你省操作 | 无 |
 | **【情报】** Info | 不改数值，但会显示游戏本来不直接告诉你的信息 | 有一些：信息更多，游戏会变简单 |
+| **【修复】** Fix | 修游戏 bug，让游戏按它本来的意图运行 | 有一些：修好后可能多出原本被 bug 吃掉的东西 |
 | **【玩法】** Gameplay | 改数值或游戏机制 | 有（目前还没有这类 mod） |
 
 ## 系列 mod
@@ -19,6 +20,7 @@ chaos5090 为《Probably Stolen》做的 mod 系列。每个 mod 名字前标出
 | 名称 | 分类 | 热键 | 简介 | mod ID |
 |---|---|---|---|---|
 | [掌柜帮手·归类入箱 Sort To Boxes](mods/SortToBoxes/README.zh-CN.md) | 【便利】 | F7 / F4 | 收货：仓库散件按第一个标签归进对应的箱子，箱子可勾选分类、显示里面物品的小图标，可选买下时自动归箱。卖货：一键把买家会买的货摆上柜台，放一件自动带上同款 | `chaos5090.sort-to-boxes` |
+| [掌柜帮手·柜台不丢货 Counter Overflow](mods/CounterOverflow/README.zh-CN.md) | 【修复】 | F3 | 卖家摆货时柜台放不下的货不再被销毁，改为排队：腾出位置自动补上，F3 翻页 | `chaos5090.counter-overflow` |
 | [掌柜帮手·访客预测 Visitor Forecast](mods/VisitorForecast/README.zh-CN.md) | 【情报】 | F9 | 开门前预测今天谁会来（阵营、来意、想要什么、预算、概率） | `chaos5090.visitor-forecast` |
 
 所有 mod 的界面目前只有中文。
@@ -32,7 +34,7 @@ chaos5090 为《Probably Stolen》做的 mod 系列。每个 mod 名字前标出
 - 游戏内名称与创意工坊标题：`【分类】掌柜帮手·<中文名> | [<英文分类>] Shopkeeper's Kit: <英文名>`
 - mod ID：`chaos5090.<英文名小写连字符>`。发布后不要再改，因为游戏按 ID 保存配置（`ModConfigs/<ID>.json`）
 - 作者字段统一写 `chaos5090`；Claude Code 协助的说明写在简介和 README 里
-- 热键避开常见 mod 已占用的键：F5 客户需求高亮、F6 智能整理、F8 作弊菜单
+- 热键避开常见 mod 已占用的键：F5 客户需求高亮、F6 智能整理、F8 作弊菜单、F10 物品名称常显
 
 ## 共同约定
 

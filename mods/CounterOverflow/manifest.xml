@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Mod>
+  <ID>chaos5090.counter-overflow</ID>
+  <Name>【修复】掌柜帮手·柜台不丢货 | [Fix] Shopkeeper's Kit: Counter Overflow</Name>
+  <Author>chaos5090</Author>
+  <ModVersion>1.0.0</ModVersion>
+  <Description>【修复型：修游戏 bug，会稍微影响平衡】原版里卖家（小偷、卖水的、杰克逊博士推销设备等）往柜台摆货时，柜台放不下的货会被直接销毁、没有任何提示，一次可能丢掉二十多件。本 mod 让这些货改为排队：柜台腾出位置（你买走或挪开货）后自动补上；按 F3 翻页，把你还没买的货排到队尾、换上排队的货。顾客离开时，排队的货按原版方式处理。修好后你能看到原本会被销毁的货（例如黑市声望高时小偷的战利品箱），进货机会比原版多。界面仅中文。
+掌柜帮手系列 · 作者 chaos5090 · 由 Claude Code（Anthropic 的 AI 编程助手）协助开发。
+
+[Fix - fixes a game bug, small balance impact] When a seller (thieves, water sellers, Dr. Jackson's equipment offers...) lays goods on the counter, anything that doesn't fit is silently destroyed - sometimes twenty or more items at once. With this mod those items wait in a queue instead: they appear as soon as space frees up (when you buy or move items), and F3 flips to the next batch, sending items you haven't bought to the back of the queue. When the customer leaves, queued items are handled like leftover counter items in the base game. You will see goods the base game would have destroyed (e.g. thieves' loot crates at high Black Market reputation), so you get more buying opportunities. Chinese UI only.
+Part of Shopkeeper's Kit by chaos5090. Developed with assistance from Claude Code (Anthropic's AI coding assistant).</Description>
+  <GameVersions>
+    <Version>0.46D</Version>
+  </GameVersions>
+  <Prerequisites />
+  <Assemblies>
+    <Assembly>CounterOverflow.dll</Assembly>
+  </Assemblies>
+  <!-- 不需要特殊权限：补丁目标用字面量 typeof 查找 -->
+  <Capabilities />
+</Mod>

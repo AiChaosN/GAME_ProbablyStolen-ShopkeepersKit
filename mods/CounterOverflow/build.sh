@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# 编译 CounterOverflow.dll 并组装 dist/CounterOverflow/（可直接复制到游戏的 Mods 目录）。
+#   ./build.sh                 只编译 + 打包
+#   ./build.sh install         另外复制到 "$GAME_DIR/Mods/CounterOverflow"（不会启动游戏；游戏开着时 DLL 被锁会失败）
+# 游戏目录：环境变量 GAME_DIR > 仓库根目录 local.env > 默认的 Steam 安装位置。
+set -euo pipefail
+cd "$(dirname "$0")"
+
+# 本机路径放在仓库根目录的 local.env（不进仓库，参考 local.env.example）
+ENV_GAME_DIR="${GAME_DIR:-}"
+if [[ -f ../../local.env ]]; then
+  # shellcheck disable=SC1091
+  source ../../local.env
+fi
+GAME_DIR="${ENV_GAME_DIR:-${GAME_DIR:-/mnt/c/Program Files (x86)/Steam/steamapps/common/Probably Stolen}}"
+export DOTNET_ROOT="${DOTNET_ROOT:-$HOME/.dotnet}"
+export PATH="$PATH:$DOTNET_ROOT"
+export DOTNET_ROLL_FORWARD=Major DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_NOLOGO=1
+
+dotnet build -c Release -p:GameDir="$GAME_DIR"
+
+rm -rf dist/CounterOverflow
+mkdir -p dist/CounterOverflow
+cp bin/Release/CounterOverflow.dll dist/CounterOverflow/
+cp manifest.xml dist/CounterOverflow/
+echo "dist: $(pwd)/dist/CounterOverflow"
+ls -la dist/CounterOverflow
+
+if [[ "${1:-}" == "install" ]]; then
+  dest="$GAME_DIR/Mods/CounterOverflow"
+  mkdir -p "$dest"
+  cp dist/CounterOverflow/* "$dest/"
+  echo "installed to: $dest"
+fi
