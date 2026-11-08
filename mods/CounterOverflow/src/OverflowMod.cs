@@ -166,31 +166,12 @@ namespace CounterOverflow
             else NextKey = key;
         }
 
-        internal static string KeyLabel(KeyCode k)
-        {
-            switch (k)
-            {
-                case KeyCode.Comma: return ",";
-                case KeyCode.Period: return ".";
-                case KeyCode.LeftBracket: return "[";
-                case KeyCode.RightBracket: return "]";
-                case KeyCode.Slash: return "/";
-                case KeyCode.Semicolon: return ";";
-                case KeyCode.Quote: return "'";
-                case KeyCode.Minus: return "-";
-                case KeyCode.Equals: return "=";
-                default: return k.ToString();
-            }
-        }
+        internal static string KeyLabel(KeyCode k) => KeyNames.Label(k);
 
         private static KeyCode Parse(ConfigEntry<string> entry, string fallback)
         {
-            var text = (entry?.Value ?? fallback).Trim();
-            if (text == ",") text = "Comma";
-            else if (text == ".") text = "Period";
-            if (Enum.TryParse(text, true, out KeyCode k) && k != KeyCode.None) return k;
-            Log.Warn("无法识别的按键 '" + text + "'，改用 " + fallback);
-            return (KeyCode)Enum.Parse(typeof(KeyCode), fallback);
+            var fb = (KeyCode)Enum.Parse(typeof(KeyCode), fallback);
+            return KeyNames.Parse(entry?.Value ?? fallback, fb, Log.Warn);
         }
 
         private void Apply()

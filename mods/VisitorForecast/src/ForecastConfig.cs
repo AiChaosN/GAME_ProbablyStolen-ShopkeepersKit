@@ -28,7 +28,7 @@ namespace VisitorForecast
             var cfg = ModHelper.GetConfig(modId);
             hotkeyEntry = cfg.Define("hotkey", DefaultHotkey, "General", () => "热键（打开/关闭预测窗口）",
                 choices: null,
-                tooltip: () => "Unity KeyCode 名称，例如 F9、F7、F10、Insert、Home。改完立即生效。默认 F9（创意工坊的作弊菜单默认占用 F8）。");
+                tooltip: () => "Unity KeyCode 名称（例如 F9、F7、Insert），也可以直接填一个符号或字母（例如 / 或 K）；在游戏“选项”里还能按一下键绑定。改完立即生效。默认 F9（创意工坊的作弊菜单默认占用 F8）。");
             // 用下拉框而不是滑块：游戏的设置界面画整数滑块时不显示数值
             runsEntry = cfg.Define("runs", "300", "General", () => "每次预测的模拟次数",
                 choices: RunChoices,
@@ -45,17 +45,27 @@ namespace VisitorForecast
             cfg.Save(); // 让配置文件带着默认值出现，方便手改
         }
 
+        /// <summary>在游戏“选项”里加一个按键绑定（按一下键即可改），和改装件设置里的 hotkey 是同一份设置。</summary>
+        internal void RegisterGameOptions(string modId)
+        {
+            try
+            {
+                ModHelper.AddGameOptionSection(modId, "keys", () => "掌柜帮手·访客预测");
+                ModHelper.AddGameOptionKeyBind(modId, "keys", "hotkey", () => "打开/关闭访客预测", () => Hotkey,
+                    k => { if (k != KeyCode.None) hotkeyEntry?.Set(k.ToString()); },
+                    () => "开门前按它预测今天的来客，开门后显示实际队列。默认 F9");
+            }
+            catch (Exception e)
+            {
+                Log.Warn("登记游戏选项失败（仍可在改装件设置里改热键）: " + e.Message);
+            }
+        }
+
         private void Apply()
         {
             try
             {
-                var text = (hotkeyEntry?.Value ?? DefaultHotkey).Trim();
-                if (Enum.TryParse(text, true, out KeyCode k) && k != KeyCode.None) Hotkey = k;
-                else
-                {
-                    Hotkey = KeyCode.F9;
-                    Log.Warn("无法识别的热键 '" + text + "'，改用 " + DefaultHotkey);
-                }
+                Hotkey = KeyNames.Parse(hotkeyEntry?.Value ?? DefaultHotkey, KeyCode.F9, Log.Warn);
                 Runs = int.TryParse((runsEntry?.Value ?? "300").Trim(), out int r) ? Mathf.Clamp(r, 20, 2000) : 300;
                 IncludeOtherMods = modsEntry?.Value ?? false;
                 NativeUI = nativeEntry?.Value ?? true;

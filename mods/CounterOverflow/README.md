@@ -100,6 +100,7 @@ Each page is an invisible grid with the counter's shape at the time, so an item'
 
 ## Changelog
 
+- **1.1.3**: key settings accept a plain symbol or letter (e.g. / or K).
 - **1.1.2**: fixed ESC not opening the menu while goods were paged (the page bar sat in the game's paper UI layer, where ESC treats it as a panel to close first; it reappeared every frame and swallowed ESC).
 - **1.1.1**: the page bar moved below the notification above the customer's head, so it no longer overlaps the goods and the customer.
 - **1.1.0**: fixed pages: page bar above the counter (previous/next, current page); page keys are now , and . and can be bound in the game's Options; each page remembers item positions and nothing refills automatically, so an item you took off can always go back.

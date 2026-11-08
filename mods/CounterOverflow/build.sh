@@ -17,6 +17,9 @@ export DOTNET_ROOT="${DOTNET_ROOT:-$HOME/.dotnet}"
 export PATH="$PATH:$DOTNET_ROOT"
 export DOTNET_ROLL_FORWARD=Major DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_NOLOGO=1
 
+# manifest 必须是合法 XML：游戏解析失败会直接跳过这个 mod（例如 & 要写成 &amp;）
+python3 -I -c 'import sys, xml.etree.ElementTree as E; E.parse(sys.argv[1])' manifest.xml || { echo "manifest.xml 不是合法 XML，停止构建" >&2; exit 1; }
+
 dotnet build -c Release -p:GameDir="$GAME_DIR"
 
 rm -rf dist/CounterOverflow

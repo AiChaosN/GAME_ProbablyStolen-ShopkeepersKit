@@ -155,7 +155,7 @@ namespace SortToBoxes
             }
             if (boxes.All(b => b.Total == 0 && b.Labels == null))
             {
-                Notify("箱子都是空的：往箱子里放一件样品，或 Ctrl+" + SortToBoxesMod.Config.Hotkey + " 指着箱子勾选分类");
+                Notify("箱子都是空的：往箱子里放一件样品，或 Ctrl+" + KeyNames.Label(SortToBoxesMod.Config.Hotkey) + " 指着箱子勾选分类");
                 return;
             }
             var report = Sorter.SortItems(entry.invElement.childItems.ToList(), boxes);
@@ -169,7 +169,7 @@ namespace SortToBoxes
             var box = BoxUnderMouse();
             if (box == null)
             {
-                Notify("把鼠标指着一个箱子（或打开的箱子窗口里）再按 Ctrl+" + SortToBoxesMod.Config.Hotkey);
+                Notify("把鼠标指着一个箱子（或打开的箱子窗口里）再按 Ctrl+" + KeyNames.Label(SortToBoxesMod.Config.Hotkey));
                 return;
             }
             BoxLabelPanel.Open(box);
@@ -198,7 +198,7 @@ namespace SortToBoxes
             }
             if (!Counter.HasBuyer(out var client))
             {
-                Notify("柜台前没有要买东西的顾客（指着某件货按 " + SortToBoxesMod.Config.SellHotkey + " 可把它的同款摆上柜台）");
+                Notify("柜台前没有要买东西的顾客（指着某件货按 " + KeyNames.Label(SortToBoxesMod.Config.SellHotkey) + " 可把它的同款摆上柜台）");
                 return;
             }
             var report = Counter.PutBuyable(client);
@@ -222,7 +222,7 @@ namespace SortToBoxes
             {
                 string msg = "带上同款 " + placed + " 件";
                 if (noRoom > 0) msg += "，" + noRoom + " 件柜台放不下";
-                Notify(msg + "（Shift+" + SortToBoxesMod.Config.SellHotkey + " 可关闭）");
+                Notify(msg + "（Shift+" + KeyNames.Label(SortToBoxesMod.Config.SellHotkey) + " 可关闭）");
             }
         }
 

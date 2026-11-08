@@ -84,7 +84,7 @@ The mod uses the game's built-in mod settings and doesn't put a config file next
 
 | Key | Default | Description |
 |---|---|---|
-| `hotkey` | `F9` | Unity KeyCode name, e.g. `F7`, `F10`, `Insert`, `Home` (default was F8 in 1.1 and earlier) |
+| `hotkey` | `F9` | Unity KeyCode name (e.g. `F7`, `Insert`), or just a symbol or letter (e.g. `/`); it can also be bound by pressing a key in the game's Options (section "掌柜帮手·访客预测") |
 | `runs` | `300` | Simulations per forecast (pick from 100–2000 in a dropdown). More runs are more accurate but stall the game longer when you press the key |
 | `includeOtherMods` | `false` | Whether the sandbox also runs other mods' code hooked into customer generation (see [Limitations](#limitations-and-caveats)) |
 | `nativeUI` | `true` | Use the game's native tablet window; turn off to use the old simple window |

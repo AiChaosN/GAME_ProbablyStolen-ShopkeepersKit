@@ -22,6 +22,7 @@ namespace SortToBoxes
             {
                 Config = new SortConfig();
                 Config.Init(id);
+                Config.RegisterGameOptions(id);
             }
             catch (Exception e)
             {
@@ -69,6 +70,7 @@ namespace SortToBoxes
 
         public void OnDisable()
         {
+            try { ModHelper.RemoveGameOptions(ModId); } catch { }
             try
             {
                 if (hooked)

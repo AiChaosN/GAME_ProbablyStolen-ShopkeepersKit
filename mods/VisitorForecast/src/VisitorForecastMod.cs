@@ -12,6 +12,7 @@ namespace VisitorForecast
     public sealed class VisitorForecastMod : IMod
     {
         internal static ForecastConfig Config;
+        private static string modId = "chaos5090.visitor-forecast";
         private static GameObject host;
         private static bool hooked;
 
@@ -22,6 +23,8 @@ namespace VisitorForecast
             {
                 Config = new ForecastConfig();
                 Config.Init(id);
+                modId = id;
+                Config.RegisterGameOptions(id);
             }
             catch (Exception e)
             {
@@ -77,6 +80,7 @@ namespace VisitorForecast
 
         public void OnDisable()
         {
+            try { ModHelper.RemoveGameOptions(modId); } catch { }
             try
             {
                 if (hooked)

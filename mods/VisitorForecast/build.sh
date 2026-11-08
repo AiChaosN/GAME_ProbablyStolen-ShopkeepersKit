@@ -29,6 +29,9 @@ if [[ -f "$MANAGED/Assembly-CSharp.dll" ]]; then
   dotnet run --project tools/RegistryGen -c Release -- "$MANAGED" src/Generated/GameTypeRegistry.cs
 fi
 
+# manifest 必须是合法 XML：游戏解析失败会直接跳过这个 mod（例如 & 要写成 &amp;）
+python3 -I -c 'import sys, xml.etree.ElementTree as E; E.parse(sys.argv[1])' manifest.xml || { echo "manifest.xml 不是合法 XML，停止构建" >&2; exit 1; }
+
 dotnet build -c Release -p:GameDir="$GAME_DIR"
 
 rm -rf dist/VisitorForecast
