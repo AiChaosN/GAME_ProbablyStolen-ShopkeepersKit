@@ -1,166 +1,170 @@
-# 【情报】掌柜帮手·访客预测 Visitor Forecast
+# [Info] Shopkeeper's Kit: Visitor Forecast
 
-> **掌柜帮手 / Shopkeeper's Kit** 系列 · 分类 **【情报】**：不改任何数值，但会提前告诉你今天谁会来，游戏会因此简单一些。系列与分类说明见 [仓库首页](../../README.md)。
-> 作者 chaos5090 · 由 [Claude Code](https://claude.com/claude-code)（Anthropic 的 AI 编程助手）协助开发。mod ID：`chaos5090.visitor-forecast`。
+**English** | [中文](README.zh-CN.md)
 
-《Probably Stolen》（v0.46D，Unity 2021.3 Mono）的代码 mod。**每天开门前**按 **F9**，它会在一个“沙盒”里把开门那一刻的顾客生成流程跑几百遍，告诉你今天：
+> Part of the **Shopkeeper's Kit** (掌柜帮手) series · category **[Info]**: changes no stats, but tells you in advance who will visit today, which makes the game somewhat easier. See the [repository home page](../../README.md) for the series and its categories.
+> By chaos5090 · developed with assistance from [Claude Code](https://claude.com/claude-code) (Anthropic's AI coding assistant). Mod ID: `chaos5090.visitor-forecast`.
 
-- **必来**的人（100%）；
-- **其他客人**：不一定来的人，按**来源**分组（随机顾客、情报贩子、新面孔、声望特权…），每人各自的出现概率；
-- **早上在门口等**的人（开门后直接站在柜台前、不排队的那种，比如卢、治安部的人）；
-- 每个人的 **阵营、来做什么（买/卖/买卖/对话/检查…）、想要什么类型的货（卖家则写卖什么）、预算范围、来源（剧情/每周日程/展示柜买家/随机顾客…）、大概排第几位**；
-- 预计今天总共来多少人（平均值与最少/最多）。
+**The in-game UI is Chinese only.**
 
-预测完会**自动校验**游戏状态与预测前一字不差；发现任何不一致都会红字报警，并在重新读档前拒绝再次预测（见“安全网”）。
+A code mod for *Probably Stolen* (v0.46D, Unity 2021.3 Mono). **Each morning before you open the shop**, press **F9**: the mod runs the game's opening-time customer generation a few hundred times in a "sandbox" and tells you, for today:
 
-> 预测基于**按键那一刻**的展示柜、声望、事件和存档状态。改动展示柜/招牌后请再按 F9（或窗口里的“重新预测”）。
+- who **must come** (100%);
+- **other visitors**: people who may or may not come, grouped by **source** (random customers, information brokers, new faces, reputation perks…), each with their own chance of showing up;
+- who is **waiting at the door in the morning** (the people who stand right at the counter as soon as you open, without queuing — e.g. Lou or Security officers);
+- for each person: **faction, what they're here for (buy / sell / buy & sell / talk / inspect…), what kind of goods they want (for sellers, what they're selling), budget range, source (story / weekly schedule / display-case buyer / random customer…), and roughly where they'll be in the queue**;
+- the expected total number of visitors today (mean, plus min/max).
+
+After each forecast the mod **automatically verifies** that the game state is exactly the same as before. Any mismatch triggers a red alarm, and further forecasts are refused until you reload (see [Safety net](#safety-net)).
+
+> The forecast is based on your display case, reputation, events and save state **at the moment you press the key**. If you change the display case or sign, press F9 again (or **Re-forecast** (重新预测) in the window).
 
 ---
 
-## 安装
+## Installation
 
-1. 把 `dist/VisitorForecast/` 整个文件夹复制到游戏目录的 `Mods` 文件夹里，得到：
+1. Copy the whole `dist/VisitorForecast/` folder into the `Mods` folder inside the game directory, so you end up with:
    ```
-   <游戏目录>/Mods/VisitorForecast/manifest.xml
-   <游戏目录>/Mods/VisitorForecast/VisitorForecast.dll
+   <game dir>/Mods/VisitorForecast/manifest.xml
+   <game dir>/Mods/VisitorForecast/VisitorForecast.dll
    ```
-   游戏目录在 Steam 库的 `steamapps\common\Probably Stolen`（Steam 里右键游戏 → 管理 → 浏览本地文件）。
-   在 WSL 里也可以直接 `./build.sh install`（只复制文件，不会启动游戏）。
-2. 启动游戏，主菜单进入 **改装件**（Mods）界面，选中 **【情报】掌柜帮手·访客预测**，点 **审阅并启用**。
-3. 从 1.3.0 起本 mod **不申请任何特殊权限**（游戏自带的扫描器对它报告“无权限、无发现”；1.2 及以前需要 `reflection-external`）。
-   本 mod 不读写任何文件、不联网、不启动程序、不碰 Steam。
-4. 按提示**重启游戏**后生效。
+   The game directory is `steamapps\common\Probably Stolen` in your Steam library (in Steam, right-click the game → Manage → Browse local files).
+   Under WSL you can also just run `./build.sh install` (it only copies files; it does not launch the game).
+2. Launch the game, open the **Mods** screen from the main menu, select **【情报】掌柜帮手·访客预测 | [Info] Shopkeeper's Kit: Visitor Forecast**, and click **Review & Enable** (审阅并启用).
+3. Since 1.3.0 the mod **requests no special permissions** (the game's built-in scanner reports "no permissions, no findings" for it; 1.2 and earlier needed `reflection-external`).
+   The mod reads and writes no files, makes no network connections, launches no programs and doesn't touch Steam.
+4. **Restart the game** when prompted; the mod takes effect after the restart.
 
-> 以后替换了 DLL 或 manifest（例如更新版本），游戏会认为 mod “已更改”，需要再点一次“审阅并启用”。
+> Whenever you replace the DLL or manifest later (e.g. to update), the game treats the mod as "changed" and you need to click Review & Enable (审阅并启用) again.
 
-## 使用
+## Usage
 
-- 进入存档，在**早上拉起卷帘门之前**按 **F9**：弹出“访客预测”平板，先显示“正在预测…”，一到几秒后出结果。同一天、状态没变时重复预测的结果基本一致（随机种子由天数决定）。
-- 再按 F9、点平板右上角的 ✕ 或下方的 **关闭** 都能关掉窗口；**重新预测** 按钮立刻重跑一遍。窗口可以按住拖动（列表区域也能拖），鼠标在窗口上时点击不会穿透到后面的货物/柜台。按 Esc 一般也会像游戏的其他平板一样把它关掉。
-- **开门之后**按 F9：标题变成 **实际队列**，显示游戏里**真实的排队名单**，每秒自动刷新——这不是预测，是真实数据。
-- 已打烊（晚上）或还没进存档时按 F9，窗口里只显示一句提示。
-- 输入文字时（例如在输入框里打字）热键不会触发。
+- Load a save and press **F9** **in the morning, before you raise the shutter**: the **Visitor Forecast** (访客预测) tablet pops up, shows **Forecasting…** (正在预测…) at first, and has results after one to a few seconds. Forecasting again on the same day with nothing changed gives essentially the same result (the random seed is derived from the day number).
+- To close the window, press F9 again, click the ✕ in the tablet's top-right corner, or click **Close** (关闭) at the bottom; **Re-forecast** (重新预测) reruns it immediately. You can drag the window around (the list area works as a handle too), and while the mouse is over the window, clicks don't pass through to the goods or counter behind it. Esc usually closes it as well, like the game's other tablets.
+- Press F9 **after opening**: the title changes to **Actual queue** (实际队列) and shows the game's **real queue**, refreshed every second. This is live data, not a forecast.
+- After closing time (evening), or before you've loaded a save, F9 just shows a one-line message in the window.
+- The hotkey doesn't fire while you're typing (e.g. in a text field).
 
-> 从 1.1 升级：热键默认改成了 **F9**（创意工坊的“作弊菜单”默认占用 F8）。如果你之前保存的热键是 F8，而作弊菜单（`chezhou.cheat-menu`）已加载且也在用 F8，第一次加载 1.2.0 时会**自动改成 F9 一次**并在日志里写明；其他情况保留你原来的设置。之后随时可以在 mod 设置里改。
+> Upgrading from 1.1: the default hotkey is now **F9** (the Workshop "Cheat Menu" mod uses F8 by default). If your saved hotkey was F8 and the Cheat Menu (`chezhou.cheat-menu`) is loaded and also using F8, the first time 1.2.0 loads it **switches you to F9 once** and notes this in the log; otherwise your existing setting is kept. You can change it in the mod settings at any time.
 >
-> 注意：开启了游戏的开发者工具时，F9 也会打开游戏自带的调试面板；那种情况下请把热键换成别的键。
+> Note: with the game's developer tools enabled, F9 also opens the game's built-in debug panel; in that case, rebind the hotkey to another key.
 
-### 窗口内容
+### Window contents
 
-窗口用的是游戏自己的平板界面（与“结束一天”“谈判”平板同款的外框、配色和中文字体），从上到下：
+The window uses the game's own tablet UI (the same frame, colors and Chinese font as the end-of-day and negotiation tablets). From top to bottom:
 
-1. **标题**：`访客预测`（开门后为 `实际队列`）。
-2. **信息行**：`第 N 天 · 星期X`。星期按游戏日历：天数 % 7，0 = 星期日 … 6 = 星期六。
-3. **两块统计**：`必来 N 人`、`其他 a–b 人`（除必来者以外的来客人数，最少–最多；鼠标悬停可看平均值）。
-4. **列表**（可滚动）：
-   - 如果安全网报警，最上面是一条**红色横幅**；附加说明（如“有 N 次模拟出错”“革命军会在柜台放炸弹”）在它下面。
-   - **必来**：每人一行，按排队位置排序；**早上在门口等**的人排在最前，带绿色 `门口等候` 标签。没有时显示“今天没有一定会来的人”。
-   - **其他客人**：按来源分组，组标题写来源和该来源的预计人数（如 `随机顾客 · 约 1.8 人`），组按预计人数从多到少；组内按概率从高到低，右侧是概率条和百分比。概率低于 3% 的人折叠成一行 `其他 N 种（各 <3%）`，悬停可看全部名单。
-5. **页脚**：模拟次数与用时、使用说明；下方是 **重新预测** / **关闭** 按钮。
+1. **Title**: `访客预测` (Visitor Forecast); after opening, `实际队列` (Actual queue).
+2. **Info line**: `第 N 天 · 星期X` (Day N · weekday). The weekday follows the game calendar: day % 7, 0 = Sunday … 6 = Saturday.
+3. **Two stat boxes**: `必来 N 人` (N must come) and `其他 a–b 人` (a–b others: visitors besides the must-comes, min–max; hover to see the mean).
+4. **List** (scrollable):
+   - If the safety net raises an alarm, a **red banner** sits at the very top; extra notes (e.g. "N simulations failed" (有 N 次模拟出错), "the Revolution will plant a bomb on the counter" (革命军会在柜台放炸弹)) appear below it.
+   - **Must come** (必来): one row per person, sorted by queue position; people **waiting at the door in the morning** come first, with a green `门口等候` (Waiting at door) tag. If there's nobody, it shows "No one is certain to come today" (今天没有一定会来的人).
+   - **Other visitors** (其他客人): grouped by source. Each group header shows the source and its expected head count (e.g. `随机顾客 · 约 1.8 人` = Random customer · ~1.8 people), and groups are sorted by expected count, highest first. Within a group, people are sorted by probability, highest first, with a probability bar and percentage on the right. Anyone below 3% is folded into a single row `其他 N 种（各 <3%）` (N others, each <3%); hover over it to see the full list.
+5. **Footer**: number of simulations and time taken, plus usage hints; below it are the **Re-forecast** (重新预测) / **Close** (关闭) buttons.
 
-每一行顾客的内容：
+What each customer row shows:
 
-| 位置 | 内容 |
+| Where | What |
 |---|---|
-| 第一行左 | 名字（`等` = 同一类顾客在不同模拟里名字不同；`×2` = 同一轮里来了两个）＋标签：`门口等候`（绿）、`改造人`/`可能是改造人`/`通缉`（红）、`插队`、**阵营**（用游戏里各阵营的颜色：下层区、上层区、治安部、黑市、革命军、13区卡特尔；其他阵营为灰色） |
-| 第一行右 | 必来：排队位置（`第 2–4 位` 为 10%–90% 分位；门口等候的写“柜台前”）；其他客人：概率条＋百分比；实际队列：`柜台前` / `排第 k 位` |
-| 第二行 | 来做什么（买、卖、买卖、对话、检查、以物易物、收租、卖情报、委托订货…，绿色小标签）＋**想要**：买家是想要的商品类型（游戏里的中文类型名）或指定物品；卖家是 `卖：…`（来自数值手册整理的出货清单，查不到时写“卖货”）。太长时最多显示三行 |
-| 第三行 | 预算（所有模拟里出现过的最小–最大值，已含声望特权、店铺吸引力等加成）· 来源（只在必来里显示；其他客人已按来源分组） |
+| Line 1, left | Name (a trailing `等` ("etc.") means this kind of customer had different names in different simulations; `×2` = two of them came in the same run) + tags: `门口等候` Waiting at door (green); `改造人` Augmented / `可能是改造人` Possibly augmented / `通缉` Wanted (red); `插队` Cuts in line; **faction** (in each faction's in-game color: Lower Levels (下层区), Upper Levels (上层区), Security (治安部), Black Market (黑市), Revolution (革命军), District 13 Cartel (13区卡特尔); other factions in gray) |
+| Line 1, right | Must come: queue position (`第 2–4 位` = positions 2–4, the 10th–90th percentile; people waiting at the door show `柜台前` (At the counter)); Other visitors: probability bar + percentage; Actual queue: `柜台前` (At the counter) / `排第 k 位` (k-th in line) |
+| Line 2 | What they're here for, as small green tags: Buy (买), Sell (卖), Buy & sell (买卖), Talk (对话), Inspect (检查), Barter (以物易物), Collect rent (收租), Sell information (卖情报), Place an order (委托订货)… + **Wants** (想要): for buyers, the item category they want (the game's Chinese category name) or a specific item; for sellers, `卖：…` (Sells: …), taken from the stock lists compiled in the stats handbook, or `卖货` (Selling goods) when not listed. Long text is cut off at three lines |
+| Line 3 | Budget (the min–max seen across all simulations, already including bonuses such as reputation perks and shop attractiveness) · source (shown only under Must come; Other visitors are already grouped by source) |
 
-鼠标悬停在一行上会弹出这位顾客的完整信息（包括没显示全的“想要”）。
+Hover over a row to pop up that customer's full details (including any "Wants" text that was cut off).
 
-来源是指这位顾客由哪一步生成：剧情、教程剧情、每周日程、展示柜买家、招牌与证书、随机顾客、声望特权、市场短缺过剩、市场事件、王尔德服务、通缉犯、改造人、治安检查、情报贩子、发明家、新面孔、化学品反馈、预约回访、房租日、已在队列、早上在门口等…
+The source is the generation step that produced the customer: Story (剧情), Tutorial story (教程剧情), Weekly schedule (每周日程), Display-case buyer (展示柜买家), Signs & certificates (招牌与证书), Random customer (随机顾客), Reputation perk (声望特权), Market shortage/surplus (市场短缺过剩), Market event (市场事件), Wild's services (王尔德服务), Wanted criminal (通缉犯), Augmented (改造人), Security inspection (治安检查), Information broker (情报贩子), Inventor (发明家), New face (新面孔), Chemical feedback (化学品反馈), Scheduled return visit (预约回访), Rent day (房租日), Already in queue (已在队列), Waiting at the door in the morning (早上在门口等)…
 
-> 原生窗口建不起来时（例如在主菜单、游戏更新后界面结构变了，或在设置里关掉了 `nativeUI`），会自动退回 1.1 版的简易窗口（系统字体，内容相同，其他客人同样按来源分组），并在日志里写明原因。
+> If the native window can't be built (e.g. at the main menu, after a game update changed the UI structure, or with `nativeUI` turned off in the settings), the mod automatically falls back to the simple window from 1.1 (system font, same content, other visitors likewise grouped by source) and logs the reason.
 
-## 配置
+## Configuration
 
-用的是游戏自带的模组设置，不在 DLL 旁边放配置文件（这样 mod 不需要申请“读写文件”权限）：
+The mod uses the game's built-in mod settings and doesn't put a config file next to the DLL (so it doesn't need the file read/write permission):
 
-- 游戏内：改装件界面选中本 mod → **设置**；
-- 或直接编辑 `%USERPROFILE%\AppData\LocalLow\Questing Goose Studio\Probably Stolen\ModConfigs\chaos5090.visitor-forecast.json`（首次运行后自动生成）。
+- In game: on the **Mods** screen, select this mod → **Settings**;
+- Or edit `%USERPROFILE%\AppData\LocalLow\Questing Goose Studio\Probably Stolen\ModConfigs\chaos5090.visitor-forecast.json` directly (created automatically on first run).
 
-| 键 | 默认 | 说明 |
+| Key | Default | Description |
 |---|---|---|
-| `hotkey` | `F9` | Unity KeyCode 名，例如 `F7`、`F10`、`Insert`、`Home`（1.1 及以前默认 F8） |
-| `runs` | `300` | 每次预测模拟多少遍（20–2000）。越多越准，按键时卡顿越久 |
-| `includeOtherMods` | `false` | 沙盒里是否也运行其他 mod 挂在“生成顾客”钩子上的代码（见限制） |
-| `nativeUI` | `true` | 用游戏原生的平板窗口；关掉则用旧版简易窗口 |
-| `checkCheatMenuHotkey` | `true` | 一次性检查：热键是 F8 且作弊菜单已加载并也用 F8 时改成 F9；检查完自动变成 `false`。想再检查一次就重新打开 |
+| `hotkey` | `F9` | Unity KeyCode name, e.g. `F7`, `F10`, `Insert`, `Home` (default was F8 in 1.1 and earlier) |
+| `runs` | `300` | Simulations per forecast (20–2000). More runs are more accurate but stall the game longer when you press the key |
+| `includeOtherMods` | `false` | Whether the sandbox also runs other mods' code hooked into customer generation (see [Limitations](#limitations-and-caveats)) |
+| `nativeUI` | `true` | Use the game's native tablet window; turn off to use the old simple window |
+| `checkCheatMenuHotkey` | `true` | One-time check: if the hotkey is F8 and the Cheat Menu is loaded and also uses F8, switch to F9. Becomes `false` after the check; turn it back on to check again |
 
-## 原理
+## How it works
 
-开门时游戏依次执行 `PlayerStore.OnShutterOpened()`：`CheckCrime()`（犯罪记录结算，影响治安检查）→ `SoldItem.HandleSoldItem()`（化学品反馈，可能产生回来投诉的顾客）→ `StoreClientManager.GenerateClient()`（约 30 个 `Handle*` 步骤）→ `HandleFutureClientQueue()`（预约回访）。之后 `OnLateShutterOpen()` 再安排“门口等候的人”。
+When the shop opens, the game runs `PlayerStore.OnShutterOpened()`: `CheckCrime()` (settles your crime record, which affects security inspections) → `SoldItem.HandleSoldItem()` (chemical feedback, which can bring customers back to complain) → `StoreClientManager.GenerateClient()` (about 30 `Handle*` steps) → `HandleFutureClientQueue()` (scheduled return visits). After that, `OnLateShutterOpen()` arranges the people waiting at the door.
 
-每次预测：
+Each forecast:
 
-1. **快照**：从 Assembly-CSharp 里**游戏类型的静态字段**出发，广度优先遍历所有可达的游戏数据对象（`PlayerStore`、`StoreClientManager`、`StoreClientData`、`SecData`、声望、网络升级、事件、静态缓存……）以及其中的 List/Dictionary/HashSet/Queue/数组，记录每个对象**自己的字段值**（浅拷贝，引用原样保存）。物品/背包/窗口这张 UI 图和 Unity 对象不进入快照，单独处理（见下）。
-   - 每个游戏类型有哪些字段，来自**构建时生成的类型表**（`src/Generated/GameTypeRegistry.cs`，由 `tools/RegistryGen` 读取游戏的 `Assembly-CSharp.dll` 生成）：每个类型一行 `typeof(X).GetFields(...)`，所有字段查询的接收者都是字面量 `typeof(游戏类型)`。运行时只按对象的 `GetType()` 查表，不对计算出来的类型做成员查询——这就是不需要 `reflection-external` 权限的原因。
-   - 集合只通过公开接口读写：List/数组用 `IList`（只改有变化的位置，多删少补，不清空），Dictionary 用 `IDictionary`（键没变只改值；沙盒只新增了键时倒序删掉；否则按快照顺序重建），HashSet/Queue/Stack 用按游戏字段里出现的元素类型生成的强类型还原器，ValueTuple 用 `ITuple` 读取各项。**内容和枚举顺序总是完全还原**；集合的容量等内部细节不再逐位还原（见“限制”）。
-   - 不在类型表里的对象按不透明引用处理：游戏的**私有嵌套类型**（约 40 个，几乎都是界面用的，如 `NegociationUIManager.CachedRow`、`CustomUIDebugPanel.PanelDef`，以及只读的常量表 `ShareholderHelper.Dividend`）和编译器生成的类型（lambda 缓存、闭包）。它们都不参与顾客生成。
-2. **沙盒运行 N 次**：每次用不同种子重置 `UnityEngine.Random`，把游戏可写字段里的 `System.Random`（`RNG.random` 等）换成新的替身实例（原实例的内部状态因此从不被消耗，也就不需要读取或还原它的内部）；游戏里另有两个 `static readonly` 的 `System.Random`（`BetaGenerator`、`BoxMullerGenerator`），换不掉，但游戏代码从不调用它们，对预测和存档都没有影响。然后直接调用游戏自己的 `OnShutterOpened()`，记录生成的队列；再判断门口等候的人。每次跑完：销毁本轮新建的物品/窗口的 GameObject，再把快照**写回同一批对象**（只写有变化的字段/集合）。全量检查太慢时自动改为“热点节点 + 每 16 轮一次全量”，最后一定全量写回。
-3. **沙盒期间拦截的副作用**（Harmony 前缀，平时直接放行）：往柜台放东西（`TryAddDirectSellingItemToTable` 等）、销毁已有物品（`GameItemElement.Destroy`，例如已售区清理）、修改已有物品的标签/特性（`EnableTag/DisableTag/ModifyTag/AddItemFeature`、`StolenHelper.SetHeat`）、`PlantList.FreeNutrifruit`、声望弹窗（`ReputationUIManager.NotifyReputation/Notify`）、Steam 成就（`AchievementTracker.Unlock/IncrementCountAndUnlock`）、对话框（`DialogUIManager.StartDialogue`）、柜台物品刷新（`RefreshCounterItem`）；默认也不运行其他 mod 的生成钩子。期间 Unity 日志暂时关闭，避免几百遍生成把 Player.log 刷屏。
-4. 恢复 `UnityEngine.Random.state`，打开日志。
+1. **Snapshot**: starting from the **static fields of game types** in Assembly-CSharp, do a breadth-first traversal of every reachable game data object (`PlayerStore`, `StoreClientManager`, `StoreClientData`, `SecData`, reputation, network upgrades, events, static caches…) and the List/Dictionary/HashSet/Queue/arrays inside them, recording each object's **own field values** (shallow copy; references are stored as-is). The item/inventory/window UI graph and Unity objects are not snapshotted; they're handled separately (see below).
+   - Which fields each game type has comes from a **type table generated at build time** (`src/Generated/GameTypeRegistry.cs`, produced by `tools/RegistryGen` from the game's `Assembly-CSharp.dll`): one `typeof(X).GetFields(...)` line per type, so the receiver of every field query is a literal `typeof(<game type>)`. At runtime the mod only looks up the table by an object's `GetType()` and never runs member queries on computed types — which is why it doesn't need the `reflection-external` permission.
+   - Collections are read and written only through public interfaces: List/arrays via `IList` (only changed positions are touched; extra items are removed and missing ones appended, never a full clear), Dictionary via `IDictionary` (if the keys are unchanged, only values are updated; if the sandbox only added keys, they're removed in reverse order; otherwise it's rebuilt in snapshot order), HashSet/Queue/Stack via strongly typed restorers generated for the element types that appear in game fields, and ValueTuple items are read via `ITuple`. **Contents and enumeration order are always restored exactly**; internal details such as collection capacity are no longer restored bit-for-bit (see [Limitations](#limitations-and-caveats)).
+   - Objects not in the type table are treated as opaque references: the game's **private nested types** (about 40, nearly all UI-related, such as `NegociationUIManager.CachedRow` and `CustomUIDebugPanel.PanelDef`, plus the read-only constant table `ShareholderHelper.Dividend`) and compiler-generated types (lambda caches, closures). None of them take part in customer generation.
+2. **Run the sandbox N times**: each run reseeds `UnityEngine.Random` with a different seed and replaces the `System.Random` instances in the game's writable fields (`RNG.random` etc.) with fresh stand-ins, so the originals' internal state is never consumed and never needs to be read or restored. The game also has two `static readonly` `System.Random` instances (`BetaGenerator`, `BoxMullerGenerator`) that can't be replaced, but game code never calls them, so they affect neither the forecast nor your save. The mod then calls the game's own `OnShutterOpened()` directly, records the generated queue, and works out who's waiting at the door. After each run it destroys the GameObjects of items/windows created during that run, then writes the snapshot **back into the same objects** (only fields/collections that changed). If full checks get too slow, it automatically switches to "hot nodes + a full pass every 16 runs", and the final write-back is always a full one.
+3. **Side effects intercepted during the sandbox** (Harmony prefixes that pass straight through at other times): putting things on the counter (`TryAddDirectSellingItemToTable` etc.), destroying existing items (`GameItemElement.Destroy`, e.g. clearing the sold area), changing tags/features of existing items (`EnableTag/DisableTag/ModifyTag/AddItemFeature`, `StolenHelper.SetHeat`), `PlantList.FreeNutrifruit`, reputation popups (`ReputationUIManager.NotifyReputation/Notify`), Steam achievements (`AchievementTracker.Unlock/IncrementCountAndUnlock`), dialogs (`DialogUIManager.StartDialogue`), and counter item refresh (`RefreshCounterItem`); by default, other mods' generation hooks aren't run either. Unity logging is turned off for the duration so hundreds of generations don't flood Player.log.
+4. Restore `UnityEngine.Random.state` and turn logging back on.
 
-### 发现的“生成顾客时会被改动的状态”（都在快照范围内）
+### State that customer generation was found to modify (all covered by the snapshot)
 
-`StoreClientManager` 的 `clientStack`、`clientTracker`（冷却）、`chemicalFeedbackStack`、`daySinceInformationClient`、`dayUntilInspection`/`inspectionSeeded`、`isTodayWantedQueued`/`daySinceWantedWasQueued`、`gunBuyerDaysMissed*`、`appraisalDaysMissed`、`wealthHistory`/`wildBailoutGiven`、`isAugSpawnHandledToday`；`PlayerStore` 的未来预约队列（`futurStoreClientIdQueue/DayQueue`）、`unseenMinorClient`、`nextAugSpawnDay`/`isAugEnded`、`daySinceLastBrowseUpgrade`、`displayCaseSetupMissedDays`、各种 `*Introduced`/`*Shown` 剧情标记、`soldItemsTracker`、`currentUniqueId`（新建物品的编号）、`lockShutterButtonFlag`；`StoreClientData` 的剧情字段（卢、埃莉诺、约翰·史密斯、收藏家、营业执照贿赂额等）；`SecData` 的犯罪记录与追踪值；远征雇员状态（`Hireling.Rest()`）；声望（犯罪网络服务在生成时给黑市 +2）；静态的 `ShowcaseHelper.pendingSupplierPicks`、`GraphHandler.windowGraphNodeRoots` 等。
+`StoreClientManager`: `clientStack`, `clientTracker` (cooldowns), `chemicalFeedbackStack`, `daySinceInformationClient`, `dayUntilInspection`/`inspectionSeeded`, `isTodayWantedQueued`/`daySinceWantedWasQueued`, `gunBuyerDaysMissed*`, `appraisalDaysMissed`, `wealthHistory`/`wildBailoutGiven`, `isAugSpawnHandledToday`; `PlayerStore`: the future visit queue (`futurStoreClientIdQueue/DayQueue`), `unseenMinorClient`, `nextAugSpawnDay`/`isAugEnded`, `daySinceLastBrowseUpgrade`, `displayCaseSetupMissedDays`, assorted `*Introduced`/`*Shown` story flags, `soldItemsTracker`, `currentUniqueId` (IDs for newly created items), `lockShutterButtonFlag`; `StoreClientData`: story fields (Lou, Eleanor, John Smith, the Collector, the business license bribe amount, etc.); `SecData`: crime record and tracking values; expedition hireling state (`Hireling.Rest()`); reputation (the crime network service gives Black Market +2 during generation); the static `ShowcaseHelper.pendingSupplierPicks`, `GraphHandler.windowGraphNodeRoots`, and so on.
 
-另外，很多顾客的工厂方法在**创建时**就会 `DirectoryMaster.Item("$")` 之类地新建物品（对话选项图标），每件物品都会实例化十几个 GameObject——沙盒会跟踪（`GameItem`/`PixelWindow` 构造函数前缀 + 渲染根节点子物体比对）并在每轮结束时销毁。
+On top of that, many customers' factory methods create new items **at creation time** via calls like `DirectoryMaster.Item("$")` (dialog-option icons), and each item instantiates a dozen or so GameObjects. The sandbox tracks these (prefixes on the `GameItem`/`PixelWindow` constructors + diffing the children of the render root) and destroys them at the end of each run.
 
-### 安全网
+### Safety net
 
-预测前：抓快照 + 记录店内所有物品（含已售区）的指纹（id、唯一编号、数量、单价、特性数、所在背包、所有已启用标签的值）。
-预测后：**重新独立遍历一遍**游戏状态，与预测前的快照逐个对象、逐个字段/元素对比，再比对物品指纹和 `Random.state`。
+Before the forecast: take the snapshot and record a fingerprint of every item in the shop, including the sold area (id, unique ID, quantity, unit price, feature count, containing inventory, and the values of all enabled tags).
+After the forecast: **traverse the game state again independently** and compare it against the pre-forecast snapshot, object by object and field/element by field/element, then compare the item fingerprints and `Random.state`.
 
-- 全部一致：正常显示结果。
-- 有任何差异：窗口顶部**红字报警**，差异路径（如 `PlayerStore.instance.storeClientManager.clientTracker[xxx]: 2 -> 3`）写入 Player.log；在**重新读档（或开新档）之前不再允许预测**。此时建议**不要存档**，直接读档。
+- Everything matches: results are shown normally.
+- Any difference: a **red alarm** appears at the top of the window and the differing paths (e.g. `PlayerStore.instance.storeClientManager.clientTracker[xxx]: 2 -> 3`) are written to Player.log; **no more forecasts are allowed until you reload (or start a new save)**. If this happens, it's best **not to save** — just reload.
 
-## 限制与注意事项
+## Limitations and caveats
 
-- **只预测开门那一刻生成的队列**。白天里由事件、电话、交易等临时插入的顾客（比如营业中途的 `AddNextClient`）不在预测内。
-- 预测用的是按键那一刻的状态。开门前你改了展示柜、招牌、买了网络服务、换了声望，都要重新按 F9 或点“重新预测”。
-- 门口等候的人是根据声望特权/剧情条件判断的；`OnShutterDoorOpenMorning` 里的报纸、提示纸条、秘密仰慕者礼物等不是顾客，不显示。
-- 顾客的“卖什么”文本来自 `data/player/clients.json`（离线整理的数值手册），游戏更新后可能过时；买家想要的类型是运行时真实数据。
-- `includeOtherMods=false`（默认）时，其他 mod 通过 `ModHook.OnGenerateCustomer*` 加的顾客不会出现在预测里；打开后会显示，但那些 mod 自己的内部状态不在快照范围内，被反复调用可能改变它们的状态（安全网也查不到）。
-- 原生窗口会挡住鼠标点击；退回简易窗口时只挡住游戏里拖动/框选物品等操作，个别点击仍可能穿透，注意别误点。
-- 首次预测会读取所有游戏类型的静态字段，可能提前触发少数类型的静态初始化（游戏迟早也会做）。
-- 预测时游戏会卡顿一下（300 次预计一到几秒，取决于存档大小；每次的实际耗时会写进日志）；嫌慢可以把 `runs` 调小。
-- 游戏更新后如果找不到关键的拦截目标，mod 会自动禁用预测功能并在日志里说明，而不会冒险运行。
-- 快照用的类型表是按当前游戏版本生成的。游戏更新后新增的类型不在表里，它们的状态不受快照和安全网保护：mod 第一次预测时会检查，发现这种情况会在日志和窗口里提示“请更新 mod”（重新运行 `./build.sh` 即可重新生成）。
-- 游戏更新还可能扩充扫描器的“受保护类型”名单（`ModScanner.GuardTypes`）。名单里的类型一旦出现在类型表里，游戏会**拒绝加载**本 mod（`loader-target: ... Type.GetFields on ...`）。1.3.1 起，生成器在构建时直接读取游戏当前的名单并排除这些类型，所以遇到这种拒绝时，重新 `./build.sh` 即可。可以用 `../../tools/ScanCheck` 在游戏外先检查一遍。
-  - 1.3.0 就是这样被拒绝的：新版游戏把 `PaperBookRegistry`（mod 书本内容的登记表）和 `ModSteamAuth` 加进了名单。它们属于 mod 加载器这一层，与顾客生成无关，不进快照不影响预测和安全网。
-- 集合的内容和顺序总能完全还原，但不再逐位还原内部数组（1.2 及以前会）。唯一可能的差别：某个 Dictionary/HashSet 在预测前就有被删除留下的空槽，而沙盒又往里加过键，那么以后再往这个集合加新键时，新键在枚举顺序里的位置可能与不预测时不同。这只影响少数集合的遍历顺序，不会丢失或改变任何数据。
+- **Only the queue generated when the shop opens is forecast.** Customers added during the day by events, phone calls, deals, etc. (e.g. `AddNextClient` mid-day) aren't included.
+- The forecast uses the state at the moment you press the key. If before opening you change the display case or sign, buy a network service, or your reputation changes, press F9 again or click **Re-forecast** (重新预测).
+- Who waits at the door is worked out from reputation perks and story conditions; the newspaper, hint notes, secret admirer gifts and so on in `OnShutterDoorOpenMorning` aren't customers and aren't shown.
+- The "what they sell" text comes from `data/player/clients.json` (the stats handbook, compiled offline) and may go out of date after game updates; the categories buyers want are real runtime data.
+- With `includeOtherMods=false` (the default), customers added by other mods via `ModHook.OnGenerateCustomer*` won't appear in the forecast. Turn it on and they will, but those mods' own internal state isn't covered by the snapshot, so being called repeatedly may change it (and the safety net can't detect that).
+- The native window blocks mouse clicks. The fallback simple window only blocks in-game dragging/box-selecting of items, and some clicks may still pass through, so watch out for misclicks.
+- The first forecast reads the static fields of every game type, which may trigger a few types' static initialization earlier than usual (the game would run it sooner or later anyway).
+- The game freezes briefly during a forecast (300 runs take roughly one to a few seconds, depending on save size; the actual time is logged each time). Lower `runs` if it's too slow.
+- If a key interception target can't be found after a game update, the mod disables forecasting and explains why in the log, rather than risk running.
+- The type table used for the snapshot is generated for the current game version. Types added by a game update aren't in the table, so their state isn't protected by the snapshot or the safety net. The mod checks for this on its first forecast and, if it finds any, shows a "please update the mod" (请更新 mod) message in the log and the window (re-running `./build.sh` regenerates the table).
+- Game updates may also extend the scanner's list of guarded types (`ModScanner.GuardTypes`). If a type on that list shows up in the type table, the game will **refuse to load** this mod (`loader-target: ... Type.GetFields on ...`). Since 1.3.1, the generator reads the game's current list at build time and excludes those types, so if you hit this rejection, just re-run `./build.sh`. You can use `../../tools/ScanCheck` to check outside the game first.
+  - That's exactly how 1.3.0 got rejected: a new game version added `PaperBookRegistry` (the registry of mod book contents) and `ModSteamAuth` to the list. Both belong to the mod-loader layer and have nothing to do with customer generation; leaving them out of the snapshot affects neither the forecast nor the safety net.
+- Collection contents and order are always restored exactly, but internal arrays are no longer restored bit-for-bit (1.2 and earlier did that). The only possible difference: if a Dictionary/HashSet already had empty slots left by deletions before the forecast, and the sandbox added keys to it, then keys you add to that collection later may land in a different spot in enumeration order than they would have without the forecast. This only affects the iteration order of a few collections; no data is lost or changed.
 
-## 反馈问题
+## Reporting issues
 
-请附上 Unity 日志：`%USERPROFILE%\AppData\LocalLow\Questing Goose Studio\Probably Stolen\Player.log`（上一次运行的是 `Player-prev.log`），搜索 `[VisitorForecast]`。每次预测都会写一行统计（快照节点数、耗时、写回次数、拦截了哪些调用），报警时会列出差异路径。
+Please attach the Unity log: `%USERPROFILE%\AppData\LocalLow\Questing Goose Studio\Probably Stolen\Player.log` (the previous session's is `Player-prev.log`), and search for `[VisitorForecast]`. Every forecast writes one stats line (snapshot node count, time taken, number of write-backs, which calls were intercepted), and alarms list the differing paths.
 
-## 从源码构建
+## Building from source
 
 ```bash
 cd mods/VisitorForecast
-./build.sh            # 生成 bin/Release/VisitorForecast.dll 并组装 dist/VisitorForecast/
-./build.sh install    # 另外复制到游戏的 Mods 目录（不启动游戏）
+./build.sh            # builds bin/Release/VisitorForecast.dll and assembles dist/VisitorForecast/
+./build.sh install    # also copies it into the game's Mods folder (does not launch the game)
 ```
 
-需要 .NET SDK（`~/.dotnet`，已用 8.0 验证；目标框架 netstandard2.1，与游戏的 Assembly-CSharp 一致），引用游戏 `Probably Stolen_Data/Managed` 下的程序集（不随 mod 分发）。游戏目录写在仓库根目录的 `local.env`（参考 `local.env.example`），也可用 `GAME_DIR=... ./build.sh` 临时覆盖。`tools/gen_client_tables.py` 从数值手册的数据（`local.env` 里的 `HANDBOOK_ROOT`，不在仓库里）生成“卖什么/买什么”的中文表，没有这份数据时沿用仓库里已生成的 `src/Generated/ClientTables.cs`；`tools/RegistryGen`（.NET 8 小工具）从游戏的 `Assembly-CSharp.dll` 生成快照用的类型表——游戏更新后重新 `./build.sh` 即可（找不到游戏目录时沿用已生成的文件）。
+Requires the .NET SDK (`~/.dotnet`; verified with 8.0; the target framework is netstandard2.1, matching the game's Assembly-CSharp) and references the assemblies in the game's `Probably Stolen_Data/Managed` (not distributed with the mod). The game directory is set in `local.env` at the repo root (see `local.env.example`), or can be overridden for one run with `GAME_DIR=... ./build.sh`. `tools/gen_client_tables.py` generates the Chinese "sells/buys" tables from the stats handbook data (`HANDBOOK_ROOT` in `local.env`, not in the repo); without that data, the already-generated `src/Generated/ClientTables.cs` in the repo is used. `tools/RegistryGen` (a small .NET 8 tool) generates the snapshot type table from the game's `Assembly-CSharp.dll` — after a game update, just re-run `./build.sh` (if the game directory can't be found, the existing generated files are used).
 
-| 文件 | 作用 |
+| File | Purpose |
 |---|---|
-| `src/VisitorForecastMod.cs` | `IMod` 入口：读配置、打补丁、创建界面对象、订阅读档事件 |
-| `src/Sandbox/StateGraph.cs` | 快照 / 写回 / 前后对比（字段来自类型表，集合走公开接口） |
-| `src/Sandbox/GameTypes.cs` | 静态根、实例字段、哪些类型属于物品/界面图 |
-| `src/Sandbox/GameTypeRegistry.cs` | 类型表的运行时部分与 HashSet/Queue/Stack 强类型还原器 |
-| `src/Generated/GameTypeRegistry.cs`、`tools/RegistryGen/` | 构建时由游戏的 `Assembly-CSharp.dll` 生成的类型表（每个类型一行 `typeof(X).GetFields(...)`）及其生成器 |
-| `src/Sandbox/SandboxGuard.cs` | 沙盒期间的拦截补丁、新建物品/窗口的跟踪与销毁 |
-| `src/Sandbox/SourceTagger.cs` | 每个 `Handle*` 步骤的来源标签 |
-| `src/Sandbox/Patches.cs` | 手动打补丁（找不到目标时只禁用对应功能） |
-| `src/Sandbox/WorldFingerprint.cs` | 店内物品指纹 |
-| `src/Forecast/ForecastEngine.cs` | 预测主流程与统计汇总 |
-| `src/Forecast/Text.cs`、`src/Generated/ClientTables.cs` | 中文名称、类型名、卖什么/买什么 |
-| `src/UI/ForecastBehaviour.cs` | 热键、预测调度、选择原生窗口或备用窗口 |
-| `src/UI/NativeForecastWindow.cs` | 原生平板窗口（CustomUIManager + TabletUI，游戏中文字体） |
-| `src/UI/ImguiForecastWindow.cs` | 备用的 IMGUI 窗口（系统中文字体） |
-| `src/UI/ForecastView.cs` | 两种窗口共用的排序、按来源分组、阵营颜色 |
-| `src/UI/UiPatches.cs` | 鼠标在窗口上时让游戏视为“在界面上”（`StoreUIManager.CheckRaycast` 后置补丁） |
+| `src/VisitorForecastMod.cs` | `IMod` entry point: reads config, applies patches, creates the UI objects, subscribes to save-load events |
+| `src/Sandbox/StateGraph.cs` | Snapshot / write-back / before-after comparison (fields come from the type table; collections go through public interfaces) |
+| `src/Sandbox/GameTypes.cs` | Static roots, instance fields, which types belong to the item/UI graph |
+| `src/Sandbox/GameTypeRegistry.cs` | Runtime part of the type table, plus the strongly typed HashSet/Queue/Stack restorers |
+| `src/Generated/GameTypeRegistry.cs`, `tools/RegistryGen/` | The type table generated at build time from the game's `Assembly-CSharp.dll` (one `typeof(X).GetFields(...)` line per type), and its generator |
+| `src/Sandbox/SandboxGuard.cs` | Interception patches active during the sandbox; tracking and destroying newly created items/windows |
+| `src/Sandbox/SourceTagger.cs` | Source tag for each `Handle*` step |
+| `src/Sandbox/Patches.cs` | Manual patching (if a target is missing, only the corresponding feature is disabled) |
+| `src/Sandbox/WorldFingerprint.cs` | Fingerprints of items in the shop |
+| `src/Forecast/ForecastEngine.cs` | Main forecast flow and statistics aggregation |
+| `src/Forecast/Text.cs`, `src/Generated/ClientTables.cs` | Chinese names, category names, what customers sell/buy |
+| `src/UI/ForecastBehaviour.cs` | Hotkey, forecast scheduling, choosing between the native and fallback windows |
+| `src/UI/NativeForecastWindow.cs` | Native tablet window (CustomUIManager + TabletUI, the game's Chinese font) |
+| `src/UI/ImguiForecastWindow.cs` | Fallback IMGUI window (system Chinese font) |
+| `src/UI/ForecastView.cs` | Sorting, grouping by source and faction colors shared by both windows |
+| `src/UI/UiPatches.cs` | Makes the game treat the mouse as "over UI" while it's over the window (`StoreUIManager.CheckRaycast` postfix) |

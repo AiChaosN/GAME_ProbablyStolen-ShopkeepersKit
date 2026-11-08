@@ -4,114 +4,69 @@ using System.Linq;
 
 namespace SortToBoxes
 {
-    /// <summary>一次归箱的结果（按物品件数计，一叠算一件）。</summary>
+    /// <summary>一次搬运的结果（按物品件数计，一叠算一件）。</summary>
     internal sealed class SortReport
     {
-        internal int Considered;   // 参与归箱的散件
-        internal int Moved;        // 整件放进了箱子
+        internal int Considered;   // 参与的件数
+        internal int Moved;        // 整件放进了箱子 / 柜台
         internal int Partial;      // 一叠里只放进去一部分
-        internal int NoMatch;      // 没有对应的箱子
-        internal int NoRoom;       // 有对应的箱子，但都放不下
-        internal readonly Dictionary<string, int> PerBox = new Dictionary<string, int>(StringComparer.Ordinal);
+        internal int ToWarehouse;  // 没有对应箱子，放回了仓库（只在清空柜台时发生）
+        internal int NoMatch;      // 没有对应的箱子，留在原地
+        internal int NoRoom;       // 有地方可去但放不下
+        internal readonly Dictionary<string, int> PerTarget = new Dictionary<string, int>(StringComparer.Ordinal);
         internal readonly List<string> Details = new List<string>();
 
-        internal void CountBox(string name)
+        internal int Placed => Moved + Partial;
+
+        internal void Count(string name)
         {
-            PerBox.TryGetValue(name, out int n);
-            PerBox[name] = n + 1;
+            PerTarget.TryGetValue(name, out int n);
+            PerTarget[name] = n + 1;
         }
     }
 
     /// <summary>
-    /// 核心规则：
-    /// 1. 箱子 = 仓库里（含箱中箱）属于你的“储藏”类物品（储藏区、简易储藏区、工具箱、机器区…）和背包。
-    ///    垃圾桶、档案夹、种子包、上锁的物资箱、机器都不算。
-    /// 2. 箱子“装哪类货”由它里面现有的东西决定（统计在归箱开始前做一次，本次放进去的东西不改变判断）。
-    /// 3. 每件散件挑箱子：有一模一样物品的箱子优先；否则按商品类型重合度排序，
-    ///    且至少一种类型在箱内占比 ≥ 最低占比。放不下就试下一个，全都放不下就留在原地。
-    /// 4. 放置调用游戏自己的 GraphUtils.TryAcceptAll（自动找空位、可叠加就叠加），箱子原有的放入限制照常生效。
+    /// 归箱规则（以物品提示里第一个 [标签] 为准）：
+    /// 1. 勾选过分类的箱子：只收主类型在勾选范围内的货（最优先）；
+    /// 2. 没勾选的箱子：有一模一样物品的优先；其次是装着同主类型物品的箱子（这类物品越多越优先）；
+    /// 3. 首选箱子放不下就试下一个，都放不下就留在原地（清空柜台时放回仓库）。
+    /// 箱子“装什么”在本次搬运开始前统计一次，本次放进去的东西不改变本次的判断。
+    /// 放置调用游戏自己的 GraphUtils.TryAcceptAll（自动找空位、能叠就叠），箱子原有的放入限制照常生效。
     /// </summary>
     internal static class Sorter
     {
-        // 只表示档次/改装性/容器本身的类型，不代表“这是哪一类货”，不参与匹配
-        private static readonly HashSet<string> IgnoredTypes = new HashSet<string>(StringComparer.Ordinal)
-        {
-            "MODDABLE", "MAKESHIFT", "MIDLINE", "LOWTECH", "STORAGE", "NODE"
-        };
-
         internal sealed class Box
         {
             internal GameItem Item;
             internal string Name;
             internal int Order;
-            internal int Total;
+            internal HashSet<string> Labels;   // 勾选的分类；null = 按内容判断
             internal readonly Dictionary<string, int> Ids = new Dictionary<string, int>(StringComparer.Ordinal);
-            internal readonly Dictionary<string, int> Types = new Dictionary<string, int>(StringComparer.Ordinal);
+            internal readonly Dictionary<string, int> Primary = new Dictionary<string, int>(StringComparer.Ordinal);
+            internal int Total;
         }
 
-        private struct Candidate
-        {
-            internal Box Box;
-            internal double Score;
-        }
-
-        internal static bool IsBox(GameItem it)
-        {
-            if (it == null || it.contentWindow == null) return false;
-            if (!GeneralHelper.IsItemOwned(it)) return false;
-            if (it.IsGameItemType("MACHINE") || it.IsGameItemType("SUPPLY_CRATE") || it.IsTag("LOCKED_CONTAINER_TAG")) return false;
-            return it.IsGameItemType("STORAGE") || it.IsTag("BACKPACK_TAG");
-        }
-
-        /// <summary>这件东西能不能被搬去箱子。不能搬的（固定设施、钉住的、别人的…）不计入报告。</summary>
-        internal static bool IsSortable(GameItem x)
-        {
-            if (x == null || x.parentInventory == null) return false;
-            if (x is GameItemElement el && el.IsDestroyed()) return false;
-            if (!GeneralHelper.IsItemOwned(x)) return false;
-            if (ItemPinHelper.IsPinned(x) || DebrisHelper.IsDebris(x)) return false;
-            if (IsBox(x)) return false;
-            // 容器类、机器、飞船系统（在仓库里工作的设施）不搬
-            if (x.IsTag("CONTAINER_TAG") || x.IsTag("BACKPACK_TAG") || x.IsTag("SYSTEM_TAG")) return false;
-            if (x.IsGameItemType("MACHINE")) return false;
-            try
-            {
-                if (ReferenceEquals(PlayerStore.Instance?.GetCurrentlyNegociatedItem(), x)) return false;
-            }
-            catch { }
-            return x.MayRemove();
-        }
-
-        /// <summary>收集仓库里的所有箱子（含放在箱子里的箱子）并统计各自装了什么。</summary>
         internal static List<Box> CollectBoxes()
         {
             var result = new List<Box>();
-            var inv = EmporiumEntry.Instance?.invElement;
-            if (inv == null) return result;
-
-            Func<GameItem, bool> isBox = SafeIsBox;
-            var found = GraphUtils.FindChildrenType<GameItem>(inv, isBox, isBox);
-            // FindChildrenType 用 HashSet，顺序不固定；按唯一 id 排序，让同分时的选择稳定
-            found.Sort((a, b) => SafeUid(a).CompareTo(SafeUid(b)));
             int order = 0;
-            foreach (var item in found)
+            foreach (var item in Stock.FindBoxes())
             {
-                var box = new Box { Item = item, Order = order++, Name = SafeName(item) };
+                var box = new Box { Item = item, Order = order++, Name = Stock.Name(item), Labels = BoxLabels.Get(item) };
                 foreach (var content in GraphUtils.FindChildrenType<GameItem>(item))
                 {
-                    // 机器、容器、设施本身从不归箱，也不拿来判断箱子装哪类货
-                    // （否则机器区会因为机器带有“工具”等类型而吸走普通工具）
-                    if (content == null || !CountsAsContent(content)) continue;
+                    if (content == null || Stock.IsFixture(content)) continue;
                     box.Total++;
                     if (!string.IsNullOrEmpty(content.identifier))
                     {
                         box.Ids.TryGetValue(content.identifier, out int n);
                         box.Ids[content.identifier] = n + 1;
                     }
-                    foreach (var t in MatchTypes(content))
+                    var p = Stock.PrimaryType(content);
+                    if (p != null)
                     {
-                        box.Types.TryGetValue(t, out int c);
-                        box.Types[t] = c + 1;
+                        box.Primary.TryGetValue(p, out int c);
+                        box.Primary[p] = c + 1;
                     }
                 }
                 result.Add(box);
@@ -119,152 +74,162 @@ namespace SortToBoxes
             return result;
         }
 
-        /// <summary>把 items 逐件归进 boxes。items 应是调用前的快照（本函数会改变它们所在的库存）。</summary>
-        internal static SortReport SortItems(IEnumerable<GameItem> items, List<Box> boxes, int minMatchPercent)
+        /// <summary>
+        /// 把 items 逐件归进 boxes。items 应是调用前的快照。
+        /// fallback 不为空时，没有对应箱子或放不下的货放进 fallback（清空柜台时 = 仓库）。
+        /// </summary>
+        internal static SortReport SortItems(IEnumerable<GameItem> items, List<Box> boxes, GameInventory fallback = null, bool allowNegotiated = false)
         {
             var report = new SortReport();
-            double minShare = Math.Max(0, Math.Min(100, minMatchPercent)) / 100.0;
-            foreach (var x in items)
+            using (Mover.Begin())
             {
-                bool sortable;
-                try { sortable = IsSortable(x); }
-                catch { sortable = false; }
-                if (!sortable) continue;
-
-                report.Considered++;
-                string itemName = SafeName(x);
-                var ranked = Rank(x, boxes, minShare);
-                if (ranked.Count == 0)
+                foreach (var x in items)
                 {
-                    report.NoMatch++;
-                    report.Details.Add(itemName + "：没有对应的箱子");
-                    continue;
-                }
-
-                int start = x.unitCount;
-                int remaining = start;
-                var placedIn = new List<string>();
-                foreach (var cand in ranked)
-                {
-                    if (remaining <= 0) break;
-                    int left;
-                    try
+                    if (!Stock.IsMovable(x, allowNegotiated)) continue;
+                    report.Considered++;
+                    string itemName = Stock.Name(x);
+                    var ranked = Rank(x, boxes);
+                    int start = x.unitCount;
+                    int remaining = start;
+                    var placedIn = new List<string>();
+                    foreach (var b in ranked)
                     {
-                        if (!GeneralHelper.MayPlayerInsertInto(cand.Box.Item)) continue;
-                        left = GraphUtils.TryAcceptAll(cand.Box.Item, x, remaining);
+                        if (remaining <= 0) break;
+                        int left = Mover.Move(x, b.Item, remaining, b.Name);
+                        if (left < remaining)
+                        {
+                            placedIn.Add(b.Name);
+                            remaining = left;
+                        }
                     }
-                    catch (Exception e)
+
+                    bool toWarehouse = false;
+                    if (remaining > 0 && fallback != null && !ReferenceEquals(x.parentInventory, fallback))
                     {
-                        Log.Warn("放入 " + cand.Box.Name + " 出错（" + itemName + "）: " + e.Message);
+                        int left = Mover.Move(x, fallback, remaining, "仓库");
+                        if (left < remaining)
+                        {
+                            toWarehouse = true;
+                            remaining = left;
+                        }
+                    }
+
+                    foreach (var name in placedIn.Distinct()) report.Count(name);
+                    if (toWarehouse)
+                    {
+                        report.ToWarehouse++;
+                        report.Details.Add(itemName + " → 仓库" + (ranked.Count == 0 ? "（没有对应箱子）" : placedIn.Count == 0 ? "（箱子放不下）" : "（箱子只放下一部分）") +
+                                           (remaining > 0 ? "，还有 " + remaining + " 个哪都放不下" : ""));
                         continue;
                     }
-                    if (left < remaining)
+                    if (placedIn.Count == 0)
                     {
-                        placedIn.Add(cand.Box.Name);
-                        remaining = left;
+                        if (ranked.Count == 0)
+                        {
+                            report.NoMatch++;
+                            report.Details.Add(itemName + "：没有对应的箱子（主类型 " + Stock.TypeName(Stock.PrimaryType(x)) + "）");
+                        }
+                        else
+                        {
+                            report.NoRoom++;
+                            report.Details.Add(itemName + "：对应的箱子（" + string.Join("、", ranked.Select(c => c.Name).Distinct()) + "）放不下");
+                        }
+                        continue;
                     }
-                }
-
-                if (placedIn.Count == 0)
-                {
-                    report.NoRoom++;
-                    report.Details.Add(itemName + "：对应的箱子（" + string.Join("、", ranked.Select(c => c.Box.Name).Distinct()) + "）放不下");
-                    continue;
-                }
-                foreach (var name in placedIn.Distinct()) report.CountBox(name);
-                if (remaining > 0)
-                {
-                    report.Partial++;
-                    report.Details.Add(itemName + "：放进 " + string.Join("、", placedIn.Distinct()) + " " + (start - remaining) + "/" + start + "，其余放不下");
-                }
-                else
-                {
-                    report.Moved++;
-                    report.Details.Add(itemName + (start > 1 ? " ×" + start : "") + " → " + string.Join("、", placedIn.Distinct()));
+                    if (remaining > 0)
+                    {
+                        report.Partial++;
+                        report.Details.Add(itemName + "：放进 " + string.Join("、", placedIn.Distinct()) + " " + (start - remaining) + "/" + start + "，其余放不下");
+                    }
+                    else
+                    {
+                        report.Moved++;
+                        report.Details.Add(itemName + (start > 1 ? " ×" + start : "") + " → " + string.Join("、", placedIn.Distinct()));
+                    }
                 }
             }
             return report;
         }
 
-        private static List<Candidate> Rank(GameItem x, List<Box> boxes, double minShare)
+        /// <summary>给一件货排出可去的箱子，最合适的在前。</summary>
+        internal static List<Box> Rank(GameItem x, List<Box> boxes)
         {
-            var list = new List<Candidate>();
             string id = x.identifier ?? "";
-            var types = MatchTypes(x);
+            string primary = Stock.PrimaryType(x);
+            var scored = new List<KeyValuePair<double, Box>>();
             foreach (var b in boxes)
             {
-                if (b.Total == 0 || ReferenceEquals(b.Item, x)) continue;
-                if (ReferenceEquals(b.Item.parentInventory, null)) continue;
+                if (ReferenceEquals(b.Item, x) || b.Item.parentInventory == null) continue;
                 b.Ids.TryGetValue(id, out int same);
-                double sum = 0, best = 0;
-                foreach (var t in types)
-                {
-                    if (!b.Types.TryGetValue(t, out int c)) continue;
-                    double share = (double)c / b.Total;
-                    sum += share;
-                    if (share > best) best = share;
-                }
                 double score;
-                if (same > 0) score = 1000 + 100.0 * same / b.Total + sum; // 有同款：压过所有只按类型匹配的箱子
-                else if (sum > 0 && best >= minShare) score = sum;
+                if (b.Labels != null)
+                {
+                    // 勾选过分类：只看勾选的类型
+                    if (primary == null || !b.Labels.Contains(primary)) continue;
+                    score = 3000 + same;
+                }
+                else if (same > 0)
+                {
+                    score = 2000 + same;
+                }
+                else if (primary != null && b.Primary.TryGetValue(primary, out int c) && c > 0)
+                {
+                    score = 1000 + c;
+                }
                 else continue;
-                list.Add(new Candidate { Box = b, Score = score });
+                scored.Add(new KeyValuePair<double, Box>(score, b));
             }
-            list.Sort((p, q) =>
+            return scored
+                .OrderByDescending(p => p.Key)
+                .ThenBy(p => p.Value.Order)
+                .Select(p => p.Value)
+                .ToList();
+        }
+    }
+
+    /// <summary>
+    /// 所有搬运都经过这里：统一异常处理，并在搬运期间打开 Active 标记，
+    /// 让“放一件上柜台带上同款”的补丁忽略本 mod 自己的搬运。
+    /// </summary>
+    internal static class Mover
+    {
+        private static int depth;
+        internal static bool Active => depth > 0;
+
+        internal sealed class Scope : IDisposable
+        {
+            private bool disposed;
+            public void Dispose()
             {
-                int c = q.Score.CompareTo(p.Score);
-                if (c != 0) return c;
-                c = q.Box.Total.CompareTo(p.Box.Total);
-                return c != 0 ? c : p.Box.Order.CompareTo(q.Box.Order);
-            });
-            return list;
+                if (disposed) return;
+                disposed = true;
+                depth--;
+            }
         }
 
-        private static List<string> MatchTypes(GameItem item)
+        internal static Scope Begin()
         {
-            var result = new List<string>();
-            var types = item?.itemTypes;
-            if (types == null) return result;
-            foreach (var t in types)
-            {
-                if (string.IsNullOrEmpty(t) || IgnoredTypes.Contains(t) || result.Contains(t)) continue;
-                result.Add(t);
-            }
-            return result;
+            depth++;
+            return new Scope();
         }
 
-        private static bool CountsAsContent(GameItem it)
+        /// <summary>把 x 的 amount 个移进 target（箱子物品或格子），返回没移走的数量。</summary>
+        internal static int Move(GameItem x, GraphNodeStorage target, int amount, string targetName)
         {
+            if (x == null || target == null || amount <= 0) return amount;
             try
             {
-                if (IsBox(it)) return false;
-                if (it.IsTag("CONTAINER_TAG") || it.IsTag("BACKPACK_TAG") || it.IsTag("SYSTEM_TAG")) return false;
-                return !it.IsGameItemType("MACHINE");
+                if (target is GameItem boxItem && !GeneralHelper.MayPlayerInsertInto(boxItem)) return amount;
+                using (Begin())
+                {
+                    return GraphUtils.TryAcceptAll(target, x, amount);
+                }
             }
-            catch { return false; }
-        }
-
-        private static bool SafeIsBox(GameItem it)
-        {
-            try { return IsBox(it); }
-            catch { return false; }
-        }
-
-        private static int SafeUid(GameItem it)
-        {
-            try { return it.GetUniqueID(); }
-            catch { return 0; }
-        }
-
-        internal static string SafeName(GameItem it)
-        {
-            try
+            catch (Exception e)
             {
-                var n = it.GetDisplayName(true);
-                if (!string.IsNullOrEmpty(n)) return n;
+                Log.Warn("放入 " + targetName + " 出错（" + Stock.Name(x) + "）: " + e.Message);
+                return amount;
             }
-            catch { }
-            return it?.identifier ?? "?";
         }
     }
 }

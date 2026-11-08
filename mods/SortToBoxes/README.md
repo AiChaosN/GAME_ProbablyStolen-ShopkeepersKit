@@ -1,84 +1,138 @@
-# 【便利】掌柜帮手·归类入箱 Sort To Boxes
+# [QoL] Shopkeeper's Kit: Sort To Boxes
 
-> **掌柜帮手 / Shopkeeper's Kit** 系列 · 分类 **【便利】**：不改任何数值、不给额外信息，只帮你省操作。系列与分类说明见 [仓库首页](../../README.md)。
-> 作者 chaos5090 · 由 [Claude Code](https://claude.com/claude-code)（Anthropic 的 AI 编程助手）协助开发。mod ID：`chaos5090.sort-to-boxes`。
+**English** | [中文](README.zh-CN.md)
 
-《Probably Stolen》（v0.46D，Unity 2021.3 Mono）的代码 mod。仓库里摆几个箱子，每个箱子装一类货（食物、日用品、武器……）。顾客卖来的东西什么都有，以前要一件件拖进对应的箱子；装上这个 mod 后按一下 **F7**，仓库里散放的货会各自进到对应的箱子。
+> Part of the **Shopkeeper's Kit** (掌柜帮手) series · category **[QoL]** (【便利】): no stat changes and no extra information, it only saves you clicks. See the [repository home](../../README.md) for the series and categories.
+> By chaos5090 · developed with assistance from [Claude Code](https://claude.com/claude-code) (Anthropic's AI coding assistant). Mod ID: `chaos5090.sort-to-boxes`.
 
-## 怎么用
+A code mod for *Probably Stolen* (v0.46D) that takes care of two chores:
 
-| 按键 | 作用 |
+1. **Storing**: customers sell you all kinds of things. One key press sends each item into the right box (food box, household goods box, ...).
+2. **Selling**: when a buyer arrives, one key press puts everything they would buy onto the counter. Or put one item up yourself and its identical copies follow.
+
+The in-game UI (notifications and the category panel) is Chinese only.
+
+## Keys
+
+| Key | What it does |
 |---|---|
-| **F7** | 把**仓库**里散放的货归进对应的箱子 |
-| 鼠标指着**柜台**按 **F7** | 整理柜台上**属于你的**货（顾客的东西不会动） |
-| **Shift+F7** | 开关“**买下时自动归箱**”（默认关）。开启后，每次成交（收购、批发、以物易物）时，游戏把货移进仓库后直接送进对应的箱子 |
+| **F7** | Sort loose items in **storage** into matching boxes |
+| **F7** while pointing at the **counter** | Put **your** items on the counter back into boxes; items with no matching box go back to storage (customer items are left alone) |
+| **Ctrl+F7** while pointing at a box | Open that box's **category panel** (or click the **分类** ("Category") button just outside the top-right corner of an open box window) |
+| **Shift+F7** | Toggle **auto-sort on purchase** (off by default) |
+| **F4** | Put everything the current buyer **would buy** onto the counter |
+| **F4** while pointing at an item | Put all **identical** items onto the counter |
+| **Shift+F4** | Toggle **bring identical items when you place one on the counter** (on by default) |
 
-整理完会弹一条提示，例如：`归箱 7 件（储藏区 4、工具箱 3）；2 件没有对应箱子；1 件箱子放不下`。每件货的去向写在游戏日志 `Player.log` 里（搜 `[SortToBoxes]`）。
+Every action shows a short notification in the top-left corner. Where each item went is written to the game log `Player.log` (search for `[SortToBoxes]`).
 
-### 箱子怎么知道自己装哪类？
+## Storing: sorting rules
 
-**看箱子里现有的东西**，不用设置：
+Each item is judged by its **first item type**: the first `[type]` shown in its tooltip. For `[Food] [Luxury]` the first type is Food.
 
-1. 箱子里有**一模一样**的物品 → 优先放进这个箱子；
-2. 否则看**商品类型**（顾客“想要”里显示的那套：食物、日用品、奢侈品、武器、医疗……）。一件货可以同时属于几类，箱子里与它同类的物品占比越高越优先。至少要有一种类型占到箱子里物品的 **20%**（可在设置里改），避免一个杂物箱把什么都吸走；
-3. 首选箱子放不下就试下一个，都放不下就留在原地。
+1. **Boxes with ticked categories** come first: they take only items whose first type is ticked.
+2. **Untagged boxes** go by what they already hold:
+   - a box holding an **identical** item is preferred;
+   - otherwise a box holding items with the **same first type** (the more such items, the higher the priority).
+3. If the preferred box is full the next one is tried; if nothing fits, the item stays where it is.
 
-所以：
+So:
 
-- **空箱子**不会收任何东西。先手动放一件“样品”进去（比如一罐食物），之后同类的货就会往里进。
-- 同时属于几类的货（例如卫生棉条既是日用品又是奢侈品）会进“重合最多”的箱子。分错了就手动拖一次。之后那个箱子里有了这件同款，同款的货以后都会优先进去。
-- 判断依据是按 F7 **之前**箱子里的东西，本次放进去的货不会改变本次的判断。
+- An **empty box** needs either one "sample" item inside, or ticked categories.
+- Some items have an unusual first type. For example, the cat chocolate bar is `[Treat] [Food]`, so by default it will not go into the food box. Tick "Treat" in the food box's categories to change that.
+- Items without any type (about 120 in the game) can only follow an identical item that is already in a box.
+- Decisions are based on what the boxes held **before** the key press; items placed during this run don't change this run's decisions.
 
-### 哪些算“箱子”
+### Category panel
 
-仓库里（包括放在箱子里的箱子）**属于你的**：储藏区、简易储藏区、储藏区（扩建）、枪械师/化学师储藏区、走私者暗格、超科技储藏区、机器区、工具箱等“储藏”类物品，以及各种背包。
+Ctrl+F7 while pointing at a box, or the **分类** button next to an open box window, opens a window in the game's own UI style with one checkbox per item type:
 
-不算箱子：垃圾桶、档案夹、种子包、上锁的物资箱、机器。
+- ticks take effect immediately and are **saved with your save file** (stored on the box itself);
+- the number in brackets is how many items of that type you have in storage and boxes;
+- **全部取消** ("Clear all") switches the box back to "go by what it holds";
+- if you uninstall the mod, the leftover marks in your save do nothing.
 
-### 哪些东西不会被搬
+### Box icons
 
-- **钉住**的物品（想让某样东西一直放在仓库里，就把它钉住）；
-- 箱子、背包、其他容器本身；机器；飞船系统类设施；
-- 不属于你的东西、正在议价的那件、被锁住拿不出来的东西；
-- 已经在箱子里的东西（只整理仓库/柜台**最外层**散放的货）。
+Each box in storage (storage bays, etc.) gets a small icon drawn in the middle of its sprite, so you can tell what a cabinet holds without opening it:
 
-箱子本身的放入规则照样生效（例如机器区只收你的东西、普通储藏区不收机器），因为放置用的是游戏自己的放置函数。
+- a box with items shows the icon of its **first item** (the top-left one); if the box has ticked categories, the first item of a ticked type is preferred;
+- an empty box with ticked categories borrows the icon of an item of that type from your stock; if you have none, it shows a small chip in the type's color.
 
-## 安装
+The icon moves with the box, hides while the box is dragged, and never blocks clicks. It works alongside **Show Item Names** (物品名称常显): that mod draws names from the blue label printer along the bottom by default and its "分" page badge in the bottom-left corner, while this icon sits in the middle. Turn off `boxIcons` if you don't want it.
 
-1. 把 `dist/SortToBoxes/` 整个文件夹复制到游戏目录的 `Mods` 文件夹里：
+### What counts as a box
+
+Anything of yours in storage (including boxes inside boxes) that the game classes as storage: storage bays of all kinds, the smuggler compartments, the hypertech bay, machine bays, the toolbox, and all backpacks.
+
+Not boxes: the trash can, the dossier, seed packets, locked supply crates, machines.
+
+## Selling: putting goods on the counter
+
+The counter can hold many items at once, but the customer negotiates **one item at a time** (the last item placed comes first; when it's sold the next one is up). Put everything up once and you only need to click "sell" for each.
+
+- **F4**: put everything the current buyer would buy onto the counter. "Would buy" uses the game's own rule, the same function the game uses to decide whether a customer wants an item. Items the customer can afford go first, more valuable first, so they get the space if the counter fills up.
+- **F4 while pointing at an item**: put all identical items from storage and boxes onto the counter, with or without a customer present.
+- **Bring identical items** (on by default): while a buyer is at the counter, when you move one item from storage or a box onto the counter (drag it or Shift+click it), its identical copies in your stock follow automatically. Only the move "from your stock to the counter" triggers this; items the game itself moves to the counter, for example when a barter completes, do not.
+- When you're done, point at the counter and press **F7**: what's left goes back to boxes or storage.
+
+Never put on the counter: pinned items; equipment the game marks as important (appraisal guides, newspapers, scanners, backpacks, machines, storage bays, ...); items in the display case.
+
+## What never moves
+
+- **Pinned** items (pin anything you want to stay where it is);
+- boxes, backpacks and other containers themselves; machines; ship systems;
+- items that aren't yours, or that are locked in place;
+- when sorting: the item currently being negotiated, and items already inside boxes (only loose items at the top level of storage are sorted).
+
+Items are placed with the game's own placement function, so each box's own rules still apply (e.g. a regular storage bay doesn't take machines).
+
+## Install
+
+1. Copy the whole `dist/SortToBoxes/` folder into the game's `Mods` folder:
    ```
-   <游戏目录>/Mods/SortToBoxes/manifest.xml
-   <游戏目录>/Mods/SortToBoxes/SortToBoxes.dll
+   <game folder>/Mods/SortToBoxes/manifest.xml
+   <game folder>/Mods/SortToBoxes/SortToBoxes.dll
    ```
-   在 WSL 里也可以 `./build.sh install`（只复制文件，不会启动游戏；游戏开着时 DLL 被锁会失败）。
-2. 启动游戏 → 主菜单 **改装件** → 选中 **【便利】掌柜帮手·归类入箱** → **审阅并启用** → 按提示重启游戏。
-3. 本 mod **不申请任何特殊权限**：用游戏自带的扫描器（`ModScanner.Scan`，在游戏外用脚手架调用）检查结果是无权限、无拦截、无发现。
+   The game folder is `steamapps\common\Probably Stolen` in your Steam library (in Steam: right-click the game → Manage → Browse local files). To build from source, see the [repository home](../../README.md).
+2. Start the game → main menu **改装件** (Mods) → select **【便利】掌柜帮手·归类入箱** → **审阅并启用** (Review and enable) → restart when asked.
+3. The mod requests **no special capabilities**. The game's own mod scanner ([`tools/ScanCheck`](../../tools/ScanCheck)) reports no capabilities, no blocks and no findings.
 
-## 设置
+## Settings
 
-游戏内：改装件界面选中本 mod → **设置**；或编辑 `%USERPROFILE%\AppData\LocalLow\Questing Goose Studio\Probably Stolen\ModConfigs\chaos5090.sort-to-boxes.json`。
+In game: Mods screen → select this mod → **设置** (Settings). Or edit `%USERPROFILE%\AppData\LocalLow\Questing Goose Studio\Probably Stolen\ModConfigs\chaos5090.sort-to-boxes.json`.
 
-| 键 | 默认 | 说明 |
+| Key | Default | Meaning |
 |---|---|---|
-| `hotkey` | `F7` | Unity KeyCode 名称。F5/F6/F8/F9 已分别被“客户需求高亮”“智能整理”“作弊菜单”“访客预测”占用 |
-| `autoOnPurchase` | `false` | 买下顾客的货时自动归箱（游戏里 Shift+热键 也能切换） |
-| `minMatchPercent` | `20` | 按类型归箱时，同类物品在箱内至少要占多少（%）。箱子里有同款时不受限制 |
+| `hotkey` | `F7` | Sort key (Unity KeyCode name). F5/F6/F8/F9 are used by Client Demand Highlight, Smart Inventory Arrange, Cheat Menu and Visitor Forecast |
+| `sellHotkey` | `F4` | Counter key |
+| `autoOnPurchase` | `false` | Auto-sort goods you buy from customers (also Shift+F7 in game) |
+| `autoSameOnCounter` | `true` | Bring identical items when you place one on the counter (also Shift+F4 in game) |
+| `boxButtons` | `true` | Show the 分类 button next to open box windows |
+| `boxIcons` | `true` | Draw the icon of a box's contents on the box |
 
-## 与其他 mod
+## Other mods
 
-- **智能整理（Smart Inventory Arrange，F6）**：它只在单个箱子里重新排位置，不跨箱子分类，和本 mod 不冲突。可以先 F7 归箱，再对箱子按 F6 排整齐。
-- **购买留柜（Purchase Stay Counter）**：它让买下的货留在柜台，此时“买下时自动归箱”不会触发；鼠标指着柜台按 F7 即可整理柜台。
+- **Smart Inventory Arrange (F6)** only rearranges items inside one box and never moves items between boxes, so the two don't conflict. Sort with F7, then tidy a box with F6.
+- **Client Demand Highlight (F5)** outlines the items a customer wants; F4 here puts those items on the counter. Both use the game's same "would the customer buy this" rule.
+- **Purchase Stay Counter** keeps bought goods on the counter, so auto-sort on purchase won't fire; point at the counter and press F7 instead.
 
-## 实现
+## Implementation
 
-| 文件 | 内容 |
+| File | Contents |
 |---|---|
-| `src/Sorter.cs` | 找箱子、统计箱子内容、给每件货排箱子、调用 `GraphUtils.TryAcceptAll` 放入 |
-| `src/SortBehaviour.cs` | 热键（F7 / Shift+F7）、选择整理来源（仓库/柜台）、提示文字 |
-| `src/Patches.cs` | `PlayerStore.MoveDealItemToInventory` 的后置补丁（买下时自动归箱）。只处理确实落进仓库 `invElement` 的货 |
-| `src/SortConfig.cs` | 游戏自带 ModConfig 的配置项 |
+| `src/Stock.cs` | What counts as a box, what can move, the first item type, the extent of your stock; reading/writing box category marks |
+| `src/Sorter.cs` | Sorting: tally box contents, rank boxes for each item, place via `GraphUtils.TryAcceptAll` |
+| `src/Counter.cs` | Selling: buyer's items / identical items to the counter (`StoreClient.IsClientBuyingThisItem`, `HasBudgetLeftToBuy`), clearing the counter |
+| `src/Patches.cs` | Postfix on `PlayerStore.MoveDealItemToInventory` (auto-sort on purchase); prefix/postfix on `SlotMarker.TryAcceptOnce` (detects "stock → counter" moves to bring identical items) |
+| `src/BoxLabelPanel.cs`, `src/BoxButtons.cs` | Category panel (the game's CustomUI framework) and the button next to box windows |
+| `src/BoxIcons.cs` | Content icons on boxes (a child node under the box's render node `GameItemElement.handler`) |
+| `src/SortBehaviour.cs` | Hotkeys and notifications |
+| `src/SortConfig.cs` | Settings via the game's ModConfig |
 
-游戏侧的关键位置（v0.46D 反编译）：`PlayerStore.MoveDealItemToInventory`（成交后移入仓库）、`GraphUtils.TryAcceptAll` / `SlotMarker.TryAcceptOnce`（放置与叠加）、`ContainerHelper.InitContainerItem`（箱子的放入限制）、`ShipSystemDirectory`（各储藏区定义）、`GameItem.itemTypes`（商品类型）。
+**Status**: builds and passes the game's mod scanner; **not yet tested in game**. The 分类 button is positioned from the box window's screen coordinates; if it shows up in the wrong place, turn off `boxButtons` and use Ctrl+F7. If the box icons look wrong, turn off `boxIcons`.
 
-**状态**：已编译、已通过游戏扫描器检查；**尚未进游戏实测**。
+## Changelog
+
+- **1.1.0**: sorting now uses the first item type; new box category panel and 分类 button; content icons on boxes; new selling helpers (F4 for the buyer's items, F4 on an item for identical items, bring identical items when placing one); F7 on the counter sends items without a matching box back to storage.
+- **1.0.0**: first version: F7 sorting (by type overlap), Shift+F7 auto-sort on purchase.

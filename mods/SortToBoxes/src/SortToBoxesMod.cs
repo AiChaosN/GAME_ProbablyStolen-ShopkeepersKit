@@ -24,7 +24,7 @@ namespace SortToBoxes
             catch (Exception e)
             {
                 Config = new SortConfig();
-                Log.Warn("配置初始化失败，使用默认值（F7 / 自动归箱关）: " + e.Message);
+                Log.Warn("配置初始化失败，使用默认值（F7 / F4）: " + e.Message);
             }
 
             Patches.Apply();
@@ -56,8 +56,9 @@ namespace SortToBoxes
                 Log.Warn("订阅读档事件失败: " + e.Message);
             }
 
-            Log.Info("已加载，热键 " + Config.Hotkey + "，买下时自动归箱 " + (Config.AutoOnPurchase ? "开" : "关") +
-                     (Patches.Applied ? "" : "（自动归箱补丁未生效）"));
+            Log.Info("已加载：归箱 " + Config.Hotkey + "，上柜台 " + Config.SellHotkey +
+                     "，买下时自动归箱 " + (Config.AutoOnPurchase ? "开" : "关") + (Patches.AutoPurchaseApplied ? "" : "（补丁未生效）") +
+                     "，放一件带同款 " + (Config.AutoSameOnCounter ? "开" : "关") + (Patches.CounterApplied ? "" : "（补丁未生效）"));
         }
 
         public void OnEnable()
