@@ -58,7 +58,7 @@ namespace SortToBoxes
 
                 // 箱里现有物品的大类
                 var inBox = new Dictionary<string, int>(StringComparer.Ordinal);
-                foreach (var it in GraphUtils.FindChildrenType<GameItem>(box))
+                foreach (var it in Stock.Children(box))
                 {
                     if (it == null || Stock.IsFixture(it)) continue;
                     var c = Categories.Of(it);

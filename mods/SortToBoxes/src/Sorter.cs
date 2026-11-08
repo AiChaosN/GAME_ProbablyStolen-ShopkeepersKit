@@ -53,7 +53,7 @@ namespace SortToBoxes
             foreach (var item in Stock.FindBoxes())
             {
                 var box = new Box { Item = item, Order = order++, Name = Stock.Name(item), Labels = BoxLabels.Get(item) };
-                foreach (var content in GraphUtils.FindChildrenType<GameItem>(item))
+                foreach (var content in Stock.Children(item))
                 {
                     if (content == null || Stock.IsFixture(content)) continue;
                     box.Total++;

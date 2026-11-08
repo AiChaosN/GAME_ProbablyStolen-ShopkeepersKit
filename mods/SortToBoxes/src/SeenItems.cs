@@ -56,14 +56,53 @@ namespace SortToBoxes
                 foreach (var inv in new GameInventory[] { e.invElement, e.backInvinvElement, e.frontInvinvElement, e.showcaseElement })
                 {
                     if (inv == null) continue;
-                    foreach (var it in GraphUtils.FindAllChildrenType<GameItem>(inv)) Add(it);
+                    foreach (var it in AllItems(inv))
+                    {
+                        try { Add(it); }
+                        catch (Exception ex) { ReportOnce(ex); }
+                    }
                 }
                 if (dirty) Save();
             }
             catch (Exception ex)
             {
-                Log.Warn("记录见过的物品出错: " + ex.Message);
+                ReportOnce(ex);
             }
+        }
+
+        private static bool reported;
+
+        /// <summary>出错只记一次完整的出错位置，免得刷屏。</summary>
+        private static void ReportOnce(Exception ex)
+        {
+            if (reported) return;
+            reported = true;
+            Log.Warn("记录见过的物品出错（只记第一次）: " + Log.Describe(ex));
+        }
+
+        /// <summary>
+        /// 自己遍历物品树：游戏的 GraphUtils.FindAllChildrenType 不检查空的子节点，遇到就抛空引用（1.4.0 在柜台/展示柜上碰到过）。
+        /// 这里逐个跳过空节点、读不了子节点的节点，并防止重复访问。
+        /// </summary>
+        private static List<GameItem> AllItems(GraphNodeStorage root)
+        {
+            var result = new List<GameItem>();
+            var queue = new Queue<GraphNodeStorage>();
+            var visited = new HashSet<object>();
+            queue.Enqueue(root);
+            int guard = 0;
+            while (queue.Count > 0 && guard++ < 50000)
+            {
+                var node = queue.Dequeue();
+                if (node == null || !visited.Add(node)) continue;
+                if (!ReferenceEquals(node, root) && node is GameItem gi) result.Add(gi);
+                List<GraphNodeStorage> children = null;
+                try { children = node.children; } catch { }
+                if (children == null) continue;
+                foreach (var c in children)
+                    if (c != null) queue.Enqueue(c);
+            }
+            return result;
         }
 
         private static void Add(GameItem it)

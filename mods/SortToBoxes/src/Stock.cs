@@ -102,7 +102,7 @@ namespace SortToBoxes
             var warehouse = Warehouse;
             if (warehouse == null) return new List<GameItem>();
             Func<GameItem, bool> isBox = IsBox;
-            var found = GraphUtils.FindChildrenType<GameItem>(warehouse, isBox, isBox);
+            var found = Children(warehouse, isBox, isBox);
             found.Sort((a, b) => Uid(a).CompareTo(Uid(b)));
             return found;
         }
@@ -114,9 +114,42 @@ namespace SortToBoxes
             if (warehouse == null) return new List<GameItem>();
             Func<GameItem, bool> notFixture = it => it != null && !IsFixture(it);
             Func<GameItem, bool> isBox = IsBox;
-            return GraphUtils.FindChildrenType<GameItem>(warehouse, notFixture, isBox)
+            return Children(warehouse, notFixture, isBox)
                 .Where(it => IsMovable(it))
                 .ToList();
+        }
+
+        /// <summary>
+        /// 与游戏的 GraphUtils.FindChildrenType 语义相同（收集 root 下符合 include 的物品；物品只有 descend 为真时才往里找），
+        /// 但会跳过空的子节点、读不了子节点的节点：游戏那个函数不检查空节点，遇到就抛空引用。
+        /// </summary>
+        internal static List<GameItem> Children(GraphNodeStorage root, Func<GameItem, bool> include = null, Func<GameItem, bool> descend = null)
+        {
+            var result = new List<GameItem>();
+            if (root == null) return result;
+            var queue = new Queue<GraphNodeStorage>();
+            var visited = new HashSet<object>();
+            queue.Enqueue(root);
+            int guard = 0;
+            while (queue.Count > 0 && guard++ < 50000)
+            {
+                var node = queue.Dequeue();
+                if (node == null || !visited.Add(node)) continue;
+                if (!ReferenceEquals(node, root) && node is GameItem gi)
+                {
+                    bool take = false, down = false;
+                    try { take = include == null || include(gi); } catch { }
+                    try { down = descend != null && descend(gi); } catch { }
+                    if (take) result.Add(gi);
+                    if (!down) continue;
+                }
+                List<GraphNodeStorage> children = null;
+                try { children = node.children; } catch { }
+                if (children == null) continue;
+                foreach (var c in children)
+                    if (c != null) queue.Enqueue(c);
+            }
+            return result;
         }
 
         internal static int Uid(GameItem it)

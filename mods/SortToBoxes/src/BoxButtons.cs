@@ -57,10 +57,10 @@ namespace SortToBoxes
                     Rescan();
                 }
                 foreach (var e in entries.Values) Place(e);
-                errors = 0;
             }
             catch (Exception ex)
             {
+                if (errors == 0) Log.Warn("“分类”按钮出错（只记第一次）: " + Log.Describe(ex));
                 if (++errors >= 30)
                 {
                     disabled = true;
@@ -138,6 +138,7 @@ namespace SortToBoxes
             node.image.type = Image.Type.Sliced;
             node.image.color = NormalColor;
             node.image.raycastTarget = true;
+            node.image.enabled = true;   // 显式打开：新建节点的图片默认状态不确定
             node.rectTransform.localScale = Vector3.one;
 
             var text = TreeNodeRender.InstantiateText();
@@ -151,6 +152,7 @@ namespace SortToBoxes
                 t.alignment = TextAlignmentOptions.Center;
                 t.enableWordWrapping = false;
                 t.raycastTarget = false;
+                t.enabled = true;
                 try { t.color = RenderHandler.current.textColorRed; } catch { }
                 var trt = text.rectTransform;
                 trt.anchorMin = Vector2.zero;
@@ -184,7 +186,41 @@ namespace SortToBoxes
             node.rectTransform.SetAsLastSibling();
             node.gameObject.SetActive(true);
             Place(e);
+            Diagnose(e);
             return e;
+        }
+
+        private static int diagnosed;
+
+        /// <summary>前几次创建按钮时把它的状态写进日志，方便确认它到底在不在、在哪。</summary>
+        private static void Diagnose(Entry e)
+        {
+            if (diagnosed >= 3) return;
+            diagnosed++;
+            try
+            {
+                var rt = e.Node.rectTransform;
+                var corners = new Vector3[4];
+                rt.GetWorldCorners(corners);
+                string close = "找不到";
+                var c = CloseButton(e.Window);
+                if (c != null && c.rectTransform != null)
+                {
+                    var cc = new Vector3[4];
+                    c.rectTransform.GetWorldCorners(cc);
+                    close = "anchored=" + c.rectTransform.anchoredPosition + " size=" + c.rectTransform.sizeDelta + " pivot=" + c.rectTransform.pivot +
+                            " world=" + cc[0] + "~" + cc[2] + " sibling=" + c.rectTransform.GetSiblingIndex() + " parent=" + c.rectTransform.parent?.name;
+                }
+                Log.Info("“分类”按钮诊断（" + Stock.Name(e.Box) + "）：active=" + e.Node.gameObject.activeInHierarchy +
+                         " imageEnabled=" + e.Node.image.enabled + " anchored=" + rt.anchoredPosition + " size=" + rt.sizeDelta +
+                         " pivot=" + rt.pivot + " world=" + corners[0] + "~" + corners[2] + " sibling=" + rt.GetSiblingIndex() + "/" + rt.parent?.childCount +
+                         " parent=" + rt.parent?.name + " text=" + (e.Text?.text != null ? "'" + e.Text.text.text + "' w=" + e.Text.text.preferredWidth + " enabled=" + e.Text.text.enabled : "无") +
+                         " | ×：" + close);
+            }
+            catch (Exception ex)
+            {
+                Log.Warn("“分类”按钮诊断失败: " + ex.Message);
+            }
         }
 
         private static readonly Color NormalColor = new Color(1f, 1f, 1f, 0.95f);
@@ -204,7 +240,7 @@ namespace SortToBoxes
                 {
                     string want = Lang.T("分类", "Sort");   // 游戏里切换语言后跟着变
                     if (t.text != want) t.text = want;
-                    textW = Mathf.Ceil(t.preferredWidth);
+                    textW = Mathf.Max(24f, Mathf.Ceil(t.preferredWidth));   // 量不出宽度时也不缩成看不见的小点
                 }
             }
             catch { }

@@ -53,10 +53,10 @@ namespace SortToBoxes
                     Rescan();
                 }
                 foreach (var e in entries.Values) Place(e);
-                errors = 0;
             }
             catch (Exception ex)
             {
+                if (errors == 0) Log.Warn("箱子角标出错（只记第一次）: " + Log.Describe(ex));
                 if (++errors >= 30)
                 {
                     disabled = true;
@@ -128,7 +128,7 @@ namespace SortToBoxes
             sprite = null;
             tint = Color.white;
             var labels = BoxLabels.Get(box);
-            var contents = GraphUtils.FindChildrenType<GameItem>(box)
+            var contents = Stock.Children(box)
                 .Where(it => it != null && !Stock.IsFixture(it))
                 .OrderBy(it => SafeMinY(it))
                 .ThenBy(it => SafeMinX(it))

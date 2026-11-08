@@ -141,6 +141,7 @@ In game: Mods screen → select this mod → **设置** (Settings). Or edit `%US
 
 ## Changelog
 
+- **1.4.1**: fixed repeated null-reference errors when recording seen items (the game's item-tree walk doesn't check for null nodes; the mod now uses its own); every box/item walk now skips null nodes; the Sort button explicitly enables its image and text and logs its position the first few times it's created (to track down the invisible button).
 - **1.4.0**: UI in Chinese and English, following the game language (notifications, category panel, the Sort button, category names, settings).
 - **1.3.1**: fixed 1.3.0's manifest (an unescaped `&` in the English description made the game skip the whole mod); hotkeys can be bound in the game's Options, and the settings also accept a plain symbol (e.g. /).
 - **1.3.0**: the mod's own 13 categories (each item in exactly one) replace the game's fragmented types; the category panel groups by category, ticking a whole category ticks every item under it and unticking clears them all; types ticked in 1.2 are converted to their category.
