@@ -22,7 +22,7 @@ The Workshop mod "防止小偷箱子被挤掉" only moves the thief's loot crate
 
 Items that don't fit go onto extra **pages**; one page is exactly one counter's worth.
 
-- When there is more than one page, a page bar appears **right above** the customer's side of the counter: `< 上一页 (,)    第 2/4 页 · 还有 12 件没摆出    (.) 下一页 >` ("previous / page 2 of 4 · 12 more not shown / next"). Click its buttons to flip;
+- When there is more than one page, a page bar appears **right below** the notification above the customer's head (where "第 1/3 页" is shown): `< 上一页 (,)    第 2/4 页 · 还有 12 件没摆出    (.) 下一页 >` ("previous / page 2 of 4 · 12 more not shown / next"). Click its buttons to flip;
 - or use the keys: **,** for the previous page and **.** for the next (the keys with `<` and `>` printed on them). Rebind them by pressing a key in the game's **Options** (section "掌柜帮手·柜台不丢货"), or edit them in the mod settings;
 - every page **remembers where each item sat**: flip away and back and the items return to the same cells;
 - **no automatic refilling**: when you take an item off the counter (e.g. drag it onto the scale to negotiate), the gap it leaves is not filled by other goods. Flip to another page and back and the gap is still there, so you can always put the item back;
@@ -63,7 +63,7 @@ In game: Mods screen → select this mod → **设置** (Settings). Or edit `%US
 | `enabled` | `true` | Page items that don't fit; off = base game behavior |
 | `prevKey` | `Comma` (,) | Previous page (Unity KeyCode name) |
 | `nextKey` | `Period` (.) | Next page |
-| `pageBar` | `true` | Show the page bar above the counter |
+| `pageBar` | `true` | Show the page bar below the notification above the customer |
 | `testMode` | `false` | Test mode, see below |
 
 ## Testing
@@ -77,7 +77,7 @@ The overflow only happens naturally with certain sellers, so the mod has a **tes
 3. Load a save, open the shop and wait for any customer to reach the counter (a seller is best, so the items can be bought).
 4. Press **Ctrl+.**: the customer lays out an extra batch of large equipment (fridge, water tank, moisture farm, water purifier, ...) through the normal game code. The counter will overflow.
 5. Check:
-   - a notification says the goods were split into N pages, and the page bar appears above the counter;
+   - a notification above the customer says the goods were split into N pages, and the page bar appears below it;
    - click "next" or press **.**: the counter shows the next page; press **,** to go back and the items are in their old cells;
    - drag an item onto the scale, flip to the next page and back: its old cell is still empty and you can put it back;
    - after closing, open the game log `Player.log` (same folder) and search for `[CounterOverflow]`: you should see "moved to page N", "flipped to page N" and "customer left" entries, and **no new** `(front counter full)` destroy entries.
@@ -90,7 +90,7 @@ Without test mode: Dr. Jackson's equipment offers and thieves at Black Market re
 | File | Contents |
 |---|---|
 | `src/Overflow.cs` | Patches (`GraphUtils.DestroyIfUnplaced` sends "front counter full" items to a later page instead of destroying them; `PlayerStore.TryAddDirectSellingItemToTable(string, …)` still creates the item when the counter is full), pages, stashing/restoring at exact coordinates (`GameInventory.TryInventorySlot` + `SlotMarker.TryAcceptOnce`), cleanup when the customer leaves, test mode |
-| `src/PageBar.cs` | The page bar above the counter (the game's CustomUI framework) |
+| `src/PageBar.cs` | The page bar (the game's CustomUI framework), placed right below the game's notification box `ReputationUIManager.reputationNotifier` |
 | `src/OverflowBehaviour.cs` | Keys, customer-left check every 0.2 s, notifications |
 | `src/OverflowMod.cs` | Entry point, settings, key bindings in the game's Options |
 
@@ -100,5 +100,6 @@ Each page is an invisible grid with the counter's shape at the time, so an item'
 
 ## Changelog
 
+- **1.1.1**: the page bar moved below the notification above the customer's head, so it no longer overlaps the goods and the customer.
 - **1.1.0**: fixed pages: page bar above the counter (previous/next, current page); page keys are now , and . and can be bound in the game's Options; each page remembers item positions and nothing refills automatically, so an item you took off can always go back.
 - **1.0.0**: first version: overflowing items queued, refilled automatically when space freed up, F3 to flip.

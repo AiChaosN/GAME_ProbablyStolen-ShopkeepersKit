@@ -4,7 +4,7 @@ using UnityEngine;
 namespace CounterOverflow
 {
     /// <summary>
-    /// 顾客那侧柜台上方的翻页条：“&lt; 上一页 (,)   第 2/4 页 · 还有 12 件没摆出   (.) 下一页 &gt;”。
+    /// 顾客头上提示框正下方的翻页条：“&lt; 上一页 (,)   第 2/4 页 · 还有 12 件没摆出   (.) 下一页 &gt;”。
     /// 用游戏自带的 CustomUI 框架建在 paper 图层（游戏自己的储物协调器窗口也在这一层），每帧跟着柜台窗口的位置走。
     /// 只有货分成多页时才显示。只影响界面：连续出错就自动停用（仍可用按键翻页）。
     /// </summary>
@@ -102,16 +102,44 @@ namespace CounterOverflow
             try { if (nextButton?.button != null) nextButton.button.interactable = cur < count - 1; } catch { }
         }
 
+        /// <summary>
+        /// 放在顾客头上那条提示（游戏的提示框，“第 1/3 页”就显示在那里）的正下方；
+        /// 找不到提示框时退回柜台正上方。
+        /// </summary>
         private void Place(PixelWindow window)
         {
-            var winRt = WindowRect.Visible(window);          // 看得见的柜台框（不是窗口根节点）
-            if (winRt == null || root == null) return;
-            winRt.GetWorldCorners(corners);                    // 0 左下, 1 左上, 2 右上, 3 右下
-            Vector3 topCenter = (corners[1] + corners[2]) * 0.5f;
-            Vector2 screen = RectTransformUtility.WorldToScreenPoint(CameraOf(winRt), topCenter);
-            screen.y += 4f;
+            if (root == null) return;
             var layer = root.parent as RectTransform;
-            if (layer != null && RectTransformUtility.ScreenPointToWorldPointInRectangle(layer, screen, CameraOf(layer), out var world))
+            if (layer == null) return;
+
+            RectTransform anchor = null;
+            try
+            {
+                var rep = ReputationUIManager.Instance;
+                if (rep != null && rep.reputationNotifier != null) anchor = rep.reputationNotifier.transform as RectTransform;
+            }
+            catch { anchor = null; }
+
+            Vector2 screen;
+            if (anchor != null)
+            {
+                anchor.GetWorldCorners(corners);                       // 0 左下, 1 左上, 2 右上, 3 右下
+                Vector3 bottomCenter = (corners[0] + corners[3]) * 0.5f;
+                screen = RectTransformUtility.WorldToScreenPoint(CameraOf(anchor), bottomCenter);
+                screen.y -= 4f;
+                root.pivot = new Vector2(0.5f, 1f);                    // 顶边中点对齐提示框底边中点：条在提示框正下方
+            }
+            else
+            {
+                var winRt = WindowRect.Visible(window);              // 看得见的柜台框（不是窗口根节点）
+                if (winRt == null) return;
+                winRt.GetWorldCorners(corners);
+                Vector3 topCenter = (corners[1] + corners[2]) * 0.5f;
+                screen = RectTransformUtility.WorldToScreenPoint(CameraOf(winRt), topCenter);
+                screen.y += 4f;
+                root.pivot = new Vector2(0.5f, 0f);
+            }
+            if (RectTransformUtility.ScreenPointToWorldPointInRectangle(layer, screen, CameraOf(layer), out var world))
                 root.position = world;
         }
 

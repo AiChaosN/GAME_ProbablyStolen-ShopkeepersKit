@@ -45,8 +45,6 @@ After each forecast the mod **automatically verifies** that the game state is ex
 - After closing time (evening), or before you've loaded a save, F9 just shows a one-line message in the window.
 - The hotkey doesn't fire while you're typing (e.g. in a text field).
 
-> Upgrading from 1.1: the default hotkey is now **F9** (the Workshop "Cheat Menu" mod uses F8 by default). If your saved hotkey was F8 and the Cheat Menu (`chezhou.cheat-menu`) is loaded and also using F8, the first time 1.2.0 loads it **switches you to F9 once** and notes this in the log; otherwise your existing setting is kept. You can change it in the mod settings at any time.
->
 > Note: with the game's developer tools enabled, F9 also opens the game's built-in debug panel; in that case, rebind the hotkey to another key.
 
 ### Window contents
@@ -87,10 +85,9 @@ The mod uses the game's built-in mod settings and doesn't put a config file next
 | Key | Default | Description |
 |---|---|---|
 | `hotkey` | `F9` | Unity KeyCode name, e.g. `F7`, `F10`, `Insert`, `Home` (default was F8 in 1.1 and earlier) |
-| `runs` | `300` | Simulations per forecast (20–2000). More runs are more accurate but stall the game longer when you press the key |
+| `runs` | `300` | Simulations per forecast (pick from 100–2000 in a dropdown). More runs are more accurate but stall the game longer when you press the key |
 | `includeOtherMods` | `false` | Whether the sandbox also runs other mods' code hooked into customer generation (see [Limitations](#limitations-and-caveats)) |
 | `nativeUI` | `true` | Use the game's native tablet window; turn off to use the old simple window |
-| `checkCheatMenuHotkey` | `true` | One-time check: if the hotkey is F8 and the Cheat Menu is loaded and also uses F8, switch to F9. Becomes `false` after the check; turn it back on to check again |
 
 ## How it works
 

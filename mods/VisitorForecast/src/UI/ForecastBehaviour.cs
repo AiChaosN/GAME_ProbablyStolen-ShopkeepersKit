@@ -20,7 +20,6 @@ namespace VisitorForecast.UI
         private PlayerStore.StoreState? resultState;
         private float nextQueueRefresh;
         private bool dirty;
-        private bool startupChecked;
 
         private readonly ImguiForecastWindow imgui = new ImguiForecastWindow();
         private NativeForecastWindow native;
@@ -51,13 +50,6 @@ namespace VisitorForecast.UI
         {
             try
             {
-                if (!startupChecked)
-                {
-                    startupChecked = true;
-                    try { VisitorForecastMod.Config?.CheckHotkeyConflictOnce(); }
-                    catch (Exception e) { Log.Warn("热键冲突检查出错: " + e.Message); }
-                }
-
                 // 原生窗口被游戏关掉了（Esc、换场景）：同步状态
                 if (visible && usingNative && (native == null || !native.IsShown)) visible = false;
 

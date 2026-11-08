@@ -39,8 +39,8 @@ namespace SortToBoxes
                 tooltip: () => "成交（收购、批发、以物易物）时游戏把货移进仓库后，直接送进对应的箱子；没有对应箱子或放不下就留在仓库。");
             sameEntry = cfg.Define("autoSameOnCounter", true, "General", () => "放一件上柜台时带上同款",
                 tooltip: () => "柜台前有买家时，你从仓库或箱子里拿一件货放上柜台，库存里一模一样的货会自动跟着摆上去。");
-            buttonsEntry = cfg.Define("boxButtons", true, "General", () => "箱子窗口旁显示“分类”按钮",
-                tooltip: () => "打开箱子时，在窗口右上角外侧显示一个“分类”按钮，点它设置这个箱子收哪些货。关掉后仍可用 Ctrl+归箱热键 指着箱子设置。");
+            buttonsEntry = cfg.Define("boxButtons", true, "General", () => "箱子窗口标题栏显示“分类”按钮",
+                tooltip: () => "打开箱子时，在窗口标题栏的关闭按钮（×）左边显示一个“分类”按钮，点它设置这个箱子收哪些货。关掉后仍可用 Ctrl+归箱热键 指着箱子设置。");
             iconsEntry = cfg.Define("boxIcons", true, "General", () => "在箱子上显示里面物品的小图标",
                 tooltip: () => "仓库里的箱子（储藏区等）正中间画一个小图标：箱子里第一件物品的图标；空箱子勾了分类时用同类物品的图标或类型颜色。只影响显示。");
             hotkeyEntry.OnChanged += _ => Apply();

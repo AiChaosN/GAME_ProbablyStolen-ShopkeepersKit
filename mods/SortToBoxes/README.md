@@ -18,7 +18,7 @@ The in-game UI (notifications and the category panel) is Chinese only.
 |---|---|
 | **F7** | Sort loose items in **storage** into matching boxes |
 | **F7** while pointing at the **counter** | Put **your** items on the counter back into boxes; items with no matching box go back to storage (customer items are left alone) |
-| **Ctrl+F7** while pointing at a box | Open that box's **category panel** (or click the **分类** ("Category") button just outside the top-right corner of an open box window) |
+| **Ctrl+F7** while pointing at a box | Open that box's **category panel** (or click the **分类** ("Category") button in an open box window's title bar, just left of the close button ×) |
 | **Shift+F7** | Toggle **auto-sort on purchase** (off by default) |
 | **F4** | Put everything the current buyer **would buy** onto the counter |
 | **F4** while pointing at an item | Put all **identical** items onto the counter |
@@ -45,7 +45,7 @@ So:
 
 ### Category panel
 
-Ctrl+F7 while pointing at a box, or the **分类** button at the top-right of an open box window, opens a window in the game's own UI style. Items are grouped by type (first type):
+Ctrl+F7 while pointing at a box, or the **分类** button left of the close button × in an open box window's title bar, opens a window in the game's own UI style. Items are grouped by type (first type):
 
 - each group starts with **【type】整类** ("whole type"): every item of that type goes into this box, including ones you only see later;
 - each item in the group has its own checkbox (with its icon): **only that item**. The ×N after a name is how many you have in storage and boxes;
@@ -110,7 +110,7 @@ In game: Mods screen → select this mod → **设置** (Settings). Or edit `%US
 | `sellHotkey` | `F4` | Counter key |
 | `autoOnPurchase` | `false` | Auto-sort goods you buy from customers (also Shift+F7 in game) |
 | `autoSameOnCounter` | `true` | Bring identical items when you place one on the counter (also Shift+F4 in game) |
-| `boxButtons` | `true` | Show the 分类 button next to open box windows |
+| `boxButtons` | `true` | Show the 分类 button in open box windows' title bar (left of ×) |
 | `boxIcons` | `true` | Draw the icon of a box's contents on the box |
 
 ## Other mods
@@ -127,17 +127,17 @@ In game: Mods screen → select this mod → **设置** (Settings). Or edit `%US
 | `src/Sorter.cs` | Sorting: tally box contents, rank boxes for each item, place via `GraphUtils.TryAcceptAll` |
 | `src/Counter.cs` | Selling: buyer's items / identical items to the counter (`StoreClient.IsClientBuyingThisItem`, `HasBudgetLeftToBuy`), clearing the counter |
 | `src/Patches.cs` | Postfix on `PlayerStore.MoveDealItemToInventory` (auto-sort on purchase); prefix/postfix on `SlotMarker.TryAcceptOnce` (detects "stock → counter" moves to bring identical items) |
-| `src/BoxLabelPanel.cs`, `src/BoxButtons.cs` | Category panel (the game's CustomUI framework) and the button next to box windows |
+| `src/BoxLabelPanel.cs`, `src/BoxButtons.cs` | Category panel (the game's CustomUI framework); the 分类 button left of × (a TreeNodeRender on the window, like ×, using the game's mouse events) |
 | `src/BoxIcons.cs` | Content badge in each box's bottom-right corner (a child node under the box's render node `GameItemElement.handler`) |
 | `src/SeenItems.cs` | Per-save record of items you have seen (`ModHelper.SetModData`, stored in the save) |
-| `src/WindowRect.cs` | The visible frame of a window (the 分类 button sits against it) |
 | `src/SortBehaviour.cs` | Hotkeys and notifications |
 | `src/SortConfig.cs` | Settings via the game's ModConfig |
 
-**Status**: builds and passes the game's mod scanner. 1.1.0 was tried in game: F7 on the counter, the 分类 button and box icons work (the button sat too far from the window and the icon was too big; both changed in 1.2.0). The 1.2.0 changes are **not yet tested in game**. The 分类 button is positioned from the box window's screen coordinates; if it shows up in the wrong place, turn off `boxButtons` and use Ctrl+F7. If the box icons look wrong, turn off `boxIcons`.
+**Status**: builds and passes the game's mod scanner. 1.1.0 was tried in game: F7 on the counter, the 分类 button and box icons work (the button sat too far from the window and the icon was too big; both changed in 1.2.0). The 1.2.0 changes are **not yet tested in game**. The 分类 button is attached to the box window itself (same parent as the × button); if it looks wrong, turn off `boxButtons` and use Ctrl+F7. If the box icons look wrong, turn off `boxIcons`.
 
 ## Changelog
 
+- **1.2.1**: the 分类 button moved into the box window's title bar, right next to the close button × (attached to the window itself, so no more gap).
 - **1.2.0**: the category panel now lists items: seen items grouped by type, with icons, tick a whole type or single items; only items seen in this save are listed; the 分类 button sits right against the box window; the box icon is now a small badge in the bottom-right corner.
 - **1.1.0**: sorting now uses the first item type; new box category panel and 分类 button; content icons on boxes; new selling helpers (F4 for the buyer's items, F4 on an item for identical items, bring identical items when placing one); F7 on the counter sends items without a matching box back to storage.
 - **1.0.0**: first version: F7 sorting (by type overlap), Shift+F7 auto-sort on purchase.

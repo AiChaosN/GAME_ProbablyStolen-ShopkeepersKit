@@ -127,8 +127,8 @@ namespace CounterOverflow
             nextEntry = cfg.Define("nextKey", DefaultNext, "General", () => "下一页",
                 choices: null,
                 tooltip: () => "Unity KeyCode 名称，默认 Period（句号键 . 键帽上是 >）。也可以在游戏的“选项”里按键绑定。");
-            barEntry = cfg.Define("pageBar", true, "General", () => "柜台上方显示翻页条",
-                tooltip: () => "货分成多页时，在顾客那侧柜台上方显示“◀ 第 1/3 页 ▶”，可以直接点。");
+            barEntry = cfg.Define("pageBar", true, "General", () => "显示翻页条",
+                tooltip: () => "货分成多页时，在顾客头上的提示框正下方显示“上一页 / 第 1/3 页 / 下一页”，可以直接点。");
             testEntry = cfg.Define("testMode", false, "Test", () => "测试模式",
                 tooltip: () => "开启后，柜台前有顾客时按 Ctrl+下一页键，会让顾客按原版流程再往柜台摆一批大件设备，用来制造柜台溢出、测试分页。这些货可以照常买，测试完请关掉。");
             enabledEntry.OnChanged += _ => Apply();
