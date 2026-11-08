@@ -13,7 +13,7 @@ namespace SortToBoxes
     {
         internal static StoreClient CurrentClient()
         {
-            try { return PlayerStore.Instance?.currentClientInstance?.GetClientBlueprint(); }
+            try { return Game.Store?.currentClientInstance?.GetClientBlueprint(); }
             catch { return null; }
         }
 

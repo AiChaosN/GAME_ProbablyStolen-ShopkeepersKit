@@ -100,6 +100,7 @@ Each page is an invisible grid with the counter's shape at the time, so an item'
 
 ## Changelog
 
+- **1.2.1**: No longer makes the game try to create a new save object in the main menu (it used `PlayerStore.Instance` to check whether a run is loaded; that getter creates one when none exists, which crashed in the constructor with a null reference).
 - **1.2.0**: UI in Chinese and English, following the game language (notifications, page bar, settings).
 - **1.1.3**: key settings accept a plain symbol or letter (e.g. / or K).
 - **1.1.2**: fixed ESC not opening the menu while goods were paged (the page bar sat in the game's paper UI layer, where ESC treats it as a panel to close first; it reappeared every frame and swallowed ESC).

@@ -119,7 +119,7 @@ namespace SortToBoxes
         private static bool Ready(bool notify)
         {
             var entry = EmporiumEntry.Instance;
-            if (entry == null || entry.invElement == null || PlayerStore.Instance == null) return false; // 主菜单等
+            if (entry == null || entry.invElement == null || Game.Store == null) return false; // 主菜单等
             if (MapUIManager.Instance != null && MapUIManager.Instance.isOutside)
             {
                 if (notify) Notify(Lang.T("外出时用不了", "Not available while you are out"));

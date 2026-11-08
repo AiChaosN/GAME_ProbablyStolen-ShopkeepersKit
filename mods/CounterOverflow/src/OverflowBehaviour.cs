@@ -96,7 +96,7 @@ namespace CounterOverflow
 
         private static void RunTest()
         {
-            if (PlayerStore.Instance?.currentClientInstance == null)
+            if (Game.Store?.currentClientInstance == null)
             {
                 Notify(Lang.T("测试模式：柜台前要有顾客", "Test mode: a customer must be at the counter"));
                 return;

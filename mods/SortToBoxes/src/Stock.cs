@@ -57,7 +57,7 @@ namespace SortToBoxes
                 if (!GeneralHelper.IsItemOwned(x)) return false;
                 if (ItemPinHelper.IsPinned(x) || DebrisHelper.IsDebris(x)) return false;
                 if (IsFixture(x)) return false;
-                if (!allowNegotiated && ReferenceEquals(PlayerStore.Instance?.GetCurrentlyNegociatedItem(), x)) return false;
+                if (!allowNegotiated && ReferenceEquals(Game.Store?.GetCurrentlyNegociatedItem(), x)) return false;
                 return x.MayRemove();
             }
             catch { return false; }

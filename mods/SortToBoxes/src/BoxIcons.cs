@@ -41,7 +41,7 @@ namespace SortToBoxes
             if (disabled) return;
             try
             {
-                bool inStore = enabled && EmporiumEntry.Instance != null && PlayerStore.Instance != null && RenderHandler.current != null;
+                bool inStore = enabled && EmporiumEntry.Instance != null && Game.Store != null && RenderHandler.current != null;
                 if (!inStore)
                 {
                     if (entries.Count > 0) Clear();

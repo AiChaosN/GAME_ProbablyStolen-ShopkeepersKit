@@ -141,6 +141,7 @@ In game: Mods screen → select this mod → **设置** (Settings). Or edit `%US
 
 ## Changelog
 
+- **1.4.2**: No longer makes the game try to create a new save object in the main menu (it used `PlayerStore.Instance` to check whether a run is loaded; that getter creates one when none exists, which crashed in the constructor with a null reference). The Sort button now matches the close button × (light gray, dark outline, dark red text); the old beige-on-cream was hard to read.
 - **1.4.1**: fixed repeated null-reference errors when recording seen items (the game's item-tree walk doesn't check for null nodes; the mod now uses its own); every box/item walk now skips null nodes; the Sort button explicitly enables its image and text and logs its position the first few times it's created (to track down the invisible button).
 - **1.4.0**: UI in Chinese and English, following the game language (notifications, category panel, the Sort button, category names, settings).
 - **1.3.1**: fixed 1.3.0's manifest (an unescaped `&` in the English description made the game skip the whole mod); hotkeys can be bound in the game's Options, and the settings also accept a plain symbol (e.g. /).

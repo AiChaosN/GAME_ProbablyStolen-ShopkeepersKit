@@ -26,7 +26,7 @@ namespace CounterOverflow
             {
                 var entry = EmporiumEntry.Instance;
                 var window = entry != null ? entry.frontInvWindow : null;
-                bool show = enabled && Overflow.Active && CustomUIManager.Instance != null && PlayerStore.Instance != null &&
+                bool show = enabled && Overflow.Active && CustomUIManager.Instance != null && Game.Store != null &&
                             window != null && window.IsVisible() && !(MapUIManager.Instance != null && MapUIManager.Instance.isOutside);
                 if (!show)
                 {

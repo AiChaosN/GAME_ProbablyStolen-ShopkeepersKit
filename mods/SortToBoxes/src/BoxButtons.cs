@@ -45,7 +45,7 @@ namespace SortToBoxes
             if (disabled) return;
             try
             {
-                bool inStore = enabled && EmporiumEntry.Instance != null && PlayerStore.Instance != null && RenderHandler.current != null;
+                bool inStore = enabled && EmporiumEntry.Instance != null && Game.Store != null && RenderHandler.current != null;
                 if (!inStore)
                 {
                     if (entries.Count > 0) Clear();
@@ -153,7 +153,7 @@ namespace SortToBoxes
                 t.enableWordWrapping = false;
                 t.raycastTarget = false;
                 t.enabled = true;
-                try { t.color = RenderHandler.current.textColorRed; } catch { }
+                t.color = TextColor;   // 深酒红，和旁边 × 的颜色一致（游戏的 textColorRed 其实是标题用的浅米色，放在浅色底上看不清）
                 var trt = text.rectTransform;
                 trt.anchorMin = Vector2.zero;
                 trt.anchorMax = Vector2.one;
@@ -223,8 +223,10 @@ namespace SortToBoxes
             }
         }
 
-        private static readonly Color NormalColor = new Color(1f, 1f, 1f, 0.95f);
-        private static readonly Color HoverColor = new Color(1f, 0.92f, 0.75f, 1f);
+        // 仿照旁边的关闭按钮 ×：浅灰底、深色描边、深酒红色的字；鼠标移上去底色变亮
+        private static readonly Color NormalColor = new Color(0.78f, 0.76f, 0.75f, 1f);
+        private static readonly Color HoverColor = new Color(0.92f, 0.90f, 0.89f, 1f);
+        private static readonly Color TextColor = new Color(0.36f, 0.15f, 0.20f, 1f);
 
         /// <summary>每帧跟 × 对齐（窗口改大小时 × 会移动）。</summary>
         private static void Place(Entry e)
@@ -280,8 +282,8 @@ namespace SortToBoxes
             if (plate != null) return plate;
             const int n = 12;
             var tex = new Texture2D(n, n, TextureFormat.RGBA32, false) { wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Point };
-            var border = new Color(0.33f, 0.24f, 0.18f, 1f);
-            var fill = new Color(0.93f, 0.88f, 0.76f, 1f);
+            var border = new Color(0.16f, 0.15f, 0.17f, 1f);   // 深色描边（底色由 image.color 着色，描边几乎不受影响）
+            var fill = Color.white;
             for (int y = 0; y < n; y++)
                 for (int x = 0; x < n; x++)
                 {

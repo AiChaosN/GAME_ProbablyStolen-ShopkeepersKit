@@ -50,7 +50,7 @@ namespace SortToBoxes
         {
             try
             {
-                if (PlayerStore.Instance == null || EmporiumEntry.Instance == null) return;
+                if (Game.Store == null || EmporiumEntry.Instance == null) return;
                 EnsureLoaded();
                 var e = EmporiumEntry.Instance;
                 foreach (var inv in new GameInventory[] { e.invElement, e.backInvinvElement, e.frontInvinvElement, e.showcaseElement })

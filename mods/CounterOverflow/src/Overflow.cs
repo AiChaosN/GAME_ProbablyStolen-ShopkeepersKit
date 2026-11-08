@@ -34,7 +34,7 @@ namespace CounterOverflow
 
         private static StoreClientInstance CurrentClient()
         {
-            try { return PlayerStore.Instance?.currentClientInstance; }
+            try { return Game.Store?.currentClientInstance; }
             catch { return null; }
         }
 
@@ -379,7 +379,7 @@ namespace CounterOverflow
         /// <summary>测试：让当前顾客照原版流程再往柜台摆一批大件。返回生成的件数。</summary>
         internal static int SpawnTestBatch()
         {
-            var ps = PlayerStore.Instance;
+            var ps = Game.Store;
             if (ps == null || CurrentClient() == null) return 0;
             int n = 0;
             foreach (var id in TestItems)
