@@ -6,34 +6,21 @@ using UnityEngine;
 namespace SortToBoxes
 {
     /// <summary>
-    /// 箱子分类面板：用游戏自带的 CustomUI 框架（与游戏的“储物协调器”同一层、同一风格）建一个可拖动的窗口，
-    /// 每个商品类型一个勾选框。勾选立即保存到箱子的 tag（随存档保存）。
+    /// 箱子分类面板：用游戏自带的 CustomUI 框架（与游戏的“储物协调器”同一层、同一风格）建一个可拖动的窗口。
+    /// 只列出本存档里见过的物品（SeenItems），按类型（第一个标签）分组：
+    ///   - 每组开头一个“整类”勾选框：这一类的货都进这个箱子，包括以后才见到的同类；
+    ///   - 组里每件见过的物品一个勾选框（带图标）：只收这一种。
+    /// 勾选立即保存到箱子的 tag（随存档保存）。
     /// </summary>
     internal static class BoxLabelPanel
     {
         private const string WindowId = "chaos5090_stb_box_labels";
-
-        // 作为“第一个标签”出现过的类型，按常见程度排列（机器、储藏类不归箱，不列出）
-        private static readonly string[] CommonTypes =
-        {
-            "FOOD", "HOUSEHOLD_GOOD", "LUXURY_ITEM", "ART", "MEDICAL", "WEAPON", "MELEE_WEAPON", "AMMUNITION",
-            "GUN_MOD", "TOOL", "MATERIAL", "DOCUMENT", "MODULE", "HYDROPONIC_MODULE", "PRINTER_MODULE",
-            "ACCESS_CARD", "CHEMICAL_SUPPLIES", "SUBSTANCE", "ALCOHOL", "NARCOTIC", "POISON", "TREAT",
-            "PROCESSED_FOOD", "WATER_RATION", "WATER_PURIFICATION_SUPPLY", "MODIFIED_SEED", "SEED",
-            "FARMING_SUPPLIES", "ENERGY_CELL", "SUPPLY_CRATE", "CONTRABAND", "LOTTERY", "JUNK", "NODE",
-            "EVAPORATOR_MODULE", "ALARM_MODULE",
-        };
+        private const string NoType = "";
 
         internal static string LayerId()
         {
             try { return CustomUIManager.HasLayer("paper") ? "paper" : "overlay"; }
             catch { return "overlay"; }
-        }
-
-        internal static bool IsOpen()
-        {
-            try { return CustomUIManager.Instance != null && CustomUIManager.Instance.IsOpen(WindowId); }
-            catch { return false; }
         }
 
         internal static void Open(GameItem box)
@@ -52,56 +39,93 @@ namespace SortToBoxes
                 var old = mgr.GetWindow(WindowId);
                 if (old != null && old.IsAlive) oldPos = old.Rect.anchoredPosition;
 
+                SeenItems.ScanNow();   // 先把眼前的东西记上
                 var selected = BoxLabels.Get(box) ?? new HashSet<string>(StringComparer.Ordinal);
 
-                // 箱里现有物品的主类型，以及库存里各主类型的货有多少（帮你判断该勾哪些）
+                // 库存里每种物品有几件（显示在名字后面）
+                var stockCount = new Dictionary<string, int>(StringComparer.Ordinal);
+                foreach (var it in Stock.AllGoods())
+                {
+                    if (string.IsNullOrEmpty(it.identifier)) continue;
+                    stockCount.TryGetValue(it.identifier, out int n);
+                    stockCount[it.identifier] = n + Math.Max(1, it.unitCount);
+                }
+
+                // 箱里现有物品的主类型
                 var inBox = new Dictionary<string, int>(StringComparer.Ordinal);
                 foreach (var it in GraphUtils.FindChildrenType<GameItem>(box))
                 {
                     if (it == null || Stock.IsFixture(it)) continue;
-                    var p = Stock.PrimaryType(it) ?? "";
+                    var p = Stock.PrimaryType(it) ?? NoType;
                     inBox.TryGetValue(p, out int n);
                     inBox[p] = n + 1;
                 }
-                var inStock = new Dictionary<string, int>(StringComparer.Ordinal);
-                foreach (var it in Stock.AllGoods())
-                {
-                    var p = Stock.PrimaryType(it);
-                    if (p == null) continue;
-                    inStock.TryGetValue(p, out int n);
-                    inStock[p] = n + 1;
-                }
 
-                var types = CommonTypes.ToList();
-                foreach (var t in inStock.Keys.Concat(inBox.Keys).Concat(selected))
-                    if (!string.IsNullOrEmpty(t) && !types.Contains(t) && t != "MACHINE" && t != "STORAGE") types.Add(t);
+                // 见过的物品按类型分组；已勾选但还没见过实物的类型也要列出来，方便取消
+                var groups = SeenItems.All
+                    .Where(i => i.Type != "MACHINE" && i.Type != "STORAGE")
+                    .GroupBy(i => i.Type ?? NoType)
+                    .ToDictionary(g => g.Key, g => g.OrderBy(i => i.Name, StringComparer.CurrentCulture).ToList(), StringComparer.Ordinal);
+                foreach (var t in selected.Where(t => !t.StartsWith("@") && !groups.ContainsKey(t)).ToList())
+                    groups[t] = new List<SeenItems.Info>();
+                var order = groups.Keys
+                    .OrderBy(k => k == NoType ? 1 : 0)
+                    .ThenByDescending(k => groups[k].Count)
+                    .ThenBy(k => Stock.TypeName(k), StringComparer.CurrentCulture)
+                    .ToList();
 
                 var b = mgr.CreateWindow(WindowId, "箱子分类 · " + Stock.Name(box), LayerId())
-                    .SetSize(640f, 600f)
+                    .SetSize(760f, 640f)
                     .SetDraggable(true)
                     .SetCloseOnEscape();
-                b.AddLabel("勾选后，这个箱子只收“第一个标签”属于勾选类型的货（第一个标签 = 物品提示里排在最前的 [类型]）。一个都不勾 = 按箱子里现有的东西自动判断。");
+                b.AddLabel("勾“整类”：这一类的货都进这个箱子，包括以后才见到的同类（类 = 物品提示里排在最前面的 [类型]）。勾单件：只收这一种。一个都不勾 = 按箱子里现有的东西自动判断。");
+                b.AddLabel("这里只列出你在这个存档里见过的货，见过的越多，列表越长。名字后面的 ×N 是仓库和箱子里现有的件数。");
                 string now = inBox.Count == 0
                     ? "箱子现在是空的"
-                    : "箱里现有：" + string.Join("、", inBox.OrderByDescending(kv => kv.Value).Take(6).Select(kv => (kv.Key == "" ? "无类型" : Stock.TypeName(kv.Key)) + " " + kv.Value));
+                    : "箱里现有：" + string.Join("、", inBox.OrderByDescending(kv => kv.Value).Take(6).Select(kv => (kv.Key == NoType ? "无类型" : Stock.TypeName(kv.Key)) + " " + kv.Value));
                 b.AddLabel(now);
-                b.AddLabel("括号里是仓库和箱子里这类货的件数。");
-                b.BeginScroll(380f);
-                b.BeginGrid(3, 196f, 34f, 4f);
-                foreach (var t in types)
+
+                b.BeginScroll(420f);
+                if (order.Count == 0) b.AddLabel("还没有见过任何货。");
+                foreach (var type in order)
                 {
-                    string type = t;
-                    inStock.TryGetValue(type, out int count);
-                    string label = Stock.TypeName(type) + (count > 0 ? " (" + count + ")" : "");
-                    b.AddToggle(label, selected.Contains(type), on =>
+                    var items = groups[type];
+                    b.AddSeparator();
+                    if (type == NoType)
                     {
-                        if (on) selected.Add(type);
-                        else selected.Remove(type);
-                        BoxLabels.Set(box, selected);
-                    });
+                        b.AddHeader("没有类型的货（只能逐件勾选）");
+                    }
+                    else
+                    {
+                        string t = type;
+                        b.AddToggle("【" + Stock.TypeName(t) + "】整类" + (items.Count > 0 ? "（见过 " + items.Count + " 种）" : ""), selected.Contains(t), on =>
+                        {
+                            if (on) selected.Add(t);
+                            else selected.Remove(t);
+                            BoxLabels.Set(box, selected);
+                        });
+                    }
+                    if (items.Count == 0) continue;
+                    b.BeginGrid(3, 232f, 34f, 4f);
+                    foreach (var info in items)
+                    {
+                        string key = BoxLabels.ItemKey(info.Id);
+                        stockCount.TryGetValue(info.Id, out int have);
+                        b.BeginRow(4f, TextAnchor.MiddleLeft);
+                        var icon = SeenItems.Icon(info);
+                        if (icon != null) b.AddImage(icon, 28f, 28f);
+                        b.AddToggle((string.IsNullOrEmpty(info.Name) ? info.Id : info.Name) + (have > 0 ? " ×" + have : ""), selected.Contains(key), on =>
+                        {
+                            if (on) selected.Add(key);
+                            else selected.Remove(key);
+                            BoxLabels.Set(box, selected);
+                        });
+                        b.End();
+                    }
+                    b.End();
                 }
                 b.End();
-                b.End();
+
                 b.BeginRow(8f, TextAnchor.MiddleCenter);
                 b.AddButton("全部取消（改回自动判断）", () =>
                 {

@@ -30,7 +30,7 @@ Every action shows a short notification in the top-left corner. Where each item 
 
 Each item is judged by its **first item type**: the first `[type]` shown in its tooltip. For `[Food] [Luxury]` the first type is Food.
 
-1. **Boxes with ticked categories** come first: they take only items whose first type is ticked.
+1. **Boxes with ticked categories** come first: a box with the item itself ticked wins, then a box with the item's type (first type) ticked.
 2. **Untagged boxes** go by what they already hold:
    - a box holding an **identical** item is preferred;
    - otherwise a box holding items with the **same first type** (the more such items, the higher the priority).
@@ -45,21 +45,23 @@ So:
 
 ### Category panel
 
-Ctrl+F7 while pointing at a box, or the **分类** button next to an open box window, opens a window in the game's own UI style with one checkbox per item type:
+Ctrl+F7 while pointing at a box, or the **分类** button at the top-right of an open box window, opens a window in the game's own UI style. Items are grouped by type (first type):
 
+- each group starts with **【type】整类** ("whole type"): every item of that type goes into this box, including ones you only see later;
+- each item in the group has its own checkbox (with its icon): **only that item**. The ×N after a name is how many you have in storage and boxes;
+- **only items you have seen in this save are listed** (anything that has been in your storage, boxes, machines, counters or display case). At first it's just what you own; the list grows as you see more goods, so nothing is spoiled. The record is kept in the save, one per save;
 - ticks take effect immediately and are **saved with your save file** (stored on the box itself);
-- the number in brackets is how many items of that type you have in storage and boxes;
 - **全部取消** ("Clear all") switches the box back to "go by what it holds";
-- if you uninstall the mod, the leftover marks in your save do nothing.
+- if you uninstall the mod, the leftover marks and records in your save do nothing.
 
 ### Box icons
 
-Each box in storage (storage bays, etc.) gets a small icon drawn in the middle of its sprite, so you can tell what a cabinet holds without opening it:
+Each box in storage (storage bays, etc.) gets a small badge in the **bottom-right corner** of its sprite, so you can tell what a cabinet holds without opening it:
 
 - a box with items shows the icon of its **first item** (the top-left one); if the box has ticked categories, the first item of a ticked type is preferred;
 - an empty box with ticked categories borrows the icon of an item of that type from your stock; if you have none, it shows a small chip in the type's color.
 
-The icon moves with the box, hides while the box is dragged, and never blocks clicks. It works alongside **Show Item Names** (物品名称常显): that mod draws names from the blue label printer along the bottom by default and its "分" page badge in the bottom-left corner, while this icon sits in the middle. Turn off `boxIcons` if you don't want it.
+The badge moves with the box, hides while the box is dragged, and never blocks clicks. It works alongside **Show Item Names** (物品名称常显), whose "分" page badge sits in the bottom-left corner. Turn off `boxIcons` if you don't want it.
 
 ### What counts as a box
 
@@ -126,13 +128,16 @@ In game: Mods screen → select this mod → **设置** (Settings). Or edit `%US
 | `src/Counter.cs` | Selling: buyer's items / identical items to the counter (`StoreClient.IsClientBuyingThisItem`, `HasBudgetLeftToBuy`), clearing the counter |
 | `src/Patches.cs` | Postfix on `PlayerStore.MoveDealItemToInventory` (auto-sort on purchase); prefix/postfix on `SlotMarker.TryAcceptOnce` (detects "stock → counter" moves to bring identical items) |
 | `src/BoxLabelPanel.cs`, `src/BoxButtons.cs` | Category panel (the game's CustomUI framework) and the button next to box windows |
-| `src/BoxIcons.cs` | Content icons on boxes (a child node under the box's render node `GameItemElement.handler`) |
+| `src/BoxIcons.cs` | Content badge in each box's bottom-right corner (a child node under the box's render node `GameItemElement.handler`) |
+| `src/SeenItems.cs` | Per-save record of items you have seen (`ModHelper.SetModData`, stored in the save) |
+| `src/WindowRect.cs` | The visible frame of a window (the 分类 button sits against it) |
 | `src/SortBehaviour.cs` | Hotkeys and notifications |
 | `src/SortConfig.cs` | Settings via the game's ModConfig |
 
-**Status**: builds and passes the game's mod scanner; **not yet tested in game**. The 分类 button is positioned from the box window's screen coordinates; if it shows up in the wrong place, turn off `boxButtons` and use Ctrl+F7. If the box icons look wrong, turn off `boxIcons`.
+**Status**: builds and passes the game's mod scanner. 1.1.0 was tried in game: F7 on the counter, the 分类 button and box icons work (the button sat too far from the window and the icon was too big; both changed in 1.2.0). The 1.2.0 changes are **not yet tested in game**. The 分类 button is positioned from the box window's screen coordinates; if it shows up in the wrong place, turn off `boxButtons` and use Ctrl+F7. If the box icons look wrong, turn off `boxIcons`.
 
 ## Changelog
 
+- **1.2.0**: the category panel now lists items: seen items grouped by type, with icons, tick a whole type or single items; only items seen in this save are listed; the 分类 button sits right against the box window; the box icon is now a small badge in the bottom-right corner.
 - **1.1.0**: sorting now uses the first item type; new box category panel and 分类 button; content icons on boxes; new selling helpers (F4 for the buyer's items, F4 on an item for identical items, bring identical items when placing one); F7 on the counter sends items without a matching box back to storage.
 - **1.0.0**: first version: F7 sorting (by type overlap), Shift+F7 auto-sort on purchase.

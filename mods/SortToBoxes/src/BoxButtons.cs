@@ -115,7 +115,8 @@ namespace SortToBoxes
             bool show = w != null && w.IsVisible();
             if (e.Root.gameObject.activeSelf != show) e.Root.gameObject.SetActive(show);
             if (!show) return;
-            var winRt = w.rectTransform;
+            var winRt = WindowRect.Visible(w);              // 看得见的窗口框（不是窗口根节点）
+            if (winRt == null) return;
             winRt.GetWorldCorners(corners);                 // 0 左下, 1 左上, 2 右上, 3 右下
             Vector2 screen = RectTransformUtility.WorldToScreenPoint(CameraOf(winRt), corners[2]);
             var layer = e.Root.parent as RectTransform;

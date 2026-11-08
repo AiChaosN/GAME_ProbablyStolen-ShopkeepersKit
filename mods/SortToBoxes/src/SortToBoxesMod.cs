@@ -10,12 +10,14 @@ namespace SortToBoxes
     public sealed class SortToBoxesMod : IMod
     {
         internal static SortConfig Config;
+        internal static string ModId = "chaos5090.sort-to-boxes";
         private static GameObject host;
         private static bool hooked;
 
         public void Init(ModManifest manifest)
         {
-            string id = manifest?.ID ?? "chaos5090.sort-to-boxes";
+            string id = manifest?.ID ?? ModId;
+            ModId = id;
             try
             {
                 Config = new SortConfig();

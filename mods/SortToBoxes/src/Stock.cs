@@ -163,6 +163,17 @@ namespace SortToBoxes
     {
         internal const string Tag = "CHAOS5090_STB_BOX_TYPES";
 
+        /// <summary>勾选单件物品时存的键：@物品id（类型直接存类型名，例如 FOOD）。</summary>
+        internal static string ItemKey(string itemId) => "@" + itemId;
+
+        internal static bool Accepts(HashSet<string> labels, GameItem it)
+        {
+            if (labels == null || it == null) return false;
+            if (!string.IsNullOrEmpty(it.identifier) && labels.Contains(ItemKey(it.identifier))) return true;
+            var p = Stock.PrimaryType(it);
+            return p != null && labels.Contains(p);
+        }
+
         /// <summary>勾选的类型；没设置时返回 null（= 按箱里现有物品判断）。</summary>
         internal static HashSet<string> Get(GameItem box)
         {

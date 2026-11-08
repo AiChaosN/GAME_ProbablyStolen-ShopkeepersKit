@@ -164,9 +164,10 @@ namespace SortToBoxes
                 double score;
                 if (b.Labels != null)
                 {
-                    // 勾选过分类：只看勾选的类型
-                    if (primary == null || !b.Labels.Contains(primary)) continue;
-                    score = 3000 + same;
+                    // 勾选过分类：勾了这件物品本身 > 勾了它的类型（第一个标签）；都没勾就不收
+                    if (b.Labels.Contains(BoxLabels.ItemKey(id))) score = 3500 + same;
+                    else if (primary != null && b.Labels.Contains(primary)) score = 3000 + same;
+                    else continue;
                 }
                 else if (same > 0)
                 {

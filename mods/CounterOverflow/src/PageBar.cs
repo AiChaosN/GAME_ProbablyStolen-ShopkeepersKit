@@ -104,7 +104,7 @@ namespace CounterOverflow
 
         private void Place(PixelWindow window)
         {
-            var winRt = window.rectTransform;
+            var winRt = WindowRect.Visible(window);          // 看得见的柜台框（不是窗口根节点）
             if (winRt == null || root == null) return;
             winRt.GetWorldCorners(corners);                    // 0 左下, 1 左上, 2 右上, 3 右下
             Vector3 topCenter = (corners[1] + corners[2]) * 0.5f;

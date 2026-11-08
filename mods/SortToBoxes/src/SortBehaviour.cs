@@ -48,6 +48,7 @@ namespace SortToBoxes
             sameQueue.Clear();
             buttons.Clear();
             icons.Clear();
+            SeenItems.OnGameLoaded();
         }
 
         internal void QueueSame(GameItem moved)
@@ -81,6 +82,8 @@ namespace SortToBoxes
                 }
 
                 if (sameQueue.Count > 0 && Time.frameCount > sameQueuedFrame) RunQueuedSame();
+
+                SeenItems.Tick();   // 记录本存档见过的物品（分类面板用）
 
                 if (autoToastAt >= 0f && Time.unscaledTime >= autoToastAt)
                 {
