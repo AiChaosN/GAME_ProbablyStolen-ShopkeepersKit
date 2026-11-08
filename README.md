@@ -20,7 +20,7 @@ Developed with assistance from [Claude Code](https://claude.com/claude-code) (An
 | Name | Category | Keys | Summary | Mod ID |
 |---|---|---|---|---|
 | [Sort To Boxes](mods/SortToBoxes/README.md) | [QoL] | F7 / F4 | Storing: loose items in storage go into the box matching their first item type; boxes can be tagged with categories and show an icon of their contents; optional auto-sort on purchase. Selling: one key puts everything the buyer wants on the counter; placing one item brings its identical copies | `chaos5090.sort-to-boxes` |
-| [Counter Overflow](mods/CounterOverflow/README.md) | [Fix] | F3 | Items a seller can't fit on the counter are queued instead of destroyed: they fill in as space frees up, F3 flips to the next batch | `chaos5090.counter-overflow` |
+| [Counter Overflow](mods/CounterOverflow/README.md) | [Fix] | , / . | Items a seller can't fit on the counter go onto extra pages instead of being destroyed: page bar above the counter, each page keeps its layout, items you take off can always go back | `chaos5090.counter-overflow` |
 | [Visitor Forecast](mods/VisitorForecast/README.md) | [Info] | F9 | Before opening, forecasts who will visit today (faction, intent, wanted goods, budget, probability) | `chaos5090.visitor-forecast` |
 
 The in-game UI of all mods is currently Chinese only.

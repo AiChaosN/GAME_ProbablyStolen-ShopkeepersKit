@@ -18,14 +18,18 @@ There is no message and you never see those items. The game log records it (`Des
 
 The Workshop mod "防止小偷箱子被挤掉" only moves the thief's loot crate to the front of the line; everything else can still be lost. This mod stops all of it.
 
-## How it works
+## How it works: pages
 
-Items that don't fit wait in a **queue** instead:
+Items that don't fit go onto extra **pages**; one page is exactly one counter's worth.
 
-- as soon as space frees up (you buy an item or move one away), queued items **fill in automatically**;
-- press **F3** to **flip**: the customer's items you haven't bought go to the back of the queue and the next batch comes out. Keep pressing to cycle through everything;
-- while items are queued, a notification tells you how many are waiting;
-- **when the customer leaves**, queued items are handled like leftover counter items in the base game: the customer's items leave with them (destroyed), anything that belongs to you (e.g. story gifts) goes to your storage.
+- When there is more than one page, a page bar appears **right above** the customer's side of the counter: `< 上一页 (,)    第 2/4 页 · 还有 12 件没摆出    (.) 下一页 >` ("previous / page 2 of 4 · 12 more not shown / next"). Click its buttons to flip;
+- or use the keys: **,** for the previous page and **.** for the next (the keys with `<` and `>` printed on them). Rebind them by pressing a key in the game's **Options** (section "掌柜帮手·柜台不丢货"), or edit them in the mod settings;
+- every page **remembers where each item sat**: flip away and back and the items return to the same cells;
+- **no automatic refilling**: when you take an item off the counter (e.g. drag it onto the scale to negotiate), the gap it leaves is not filled by other goods. Flip to another page and back and the gap is still there, so you can always put the item back;
+- pages whose items have all been bought are dropped when you flip, except while customer goods are still on the scale (that item may have come from the empty page, so the page stays for you to return it);
+- **when the customer leaves**, pages not on display are handled like leftover counter items in the base game: the customer's items leave with them (destroyed), anything that belongs to you (e.g. story gifts) goes to your storage.
+
+When nothing is paged, pressing , and . does nothing, so the keys stay free for other uses.
 
 Unchanged: prices, negotiation and appraisal all happen on the real items, exactly as in the base game.
 
@@ -35,8 +39,9 @@ You will see goods the base game would have destroyed, such as thieves' loot cra
 
 ### Notes
 
-- A **wholesale** offer (one price for everything on the counter) only covers items currently shown, not queued ones.
-- Queued items are not saved if you save and reload while items are waiting (in the base game they would have been destroyed anyway).
+- A **wholesale** offer (one price for everything on the counter) only covers the page currently shown.
+- Pages not on display are not saved if you save and reload while goods are paged (in the base game they would have been destroyed anyway).
+- If an item's old cell is taken when you flip back (e.g. you put something of yours there), it finds another free spot; if nothing fits, you get a "N items on this page don't fit" message.
 
 ## Install
 
@@ -45,18 +50,20 @@ You will see goods the base game would have destroyed, such as thieves' loot cra
    <game folder>/Mods/CounterOverflow/manifest.xml
    <game folder>/Mods/CounterOverflow/CounterOverflow.dll
    ```
-   To build from source, see the [repository home](../../README.md).
-2. Start the game → main menu **改装件** (Mods) → select **【修复】掌柜帮手·柜台不丢货** → **审阅并启用** (Review and enable) → restart when asked.
+   To build from source, see the [repository home](../../README.md). The DLL is locked while the game runs, so quit the game before replacing it.
+2. Start the game → main menu **改装件** (Mods) → select **【修复】掌柜帮手·柜台不丢货** → **审阅并启用** (Review and enable) → restart when asked (the mod only loads after a restart).
 3. The mod requests **no special capabilities**. The game's own mod scanner ([`tools/ScanCheck`](../../tools/ScanCheck)) reports no capabilities, no blocks and no findings.
 
 ## Settings
 
-In game: Mods screen → select this mod → **设置** (Settings). Or edit `%USERPROFILE%\AppData\LocalLow\Questing Goose Studio\Probably Stolen\ModConfigs\chaos5090.counter-overflow.json`.
+In game: Mods screen → select this mod → **设置** (Settings). Or edit `%USERPROFILE%\AppData\LocalLow\Questing Goose Studio\Probably Stolen\ModConfigs\chaos5090.counter-overflow.json`. The page keys can also be bound in the game's **Options**.
 
 | Key | Default | Meaning |
 |---|---|---|
-| `enabled` | `true` | Queue items that don't fit; off = base game behavior |
-| `hotkey` | `F3` | Flip key (Unity KeyCode name) |
+| `enabled` | `true` | Page items that don't fit; off = base game behavior |
+| `prevKey` | `Comma` (,) | Previous page (Unity KeyCode name) |
+| `nextKey` | `Period` (.) | Next page |
+| `pageBar` | `true` | Show the page bar above the counter |
 | `testMode` | `false` | Test mode, see below |
 
 ## Testing
@@ -65,15 +72,16 @@ The overflow only happens naturally with certain sellers, so the mod has a **tes
 
 > Back up your saves first: the `save_*.es3` files in `%USERPROFILE%\AppData\LocalLow\Questing Goose Studio\Probably Stolen\`. Ideally test on a new or unimportant save.
 
-1. Mods → this mod → Settings → turn on **测试模式** (test mode).
-2. Load a save, open the shop and wait for any customer to reach the counter (a seller is best, so the items can be bought).
-3. Press **Ctrl+F3**: the customer lays out an extra batch of large equipment (fridge, water tank, moisture farm, water purifier, ...) through the normal game code. The counter will overflow.
-4. Check:
-   - a notification says items are queued;
-   - buy or move an item: the freed space fills with a queued item;
-   - press **F3**: the counter flips to the next batch;
-   - after closing, open the game log `Player.log` (same folder) and search for `[CounterOverflow]`: you should see queue, flip and "customer left, cleared the queue" entries, and **no new** `(front counter full)` destroy entries.
-5. Turn test mode off afterwards. The test items are real and can be bought, which amounts to cheating.
+1. After enabling the mod, **restart the game once** (enabling without a restart doesn't load the mod, and the test mode setting won't show up).
+2. Mods → this mod → Settings → turn on **测试模式** (test mode).
+3. Load a save, open the shop and wait for any customer to reach the counter (a seller is best, so the items can be bought).
+4. Press **Ctrl+.**: the customer lays out an extra batch of large equipment (fridge, water tank, moisture farm, water purifier, ...) through the normal game code. The counter will overflow.
+5. Check:
+   - a notification says the goods were split into N pages, and the page bar appears above the counter;
+   - click "next" or press **.**: the counter shows the next page; press **,** to go back and the items are in their old cells;
+   - drag an item onto the scale, flip to the next page and back: its old cell is still empty and you can put it back;
+   - after closing, open the game log `Player.log` (same folder) and search for `[CounterOverflow]`: you should see "moved to page N", "flipped to page N" and "customer left" entries, and **no new** `(front counter full)` destroy entries.
+6. Turn test mode off afterwards. The test items are real and can be bought, which amounts to cheating.
 
 Without test mode: Dr. Jackson's equipment offers and thieves at Black Market reputation 100+ overflow the counter easily.
 
@@ -81,14 +89,16 @@ Without test mode: Dr. Jackson's equipment offers and thieves at Black Market re
 
 | File | Contents |
 |---|---|
-| `src/Overflow.cs` | Patches (`GraphUtils.DestroyIfUnplaced` queues instead of destroying for "front counter full"; `PlayerStore.TryAddDirectSellingItemToTable(string, …)` still creates the item when the counter is full), queue, refill, flip, cleanup when the customer leaves, test mode |
-| `src/OverflowBehaviour.cs` | Queue check every 0.2 s, hotkeys, notifications |
-| `src/OverflowMod.cs` | Entry point and settings |
+| `src/Overflow.cs` | Patches (`GraphUtils.DestroyIfUnplaced` sends "front counter full" items to a later page instead of destroying them; `PlayerStore.TryAddDirectSellingItemToTable(string, …)` still creates the item when the counter is full), pages, stashing/restoring at exact coordinates (`GameInventory.TryInventorySlot` + `SlotMarker.TryAcceptOnce`), cleanup when the customer leaves, test mode |
+| `src/PageBar.cs` | The page bar above the counter (the game's CustomUI framework) |
+| `src/OverflowBehaviour.cs` | Keys, customer-left check every 0.2 s, notifications |
+| `src/OverflowMod.cs` | Entry point, settings, key bindings in the game's Options |
 
-Queued items are parked in an invisible grid (not left dangling), so their state stays valid. Both patches run last: if another mod (e.g. Visitor Forecast simulating in its sandbox) asks to skip the original logic, this mod does nothing.
+Each page is an invisible grid with the counter's shape at the time, so an item's coordinates in it are its coordinates on the counter. Both patches run last: if another mod (e.g. Visitor Forecast simulating in its sandbox) asks to skip the original logic, this mod does nothing.
 
-**Status**: builds and passes the game's mod scanner; **not yet tested in game**.
+**Status**: builds and passes the game's mod scanner. 1.0.0 was tested in game (overflowing items are kept); the 1.1.0 pages and page bar are **not yet tested in game**.
 
 ## Changelog
 
-- **1.0.0**: first version.
+- **1.1.0**: fixed pages: page bar above the counter (previous/next, current page); page keys are now , and . and can be bound in the game's Options; each page remembers item positions and nothing refills automatically, so an item you took off can always go back.
+- **1.0.0**: first version: overflowing items queued, refilled automatically when space freed up, F3 to flip.

@@ -10,22 +10,24 @@ namespace CounterOverflow
     public sealed class OverflowMod : IMod
     {
         internal static OverflowConfig Config;
+        internal static string ModId = "chaos5090.counter-overflow";
         private static GameObject host;
         private static bool hooked;
 
         public void Init(ModManifest manifest)
         {
-            string id = manifest?.ID ?? "chaos5090.counter-overflow";
+            ModId = manifest?.ID ?? ModId;
             try
             {
                 Config = new OverflowConfig();
-                Config.Init(id);
+                Config.Init(ModId);
             }
             catch (Exception e)
             {
                 Config = new OverflowConfig();
-                Log.Warn("配置初始化失败，使用默认值（开启 / F3）: " + e.Message);
+                Log.Warn("配置初始化失败，使用默认值（开启 / , .）: " + e.Message);
             }
+            Config.RegisterGameOptions(ModId);
 
             Overflow.Apply();
 
@@ -56,8 +58,9 @@ namespace CounterOverflow
                 Log.Warn("订阅读档事件失败: " + e.Message);
             }
 
-            Log.Info("已加载：" + (Overflow.Applied ? "柜台放不下的货改为排队" : "补丁未生效，按原版处理") + "，翻页 " + Config.Hotkey +
-                     (Config.TestMode ? "，测试模式开（Ctrl+" + Config.Hotkey + " 让顾客多摆一批货）" : ""));
+            Log.Info("已加载：" + (Overflow.Applied ? "柜台放不下的货改为分页" : "补丁未生效，按原版处理") +
+                     "，上一页 " + OverflowConfig.KeyLabel(Config.PrevKey) + "，下一页 " + OverflowConfig.KeyLabel(Config.NextKey) +
+                     (Config.TestMode ? "，测试模式开（Ctrl+" + OverflowConfig.KeyLabel(Config.NextKey) + " 让顾客多摆一批货）" : ""));
         }
 
         public void OnEnable()
@@ -75,6 +78,7 @@ namespace CounterOverflow
                 }
             }
             catch { }
+            try { ModHelper.RemoveGameOptions(ModId); } catch { }
             Overflow.Remove();
             try
             {
@@ -91,33 +95,102 @@ namespace CounterOverflow
         }
     }
 
+    /// <summary>
+    /// 配置存在游戏自带的 ModConfig（ModConfigs/&lt;mod ID&gt;.json），改装件界面的“设置”里能改；
+    /// 两个翻页键另外登记到游戏的“选项”界面（按一下键即可重新绑定），两处改的是同一份设置。
+    /// </summary>
     internal sealed class OverflowConfig
     {
-        internal const string DefaultHotkey = "F3";
+        internal const string DefaultPrev = "Comma";    // ,（键帽上是 <）
+        internal const string DefaultNext = "Period";   // .（键帽上是 >）
 
         internal bool Enabled = true;
-        internal KeyCode Hotkey = KeyCode.F3;
+        internal KeyCode PrevKey = KeyCode.Comma;
+        internal KeyCode NextKey = KeyCode.Period;
+        internal bool PageBar = true;
         internal bool TestMode;
 
         private ConfigEntry<bool> enabledEntry;
-        private ConfigEntry<string> hotkeyEntry;
+        private ConfigEntry<string> prevEntry;
+        private ConfigEntry<string> nextEntry;
+        private ConfigEntry<bool> barEntry;
         private ConfigEntry<bool> testEntry;
 
         internal void Init(string modId)
         {
             var cfg = ModHelper.GetConfig(modId);
-            enabledEntry = cfg.Define("enabled", true, "General", () => "柜台放不下的货改为排队（不销毁）",
+            enabledEntry = cfg.Define("enabled", true, "General", () => "柜台放不下的货分页显示（不销毁）",
                 tooltip: () => "关闭后恢复原版：顾客往柜台摆货时，放不下的直接销毁。");
-            hotkeyEntry = cfg.Define("hotkey", DefaultHotkey, "General", () => "翻页热键",
+            prevEntry = cfg.Define("prevKey", DefaultPrev, "General", () => "上一页",
                 choices: null,
-                tooltip: () => "Unity KeyCode 名称。有货在排队时按它：柜台上你还没买的顾客的货排到队尾，换上排队的货。默认 F3。");
+                tooltip: () => "Unity KeyCode 名称，默认 Comma（逗号键 , 键帽上是 <）。也可以在游戏的“选项”里按键绑定。");
+            nextEntry = cfg.Define("nextKey", DefaultNext, "General", () => "下一页",
+                choices: null,
+                tooltip: () => "Unity KeyCode 名称，默认 Period（句号键 . 键帽上是 >）。也可以在游戏的“选项”里按键绑定。");
+            barEntry = cfg.Define("pageBar", true, "General", () => "柜台上方显示翻页条",
+                tooltip: () => "货分成多页时，在顾客那侧柜台上方显示“◀ 第 1/3 页 ▶”，可以直接点。");
             testEntry = cfg.Define("testMode", false, "Test", () => "测试模式",
-                tooltip: () => "开启后，柜台前有顾客时按 Ctrl+翻页热键，会让顾客按原版流程再往柜台摆一批大件设备（冰箱、水箱、集湿器……），用来制造柜台溢出、测试排队和翻页。这些货可以照常买，测试完请关掉。");
+                tooltip: () => "开启后，柜台前有顾客时按 Ctrl+下一页键，会让顾客按原版流程再往柜台摆一批大件设备，用来制造柜台溢出、测试分页。这些货可以照常买，测试完请关掉。");
             enabledEntry.OnChanged += _ => Apply();
-            hotkeyEntry.OnChanged += _ => Apply();
+            prevEntry.OnChanged += _ => Apply();
+            nextEntry.OnChanged += _ => Apply();
+            barEntry.OnChanged += _ => Apply();
             testEntry.OnChanged += _ => Apply();
             Apply();
             cfg.Save();
+        }
+
+        /// <summary>在游戏“选项”里加一组按键绑定（按一下键即可改）。</summary>
+        internal void RegisterGameOptions(string modId)
+        {
+            try
+            {
+                const string section = "keys";
+                ModHelper.AddGameOptionSection(modId, section, () => "掌柜帮手·柜台不丢货");
+                ModHelper.AddGameOptionKeyBind(modId, section, "prev_page", () => "柜台上一页", () => PrevKey, k => SetKey(prevEntry, k, true),
+                    () => "顾客的货分成多页时，翻到上一页。默认 ,（逗号）");
+                ModHelper.AddGameOptionKeyBind(modId, section, "next_page", () => "柜台下一页", () => NextKey, k => SetKey(nextEntry, k, false),
+                    () => "顾客的货分成多页时，翻到下一页。默认 .（句号）");
+            }
+            catch (Exception e)
+            {
+                Log.Warn("登记游戏选项失败（仍可在改装件设置里改按键）: " + e.Message);
+            }
+        }
+
+        private void SetKey(ConfigEntry<string> entry, KeyCode key, bool prev)
+        {
+            if (key == KeyCode.None) return;
+            if (entry != null) entry.Set(key.ToString());   // Set 会触发 Apply 并保存
+            else if (prev) PrevKey = key;
+            else NextKey = key;
+        }
+
+        internal static string KeyLabel(KeyCode k)
+        {
+            switch (k)
+            {
+                case KeyCode.Comma: return ",";
+                case KeyCode.Period: return ".";
+                case KeyCode.LeftBracket: return "[";
+                case KeyCode.RightBracket: return "]";
+                case KeyCode.Slash: return "/";
+                case KeyCode.Semicolon: return ";";
+                case KeyCode.Quote: return "'";
+                case KeyCode.Minus: return "-";
+                case KeyCode.Equals: return "=";
+                default: return k.ToString();
+            }
+        }
+
+        private static KeyCode Parse(ConfigEntry<string> entry, string fallback)
+        {
+            var text = (entry?.Value ?? fallback).Trim();
+            if (text == ",") text = "Comma";
+            else if (text == ".") text = "Period";
+            if (Enum.TryParse(text, true, out KeyCode k) && k != KeyCode.None) return k;
+            Log.Warn("无法识别的按键 '" + text + "'，改用 " + fallback);
+            return (KeyCode)Enum.Parse(typeof(KeyCode), fallback);
         }
 
         private void Apply()
@@ -125,13 +198,15 @@ namespace CounterOverflow
             try
             {
                 Enabled = enabledEntry?.Value ?? true;
-                var text = (hotkeyEntry?.Value ?? DefaultHotkey).Trim();
-                if (Enum.TryParse(text, true, out KeyCode k) && k != KeyCode.None) Hotkey = k;
-                else
+                PrevKey = Parse(prevEntry, DefaultPrev);
+                NextKey = Parse(nextEntry, DefaultNext);
+                if (PrevKey == NextKey)
                 {
-                    Hotkey = KeyCode.F3;
-                    Log.Warn("无法识别的热键 '" + text + "'，改用 " + DefaultHotkey);
+                    Log.Warn("上一页和下一页设成了同一个键，改回默认的 , 和 .");
+                    PrevKey = KeyCode.Comma;
+                    NextKey = KeyCode.Period;
                 }
+                PageBar = barEntry?.Value ?? true;
                 TestMode = testEntry?.Value ?? false;
             }
             catch (Exception e)
