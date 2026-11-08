@@ -42,9 +42,9 @@ namespace SortToBoxes
             autoEntry = cfg.Define("autoOnPurchase", false, "General", () => Lang.T("买下顾客的货时自动归箱", "Auto-sort goods you buy"),
                 tooltip: () => Lang.T("成交（收购、批发、以物易物）时游戏把货移进仓库后，直接送进对应的箱子；没有对应箱子或放不下就留在仓库。",
                     "When a deal (purchase, wholesale, barter) moves goods into storage, send them straight to their box; without a matching box, or if it's full, they stay in storage."));
-            sameEntry = cfg.Define("autoSameOnCounter", true, "General", () => Lang.T("放一件上柜台时带上同款", "Bring identical items when placing one"),
-                tooltip: () => Lang.T("柜台前有买家时，你从仓库或箱子里拿一件货放上柜台，库存里一模一样的货会自动跟着摆上去。",
-                    "While a buyer is at the counter, moving one item from storage or a box onto the counter brings all identical items from your stock with it."));
+            sameEntry = cfg.Define("autoSameOnCounter", false, "General", () => Lang.T("放一件上柜台时带上同款", "Bring identical items when placing one"),
+                tooltip: () => Lang.T("柜台前有买家时，你从仓库或箱子里拿一件货放上柜台，库存里的同款会自动跟着摆上去。默认关：要整批摆，指着货按上柜台热键更直接。",
+                    "While a buyer is at the counter, moving one item from storage or a box onto the counter brings all identical items from your stock with it. Off by default: to put a whole batch up, point at an item and press the counter hotkey."));
             buttonsEntry = cfg.Define("boxButtons", true, "General", () => Lang.T("箱子窗口标题栏显示“分类”按钮", "Show the Sort button in box windows"),
                 tooltip: () => Lang.T("打开箱子时，在窗口标题栏的关闭按钮（×）左边显示一个“分类”按钮，点它设置这个箱子收哪些货。关掉后仍可用 Ctrl+归箱热键 指着箱子设置。",
                     "When a box is open, show a Sort button left of the close button (×) in its title bar; click it to choose what the box takes. Without it, use Ctrl+sort hotkey while pointing at the box."));

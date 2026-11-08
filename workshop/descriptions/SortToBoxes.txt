@@ -18,7 +18,7 @@
 [list]
 [*][b]F4[/b]：把当前买家会买的货全部摆上柜台（用的是游戏自己判断“顾客买不买”的规则）。
 [*]指着某件货按 F4：把它的同款全部摆上柜台。
-[*]从仓库或箱子拿一件放上柜台，同款自动跟上（Shift+F4 开关）。
+[*]可选：从仓库或箱子拿一件放上柜台，同款自动跟上（默认关，Shift+F4 打开）。
 [*][b]同款[/b]按物品提示里看得到的标签区分：类型、水质 / 药品纯度等等级（没检测过按表面等级，不替你偷看）、瓶子里装的液体。装酒精的瓶子不会跟着水瓶上柜台。
 [*]默认只摆顾客买得起的；你自己调配的混合液（瓶子里有水以外的液体）不会被摆出去。
 [*]箱子可以设成[b]不参与上柜台[/b]：你自己要用的设备、不想卖的东西放进去，F4 永远不会动它们。
@@ -52,7 +52,7 @@
 [list]
 [*][b]F4[/b]: put everything the current buyer would buy onto the counter (using the game's own "would this customer buy it" rule).
 [*]F4 while pointing at an item: put all identical items on the counter.
-[*]Move one item from storage or a box onto the counter and its identical copies follow (Shift+F4 toggles).
+[*]Optional: move one item from storage or a box onto the counter and its identical copies follow (off by default; Shift+F4 turns it on).
 [*][b]Identical[/b] means matching everything you can see in the tooltip: types, grades such as water quality and drug purity (the apparent grade if untested, so nothing hidden is revealed), and the liquids in a bottle. A bottle of alcohol won't follow a bottle of water onto the counter.
 [*]By default only items the buyer can afford are put up, and never your own mixtures (bottles holding liquids other than water).
 [*]Boxes can be marked [b]keep out of the counter[/b]: put your own equipment and things you won't sell there and F4 never touches them.
