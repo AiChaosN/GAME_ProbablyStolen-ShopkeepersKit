@@ -28,27 +28,30 @@ Every action shows a short notification in the top-left corner. Where each item 
 
 ## Storing: sorting rules
 
-Each item is judged by its **first item type**: the first `[type]` shown in its tooltip. For `[Food] [Luxury]` the first type is Food.
+The game's own item types number 50+, many with only one or two items, and one item often carries several. So this mod defines its own **categories**: as few as possible covering as many items as possible, **each item in exactly one category**. There are 13: Food, Drinks & water, Household, Medical, Chemistry, Weapons & ammo, Materials, Tools & equipment, Modules, Seeds & farming, Husbandry, Documents & cards, Luxury & collectibles, plus a catch-all Other. For example, the sugar-free juice (processed food, drink and food in the game) is a Drink, and the cat chocolate bar is Food.
 
-1. **Boxes with ticked categories** come first: a box with the item itself ticked wins, then a box with the item's type (first type) ticked.
+Categories are derived from the game's item directories and types (rules in `tools/categories.py`, result table in `src/Generated/ItemCategories.cs`); items added by later game updates are classified from their types with the same rules.
+
+1. **Boxes with ticked categories** come first: a box with the item itself ticked wins, then a box with the item's category ticked.
 2. **Untagged boxes** go by what they already hold:
    - a box holding an **identical** item is preferred;
-   - otherwise a box holding items with the **same first type** (the more such items, the higher the priority).
+   - otherwise a box holding items of the **same category** (the more such items, the higher the priority).
 3. If the preferred box is full the next one is tried; if nothing fits, the item stays where it is.
 
 So:
 
 - An **empty box** needs either one "sample" item inside, or ticked categories.
-- Some items have an unusual first type. For example, the cat chocolate bar is `[Treat] [Food]`, so by default it will not go into the food box. Tick "Treat" in the food box's categories to change that.
+- Items you put into a box yourself are never taken out: sorting only moves loose items in storage (or on the counter).
 - Items without any type (about 120 in the game) can only follow an identical item that is already in a box.
 - Decisions are based on what the boxes held **before** the key press; items placed during this run don't change this run's decisions.
 
 ### Category panel
 
-Ctrl+F7 while pointing at a box, or the **分类** button left of the close button × in an open box window's title bar, opens a window in the game's own UI style. Items are grouped by type (first type):
+Ctrl+F7 while pointing at a box, or the **分类** button left of the close button × in an open box window's title bar, opens a window in the game's own UI style. Items are grouped by category:
 
-- each group starts with **【type】整类** ("whole type"): every item of that type goes into this box, including ones you only see later;
-- each item in the group has its own checkbox (with its icon): **only that item**. The ×N after a name is how many you have in storage and boxes;
+- tick **【category】整类** ("whole category") at the top of a group: **every item under it is ticked**, and items of that category you only see later go into this box too;
+- untick **整类**: **every item under it is unticked**;
+- each item has its own checkbox (with its icon) and can be ticked on its own. Unticking one item while the whole category is ticked switches to "every item except this one". The ×N after a name is how many you have in storage and boxes;
 - **only items you have seen in this save are listed** (anything that has been in your storage, boxes, machines, counters or display case). At first it's just what you own; the list grows as you see more goods, so nothing is spoiled. The record is kept in the save, one per save;
 - ticks take effect immediately and are **saved with your save file** (stored on the box itself);
 - **全部取消** ("Clear all") switches the box back to "go by what it holds";
@@ -123,7 +126,8 @@ In game: Mods screen → select this mod → **设置** (Settings). Or edit `%US
 
 | File | Contents |
 |---|---|
-| `src/Stock.cs` | What counts as a box, what can move, the first item type, the extent of your stock; reading/writing box category marks |
+| `src/Stock.cs` | What counts as a box, what can move, the extent of your stock; reading/writing box category marks (`#category`, `@item-id`) |
+| `src/Categories.cs`, `src/Generated/ItemCategories.cs`, `tools/categories.py` | The 13 categories: the generator assigns each item one category from the game's item directories + types; items not in the table use the same rules on their types |
 | `src/Sorter.cs` | Sorting: tally box contents, rank boxes for each item, place via `GraphUtils.TryAcceptAll` |
 | `src/Counter.cs` | Selling: buyer's items / identical items to the counter (`StoreClient.IsClientBuyingThisItem`, `HasBudgetLeftToBuy`), clearing the counter |
 | `src/Patches.cs` | Postfix on `PlayerStore.MoveDealItemToInventory` (auto-sort on purchase); prefix/postfix on `SlotMarker.TryAcceptOnce` (detects "stock → counter" moves to bring identical items) |
@@ -137,6 +141,7 @@ In game: Mods screen → select this mod → **设置** (Settings). Or edit `%US
 
 ## Changelog
 
+- **1.3.0**: the mod's own 13 categories (each item in exactly one) replace the game's fragmented types; the category panel groups by category, ticking a whole category ticks every item under it and unticking clears them all; types ticked in 1.2 are converted to their category.
 - **1.2.1**: the 分类 button moved into the box window's title bar, right next to the close button × (attached to the window itself, so no more gap).
 - **1.2.0**: the category panel now lists items: seen items grouped by type, with icons, tick a whole type or single items; only items seen in this save are listed; the 分类 button sits right against the box window; the box icon is now a small badge in the bottom-right corner.
 - **1.1.0**: sorting now uses the first item type; new box category panel and 分类 button; content icons on boxes; new selling helpers (F4 for the buyer's items, F4 on an item for identical items, bring identical items when placing one); F7 on the counter sends items without a matching box back to storage.

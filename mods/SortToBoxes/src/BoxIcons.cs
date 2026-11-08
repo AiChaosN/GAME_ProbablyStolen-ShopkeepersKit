@@ -141,12 +141,12 @@ namespace SortToBoxes
             {
                 // 空箱子但勾了分类：借库存里一件同类物品的图标
                 if (stock == null) stock = Stock.AllGoods();
-                string first = labels.Where(t => !t.StartsWith("@")).OrderBy(t => t, StringComparer.Ordinal).FirstOrDefault() ?? "";
+                string first = labels.Where(t => t.StartsWith("#")).Select(t => t.Substring(1)).OrderBy(t => Array.IndexOf(Categories.Order, t)).FirstOrDefault() ?? "";
                 rep = stock.FirstOrDefault(it => BoxLabels.Accepts(labels, it));
                 if (rep == null)
                 {
                     sprite = ChipSprite();
-                    tint = TypeColor(first);
+                    tint = TypeColor(Categories.ColorType(first));
                     tint.a = 0.85f;
                     return "chip:" + first;
                 }

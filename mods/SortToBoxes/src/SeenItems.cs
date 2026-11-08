@@ -10,7 +10,7 @@ namespace SortToBoxes
     /// 本存档里“见过”的物品：在仓库（含箱子、机器里）、柜台两侧、展示柜里出现过的每一种物品。
     /// 分类面板只列这些，见过的越多列表越长，没见过的不会剧透。
     /// 记录用游戏的 ModHelper.SetModData 存进当前存档（每个存档各一份，随存档保存）：
-    /// 每种物品一行：id、主类型（第一个标签）、名字、贴图图集、贴图名（用来在面板里画图标，不用生成物品）。
+    /// 每种物品一行：id、主类型（第一个标签）、名字、贴图图集、贴图名（用来在面板里画图标，不用生成物品）、大类。
     /// </summary>
     internal static class SeenItems
     {
@@ -19,7 +19,7 @@ namespace SortToBoxes
 
         internal sealed class Info
         {
-            internal string Id, Type, Name, Atlas, Sprite;
+            internal string Id, Type, Name, Atlas, Sprite, Cat;
         }
 
         private static readonly Dictionary<string, Info> seen = new Dictionary<string, Info>(StringComparer.Ordinal);
@@ -70,7 +70,7 @@ namespace SortToBoxes
         {
             if (it == null || string.IsNullOrEmpty(it.identifier) || seen.ContainsKey(it.identifier)) return;
             if (Stock.IsFixture(it)) return;   // 箱子、机器、设施本身不归箱，不列
-            var info = new Info { Id = it.identifier, Type = Stock.PrimaryType(it) ?? "" };
+            var info = new Info { Id = it.identifier, Type = Stock.PrimaryType(it) ?? "", Cat = Categories.Of(it) };
             try { info.Name = it.GetDisplayName(false); } catch { info.Name = it.identifier; }   // 原名，不用标签机起的名字
             try { info.Atlas = it.spriteAtlasPath ?? ""; info.Sprite = it.spritePath ?? ""; } catch { info.Atlas = info.Sprite = ""; }
             seen[info.Id] = info;
@@ -92,7 +92,8 @@ namespace SortToBoxes
             {
                 var f = line.Split('\t');
                 if (f.Length < 5 || string.IsNullOrEmpty(f[0])) continue;
-                seen[f[0]] = new Info { Id = f[0], Type = f[1], Name = f[2], Atlas = f[3], Sprite = f[4] };
+                string cat = f.Length >= 6 && f[5].Length > 0 ? f[5] : Categories.Of(f[0], new[] { f[1] });
+                seen[f[0]] = new Info { Id = f[0], Type = f[1], Name = f[2], Atlas = f[3], Sprite = f[4], Cat = cat };
             }
         }
 
@@ -102,7 +103,7 @@ namespace SortToBoxes
             foreach (var i in seen.Values.OrderBy(x => x.Id, StringComparer.Ordinal))
             {
                 sb.Append(Clean(i.Id)).Append('\t').Append(Clean(i.Type)).Append('\t').Append(Clean(i.Name)).Append('\t')
-                  .Append(Clean(i.Atlas)).Append('\t').Append(Clean(i.Sprite)).Append('\n');
+                  .Append(Clean(i.Atlas)).Append('\t').Append(Clean(i.Sprite)).Append('\t').Append(Clean(i.Cat)).Append('\n');
             }
             try
             {

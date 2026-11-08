@@ -19,7 +19,7 @@ Developed with assistance from [Claude Code](https://claude.com/claude-code) (An
 
 | Name | Category | Keys | Summary | Mod ID |
 |---|---|---|---|---|
-| [Sort To Boxes](mods/SortToBoxes/README.md) | [QoL] | F7 / F4 | Storing: loose items in storage go into the box matching their first item type; boxes can be tagged with categories and show an icon of their contents; optional auto-sort on purchase. Selling: one key puts everything the buyer wants on the counter; placing one item brings its identical copies | `chaos5090.sort-to-boxes` |
+| [Sort To Boxes](mods/SortToBoxes/README.md) | [QoL] | F7 / F4 | Storing: loose items in storage go into the box for their category (13 categories, each item in exactly one); tag boxes with whole categories or single items; a badge shows each box's contents; optional auto-sort on purchase. Selling: one key puts everything the buyer wants on the counter; placing one item brings its identical copies | `chaos5090.sort-to-boxes` |
 | [Counter Overflow](mods/CounterOverflow/README.md) | [Fix] | , / . | Items a seller can't fit on the counter go onto extra pages instead of being destroyed: page bar above the counter, each page keeps its layout, items you take off can always go back | `chaos5090.counter-overflow` |
 | [Visitor Forecast](mods/VisitorForecast/README.md) | [Info] | F9 | Before opening, forecasts who will visit today (faction, intent, wanted goods, budget, probability) | `chaos5090.visitor-forecast` |
 

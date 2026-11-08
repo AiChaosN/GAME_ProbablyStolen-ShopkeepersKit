@@ -42,7 +42,7 @@ namespace SortToBoxes
             internal int Order;
             internal HashSet<string> Labels;   // 勾选的分类；null = 按内容判断
             internal readonly Dictionary<string, int> Ids = new Dictionary<string, int>(StringComparer.Ordinal);
-            internal readonly Dictionary<string, int> Primary = new Dictionary<string, int>(StringComparer.Ordinal);
+            internal readonly Dictionary<string, int> Cats = new Dictionary<string, int>(StringComparer.Ordinal);   // 箱里每个大类有几件
             internal int Total;
         }
 
@@ -62,12 +62,9 @@ namespace SortToBoxes
                         box.Ids.TryGetValue(content.identifier, out int n);
                         box.Ids[content.identifier] = n + 1;
                     }
-                    var p = Stock.PrimaryType(content);
-                    if (p != null)
-                    {
-                        box.Primary.TryGetValue(p, out int c);
-                        box.Primary[p] = c + 1;
-                    }
+                    var cat = Categories.Of(content);
+                    box.Cats.TryGetValue(cat, out int c);
+                    box.Cats[cat] = c + 1;
                 }
                 result.Add(box);
             }
@@ -127,7 +124,7 @@ namespace SortToBoxes
                         if (ranked.Count == 0)
                         {
                             report.NoMatch++;
-                            report.Details.Add(itemName + "：没有对应的箱子（主类型 " + Stock.TypeName(Stock.PrimaryType(x)) + "）");
+                            report.Details.Add(itemName + "：没有对应的箱子（类别：" + Categories.Name(Categories.Of(x)) + "）");
                         }
                         else
                         {
@@ -155,7 +152,7 @@ namespace SortToBoxes
         internal static List<Box> Rank(GameItem x, List<Box> boxes)
         {
             string id = x.identifier ?? "";
-            string primary = Stock.PrimaryType(x);
+            string cat = Categories.Of(x);
             var scored = new List<KeyValuePair<double, Box>>();
             foreach (var b in boxes)
             {
@@ -164,16 +161,16 @@ namespace SortToBoxes
                 double score;
                 if (b.Labels != null)
                 {
-                    // 勾选过分类：勾了这件物品本身 > 勾了它的类型（第一个标签）；都没勾就不收
+                    // 勾选过分类：勾了这件物品本身 > 勾了它所属的大类；都没勾就不收
                     if (b.Labels.Contains(BoxLabels.ItemKey(id))) score = 3500 + same;
-                    else if (primary != null && b.Labels.Contains(primary)) score = 3000 + same;
+                    else if (b.Labels.Contains(BoxLabels.CatKey(cat))) score = 3000 + same;
                     else continue;
                 }
                 else if (same > 0)
                 {
                     score = 2000 + same;
                 }
-                else if (primary != null && b.Primary.TryGetValue(primary, out int c) && c > 0)
+                else if (b.Cats.TryGetValue(cat, out int c) && c > 0)
                 {
                     score = 1000 + c;
                 }

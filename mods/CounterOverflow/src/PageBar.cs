@@ -5,7 +5,7 @@ namespace CounterOverflow
 {
     /// <summary>
     /// 顾客头上提示框正下方的翻页条：“&lt; 上一页 (,)   第 2/4 页 · 还有 12 件没摆出   (.) 下一页 &gt;”。
-    /// 用游戏自带的 CustomUI 框架建在 paper 图层（游戏自己的储物协调器窗口也在这一层），每帧跟着柜台窗口的位置走。
+    /// 用游戏自带的 CustomUI 框架建在 overlay 图层（不能放 paper 层，否则会吃掉 ESC），每帧跟着提示框的位置走。
     /// 只有货分成多页时才显示。只影响界面：连续出错就自动停用（仍可用按键翻页）。
     /// </summary>
     internal sealed class PageBar
@@ -63,8 +63,9 @@ namespace CounterOverflow
         private void Create()
         {
             var mgr = CustomUIManager.Instance;
-            string layerId = "overlay";
-            try { if (CustomUIManager.HasLayer("paper")) layerId = "paper"; } catch { }
+            // 必须用 overlay 层，不能用 paper 层：游戏处理 ESC 时会把 paper 层下每个显示着的东西当成面板先关掉
+            // （StoreUIManager.CloseTopmostEscapeTarget），翻页条在那一层会被当成面板、每次都吃掉 ESC，菜单就出不来了
+            const string layerId = "overlay";
             var layer = mgr.GetLayerRoot(layerId);
             if (layer == null) return;
             var cfg = OverflowMod.Config ?? new OverflowConfig();

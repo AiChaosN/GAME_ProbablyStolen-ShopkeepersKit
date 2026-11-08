@@ -3,15 +3,15 @@
   <ID>chaos5090.sort-to-boxes</ID>
   <Name>【便利】掌柜帮手·归类入箱 | [QoL] Shopkeeper's Kit: Sort To Boxes</Name>
   <Author>chaos5090</Author>
-  <ModVersion>1.2.1</ModVersion>
+  <ModVersion>1.3.0</ModVersion>
   <Description>【便利型：不改任何数值，只帮你省操作】
-归箱（F7）：仓库里散放的货按“第一个标签”（物品提示里最前面的 [类型]）归进对应的箱子。勾选过分类的箱子按勾选收货（点箱子窗口标题栏 × 左边的“分类”按钮，或 Ctrl+F7 指着箱子）：可以勾整类，也可以勾单件物品；面板里只列出你在这个存档里见过的货，见过的越多越全。没勾选的箱子看里面现有的东西，有同款的优先。箱子右下角显示里面物品的小角标。指着柜台按 F7：把柜台上你的货放回箱子或仓库。Shift+F7：开关“买下时自动归箱”（默认关）。
+归箱（F7）：仓库里散放的货按大类（13 类：食物、饮料与水、日用品、医疗、化学、武器与弹药、材料、工具与设备、模组、种子与农业、养殖、文件证件、奢侈品与收藏，每件货只属于一个类）归进对应的箱子。勾选过分类的箱子按勾选收货（点箱子窗口标题栏 × 左边的“分类”按钮，或 Ctrl+F7 指着箱子）：勾整类 = 下面全勾，取消整类 = 下面全取消，也可以单独勾某件；面板里只列出你在这个存档里见过的货，见过的越多越全。没勾选的箱子看里面现有的东西，有同款的优先。箱子右下角显示里面物品的小角标。指着柜台按 F7：把柜台上你的货放回箱子或仓库。Shift+F7：开关“买下时自动归箱”（默认关）。
 上柜台（F4）：把当前买家会买的货全部摆上柜台；指着某件货按 F4：把它的同款全部摆上柜台；从仓库/箱子放一件上柜台时自动带上同款（Shift+F4 开关，默认开）。
 钉住的物品、机器、箱子本身不会动；鉴定指南、扫描仪这类装备不会被摆上柜台。界面仅中文。
 掌柜帮手系列 · 作者 chaos5090 · 由 Claude Code（Anthropic 的 AI 编程助手）协助开发。
 
 [QoL - no balance changes]
-Sort (F7): loose items in your storage go into the box that matches their first item type (the first [type] in the tooltip). Boxes you tag via the "分类" button left of the close (×) button of an open box (or Ctrl+F7 while pointing at it) take only what you ticked: whole types or single items, listed only once you've seen them in this save; untagged boxes take what they already hold, identical items first. A small badge in each box's bottom-right corner shows what it holds. F7 while pointing at the counter puts your items there back into boxes or storage. Shift+F7 toggles auto-sorting of purchased goods (off by default).
+Sort (F7): loose items in your storage go into the box for their category (13 categories, each item in exactly one: food, drinks & water, household, medical, chemistry, weapons & ammo, materials, tools & equipment, modules, seeds & farming, husbandry, documents & cards, luxury & collectibles). Boxes you tag via the "分类" button left of the close (×) button of an open box (or Ctrl+F7 while pointing at it) take only what you ticked: a whole category (ticks every item under it) or single items, listed only once you've seen them in this save; untagged boxes take what they already hold, identical items first. A small badge in each box's bottom-right corner shows what it holds. F7 while pointing at the counter puts your items there back into boxes or storage. Shift+F7 toggles auto-sorting of purchased goods (off by default).
 Sell (F4): put everything the current buyer wants onto the counter; F4 while pointing at an item puts all identical items on the counter; placing one item on the counter automatically brings its identical copies (Shift+F4 toggles, on by default).
 Pinned items, machines and containers are never moved; guides, scanners and similar equipment are never put up for sale. Chinese UI only.
 Part of Shopkeeper's Kit by chaos5090. Developed with assistance from Claude Code (Anthropic's AI coding assistant).</Description>

@@ -5,7 +5,7 @@ using System.Linq;
 namespace SortToBoxes
 {
     /// <summary>
-    /// “库存”相关的判定：什么算箱子、什么货能搬、货的主类型（第一个标签）、某个格子是不是在仓库里。
+    /// “库存”相关的判定：什么算箱子、什么货能搬、某个格子是不是在仓库里（货属于哪个大类见 Categories）。
     /// 库存 = 仓库（EmporiumEntry.invElement）最外层 + 仓库里所有箱子（含箱中箱）里的东西。
     /// </summary>
     internal static class Stock
@@ -156,22 +156,25 @@ namespace SortToBoxes
     }
 
     /// <summary>
-    /// 箱子的“分类”标签：玩家在分类面板里勾选的类型，存成箱子自己的一个 tag（字符串值，逗号分隔），随存档保存。
+    /// 箱子的“分类”标签：玩家在分类面板里勾选的大类（#类别）和单件物品（@物品id），
+    /// 存成箱子自己的一个 tag（字符串值，逗号分隔），随存档保存。
     /// 卸载 mod 后这个 tag 留在存档里也不影响游戏。
     /// </summary>
     internal static class BoxLabels
     {
         internal const string Tag = "CHAOS5090_STB_BOX_TYPES";
 
-        /// <summary>勾选单件物品时存的键：@物品id（类型直接存类型名，例如 FOOD）。</summary>
+        /// <summary>勾选单件物品时存的键：@物品id。</summary>
         internal static string ItemKey(string itemId) => "@" + itemId;
+
+        /// <summary>勾选整个大类时存的键：#类别（例如 #food）。</summary>
+        internal static string CatKey(string category) => "#" + category;
 
         internal static bool Accepts(HashSet<string> labels, GameItem it)
         {
             if (labels == null || it == null) return false;
             if (!string.IsNullOrEmpty(it.identifier) && labels.Contains(ItemKey(it.identifier))) return true;
-            var p = Stock.PrimaryType(it);
-            return p != null && labels.Contains(p);
+            return labels.Contains(CatKey(Categories.Of(it)));
         }
 
         /// <summary>勾选的类型；没设置时返回 null（= 按箱里现有物品判断）。</summary>
@@ -184,7 +187,15 @@ namespace SortToBoxes
                 if (dict == null || !dict.TryGetValue(Tag, out var st) || st == null || !st.IsEnabled()) return null;
                 var s = st.GetString();
                 if (string.IsNullOrEmpty(s)) return null;
-                var set = new HashSet<string>(s.Split(',').Select(x => x.Trim()).Where(x => x.Length > 0), StringComparer.Ordinal);
+                var set = new HashSet<string>(StringComparer.Ordinal);
+                foreach (var raw in s.Split(','))
+                {
+                    var x = raw.Trim();
+                    if (x.Length == 0) continue;
+                    // 1.2 存的是游戏的类型名（例如 FOOD）：换算成它所属的大类
+                    if (x[0] != '@' && x[0] != '#') x = CatKey(Categories.FromTypes(new[] { x }));
+                    set.Add(x);
+                }
                 return set.Count > 0 ? set : null;
             }
             catch { return null; }

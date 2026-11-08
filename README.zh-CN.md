@@ -19,7 +19,7 @@ chaos5090 为《Probably Stolen》做的 mod 系列。每个 mod 名字前标出
 
 | 名称 | 分类 | 热键 | 简介 | mod ID |
 |---|---|---|---|---|
-| [掌柜帮手·归类入箱 Sort To Boxes](mods/SortToBoxes/README.zh-CN.md) | 【便利】 | F7 / F4 | 收货：仓库散件按第一个标签归进对应的箱子，箱子可勾选分类、显示里面物品的小图标，可选买下时自动归箱。卖货：一键把买家会买的货摆上柜台，放一件自动带上同款 | `chaos5090.sort-to-boxes` |
+| [掌柜帮手·归类入箱 Sort To Boxes](mods/SortToBoxes/README.zh-CN.md) | 【便利】 | F7 / F4 | 收货：仓库散件按大类（13 类，每件货只属于一个类）归进对应的箱子，箱子可勾选整类或单件、右下角显示内容角标，可选买下时自动归箱。卖货：一键把买家会买的货摆上柜台，放一件自动带上同款 | `chaos5090.sort-to-boxes` |
 | [掌柜帮手·柜台不丢货 Counter Overflow](mods/CounterOverflow/README.zh-CN.md) | 【修复】 | , / . | 卖家摆货时柜台放不下的货不再被销毁，分到后面的页：柜台上方有翻页条，每页记住货的位置，拿下来的货随时能放回去 | `chaos5090.counter-overflow` |
 | [掌柜帮手·访客预测 Visitor Forecast](mods/VisitorForecast/README.zh-CN.md) | 【情报】 | F9 | 开门前预测今天谁会来（阵营、来意、想要什么、预算、概率） | `chaos5090.visitor-forecast` |
 
