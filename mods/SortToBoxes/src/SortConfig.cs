@@ -94,7 +94,7 @@ namespace SortToBoxes
                     () => Lang.T("仓库散件归箱；指着柜台：把柜台上你的货放回箱子/仓库。默认 " + DefaultHotkey, "Sort loose items in storage; pointing at the counter: put your items back into boxes/storage. Default " + DefaultHotkey));
                 ModHelper.AddGameOptionKeyBind(modId, "keys", "sell_hotkey", () => Lang.T("上柜台（Shift：开关放一件带同款）", "Counter (Shift: toggle bring identical items)"), () => SellHotkey,
                     k => { if (k != KeyCode.None) sellHotkeyEntry?.Set(k.ToString()); },
-                    () => Lang.T("把当前买家会买的货摆上柜台；指着某件货：把它的同款摆上柜台。默认 " + DefaultSellHotkey, "Put everything the current buyer would buy on the counter; pointing at an item: put its copies on the counter. Default " + DefaultSellHotkey));
+                    () => Lang.T("把当前买家会买的货摆上柜台；指着仓库/箱子里的货：把同款摆上柜台；指着柜台上的货：把同款收回。默认 " + DefaultSellHotkey, "Put everything the current buyer would buy on the counter; pointing at an item in stock: put its copies on the counter; pointing at an item on the counter: take its copies back. Default " + DefaultSellHotkey));
             }
             catch (Exception e)
             {

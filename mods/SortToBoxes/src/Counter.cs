@@ -115,6 +115,21 @@ namespace SortToBoxes
             }
         }
 
+        /// <summary>
+        /// 把柜台上（你这一侧）与 sample 同款的货（含 sample 本身）收回：能归箱的归箱，其余放回仓库。
+        /// 和“指着库存里的货摆同款上柜台”是同一个键的反方向。
+        /// </summary>
+        internal static SortReport TakeSame(GameItem sample)
+        {
+            var counter = Stock.Counter;
+            if (counter == null || sample == null) return new SortReport();
+            string key = Stock.VariantKey(sample);
+            var items = counter.childItems
+                .Where(it => it != null && (ReferenceEquals(it, sample) || Stock.VariantKey(it) == key))
+                .ToList();
+            return Sorter.SortItems(items, Sorter.CollectBoxes(), Stock.Warehouse, allowNegotiated: true);
+        }
+
         /// <summary>柜台上你的货：能归箱的归箱，其余放回仓库。顾客的东西不动。</summary>
         internal static SortReport ClearCounter(GameInventory counterSide)
         {

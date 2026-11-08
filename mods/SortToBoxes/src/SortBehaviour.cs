@@ -69,13 +69,15 @@ namespace SortToBoxes
                 {
                     bool shift = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
                     bool ctrl = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
-                    if (Input.GetKeyDown(cfg.Hotkey))
+                    // 拖着物品时，游戏自己的拖动键（翻转 F、旋转 Q/E、复位 R）归游戏用：键位设成同一个键也不抢
+                    bool dragging = Dragging();
+                    if (Input.GetKeyDown(cfg.Hotkey) && !(dragging && IsGameDragKey(cfg.Hotkey)))
                     {
                         if (shift) ToggleAuto(cfg);
                         else if (ctrl) OpenLabelsUnderMouse();
                         else RunSort();
                     }
-                    else if (Input.GetKeyDown(cfg.SellHotkey))
+                    else if (Input.GetKeyDown(cfg.SellHotkey) && !(dragging && IsGameDragKey(cfg.SellHotkey)))
                     {
                         if (shift) ToggleAutoSame(cfg);
                         else RunSell();
@@ -192,6 +194,15 @@ namespace SortToBoxes
         {
             if (!Ready(true)) return;
             var item = HoveredItem();
+            // 指着柜台上你的货：反方向，把它和柜台上的同款收回箱子/仓库
+            if (item != null && GeneralHelper.IsItemOwned(item) && ReferenceEquals(item.parentInventory, Stock.Counter))
+            {
+                var back = Counter.TakeSame(item);
+                Notify(back.Considered == 0 ? Lang.T("柜台上没有能收回的 " + Stock.Name(item), "Nothing to take back: " + Stock.Name(item))
+                                             : Summary(back, Kind.Return, Lang.T(Stock.Name(item) + " 的同款", "copies of " + Stock.Name(item))));
+                LogReport("同款下柜台：" + Stock.Name(item), back);
+                return;
+            }
             if (item != null && !string.IsNullOrEmpty(item.identifier) && GeneralHelper.IsItemOwned(item) && !Stock.IsFixture(item))
             {
                 var r = Counter.PutSame(Stock.VariantKey(item), null);
@@ -316,6 +327,30 @@ namespace SortToBoxes
             {
                 Log.Info(msg + "（提示框不可用: " + e.Message + "）");
             }
+        }
+
+        private static bool Dragging()
+        {
+            try
+            {
+                return (ItemMouseDragHandler.current != null && ItemMouseDragHandler.current.IsDraggingItem) ||
+                       (ItemMultiSelectHandler.current != null && ItemMultiSelectHandler.current.IsGroupDragging);
+            }
+            catch { return false; }
+        }
+
+        private static readonly string[] GameDragKeys = { "flip_item", "flip_item_alt", "rotate_cw", "rotate_ccw", "reset_orientation" };
+
+        /// <summary>这个键是不是游戏拖动物品时用的键（按玩家在游戏选项里的当前绑定）。</summary>
+        private static bool IsGameDragKey(KeyCode k)
+        {
+            try
+            {
+                foreach (var id in GameDragKeys)
+                    if (KeyBindHelper.Get(id) == k) return true;
+            }
+            catch { }
+            return false;
         }
 
         private static bool IsTyping()

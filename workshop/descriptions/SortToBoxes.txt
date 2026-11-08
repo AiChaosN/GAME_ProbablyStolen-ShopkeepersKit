@@ -17,7 +17,7 @@
 [h2]卖货：一键上柜台[/h2]
 [list]
 [*][b]C[/b]：把当前买家会买的货全部摆上柜台（用的是游戏自己判断“顾客买不买”的规则）。
-[*]指着某件货按 C：把它的同款全部摆上柜台。
+[*]指着仓库或箱子里的某件货按 C：把它的同款全部摆上柜台；指着柜台上的货按 C：反过来把同款收回箱子。
 [*]可选：从仓库或箱子拿一件放上柜台，同款自动跟上（默认关，Shift+C 打开）。
 [*][b]同款[/b]按物品提示里看得到的标签区分：类型、水质 / 药品纯度等等级（没检测过按表面等级，不替你偷看）、瓶子里装的液体。装酒精的瓶子不会跟着水瓶上柜台。
 [*]默认只摆顾客买得起的；你自己调配的混合液（瓶子里有水以外的液体）不会被摆出去。
@@ -51,7 +51,7 @@
 [h2]Selling: one-key counter[/h2]
 [list]
 [*][b]C[/b]: put everything the current buyer would buy onto the counter (using the game's own "would this customer buy it" rule).
-[*]C while pointing at an item: put all identical items on the counter.
+[*]C while pointing at an item in storage or a box: put all identical items on the counter; on an item on the counter: take them back into boxes.
 [*]Optional: move one item from storage or a box onto the counter and its identical copies follow (off by default; Shift+C turns it on).
 [*][b]Identical[/b] means matching everything you can see in the tooltip: types, grades such as water quality and drug purity (the apparent grade if untested, so nothing hidden is revealed), and the liquids in a bottle. A bottle of alcohol won't follow a bottle of water onto the counter.
 [*]By default only items the buyer can afford are put up, and never your own mixtures (bottles holding liquids other than water).

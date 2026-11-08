@@ -36,10 +36,11 @@ The screenshots use rebound keys (`;` and `'`); the defaults are G and C. The ga
 |---|---|
 | **G** | Sort loose items in **storage** into matching boxes |
 | **G** while pointing at the **counter** | Put **your** items on the counter back into boxes; items with no matching box go back to storage (customer items are left alone) |
-| **Ctrl+G** while pointing at a box | Open that box's **category panel** (or click the **分类** ("Category") button in an open box window's title bar, just left of the close button ×) |
+| **Ctrl+G** while pointing at a box | Open that box's **category panel** (or click the **Sort** button (**分类** in Chinese) in an open box window's title bar, just left of the close button ×) |
 | **Shift+G** | Toggle **auto-sort on purchase** (off by default) |
 | **C** | Put everything the current buyer **would buy** onto the counter |
-| **C** while pointing at an item | Put all **identical** items onto the counter |
+| **C** while pointing at an item in **storage or a box** | Put all **identical** items onto the counter |
+| **C** while pointing at your item **on the counter** | The reverse: take it and its **identical** copies on the counter back into boxes; items with no matching box go to storage |
 | **Shift+C** | Toggle **bring identical items when you place one on the counter** (off by default) |
 
 Every action shows a short notification in the top-left corner. Where each item went is written to the game log `Player.log` (search for `[SortToBoxes]`).
@@ -95,7 +96,8 @@ Not boxes: the trash can, the dossier, seed packets, locked supply crates, machi
 The counter can hold many items at once, but the customer negotiates **one item at a time** (the last item placed comes first; when it's sold the next one is up). Put everything up once and you only need to click "sell" for each.
 
 - **C**: put everything the current buyer would buy onto the counter. "Would buy" uses the game's own rule, the same function the game uses to decide whether a customer wants an item. By default only items the customer **can afford** are put up (they won't buy the rest anyway; turn off `onlyAffordable` to change this), more valuable first, so they get the space if the counter fills up.
-- **C while pointing at an item**: put all identical items from storage and boxes onto the counter, with or without a customer present.
+- **C while pointing at an item in storage or a box**: put all identical items from storage and boxes onto the counter, with or without a customer present.
+- **C while pointing at an item on the counter**: the reverse; that item and its identical copies on the counter go back (same box rules as G; no matching box means storage). Put up too many or the wrong ones? The same key undoes it.
 - **Bring identical items** (optional, off by default; Shift+C turns it on): while a buyer is at the counter, when you move one item from storage or a box onto the counter (drag it or Shift+click it), its **identical** copies in your stock follow automatically. Only the move "from your stock to the counter" triggers this; items the game itself moves to the counter, for example when a barter completes, do not. It's off by default because sometimes you want just one; to put a whole batch up, point at the item and press C.
 - When you're done, point at the counter and press **G**: what's left goes back to boxes or storage.
 
@@ -140,7 +142,7 @@ In game: Mods screen → select this mod → **设置** (Settings). Or edit `%US
 | Key | Default | Meaning |
 |---|---|---|
 | `hotkey` | `G` | Sort key (Unity KeyCode name). The defaults sit under the left hand and avoid the game's own keys (Q E R F S P K O B, Space, digits) and F5/F6/F8 used by popular mods |
-| `sellHotkey` | `C` | Counter key |
+| `sellHotkey` | `C` | Counter key. **F** works too: the game's F (flip) only acts while you drag an item, and while dragging this mod leaves the key to the game. The game's Options refuse F because it's the flip key, so type `F` in this mod's settings (Mods → this mod → Settings) |
 | `autoOnPurchase` | `false` | Auto-sort goods you buy from customers (also Shift+G in game) |
 | `autoSameOnCounter` | `false` | Bring identical items when you place one on the counter (also Shift+C in game) |
 | `boxButtons` | `true` | Show the 分类 button in open box windows' title bar (left of ×) |
@@ -172,6 +174,7 @@ In game: Mods screen → select this mod → **设置** (Settings). Or edit `%US
 
 ## Changelog
 
+- **1.7.0**: The counter key (C) now works both ways depending on what you point at: an item in storage or a box puts its identical copies on the counter; an item on the counter takes its identical copies back into boxes or storage. While you drag an item, a hotkey that matches the game's flip/rotate/reset key is left to the game (so the counter key can be F).
 - **1.6.0**: Default keys moved under the left hand: sort **G**, counter **C** (previously F7 / F4; next to the game's Q/E rotate keys); keys you already saved are kept. Rebinding a key in the game's Options no longer triggers sorting or the counter key; messages show the key you actually set.
 - **1.5.1**: "Bring identical items" is now off by default: dragging one item onto the counter moves just that one; point at an item and press F4 for the whole batch (an existing "on" setting is kept; Shift+F4 turns it off).
 - **1.5.0**: "identical" now compares what you can see (types, grades such as water quality and drug purity, non-water liquids in a bottle), so alcohol bottles no longer follow water bottles; F4 by default only puts items the buyer can afford and never your own mixtures; boxes can be marked "keep out of the counter".
