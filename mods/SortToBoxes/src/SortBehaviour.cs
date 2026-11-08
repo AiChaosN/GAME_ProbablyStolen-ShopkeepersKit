@@ -320,7 +320,7 @@ namespace SortToBoxes
 
         private static bool IsTyping()
         {
-            try { return StoreUIManager.IsAnyTyping(); }
+            try { return StoreUIManager.IsAnyTyping() || KeyBindHelper.SuppressHotkeys; }   // 正在打字，或正在游戏设置里改键
             catch { return false; }
         }
     }

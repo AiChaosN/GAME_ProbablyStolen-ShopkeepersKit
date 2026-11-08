@@ -47,7 +47,7 @@ namespace CounterOverflow
                 else if (Overflow.PageCount > announcedPages && Overflow.LastPagedAt >= 0f && Time.unscaledTime - Overflow.LastPagedAt >= 1f)
                 {
                     announcedPages = Overflow.PageCount;
-                    string keys = OverflowConfig.KeyLabel(cfg?.PrevKey ?? KeyCode.Comma) + " / " + OverflowConfig.KeyLabel(cfg?.NextKey ?? KeyCode.Period);
+                    string keys = OverflowConfig.KeyLabel(cfg?.PrevKey ?? KeyCode.Z) + " / " + OverflowConfig.KeyLabel(cfg?.NextKey ?? KeyCode.X);
                     Notify(Lang.T("柜台放不下，货分成了 " + Overflow.PageCount + " 页：点下方的翻页条，或按 " + keys + " 翻页",
                                   "The counter is full: goods split into " + Overflow.PageCount + " pages. Use the page bar below or press " + keys + " to flip"));
                 }
@@ -121,7 +121,7 @@ namespace CounterOverflow
 
         private static bool IsTyping()
         {
-            try { return StoreUIManager.IsAnyTyping(); }
+            try { return StoreUIManager.IsAnyTyping() || KeyBindHelper.SuppressHotkeys; }   // 正在打字，或正在游戏设置里改键
             catch { return false; }
         }
     }

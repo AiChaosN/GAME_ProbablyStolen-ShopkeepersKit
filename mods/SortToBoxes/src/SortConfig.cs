@@ -9,11 +9,11 @@ namespace SortToBoxes
     /// </summary>
     internal sealed class SortConfig
     {
-        internal const string DefaultHotkey = "F7";
-        internal const string DefaultSellHotkey = "F4";
+        internal const string DefaultHotkey = "G";       // 左手区：游戏自带键 Q E R F S P K O B、数字键都没用它
+        internal const string DefaultSellHotkey = "C";   // Counter
 
-        internal KeyCode Hotkey = KeyCode.F7;
-        internal KeyCode SellHotkey = KeyCode.F4;
+        internal KeyCode Hotkey = KeyCode.G;
+        internal KeyCode SellHotkey = KeyCode.C;
         internal bool AutoOnPurchase;
         internal bool AutoSameOnCounter = true;
         internal bool BoxButtons = true;
@@ -52,8 +52,8 @@ namespace SortToBoxes
                 tooltip: () => Lang.T("仓库里的箱子（储藏区等）右下角画一个小角标：箱子里第一件物品的图标；空箱子勾了分类时用同类物品的图标或类别颜色。只影响显示。",
                     "Draw a small badge in the bottom-right corner of each box in storage: the icon of its first item; an empty box with categories ticked shows an item of that category or the category's color. Display only."));
             affordEntry = cfg.Define("onlyAffordable", true, "General", () => Lang.T("上柜台时只摆顾客买得起的", "Counter key: only items the buyer can afford"),
-                tooltip: () => Lang.T("开启时，F4 只把当前顾客预算买得起的货摆上柜台（买不起的摆上去他也不会买）。关闭则买不起的也摆，排在后面。",
-                    "When on, F4 only puts items within the current buyer's budget on the counter (they won't buy the rest anyway). When off, unaffordable items are added after the others."));
+                tooltip: () => Lang.T("开启时，上柜台热键只把当前顾客预算买得起的货摆上柜台（买不起的摆上去他也不会买）。关闭则买不起的也摆，排在后面。",
+                    "When on, the counter key only puts items within the current buyer's budget on the counter (they won't buy the rest anyway). When off, unaffordable items are added after the others."));
             hotkeyEntry.OnChanged += _ => Apply();
             affordEntry.OnChanged += _ => Apply();
             iconsEntry.OnChanged += _ => Apply();
@@ -91,10 +91,10 @@ namespace SortToBoxes
                 ModHelper.AddGameOptionSection(modId, "keys", () => Lang.T("掌柜帮手·归类入箱", "Shopkeeper's Kit: Sort To Boxes"));
                 ModHelper.AddGameOptionKeyBind(modId, "keys", "hotkey", () => Lang.T("归箱（Shift：开关买下自动归箱，Ctrl：箱子分类）", "Sort (Shift: toggle auto-sort on purchase, Ctrl: box categories)"), () => Hotkey,
                     k => { if (k != KeyCode.None) hotkeyEntry?.Set(k.ToString()); },
-                    () => Lang.T("仓库散件归箱；指着柜台：把柜台上你的货放回箱子/仓库。默认 F7", "Sort loose items in storage; pointing at the counter: put your items back into boxes/storage. Default F7"));
+                    () => Lang.T("仓库散件归箱；指着柜台：把柜台上你的货放回箱子/仓库。默认 " + DefaultHotkey, "Sort loose items in storage; pointing at the counter: put your items back into boxes/storage. Default " + DefaultHotkey));
                 ModHelper.AddGameOptionKeyBind(modId, "keys", "sell_hotkey", () => Lang.T("上柜台（Shift：开关放一件带同款）", "Counter (Shift: toggle bring identical items)"), () => SellHotkey,
                     k => { if (k != KeyCode.None) sellHotkeyEntry?.Set(k.ToString()); },
-                    () => Lang.T("把当前买家会买的货摆上柜台；指着某件货：把它的同款摆上柜台。默认 F4", "Put everything the current buyer would buy on the counter; pointing at an item: put its copies on the counter. Default F4"));
+                    () => Lang.T("把当前买家会买的货摆上柜台；指着某件货：把它的同款摆上柜台。默认 " + DefaultSellHotkey, "Put everything the current buyer would buy on the counter; pointing at an item: put its copies on the counter. Default " + DefaultSellHotkey));
             }
             catch (Exception e)
             {
@@ -110,8 +110,8 @@ namespace SortToBoxes
                 SellHotkey = ParseKey(sellHotkeyEntry, DefaultSellHotkey);
                 if (SellHotkey == Hotkey)
                 {
-                    Log.Warn("上柜台热键与归箱热键相同，上柜台改用 " + (Hotkey == KeyCode.F4 ? DefaultHotkey : DefaultSellHotkey));
-                    SellHotkey = Hotkey == KeyCode.F4 ? KeyCode.F7 : KeyCode.F4;
+                    Log.Warn("上柜台热键与归箱热键相同，上柜台改用 " + (Hotkey == KeyCode.C ? DefaultHotkey : DefaultSellHotkey));
+                    SellHotkey = Hotkey == KeyCode.C ? KeyCode.G : KeyCode.C;
                 }
                 AutoOnPurchase = autoEntry?.Value ?? false;
                 AutoSameOnCounter = sameEntry?.Value ?? true;

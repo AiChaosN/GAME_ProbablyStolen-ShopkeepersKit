@@ -10,9 +10,9 @@ namespace VisitorForecast
     /// </summary>
     internal sealed class ForecastConfig
     {
-        internal const string DefaultHotkey = "F9";
+        internal const string DefaultHotkey = "V";   // 左手区，游戏自带键和常见 mod 都没用它
 
-        internal KeyCode Hotkey = KeyCode.F9;
+        internal KeyCode Hotkey = KeyCode.V;
         internal int Runs = 300;
         internal bool IncludeOtherMods;
         internal bool NativeUI = true;
@@ -53,7 +53,7 @@ namespace VisitorForecast
                 ModHelper.AddGameOptionSection(modId, "keys", () => "掌柜帮手·访客预测");
                 ModHelper.AddGameOptionKeyBind(modId, "keys", "hotkey", () => "打开/关闭访客预测", () => Hotkey,
                     k => { if (k != KeyCode.None) hotkeyEntry?.Set(k.ToString()); },
-                    () => "开门前按它预测今天的来客，开门后显示实际队列。默认 F9");
+                    () => "开门前按它预测今天的来客，开门后显示实际队列。默认 " + DefaultHotkey);
             }
             catch (Exception e)
             {
@@ -65,7 +65,7 @@ namespace VisitorForecast
         {
             try
             {
-                Hotkey = KeyNames.Parse(hotkeyEntry?.Value ?? DefaultHotkey, KeyCode.F9, Log.Warn);
+                Hotkey = KeyNames.Parse(hotkeyEntry?.Value ?? DefaultHotkey, KeyCode.V, Log.Warn);
                 Runs = int.TryParse((runsEntry?.Value ?? "300").Trim(), out int r) ? Mathf.Clamp(r, 20, 2000) : 300;
                 IncludeOtherMods = modsEntry?.Value ?? false;
                 NativeUI = nativeEntry?.Value ?? true;

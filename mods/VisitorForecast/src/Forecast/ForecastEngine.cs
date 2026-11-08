@@ -46,7 +46,7 @@ namespace VisitorForecast.Forecast
                 case PlayerStore.StoreState.OPEN:
                     return ActualQueue(ps, ss);
                 case PlayerStore.StoreState.CLOSED:
-                    return Message("今天已经打烊。请在明天早上拉起卷帘门（开门）之前按 " + cfg.Hotkey + " 预测当天来客。");
+                    return Message("今天已经打烊。请在明天早上拉起卷帘门（开门）之前按 " + KeyNames.Label(cfg.Hotkey) + " 预测当天来客。");
             }
             if (Patches.CriticalMissing)
                 return Message("关键的防副作用补丁没有成功应用（游戏版本可能已更新）。为了不影响存档，预测功能已禁用。详情见 Player.log 中的 [VisitorForecast] 行。");

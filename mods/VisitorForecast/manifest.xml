@@ -3,11 +3,11 @@
   <ID>chaos5090.visitor-forecast</ID>
   <Name>【情报】掌柜帮手·访客预测 | [Info] Shopkeeper's Kit: Visitor Forecast</Name>
   <Author>ChaosN</Author>
-  <ModVersion>1.3.4</ModVersion>
-  <Description>【情报型：不改任何数值，但会提前告诉你今天谁会来，游戏会因此简单一些】开门前按 F9：在沙盒里把当天的顾客生成跑几百遍，列出今天必来/可能来的顾客（阵营、来意、想要什么、预算、来源、概率）。每次预测后都会校验游戏状态与预测前完全一致。界面仅中文。
+  <ModVersion>1.4.0</ModVersion>
+  <Description>【情报型：不改任何数值，但会提前告诉你今天谁会来，游戏会因此简单一些】开门前按 V：在沙盒里把当天的顾客生成跑几百遍，列出今天必来/可能来的顾客（阵营、来意、想要什么、预算、来源、概率）。每次预测后都会校验游戏状态与预测前完全一致。界面仅中文。
 掌柜帮手系列 · 作者 ChaosN · 由 Claude Code（Anthropic 的 AI 编程助手）协助开发。
 
-[Info - no stat changes, but reveals who will visit today, which makes the game easier] Before opening, press F9: the mod replays the day's customer generation a few hundred times in a sandbox and lists who will or may come (faction, intent, wanted goods, budget, source, probability). After every forecast it verifies the game state is exactly as before. Chinese UI only.
+[Info - no stat changes, but reveals who will visit today, which makes the game easier] Before opening, press V: the mod replays the day's customer generation a few hundred times in a sandbox and lists who will or may come (faction, intent, wanted goods, budget, source, probability). After every forecast it verifies the game state is exactly as before. Chinese UI only.
 Part of Shopkeeper's Kit by ChaosN. Developed with assistance from Claude Code (Anthropic's AI coding assistant).</Description>
   <GameVersions>
     <Version>0.46D</Version>

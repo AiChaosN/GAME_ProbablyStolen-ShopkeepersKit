@@ -28,19 +28,19 @@ The in-game UI is in Chinese and English and follows the game's language (Chines
 
 <img src="docs/images/sell-buyable.jpg" alt="Put what the buyer wants on the counter" width="45%"> <img src="docs/images/bring-identical.jpg" alt="Bring identical items" width="52%">
 
-The screenshots use rebound keys (`;` and `'`); the defaults are F7 and F4. The game was in Chinese.
+The screenshots use rebound keys (`;` and `'`); the defaults are G and C. The game was in Chinese.
 
 ## Keys
 
 | Key | What it does |
 |---|---|
-| **F7** | Sort loose items in **storage** into matching boxes |
-| **F7** while pointing at the **counter** | Put **your** items on the counter back into boxes; items with no matching box go back to storage (customer items are left alone) |
-| **Ctrl+F7** while pointing at a box | Open that box's **category panel** (or click the **分类** ("Category") button in an open box window's title bar, just left of the close button ×) |
-| **Shift+F7** | Toggle **auto-sort on purchase** (off by default) |
-| **F4** | Put everything the current buyer **would buy** onto the counter |
-| **F4** while pointing at an item | Put all **identical** items onto the counter |
-| **Shift+F4** | Toggle **bring identical items when you place one on the counter** (off by default) |
+| **G** | Sort loose items in **storage** into matching boxes |
+| **G** while pointing at the **counter** | Put **your** items on the counter back into boxes; items with no matching box go back to storage (customer items are left alone) |
+| **Ctrl+G** while pointing at a box | Open that box's **category panel** (or click the **分类** ("Category") button in an open box window's title bar, just left of the close button ×) |
+| **Shift+G** | Toggle **auto-sort on purchase** (off by default) |
+| **C** | Put everything the current buyer **would buy** onto the counter |
+| **C** while pointing at an item | Put all **identical** items onto the counter |
+| **Shift+C** | Toggle **bring identical items when you place one on the counter** (off by default) |
 
 Every action shows a short notification in the top-left corner. Where each item went is written to the game log `Player.log` (search for `[SortToBoxes]`).
 
@@ -65,7 +65,7 @@ So:
 
 ### Category panel
 
-Ctrl+F7 while pointing at a box, or the **分类** button left of the close button × in an open box window's title bar, opens a window in the game's own UI style. Items are grouped by category:
+Ctrl+G while pointing at a box, or the **分类** button left of the close button × in an open box window's title bar, opens a window in the game's own UI style. Items are grouped by category:
 
 - tick **【category】整类** ("whole category") at the top of a group: **every item under it is ticked**, and items of that category you only see later go into this box too;
 - untick **整类**: **every item under it is unticked**;
@@ -94,10 +94,10 @@ Not boxes: the trash can, the dossier, seed packets, locked supply crates, machi
 
 The counter can hold many items at once, but the customer negotiates **one item at a time** (the last item placed comes first; when it's sold the next one is up). Put everything up once and you only need to click "sell" for each.
 
-- **F4**: put everything the current buyer would buy onto the counter. "Would buy" uses the game's own rule, the same function the game uses to decide whether a customer wants an item. By default only items the customer **can afford** are put up (they won't buy the rest anyway; turn off `onlyAffordable` to change this), more valuable first, so they get the space if the counter fills up.
-- **F4 while pointing at an item**: put all identical items from storage and boxes onto the counter, with or without a customer present.
-- **Bring identical items** (optional, off by default; Shift+F4 turns it on): while a buyer is at the counter, when you move one item from storage or a box onto the counter (drag it or Shift+click it), its **identical** copies in your stock follow automatically. Only the move "from your stock to the counter" triggers this; items the game itself moves to the counter, for example when a barter completes, do not. It's off by default because sometimes you want just one; to put a whole batch up, point at the item and press F4.
-- When you're done, point at the counter and press **F7**: what's left goes back to boxes or storage.
+- **C**: put everything the current buyer would buy onto the counter. "Would buy" uses the game's own rule, the same function the game uses to decide whether a customer wants an item. By default only items the customer **can afford** are put up (they won't buy the rest anyway; turn off `onlyAffordable` to change this), more valuable first, so they get the space if the counter fills up.
+- **C while pointing at an item**: put all identical items from storage and boxes onto the counter, with or without a customer present.
+- **Bring identical items** (optional, off by default; Shift+C turns it on): while a buyer is at the counter, when you move one item from storage or a box onto the counter (drag it or Shift+click it), its **identical** copies in your stock follow automatically. Only the move "from your stock to the counter" triggers this; items the game itself moves to the counter, for example when a barter completes, do not. It's off by default because sometimes you want just one; to put a whole batch up, point at the item and press C.
+- When you're done, point at the counter and press **G**: what's left goes back to boxes or storage.
 
 **Identical** means the same item with everything you can see in its tooltip matching: type labels, grades (water quality, drug purity, condition; the tested grade if tested, otherwise the apparent grade, so nothing hidden is revealed), and whether the bottle holds any liquid other than water, and which. A bottle of alcohol and a bottle of water are not identical, nor are waters with different apparent grades.
 
@@ -139,19 +139,19 @@ In game: Mods screen → select this mod → **设置** (Settings). Or edit `%US
 
 | Key | Default | Meaning |
 |---|---|---|
-| `hotkey` | `F7` | Sort key (Unity KeyCode name). F5/F6/F8/F9 are used by Client Demand Highlight, Smart Inventory Arrange, Cheat Menu and Visitor Forecast |
-| `sellHotkey` | `F4` | Counter key |
-| `autoOnPurchase` | `false` | Auto-sort goods you buy from customers (also Shift+F7 in game) |
-| `autoSameOnCounter` | `false` | Bring identical items when you place one on the counter (also Shift+F4 in game) |
+| `hotkey` | `G` | Sort key (Unity KeyCode name). The defaults sit under the left hand and avoid the game's own keys (Q E R F S P K O B, Space, digits) and F5/F6/F8 used by popular mods |
+| `sellHotkey` | `C` | Counter key |
+| `autoOnPurchase` | `false` | Auto-sort goods you buy from customers (also Shift+G in game) |
+| `autoSameOnCounter` | `false` | Bring identical items when you place one on the counter (also Shift+C in game) |
 | `boxButtons` | `true` | Show the 分类 button in open box windows' title bar (left of ×) |
 | `boxIcons` | `true` | Draw the icon of a box's contents on the box |
-| `onlyAffordable` | `true` | F4 only puts items the buyer can afford on the counter |
+| `onlyAffordable` | `true` | C only puts items the buyer can afford on the counter |
 
 ## Other mods
 
-- **Smart Inventory Arrange (F6)** only rearranges items inside one box and never moves items between boxes, so the two don't conflict. Sort with F7, then tidy a box with F6.
-- **Client Demand Highlight (F5)** outlines the items a customer wants; F4 here puts those items on the counter. Both use the game's same "would the customer buy this" rule.
-- **Purchase Stay Counter** keeps bought goods on the counter, so auto-sort on purchase won't fire; point at the counter and press F7 instead.
+- **Smart Inventory Arrange (F6)** only rearranges items inside one box and never moves items between boxes, so the two don't conflict. Sort with G, then tidy a box with F6.
+- **Client Demand Highlight (F5)** outlines the items a customer wants; C here puts those items on the counter. Both use the game's same "would the customer buy this" rule.
+- **Purchase Stay Counter** keeps bought goods on the counter, so auto-sort on purchase won't fire; point at the counter and press G instead.
 
 ## Implementation
 
@@ -168,10 +168,11 @@ In game: Mods screen → select this mod → **设置** (Settings). Or edit `%US
 | `src/SortBehaviour.cs` | Hotkeys and notifications |
 | `src/SortConfig.cs` | Settings via the game's ModConfig |
 
-**Status**: builds and passes the game's mod scanner. 1.1.0 was tried in game: F7 on the counter, the 分类 button and box icons work (the button sat too far from the window and the icon was too big; both changed in 1.2.0). The 1.2.0 changes are **not yet tested in game**. The 分类 button is attached to the box window itself (same parent as the × button); if it looks wrong, turn off `boxButtons` and use Ctrl+F7. If the box icons look wrong, turn off `boxIcons`.
+**Status**: builds and passes the game's mod scanner. 1.1.0 was tried in game: G on the counter, the 分类 button and box icons work (the button sat too far from the window and the icon was too big; both changed in 1.2.0). The 1.2.0 changes are **not yet tested in game**. The 分类 button is attached to the box window itself (same parent as the × button); if it looks wrong, turn off `boxButtons` and use Ctrl+G. If the box icons look wrong, turn off `boxIcons`.
 
 ## Changelog
 
+- **1.6.0**: Default keys moved under the left hand: sort **G**, counter **C** (previously F7 / F4; next to the game's Q/E rotate keys); keys you already saved are kept. Rebinding a key in the game's Options no longer triggers sorting or the counter key; messages show the key you actually set.
 - **1.5.1**: "Bring identical items" is now off by default: dragging one item onto the counter moves just that one; point at an item and press F4 for the whole batch (an existing "on" setting is kept; Shift+F4 turns it off).
 - **1.5.0**: "identical" now compares what you can see (types, grades such as water quality and drug purity, non-water liquids in a bottle), so alcohol bottles no longer follow water bottles; F4 by default only puts items the buyer can afford and never your own mixtures; boxes can be marked "keep out of the counter".
 - **1.4.2**: No longer makes the game try to create a new save object in the main menu (it used `PlayerStore.Instance` to check whether a run is loaded; that getter creates one when none exists, which crashed in the constructor with a null reference). The Sort button now matches the close button × (light gray, dark outline, dark red text); the old beige-on-cream was hard to read.

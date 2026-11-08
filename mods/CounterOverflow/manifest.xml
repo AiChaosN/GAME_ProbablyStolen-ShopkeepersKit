@@ -3,7 +3,7 @@
   <ID>chaos5090.counter-overflow</ID>
   <Name>【修复】掌柜帮手·柜台不丢货 | [Fix] Shopkeeper's Kit: Counter Overflow</Name>
   <Author>ChaosN</Author>
-  <ModVersion>1.2.2</ModVersion>
+  <ModVersion>1.3.0</ModVersion>
   <Description>【修复型：修游戏 bug，会稍微影响平衡】原版里卖家（小偷、卖水的、杰克逊博士推销设备等）往柜台摆货时，柜台放不下的货会被直接销毁、没有任何提示，一次可能丢掉二十多件。本 mod 把放不下的货分到后面的“页”里：顾客头上的提示框下方出现翻页条“第 1/3 页”，点“上一页/下一页”或按 , 和 .（键帽上的 &lt; &gt;）翻页，按键可在游戏“选项”里改。每一页记住每件货的位置，翻走再翻回来原样摆回；你拿下来的货留下的空位不会被别的货占掉，随时能放回去。顾客离开时，没摆出来的页按原版方式处理。修好后你能看到原本会被销毁的货（例如黑市声望高时小偷的战利品箱），进货机会比原版多。界面中英双语，跟随游戏语言。
 掌柜帮手系列 · 作者 ChaosN · 由 Claude Code（Anthropic 的 AI 编程助手）协助开发。
 

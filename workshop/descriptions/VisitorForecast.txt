@@ -5,10 +5,10 @@
 
 [h2]功能[/h2]
 [list]
-[*]每天开门前按 [b]F9[/b]（可在游戏“选项”里改）：在沙盒里把当天的顾客生成跑几百遍，列出今天[b]必来[/b]和[b]可能来[/b]的顾客。
+[*]每天开门前按 [b]V[/b]（可在游戏“选项”里改）：在沙盒里把当天的顾客生成跑几百遍，列出今天[b]必来[/b]和[b]可能来[/b]的顾客。
 [*]每个人的阵营、来做什么（买 / 卖 / 买卖 / 对话 / 检查……）、想要什么货、预算范围、来源、出现概率、大概排第几位。
 [*]早上在门口等的人单独标出。
-[*]开门之后按 F9：显示游戏里真实的排队名单，每秒刷新。
+[*]开门之后按 V：显示游戏里真实的排队名单，每秒刷新。
 [*]每次预测完都会校验游戏状态与预测前完全一致，发现不一致会红字报警。
 [/list]
 
@@ -26,10 +26,10 @@
 
 [h2]Features[/h2]
 [list]
-[*]Before opening each morning press [b]F9[/b] (rebindable in the game's Options): the mod replays the day's customer generation a few hundred times in a sandbox and lists who [b]will[/b] and who [b]may[/b] come.
+[*]Before opening each morning press [b]V[/b] (rebindable in the game's Options): the mod replays the day's customer generation a few hundred times in a sandbox and lists who [b]will[/b] and who [b]may[/b] come.
 [*]For each: faction, intent (buy / sell / both / talk / inspect ...), wanted goods, budget range, source, probability and rough queue position.
 [*]People waiting at the door in the morning are marked separately.
-[*]After opening, F9 shows the game's real queue, refreshed every second.
+[*]After opening, V shows the game's real queue, refreshed every second.
 [*]After every forecast the mod verifies the game state is exactly as before and raises a red alert if not.
 [/list]
 

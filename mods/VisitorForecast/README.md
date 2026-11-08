@@ -9,7 +9,7 @@
 
 **The in-game UI is Chinese only.**
 
-A code mod for *Probably Stolen* (v0.46D, Unity 2021.3 Mono). **Each morning before you open the shop**, press **F9**: the mod runs the game's opening-time customer generation a few hundred times in a "sandbox" and tells you, for today:
+A code mod for *Probably Stolen* (v0.46D, Unity 2021.3 Mono). **Each morning before you open the shop**, press **V**: the mod runs the game's opening-time customer generation a few hundred times in a "sandbox" and tells you, for today:
 
 - who **must come** (100%);
 - **other visitors**: people who may or may not come, grouped by **source** (random customers, information brokers, new faces, reputation perks…), each with their own chance of showing up;
@@ -19,7 +19,7 @@ A code mod for *Probably Stolen* (v0.46D, Unity 2021.3 Mono). **Each morning bef
 
 After each forecast the mod **automatically verifies** that the game state is exactly the same as before. Any mismatch triggers a red alarm, and further forecasts are refused until you reload (see [Safety net](#safety-net)).
 
-> The forecast is based on your display case, reputation, events and save state **at the moment you press the key**. If you change the display case or sign, press F9 again (or **Re-forecast** (重新预测) in the window).
+> The forecast is based on your display case, reputation, events and save state **at the moment you press the key**. If you change the display case or sign, press V again (or **Re-forecast** (重新预测) in the window).
 
 ---
 
@@ -51,13 +51,13 @@ Manual install (building from source):
 
 ## Usage
 
-- Load a save and press **F9** **in the morning, before you raise the shutter**: the **Visitor Forecast** (访客预测) tablet pops up, shows **Forecasting…** (正在预测…) at first, and has results after one to a few seconds. Forecasting again on the same day with nothing changed gives essentially the same result (the random seed is derived from the day number).
-- To close the window, press F9 again, click the ✕ in the tablet's top-right corner, or click **Close** (关闭) at the bottom; **Re-forecast** (重新预测) reruns it immediately. You can drag the window around (the list area works as a handle too), and while the mouse is over the window, clicks don't pass through to the goods or counter behind it. Esc usually closes it as well, like the game's other tablets.
-- Press F9 **after opening**: the title changes to **Actual queue** (实际队列) and shows the game's **real queue**, refreshed every second. This is live data, not a forecast.
-- After closing time (evening), or before you've loaded a save, F9 just shows a one-line message in the window.
+- Load a save and press **V** **in the morning, before you raise the shutter**: the **Visitor Forecast** (访客预测) tablet pops up, shows **Forecasting…** (正在预测…) at first, and has results after one to a few seconds. Forecasting again on the same day with nothing changed gives essentially the same result (the random seed is derived from the day number).
+- To close the window, press V again, click the ✕ in the tablet's top-right corner, or click **Close** (关闭) at the bottom; **Re-forecast** (重新预测) reruns it immediately. You can drag the window around (the list area works as a handle too), and while the mouse is over the window, clicks don't pass through to the goods or counter behind it. Esc usually closes it as well, like the game's other tablets.
+- Press V **after opening**: the title changes to **Actual queue** (实际队列) and shows the game's **real queue**, refreshed every second. This is live data, not a forecast.
+- After closing time (evening), or before you've loaded a save, V just shows a one-line message in the window.
 - The hotkey doesn't fire while you're typing (e.g. in a text field).
 
-> Note: with the game's developer tools enabled, F9 also opens the game's built-in debug panel; in that case, rebind the hotkey to another key.
+> The default key is V, under the left hand. Older versions used V, which clashed with the game's debug panel when developer tools were on; it changed in 1.4.0, and keys you already saved are kept.
 
 ### Window contents
 
@@ -96,7 +96,7 @@ The mod uses the game's built-in mod settings and doesn't put a config file next
 
 | Key | Default | Description |
 |---|---|---|
-| `hotkey` | `F9` | Unity KeyCode name (e.g. `F7`, `Insert`), or just a symbol or letter (e.g. `/`); it can also be bound by pressing a key in the game's Options (section "掌柜帮手·访客预测") |
+| `hotkey` | `V` | Unity KeyCode name (e.g. `F7`, `Insert`), or just a symbol or letter (e.g. `/`); it can also be bound by pressing a key in the game's Options (section "掌柜帮手·访客预测") |
 | `runs` | `300` | Simulations per forecast (pick from 100–2000 in a dropdown). More runs are more accurate but stall the game longer when you press the key |
 | `includeOtherMods` | `false` | Whether the sandbox also runs other mods' code hooked into customer generation (see [Limitations](#limitations-and-caveats)) |
 | `nativeUI` | `true` | Use the game's native tablet window; turn off to use the old simple window |
@@ -132,7 +132,7 @@ After the forecast: **traverse the game state again independently** and compare 
 ## Limitations and caveats
 
 - **Only the queue generated when the shop opens is forecast.** Customers added during the day by events, phone calls, deals, etc. (e.g. `AddNextClient` mid-day) aren't included.
-- The forecast uses the state at the moment you press the key. If before opening you change the display case or sign, buy a network service, or your reputation changes, press F9 again or click **Re-forecast** (重新预测).
+- The forecast uses the state at the moment you press the key. If before opening you change the display case or sign, buy a network service, or your reputation changes, press V again or click **Re-forecast** (重新预测).
 - Who waits at the door is worked out from reputation perks and story conditions; the newspaper, hint notes, secret admirer gifts and so on in `OnShutterDoorOpenMorning` aren't customers and aren't shown.
 - The "what they sell" text comes from `data/player/clients.json` (the stats handbook, compiled offline) and may go out of date after game updates; the categories buyers want are real runtime data.
 - With `includeOtherMods=false` (the default), customers added by other mods via `ModHook.OnGenerateCustomer*` won't appear in the forecast. Turn it on and they will, but those mods' own internal state isn't covered by the snapshot, so being called repeatedly may change it (and the safety net can't detect that).

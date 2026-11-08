@@ -101,12 +101,12 @@ namespace CounterOverflow
     /// </summary>
     internal sealed class OverflowConfig
     {
-        internal const string DefaultPrev = "Comma";    // ,（键帽上是 <）
-        internal const string DefaultNext = "Period";   // .（键帽上是 >）
+        internal const string DefaultPrev = "Z";   // 左手区，挨着游戏的 Q/E 旋转
+        internal const string DefaultNext = "X";
 
         internal bool Enabled = true;
-        internal KeyCode PrevKey = KeyCode.Comma;
-        internal KeyCode NextKey = KeyCode.Period;
+        internal KeyCode PrevKey = KeyCode.Z;
+        internal KeyCode NextKey = KeyCode.X;
         internal bool PageBar = true;
         internal bool TestMode;
 
@@ -123,10 +123,10 @@ namespace CounterOverflow
                 tooltip: () => Lang.T("关闭后恢复原版：顾客往柜台摆货时，放不下的直接销毁。", "Off = base game: goods that don't fit on the counter are destroyed."));
             prevEntry = cfg.Define("prevKey", DefaultPrev, "General", () => Lang.T("上一页", "Previous page"),
                 choices: null,
-                tooltip: () => Lang.T("Unity KeyCode 名称或直接填符号，默认 Comma（逗号键 , 键帽上是 <）。也可以在游戏的“选项”里按键绑定。", "Unity KeyCode name or a symbol; default Comma (the , key with < on it). You can also bind it in the game's Options."));
+                tooltip: () => Lang.T("Unity KeyCode 名称或直接填符号，默认 Z。也可以在游戏的“选项”里按键绑定。", "Unity KeyCode name or a symbol; default Z. You can also bind it in the game's Options."));
             nextEntry = cfg.Define("nextKey", DefaultNext, "General", () => Lang.T("下一页", "Next page"),
                 choices: null,
-                tooltip: () => Lang.T("Unity KeyCode 名称或直接填符号，默认 Period（句号键 . 键帽上是 >）。也可以在游戏的“选项”里按键绑定。", "Unity KeyCode name or a symbol; default Period (the . key with > on it). You can also bind it in the game's Options."));
+                tooltip: () => Lang.T("Unity KeyCode 名称或直接填符号，默认 X。也可以在游戏的“选项”里按键绑定。", "Unity KeyCode name or a symbol; default X. You can also bind it in the game's Options."));
             barEntry = cfg.Define("pageBar", true, "General", () => Lang.T("显示翻页条", "Show the page bar"),
                 tooltip: () => Lang.T("货分成多页时，在顾客头上的提示框正下方显示“上一页 / 第 1/3 页 / 下一页”，可以直接点。", "When goods are paged, show \"Prev / Page 1/3 / Next\" right below the notification above the customer; the buttons are clickable."));
             testEntry = cfg.Define("testMode", false, "Test", () => Lang.T("测试模式", "Test mode"),
@@ -184,9 +184,9 @@ namespace CounterOverflow
                 NextKey = Parse(nextEntry, DefaultNext);
                 if (PrevKey == NextKey)
                 {
-                    Log.Warn("上一页和下一页设成了同一个键，改回默认的 , 和 .");
-                    PrevKey = KeyCode.Comma;
-                    NextKey = KeyCode.Period;
+                    Log.Warn("上一页和下一页设成了同一个键，改回默认的 Z 和 X");
+                    PrevKey = KeyCode.Z;
+                    NextKey = KeyCode.X;
                 }
                 PageBar = barEntry?.Value ?? true;
                 TestMode = testEntry?.Value ?? false;

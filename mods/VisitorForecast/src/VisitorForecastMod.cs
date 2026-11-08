@@ -29,7 +29,7 @@ namespace VisitorForecast
             catch (Exception e)
             {
                 Config = new ForecastConfig();
-                Log.Warn("配置初始化失败，使用默认值（F9 / 300 次）: " + e.Message);
+                Log.Warn("配置初始化失败，使用默认值（V / 300 次）: " + e.Message);
             }
 
             try

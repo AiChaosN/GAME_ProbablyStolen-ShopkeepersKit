@@ -90,8 +90,9 @@ namespace SortToBoxes
                     : (zh ? "箱里现有：" : "In the box: ") + string.Join(zh ? "、" : ", ", inBox.OrderByDescending(kv => kv.Value).Take(6).Select(kv => Categories.Name(kv.Key) + " " + kv.Value));
                 b.AddLabel(now);
                 var target = box;
-                b.AddToggle(zh ? "不参与上柜台：F4 和“带上同款”都不会拿这个箱子里的东西（放你自己要用的设备、不想卖的东西）"
-                               : "Keep out of the counter: F4 and \"bring identical items\" never take anything from this box (for your own equipment and things you won't sell)",
+                string sk = KeyNames.Label(SortToBoxesMod.Config?.SellHotkey ?? KeyCode.C);
+                b.AddToggle(zh ? "不参与上柜台：" + sk + " 和“带上同款”都不会拿这个箱子里的东西（放你自己要用的设备、不想卖的东西）"
+                               : "Keep out of the counter: " + sk + " and \"bring identical items\" never take anything from this box (for your own equipment and things you won't sell)",
                     Stock.IsNoSellBox(box), on => Stock.SetNoSell(target, on));
                 b.AddSeparator();
 

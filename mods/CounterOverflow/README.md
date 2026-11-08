@@ -11,7 +11,7 @@ The in-game UI is in Chinese and English and follows the game's language (Chines
 
 ## Screenshots
 
-Items that don't fit on the counter go onto the next page. The page bar above the customer's head shows the page number and how many items are on other pages; press `,` `.` or click the buttons to turn pages. (The game was in Chinese.)
+Items that don't fit on the counter go onto the next page. The page bar above the customer's head shows the page number and how many items are on other pages; press `Z` `X` or click the buttons to turn pages (the screenshots are from an older version that used `,` `.`). (The game was in Chinese.)
 
 <img src="docs/images/pages-1.jpg" alt="Page 1" width="49%"> <img src="docs/images/pages-2.jpg" alt="Page 2" width="49%">
 
@@ -30,7 +30,7 @@ The Workshop mod "防止小偷箱子被挤掉" only moves the thief's loot crate
 
 Items that don't fit go onto extra **pages**; one page is exactly one counter's worth.
 
-- When there is more than one page, a page bar appears **right below** the notification above the customer's head (where "第 1/3 页" is shown): `< 上一页 (,)    第 2/4 页 · 还有 12 件没摆出    (.) 下一页 >` ("previous / page 2 of 4 · 12 more not shown / next"). Click its buttons to flip;
+- When there is more than one page, a page bar appears **right below** the notification above the customer's head (where "第 1/3 页" is shown): `< 上一页 (Z)    第 2/4 页 · 还有 12 件没摆出    (X) 下一页 >` ("previous / page 2 of 4 · 12 more not shown / next"). Click its buttons to flip;
 - or use the keys: **,** for the previous page and **.** for the next (the keys with `<` and `>` printed on them). Rebind them by pressing a key in the game's **Options** (section "掌柜帮手·柜台不丢货"), or edit them in the mod settings;
 - every page **remembers where each item sat**: flip away and back and the items return to the same cells;
 - **no automatic refilling**: when you take an item off the counter (e.g. drag it onto the scale to negotiate), the gap it leaves is not filled by other goods. Flip to another page and back and the gap is still there, so you can always put the item back;
@@ -73,8 +73,8 @@ In game: Mods screen → select this mod → **设置** (Settings). Or edit `%US
 | Key | Default | Meaning |
 |---|---|---|
 | `enabled` | `true` | Page items that don't fit; off = base game behavior |
-| `prevKey` | `Comma` (,) | Previous page (Unity KeyCode name) |
-| `nextKey` | `Period` (.) | Next page |
+| `prevKey` | `Z` | Previous page (Unity KeyCode name) |
+| `nextKey` | `X` | Next page |
 | `pageBar` | `true` | Show the page bar below the notification above the customer |
 | `testMode` | `false` | Test mode, see below |
 
@@ -87,7 +87,7 @@ The overflow only happens naturally with certain sellers, so the mod has a **tes
 1. After enabling the mod, **restart the game once** (enabling without a restart doesn't load the mod, and the test mode setting won't show up).
 2. Mods → this mod → Settings → turn on **测试模式** (test mode).
 3. Load a save, open the shop and wait for any customer to reach the counter (a seller is best, so the items can be bought).
-4. Press **Ctrl+.**: the customer lays out an extra batch of large equipment (fridge, water tank, moisture farm, water purifier, ...) through the normal game code. The counter will overflow.
+4. Press **Ctrl+X**: the customer lays out an extra batch of large equipment (fridge, water tank, moisture farm, water purifier, ...) through the normal game code. The counter will overflow.
 5. Check:
    - a notification above the customer says the goods were split into N pages, and the page bar appears below it;
    - click "next" or press **.**: the counter shows the next page; press **,** to go back and the items are in their old cells;
@@ -112,6 +112,7 @@ Each page is an invisible grid with the counter's shape at the time, so an item'
 
 ## Changelog
 
+- **1.3.0**: Default page keys moved under the left hand: **Z / X** (previously `,` `.`); keys you already saved are kept. Rebinding a key in the game's Options no longer turns pages.
 - **1.2.2**: Author name changed to ChaosN; screenshots and a Workshop preview added (no functional changes).
 - **1.2.1**: No longer makes the game try to create a new save object in the main menu (it used `PlayerStore.Instance` to check whether a run is loaded; that getter creates one when none exists, which crashed in the constructor with a null reference).
 - **1.2.0**: UI in Chinese and English, following the game language (notifications, page bar, settings).

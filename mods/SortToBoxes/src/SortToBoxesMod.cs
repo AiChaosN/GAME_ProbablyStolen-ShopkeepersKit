@@ -27,7 +27,7 @@ namespace SortToBoxes
             catch (Exception e)
             {
                 Config = new SortConfig();
-                Log.Warn("配置初始化失败，使用默认值（F7 / F4）: " + e.Message);
+                Log.Warn("配置初始化失败，使用默认值（G / C）: " + e.Message);
             }
 
             Patches.Apply();

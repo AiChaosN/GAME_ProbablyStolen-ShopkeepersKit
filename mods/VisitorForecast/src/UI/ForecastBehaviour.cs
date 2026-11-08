@@ -31,7 +31,7 @@ namespace VisitorForecast.UI
         internal bool Busy => runAtFrame >= 0 && busyPending;
         internal ForecastResult Result => result;
         internal int Runs => VisitorForecastMod.Config?.Runs ?? 300;
-        internal string HotkeyLabel => (VisitorForecastMod.Config?.Hotkey ?? KeyCode.F9).ToString();
+        internal string HotkeyLabel => KeyNames.Label(VisitorForecastMod.Config?.Hotkey ?? KeyCode.V);   // 显示成 / 而不是 Slash
 
         private void Awake() => Instance = this;
 
@@ -98,7 +98,7 @@ namespace VisitorForecast.UI
 
         private static bool IsTyping()
         {
-            try { return StoreUIManager.IsAnyTyping(); }
+            try { return StoreUIManager.IsAnyTyping() || KeyBindHelper.SuppressHotkeys; }   // 正在打字，或正在游戏设置里改键
             catch { return false; }
         }
 
