@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Mod>
+  <ID>chaos5090.sort-to-boxes</ID>
+  <Name>【便利】掌柜帮手·归类入箱 | [QoL] Shopkeeper's Kit: Sort To Boxes</Name>
+  <Author>chaos5090</Author>
+  <ModVersion>1.0.0</ModVersion>
+  <Description>【便利型：不改任何数值，只帮你省操作】按 F7：仓库里散放的货按箱子里已有的东西，自动归进对应的储藏区/工具箱/背包（有同款的箱子优先，其次看商品类型）。鼠标指着柜台按 F7 则整理柜台上属于你的货。Shift+F7 开关「买下顾客的货时自动归箱」（默认关）。钉住的物品、机器、箱子本身不会动。界面仅中文。
+掌柜帮手系列 · 作者 chaos5090 · 由 Claude Code（Anthropic 的 AI 编程助手）协助开发。
+
+[QoL - no balance changes] Press F7 to move loose items in your storage into the boxes that already hold the same kind of goods (identical items first, then shared item types). Point at the counter to sort the counter instead. Shift+F7 toggles auto-sorting of purchased goods (off by default). Pinned items, machines and containers are never moved. Chinese UI only.
+Part of Shopkeeper's Kit by chaos5090. Developed with assistance from Claude Code (Anthropic's AI coding assistant).</Description>
+  <GameVersions>
+    <Version>0.46D</Version>
+  </GameVersions>
+  <Prerequisites />
+  <Assemblies>
+    <Assembly>SortToBoxes.dll</Assembly>
+  </Assemblies>
+  <!-- 不需要特殊权限：只调用游戏自己的放置函数，补丁目标用字面量 typeof 查找 -->
+  <Capabilities />
+</Mod>

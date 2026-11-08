@@ -1,0 +1,8 @@
+# 构建产物（发布到创意工坊的是 dist/<mod>/，不进仓库）
+bin/
+obj/
+dist/
+out/
+
+# 本机配置：游戏路径等（参考 local.env.example）
+local.env

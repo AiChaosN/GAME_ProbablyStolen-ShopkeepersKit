@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- 构建期工具（不随 mod 分发）：读取游戏的 Assembly-CSharp.dll，生成 src/Generated/GameTypeRegistry.cs。由 build.sh 调用。 -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <RollForward>Major</RollForward>
+  </PropertyGroup>
+</Project>
