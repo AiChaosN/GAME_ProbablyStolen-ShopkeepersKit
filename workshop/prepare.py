@@ -1,0 +1,131 @@
+"""
+准备上传到 Steam 创意工坊：把每个 mod 的 dist/<名字>/ 复制到 Windows 盘上的上传目录，并生成 SteamCMD 用的 VDF。
+本脚本只整理本地文件，不登录、不上传；上传由你自己运行 SteamCMD 完成（见 workshop/README.zh-CN.md）。
+
+用法（在仓库根目录）：
+    python3 -I workshop/prepare.py                       # 三个 mod 全部，私密（只有自己看得见）
+    python3 -I workshop/prepare.py SortToBoxes           # 只准备一个
+    python3 -I workshop/prepare.py --visibility public --note "1.4.2：……"
+
+上传目录：local.env 里的 UPLOAD_DIR（WSL 写法，必须在 Windows 盘上，例如 /mnt/c/ShopkeepersKit-upload），
+不设时默认 /mnt/c/ShopkeepersKit-upload。
+物品编号：workshop/ids.json。steamcmd 第一次上传成功后会把新物品的编号写回上传目录里的 VDF；
+下次运行本脚本时会先把它读回来存进 ids.json（记得提交），以后就是更新同一项，不会重复新建。
+做法与官方模组指南一致：https://github.com/dragonpan2/probably-stolen-modding（ModdingGuide “用 steamcmd 发布”）。
+"""
+import argparse, json, pathlib, re, shutil, sys, xml.etree.ElementTree as ET
+
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+WS = ROOT / "workshop"
+APPID = "4348910"   # Probably Stolen 的 Steam appid（创意工坊内容在 steamapps/workshop/content/4348910/）
+MODS = ["SortToBoxes", "CounterOverflow", "VisitorForecast"]
+VIS = {"public": "0", "friends": "1", "private": "2", "unlisted": "3"}
+
+
+def local_env():
+    env = {}
+    f = ROOT / "local.env"
+    if f.exists():
+        for line in f.read_text(encoding="utf-8").splitlines():
+            m = re.match(r'\s*([A-Z_]+)\s*=\s*"?(.*?)"?\s*$', line)
+            if m and not line.lstrip().startswith("#"):
+                env[m.group(1)] = m.group(2)
+    return env
+
+
+def win_path(p: pathlib.Path) -> str:
+    """/mnt/c/a/b -> C:\\a\\b（SteamCMD 是 Windows 程序，读 WSL 路径不可靠）"""
+    s = str(p)
+    m = re.match(r"^/mnt/([a-zA-Z])/(.*)$", s)
+    if not m:
+        sys.exit(f"上传目录必须在 Windows 盘上（/mnt/<盘符>/...），现在是：{s}")
+    return m.group(1).upper() + ":\\" + m.group(2).replace("/", "\\")
+
+
+def vdf_str(s: str) -> str:
+    return '"' + s.replace("\\", "\\\\").replace('"', '\\"') + '"'
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("mods", nargs="*", default=MODS)
+    ap.add_argument("--visibility", choices=list(VIS), default="private")
+    ap.add_argument("--note", default=None, help="更新说明（changenote）；不给时写 “v<版本号>”")
+    a = ap.parse_args()
+
+    upload = pathlib.Path(local_env().get("UPLOAD_DIR", "/mnt/c/ShopkeepersKit-upload"))
+    ids_file = WS / "ids.json"
+    ids = json.loads(ids_file.read_text(encoding="utf-8")) if ids_file.exists() else {}
+
+    # steamcmd 上传成功后会把新物品编号写回 VDF：先读回来存进 ids.json
+    changed = []
+    for mod in MODS:
+        old = upload / f"{mod}.vdf"
+        if old.exists() and not ids.get(mod):
+            m = re.search(r'"publishedfileid"\s+"(\d+)"', old.read_text(encoding="utf-8", errors="replace"))
+            if m and m.group(1) != "0":
+                ids[mod] = int(m.group(1))
+                changed.append(f"{mod} = {m.group(1)}")
+    if changed:
+        ids_file.write_text(json.dumps(ids, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        print("从上次上传的 VDF 读回物品编号，已写入 workshop/ids.json（记得提交）：" + "，".join(changed) + "\n")
+
+    print(f"上传目录：{upload}  ({win_path(upload)})\n")
+    commands = []
+    for mod in a.mods:
+        if mod not in MODS:
+            sys.exit(f"不认识的 mod：{mod}（可选 {', '.join(MODS)}）")
+        dist = ROOT / "mods" / mod / "dist" / mod
+        manifest = dist / "manifest.xml"
+        if not manifest.exists():
+            sys.exit(f"{mod}：找不到 {dist}，先在 mods/{mod} 里运行 ./build.sh")
+        r = ET.parse(manifest).getroot()   # 不是合法 XML 会直接报错退出
+        title, version = r.findtext("Name"), r.findtext("ModVersion")
+        desc_file = WS / "descriptions" / f"{mod}.txt"
+        if not desc_file.exists():
+            sys.exit(f"{mod}：缺少创意工坊介绍 {desc_file}")
+
+        out = upload / mod
+        content = out / "content"
+        if content.exists():
+            shutil.rmtree(content)
+        content.mkdir(parents=True)
+        for f in dist.iterdir():   # 内容根目录直接放 manifest.xml 和 DLL（不要再套一层文件夹）
+            shutil.copy2(f, content / f.name)
+        preview_src = WS / "previews" / f"{mod}.png"
+        preview = None
+        if preview_src.exists():
+            preview = out / "preview.png"
+            shutil.copy2(preview_src, preview)
+            shutil.copy2(preview_src, content / "preview.png")   # 游戏离线、拿不到创意工坊预览图时用文件夹里这张
+
+        pid = str(ids.get(mod, 0) or 0)
+        lines = [
+            '"workshopitem"', "{",
+            f'\t"appid"\t\t{vdf_str(APPID)}',
+            f'\t"publishedfileid"\t{vdf_str(pid)}',
+            f'\t"contentfolder"\t{vdf_str(win_path(content))}',
+        ]
+        if preview:
+            lines.append(f'\t"previewfile"\t{vdf_str(win_path(preview))}')
+        lines += [
+            f'\t"visibility"\t{vdf_str(VIS[a.visibility])}',
+            f'\t"title"\t\t{vdf_str(title)}',
+            f'\t"description"\t{vdf_str(desc_file.read_text(encoding="utf-8").strip())}',
+            f'\t"changenote"\t{vdf_str(a.note or ("v" + version))}',
+            "}", "",
+        ]
+        vdf = upload / f"{mod}.vdf"
+        vdf.write_text("\n".join(lines), encoding="utf-8")
+        state = "新建" if pid == "0" else f"更新 {pid}"
+        print(f"{mod} {version}：{state}，{a.visibility}，预览图 {'有' if preview else '没有（workshop/previews/' + mod + '.png）'}")
+        print(f"  内容：{win_path(content)}\n  配置：{win_path(vdf)}")
+        commands.append(f'+workshop_build_item "{win_path(vdf)}"')
+
+    print("\n在 Windows 的 PowerShell 里运行（把 你的Steam账号 换成你的登录名；密码和手机验证码会在窗口里问你）：")
+    print("  C:\\steamcmd\\steamcmd.exe +login 你的Steam账号 " + " ".join(commands) + " +quit")
+    print("\n第一次上传后，steamcmd 会把新物品编号写回 VDF；再运行一次本脚本就会把编号存进 workshop/ids.json，记得提交。")
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,37 @@
+[h1]【情报】掌柜帮手·访客预测[/h1]
+[b]不改任何数值，但会提前告诉你今天谁会来，游戏会因此简单一些。[/b] 界面目前只有中文。
+
+[h2]功能[/h2]
+[list]
+[*]每天开门前按 [b]F9[/b]（可在游戏“选项”里改）：在沙盒里把当天的顾客生成跑几百遍，列出今天[b]必来[/b]和[b]可能来[/b]的顾客。
+[*]每个人的阵营、来做什么（买 / 卖 / 买卖 / 对话 / 检查……）、想要什么货、预算范围、来源、出现概率、大概排第几位。
+[*]早上在门口等的人单独标出。
+[*]开门之后按 F9：显示游戏里真实的排队名单，每秒刷新。
+[*]每次预测完都会校验游戏状态与预测前完全一致，发现不一致会红字报警。
+[/list]
+
+[h2]安装[/h2]
+订阅后：主菜单 → 改装件 → 选中本 mod → 审阅并启用 → 重启游戏。不需要任何特殊权限。
+
+掌柜帮手系列 · 作者 chaos5090 · 由 Claude Code（Anthropic 的 AI 编程助手）协助开发。
+源码（MIT）：https://github.com/AiChaosN/GAME_ProbablyStolen-ShopkeepersKit
+
+------------------------------------------------------------
+
+[h1][Info] Shopkeeper's Kit: Visitor Forecast[/h1]
+[b]No stat changes, but it tells you in advance who will visit today, which makes the game easier.[/b] The in-game UI is currently Chinese only.
+
+[h2]Features[/h2]
+[list]
+[*]Before opening each morning press [b]F9[/b] (rebindable in the game's Options): the mod replays the day's customer generation a few hundred times in a sandbox and lists who [b]will[/b] and who [b]may[/b] come.
+[*]For each: faction, intent (buy / sell / both / talk / inspect ...), wanted goods, budget range, source, probability and rough queue position.
+[*]People waiting at the door in the morning are marked separately.
+[*]After opening, F9 shows the game's real queue, refreshed every second.
+[*]After every forecast the mod verifies the game state is exactly as before and raises a red alert if not.
+[/list]
+
+[h2]Install[/h2]
+After subscribing: main menu → Mods → select this mod → Review and enable → restart the game. No special capabilities required.
+
+Part of Shopkeeper's Kit by chaos5090. Developed with assistance from Claude Code (Anthropic's AI coding assistant).
+Source (MIT): https://github.com/AiChaosN/GAME_ProbablyStolen-ShopkeepersKit

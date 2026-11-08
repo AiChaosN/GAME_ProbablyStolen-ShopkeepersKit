@@ -1,0 +1,49 @@
+[h1]【修复】掌柜帮手·柜台不丢货[/h1]
+[b]修游戏 bug，会稍微影响平衡。[/b] 界面中英双语，跟随游戏语言。
+
+[h2]修的是什么[/h2]
+卖家（小偷、卖水的、杰克逊博士推销设备……）往柜台摆货时，原版里柜台放不下的货会被[b]直接销毁[/b]，没有任何提示；柜台全满时后面的货甚至不生成。杰克逊博士来一次就可能丢掉二十多件。
+
+[h2]怎么修[/h2]
+[list]
+[*]放不下的货分到后面的[b]页[/b]里，一页正好摆满一个柜台。
+[*]顾客头上的提示下方出现翻页条：上一页 / 第 1/3 页 / 下一页，可以直接点；也可以按 [b],[/b] 和 [b].[/b]（键帽上的 < >），按键可在游戏“选项”里改。
+[*]每一页记住每件货的位置，翻走再翻回来原样摆回；你拿下来的货（比如拖到秤上议价）留下的空位不会被别的货占掉，随时能放回去。
+[*]顾客离开时，没摆出来的页按原版处理柜台剩货的方式处理。
+[*]议价、鉴定都在真货上进行，和原版一样。
+[/list]
+
+[h2]对平衡的影响[/h2]
+你能看到原本会被销毁的货（例如黑市声望高时小偷的战利品箱），进货机会比原版多。
+
+[h2]安装[/h2]
+订阅后：主菜单 → 改装件 → 选中本 mod → 审阅并启用 → 重启游戏。不需要任何特殊权限。
+
+掌柜帮手系列 · 作者 chaos5090 · 由 Claude Code（Anthropic 的 AI 编程助手）协助开发。
+源码（MIT）：https://github.com/AiChaosN/GAME_ProbablyStolen-ShopkeepersKit
+
+------------------------------------------------------------
+
+[h1][Fix] Shopkeeper's Kit: Counter Overflow[/h1]
+[b]Fixes a game bug, with a small effect on balance.[/b] UI in Chinese and English, following the game language.
+
+[h2]The bug[/h2]
+When a seller (thieves, water sellers, Dr. Jackson offering equipment, ...) lays goods on the counter, anything that doesn't fit is [b]silently destroyed[/b] in the base game; when the counter is completely full, the remaining items are never created. One visit from Dr. Jackson can lose twenty or more items.
+
+[h2]The fix[/h2]
+[list]
+[*]Items that don't fit go onto extra [b]pages[/b]; one page is exactly one counter's worth.
+[*]A page bar appears below the notification above the customer: Prev / Page 1/3 / Next, clickable; or press [b],[/b] and [b].[/b] (the < > keys). Keys can be rebound in the game's Options.
+[*]Each page remembers where every item sat and restores it exactly; the gap left by an item you took off (e.g. onto the scale to negotiate) stays free, so you can always put it back.
+[*]When the customer leaves, pages not on display are handled like leftover counter items in the base game.
+[*]Negotiation and appraisal happen on the real items, as in the base game.
+[/list]
+
+[h2]Balance[/h2]
+You will see goods the base game would have destroyed (e.g. thieves' loot crates at high Black Market reputation), so you get more buying opportunities.
+
+[h2]Install[/h2]
+After subscribing: main menu → Mods → select this mod → Review and enable → restart the game. No special capabilities required.
+
+Part of Shopkeeper's Kit by chaos5090. Developed with assistance from Claude Code (Anthropic's AI coding assistant).
+Source (MIT): https://github.com/AiChaosN/GAME_ProbablyStolen-ShopkeepersKit

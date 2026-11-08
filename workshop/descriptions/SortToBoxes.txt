@@ -1,0 +1,57 @@
+[h1]【便利】掌柜帮手·归类入箱[/h1]
+[b]不改任何数值、不给额外信息，只帮你省操作。[/b] 界面中英双语，跟随游戏语言。
+
+[h2]收货：一键归箱[/h2]
+[list]
+[*][b]F7[/b]：仓库里散放的货自动归进对应的箱子（储藏区、工具箱、背包）。
+[*]每件货属于 13 个大类之一：食物、饮料与水、日用品、医疗、化学、武器与弹药、材料、工具与设备、模组、种子与农业、养殖、文件证件、奢侈品与收藏。
+[*]箱子收什么：点箱子窗口标题栏 × 左边的 [b]分类[/b] 按钮（或指着箱子按 Ctrl+F7），勾整类或单件货。不勾 = 看箱子里现有的东西（有同款的优先）。分类面板只列出你在这个存档里见过的货，不剧透。
+[*]箱子右下角有小角标，不用打开就知道柜子里装的是什么。
+[*]指着柜台按 F7：柜台上你的货放回箱子或仓库。
+[*]Shift+F7：买下顾客的货时自动归箱（默认关）。
+[/list]
+
+[h2]卖货：一键上柜台[/h2]
+[list]
+[*][b]F4[/b]：把当前买家会买的货全部摆上柜台（用的是游戏自己判断“顾客买不买”的规则）。
+[*]指着某件货按 F4：把它的同款全部摆上柜台。
+[*]从仓库或箱子拿一件放上柜台，同款自动跟上（Shift+F4 开关）。
+[/list]
+
+钉住的物品、机器、箱子本身不会被搬；鉴定指南、扫描仪这类装备不会被摆上柜台。所有热键都可以在游戏“选项”里按键绑定。
+
+[h2]安装[/h2]
+订阅后：主菜单 → 改装件 → 选中本 mod → 审阅并启用 → 重启游戏。不需要任何特殊权限。
+
+掌柜帮手系列 · 作者 chaos5090 · 由 Claude Code（Anthropic 的 AI 编程助手）协助开发。
+源码（MIT）：https://github.com/AiChaosN/GAME_ProbablyStolen-ShopkeepersKit
+
+------------------------------------------------------------
+
+[h1][QoL] Shopkeeper's Kit: Sort To Boxes[/h1]
+[b]No stat changes, no extra information; it only saves you clicks.[/b] UI in Chinese and English, following the game language.
+
+[h2]Storing: one-key sorting[/h2]
+[list]
+[*][b]F7[/b]: loose items in storage go into the right box (storage bays, toolbox, backpacks).
+[*]Every item belongs to one of 13 categories: food, drinks & water, household, medical, chemistry, weapons & ammo, materials, tools & equipment, modules, seeds & farming, husbandry, documents & cards, luxury & collectibles.
+[*]What a box takes: click the [b]Sort[/b] button left of × in the box window's title bar (or Ctrl+F7 while pointing at the box) and tick whole categories or single items. Nothing ticked = decide by what the box already holds (identical items first). The panel only lists goods you have seen in this save, so nothing is spoiled.
+[*]A small badge in each box's bottom-right corner shows what it holds.
+[*]F7 while pointing at the counter: put your items there back into boxes or storage.
+[*]Shift+F7: auto-sort goods you buy from customers (off by default).
+[/list]
+
+[h2]Selling: one-key counter[/h2]
+[list]
+[*][b]F4[/b]: put everything the current buyer would buy onto the counter (using the game's own "would this customer buy it" rule).
+[*]F4 while pointing at an item: put all identical items on the counter.
+[*]Move one item from storage or a box onto the counter and its identical copies follow (Shift+F4 toggles).
+[/list]
+
+Pinned items, machines and boxes themselves are never moved; guides, scanners and similar equipment are never put up for sale. Every hotkey can be bound in the game's Options.
+
+[h2]Install[/h2]
+After subscribing: main menu → Mods → select this mod → Review and enable → restart the game. No special capabilities required.
+
+Part of Shopkeeper's Kit by chaos5090. Developed with assistance from Claude Code (Anthropic's AI coding assistant).
+Source (MIT): https://github.com/AiChaosN/GAME_ProbablyStolen-ShopkeepersKit

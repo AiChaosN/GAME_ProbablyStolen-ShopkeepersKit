@@ -50,6 +50,10 @@ Each mod's page has the full steps. In short: copy the `dist/<name>/` folder int
 
 Builds reference the assemblies in your local `Probably Stolen_Data/Managed`; they are not distributed with this repository or the mods.
 
+## Publishing to the Workshop
+
+Uploads go through Valve's SteamCMD; see [`workshop/`](workshop/README.md) for the steps and the prepare script.
+
 ## License
 
 [MIT](LICENSE).

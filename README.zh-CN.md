@@ -50,6 +50,10 @@ chaos5090 为《Probably Stolen》做的 mod 系列。每个 mod 名字前标出
 
 编译时引用本机游戏 `Probably Stolen_Data/Managed` 下的程序集，这些程序集不随仓库或 mod 分发。
 
+## 发布到创意工坊
+
+用 Valve 的 SteamCMD 上传，步骤和准备脚本见 [`workshop/`](workshop/README.zh-CN.md)。
+
 ## 许可证
 
 [MIT](LICENSE)。
