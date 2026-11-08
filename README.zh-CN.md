@@ -17,17 +17,19 @@ ChaosN 为《Probably Stolen》做的 mod 系列。每个 mod 名字前标出**�
 
 ## 系列 mod
 
-| 名称 | 分类 | 热键 | 简介 | mod ID |
-|---|---|---|---|---|
-| [掌柜帮手·归类入箱 Sort To Boxes](mods/SortToBoxes/README.zh-CN.md) | 【便利】 | F7 / F4 | 收货：仓库散件按大类（13 类，每件货只属于一个类）归进对应的箱子，箱子可勾选整类或单件、右下角显示内容角标，可选买下时自动归箱。卖货：一键把买家会买的货摆上柜台，放一件自动带上同款 | `chaos5090.sort-to-boxes` |
-| [掌柜帮手·柜台不丢货 Counter Overflow](mods/CounterOverflow/README.zh-CN.md) | 【修复】 | , / . | 卖家摆货时柜台放不下的货不再被销毁，分到后面的页：柜台上方有翻页条，每页记住货的位置，拿下来的货随时能放回去 | `chaos5090.counter-overflow` |
-| [掌柜帮手·访客预测 Visitor Forecast](mods/VisitorForecast/README.zh-CN.md) | 【情报】 | F9 | 开门前预测今天谁会来（阵营、来意、想要什么、预算、概率） | `chaos5090.visitor-forecast` |
+| 名称 | 分类 | 热键 | 简介 | mod ID | 创意工坊 |
+|---|---|---|---|---|---|
+| [掌柜帮手·归类入箱 Sort To Boxes](mods/SortToBoxes/README.zh-CN.md) | 【便利】 | F7 / F4 | 收货：仓库散件按大类（13 类，每件货只属于一个类）归进对应的箱子，箱子可勾选整类或单件、右下角显示内容角标，可选买下时自动归箱。卖货：一键把买家会买的货摆上柜台，放一件自动带上同款 | `chaos5090.sort-to-boxes` | [订阅](https://steamcommunity.com/sharedfiles/filedetails/?id=3835916464) |
+| [掌柜帮手·柜台不丢货 Counter Overflow](mods/CounterOverflow/README.zh-CN.md) | 【修复】 | , / . | 卖家摆货时柜台放不下的货不再被销毁，分到后面的页：柜台上方有翻页条，每页记住货的位置，拿下来的货随时能放回去 | `chaos5090.counter-overflow` | [订阅](https://steamcommunity.com/sharedfiles/filedetails/?id=3835916532) |
+| [掌柜帮手·访客预测 Visitor Forecast](mods/VisitorForecast/README.zh-CN.md) | 【情报】 | F9 | 开门前预测今天谁会来（阵营、来意、想要什么、预算、概率） | `chaos5090.visitor-forecast` | [订阅](https://steamcommunity.com/sharedfiles/filedetails/?id=3835916583) |
 
 归类入箱、柜台不丢货的界面中英双语，跟随游戏的语言设置；访客预测目前只有中文。
 
 ## 安装
 
-每个 mod 的说明里都有安装步骤。简单说：把 `dist/<名字>/` 文件夹复制到游戏目录的 `Mods` 文件夹，进游戏在 **改装件** 界面对它点 **审阅并启用**，按提示重启。
+**推荐：在 Steam 创意工坊订阅**（上表最后一列的链接），进游戏打开 **改装件**，选中它点 **审阅并启用**，按提示重启。以后有新版本 Steam 会自动更新。
+
+手动安装：先按下面“从源码构建”编出 `dist/<名字>/`，把这个文件夹复制到游戏目录的 `Mods` 文件夹，再同样审阅并启用。每个 mod 的说明里有详细步骤。
 
 ## 命名规则
 

@@ -4,6 +4,8 @@
 
 > **掌柜帮手 / Shopkeeper's Kit** 系列 · 分类 **【修复】**：修游戏 bug，会稍微影响平衡。系列与分类说明见 [仓库首页](../../README.zh-CN.md)。
 > 作者 ChaosN · 由 [Claude Code](https://claude.com/claude-code)（Anthropic 的 AI 编程助手）协助开发。mod ID：`chaos5090.counter-overflow`。
+>
+> **Steam 创意工坊：[点这里订阅](https://steamcommunity.com/sharedfiles/filedetails/?id=3835916532)**
 
 界面中英双语，跟随游戏的语言设置（中文显示中文，其他语言显示英文）。
 
@@ -50,6 +52,10 @@
 - 翻回某一页时，如果原来的格子被别的东西占了（比如你把自己的东西放在了那里），这件货会自动找别的空位；实在放不下会提示“本页有 N 件放不下”。
 
 ## 安装
+
+**推荐：**在 [Steam 创意工坊](https://steamcommunity.com/sharedfiles/filedetails/?id=3835916532)点订阅，进游戏打开 **改装件**，选中它点 **审阅并启用**，按提示重启。以后有新版本 Steam 会自动更新。
+
+下面是手动安装（从源码构建）的步骤：
 
 1. 把 `dist/CounterOverflow/` 整个文件夹复制到游戏目录的 `Mods` 文件夹里：
    ```

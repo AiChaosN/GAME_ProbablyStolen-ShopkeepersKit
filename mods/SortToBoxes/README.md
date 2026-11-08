@@ -4,6 +4,8 @@
 
 > Part of the **Shopkeeper's Kit** (掌柜帮手) series · category **[QoL]** (【便利】): no stat changes and no extra information, it only saves you clicks. See the [repository home](../../README.md) for the series and categories.
 > By ChaosN · developed with assistance from [Claude Code](https://claude.com/claude-code) (Anthropic's AI coding assistant). Mod ID: `chaos5090.sort-to-boxes`.
+>
+> **Steam Workshop: [subscribe here](https://steamcommunity.com/sharedfiles/filedetails/?id=3835916464)**
 
 A code mod for *Probably Stolen* (v0.46D) that takes care of two chores:
 
@@ -117,6 +119,10 @@ Drug purity takes care of itself: the game decides which purity each customer ac
 Items are placed with the game's own placement function, so each box's own rules still apply (e.g. a regular storage bay doesn't take machines).
 
 ## Install
+
+**Recommended:** subscribe on the [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3835916464), then in game open **Mods**, select the mod, click **Review and enable** and restart when asked. Steam keeps it updated.
+
+Manual install (building from source):
 
 1. Copy the whole `dist/SortToBoxes/` folder into the game's `Mods` folder:
    ```

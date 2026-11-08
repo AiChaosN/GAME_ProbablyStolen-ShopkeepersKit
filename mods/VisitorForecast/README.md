@@ -4,6 +4,8 @@
 
 > Part of the **Shopkeeper's Kit** (掌柜帮手) series · category **[Info]**: changes no stats, but tells you in advance who will visit today, which makes the game somewhat easier. See the [repository home page](../../README.md) for the series and its categories.
 > By ChaosN · developed with assistance from [Claude Code](https://claude.com/claude-code) (Anthropic's AI coding assistant). Mod ID: `chaos5090.visitor-forecast`.
+>
+> **Steam Workshop: [subscribe here](https://steamcommunity.com/sharedfiles/filedetails/?id=3835916583)**
 
 **The in-game UI is Chinese only.**
 
@@ -28,6 +30,10 @@ Left: visitors who will certainly come today (what they want to buy or sell, bud
 <img src="docs/images/forecast-certain.jpg" alt="Certain visitors" width="49%"> <img src="docs/images/forecast-chance.jpg" alt="Other visitors and their chances" width="49%">
 
 ## Installation
+
+**Recommended:** subscribe on the [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3835916583), then in game open **Mods**, select the mod, click **Review and enable** and restart when asked. Steam keeps it updated.
+
+Manual install (building from source):
 
 1. Copy the whole `dist/VisitorForecast/` folder into the `Mods` folder inside the game directory, so you end up with:
    ```

@@ -4,6 +4,8 @@
 
 > **掌柜帮手 / Shopkeeper's Kit** 系列 · 分类 **【便利】**：不改任何数值、不给额外信息，只帮你省操作。系列与分类说明见 [仓库首页](../../README.zh-CN.md)。
 > 作者 ChaosN · 由 [Claude Code](https://claude.com/claude-code)（Anthropic 的 AI 编程助手）协助开发。mod ID：`chaos5090.sort-to-boxes`。
+>
+> **Steam 创意工坊：[点这里订阅](https://steamcommunity.com/sharedfiles/filedetails/?id=3835916464)**
 
 《Probably Stolen》（v0.46D）的代码 mod，管两件麻烦事：
 
@@ -116,6 +118,10 @@
 放置用的是游戏自己的放置函数，箱子原有的放入规则照样生效（例如普通储藏区不收机器）。
 
 ## 安装
+
+**推荐：**在 [Steam 创意工坊](https://steamcommunity.com/sharedfiles/filedetails/?id=3835916464)点订阅，进游戏打开 **改装件**，选中它点 **审阅并启用**，按提示重启。以后有新版本 Steam 会自动更新。
+
+下面是手动安装（从源码构建）的步骤：
 
 1. 把 `dist/SortToBoxes/` 整个文件夹复制到游戏目录的 `Mods` 文件夹里：
    ```

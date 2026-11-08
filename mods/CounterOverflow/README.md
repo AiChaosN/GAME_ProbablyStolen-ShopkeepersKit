@@ -4,6 +4,8 @@
 
 > Part of the **Shopkeeper's Kit** (掌柜帮手) series · category **[Fix]** (【修复】): fixes a game bug, with a small effect on balance. See the [repository home](../../README.md) for the series and categories.
 > By ChaosN · developed with assistance from [Claude Code](https://claude.com/claude-code) (Anthropic's AI coding assistant). Mod ID: `chaos5090.counter-overflow`.
+>
+> **Steam Workshop: [subscribe here](https://steamcommunity.com/sharedfiles/filedetails/?id=3835916532)**
 
 The in-game UI is in Chinese and English and follows the game's language (Chinese when the game is in Chinese, English otherwise).
 
@@ -50,6 +52,10 @@ You will see goods the base game would have destroyed, such as thieves' loot cra
 - If an item's old cell is taken when you flip back (e.g. you put something of yours there), it finds another free spot; if nothing fits, you get a "N items on this page don't fit" message.
 
 ## Install
+
+**Recommended:** subscribe on the [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3835916532), then in game open **Mods**, select the mod, click **Review and enable** and restart when asked. Steam keeps it updated.
+
+Manual install (building from source):
 
 1. Copy the whole `dist/CounterOverflow/` folder into the game's `Mods` folder:
    ```

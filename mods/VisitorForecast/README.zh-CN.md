@@ -4,6 +4,8 @@
 
 > **掌柜帮手 / Shopkeeper's Kit** 系列 · 分类 **【情报】**：不改任何数值，但会提前告诉你今天谁会来，游戏会因此简单一些。系列与分类说明见 [仓库首页](../../README.zh-CN.md)。
 > 作者 ChaosN · 由 [Claude Code](https://claude.com/claude-code)（Anthropic 的 AI 编程助手）协助开发。mod ID：`chaos5090.visitor-forecast`。
+>
+> **Steam 创意工坊：[点这里订阅](https://steamcommunity.com/sharedfiles/filedetails/?id=3835916583)**
 
 《Probably Stolen》（v0.46D，Unity 2021.3 Mono）的代码 mod。**每天开门前**按 **F9**，它会在一个“沙盒”里把开门那一刻的顾客生成流程跑几百遍，告诉你今天：
 
@@ -26,6 +28,10 @@
 <img src="docs/images/forecast-certain.jpg" alt="必来的客人" width="49%"> <img src="docs/images/forecast-chance.jpg" alt="其他客人的概率" width="49%">
 
 ## 安装
+
+**推荐：**在 [Steam 创意工坊](https://steamcommunity.com/sharedfiles/filedetails/?id=3835916583)点订阅，进游戏打开 **改装件**，选中它点 **审阅并启用**，按提示重启。以后有新版本 Steam 会自动更新。
+
+下面是手动安装（从源码构建）的步骤：
 
 1. 把 `dist/VisitorForecast/` 整个文件夹复制到游戏目录的 `Mods` 文件夹里，得到：
    ```
