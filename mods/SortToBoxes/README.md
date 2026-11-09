@@ -51,18 +51,36 @@ The game's own item types number 50+, many with only one or two items, and one i
 
 Categories are derived from the game's item directories and types (rules in `tools/categories.py`, result table in `src/Generated/ItemCategories.cs`); items added by later game updates are classified from their types with the same rules.
 
+For an upgraded storage bay, "box" below means **each tab** (see the next section).
+
+0. A box set to **Keep out of sorting** never receives anything, and what it holds isn't used for decisions.
 1. **Boxes with ticked categories** come first: a box with the item itself ticked wins, then a box with the item's category ticked.
 2. **Untagged boxes** go by what they already hold:
    - a box holding an **identical** item is preferred;
    - otherwise a box holding items of the **same category** (the more such items, the higher the priority).
-3. If the preferred box is full the next one is tried; if nothing fits, the item stays where it is.
+3. If the preferred box is full the next one is tried.
+4. When those are full, items continue into an **empty, untagged tab of the same box** (only matters for upgraded storage bays, see the next section).
+5. If nothing fits, the item stays where it is.
 
 So:
 
 - An **empty box** needs either one "sample" item inside, or ticked categories.
+- Keep things for your own use (say, a box of medicine you use yourself) in a box set to **Keep out of sorting**, and sorting never adds new goods to it; tick **Keep out of the counter** too and the counter key won't take them either.
 - Items you put into a box yourself are never taken out: sorting only moves loose items in storage (or on the counter).
 - Items without any type (about 120 in the game) can only follow an identical item that is already in a box.
 - Decisions are based on what the boxes held **before** the key press; items placed during this run don't change this run's decisions.
+
+### Upgraded storage bays (tabs)
+
+A storage bay upgraded with the **expansion kit** has several tabs (up to 5; switch with the tab headers at the top of the box window, double-click a tab name to rename it). This mod treats **each tab as a box of its own**:
+
+- every tab has **its own settings**: ticked categories, Keep out of sorting, Keep out of the counter. For example tab 1 takes Medical, tab 2 Food, and tab 3 is kept out of sorting for your own gear;
+- an untagged tab goes by what it already holds, like any box;
+- **spare room**: when a tab is full, items continue into an **empty, untagged** tab of the same box (an empty tab takes only one category per sort, so categories don't get mixed). To keep an empty tab out of this, tick categories for it or set it to Keep out of sorting;
+- the category panel opens on the tab the box window is **currently showing**; Ctrl+G while pointing at a tab header or inside a tab opens that tab. A row of tab buttons at the top of the panel switches between tabs (the one in 【】 is the one you're editing);
+- messages and the log name a tab as "Storage Bay·Tab 2" (or the name you gave it).
+
+Category ticks made for a whole box in 1.7 and earlier now belong to **tab 1** (in those versions the game only ever put sorted items into tab 1 of an upgraded box anyway); Keep out of the counter set for a whole box still covers the whole box (all tabs).
 
 ### Category panel
 
@@ -72,6 +90,8 @@ Ctrl+G while pointing at a box, or the **分类** button left of the close butto
 - untick **整类**: **every item under it is unticked**;
 - each item has its own checkbox (with its icon) and can be ticked on its own. Unticking one item while the whole category is ticked switches to "every item except this one". The ×N after a name is how many you have in storage and boxes;
 - **only items you have seen in this save are listed** (anything that has been in your storage, boxes, machines, counters or display case). At first it's just what you own; the list grows as you see more goods, so nothing is spoiled. The record is kept in the save, one per save;
+- two switches at the top: **Keep out of sorting** (sorting, auto-sort on purchase and taking items back from the counter never put anything here; while it's on, the category ticks below don't apply but are kept) and **Keep out of the counter**;
+- upgraded storage bays: a row of tab buttons at the top, each tab set up on its own (see the previous section);
 - ticks take effect immediately and are **saved with your save file** (stored on the box itself);
 - **全部取消** ("Clear all") switches the box back to "go by what it holds";
 - if you uninstall the mod, the leftover marks and records in your save do nothing.
@@ -105,7 +125,7 @@ The counter can hold many items at once, but the customer negotiates **one item 
 
 Never put on the counter:
 - pinned items;
-- anything in a box marked **Keep out of the counter** (top of the box's category panel): put your own equipment (water purifiers, scanners, ...) and things you won't sell in such a box;
+- anything in a box (or a tab of an upgraded storage bay) marked **Keep out of the counter** (top of the category panel): put your own equipment (water purifiers, scanners, ...) and things you won't sell in such a box;
 - **your own mixtures**: a plain bottle holding liquids other than water (alcohol, reagents, ...). The game treats every liquid bottle as "water", so a water buyer would take it at water prices. Proper chemical products and wine bottles are not affected;
 - equipment the game marks as important (appraisal guides, newspapers, backpacks, machines, storage bays, ...); items in the display case.
 
@@ -170,10 +190,11 @@ In game: Mods screen → select this mod → **设置** (Settings). Or edit `%US
 | `src/SortBehaviour.cs` | Hotkeys and notifications |
 | `src/SortConfig.cs` | Settings via the game's ModConfig |
 
-**Status**: builds and passes the game's mod scanner. 1.1.0 was tried in game: G on the counter, the 分类 button and box icons work (the button sat too far from the window and the icon was too big; both changed in 1.2.0). The 1.2.0 changes are **not yet tested in game**. The 分类 button is attached to the box window itself (same parent as the × button); if it looks wrong, turn off `boxButtons` and use Ctrl+G. If the box icons look wrong, turn off `boxIcons`.
+**Status**: builds and passes the game's mod scanner. 1.8.0 (tabs, Keep out of sorting) is **not yet tested in game**. 1.1.0 was tried in game: G on the counter, the 分类 button and box icons work (the button sat too far from the window and the icon was too big; both changed in 1.2.0). The 1.2.0 changes are **not yet tested in game**. The 分类 button is attached to the box window itself (same parent as the × button); if it looks wrong, turn off `boxButtons` and use Ctrl+G. If the box icons look wrong, turn off `boxIcons`.
 
 ## Changelog
 
+- **1.8.0**: Upgraded storage bays (expansion kit, several tabs): each tab is treated as a box of its own, with its own categories, Keep out of sorting and Keep out of the counter; tab buttons at the top of the category panel switch between tabs; when a tab is full, items continue into an empty, untagged tab of the same box. Fix: sorting into an upgraded box used to put items only into tab 1 and reported "doesn't fit" once tab 1 was full. New **Keep out of sorting** switch: your own medicine or gear stash no longer gets new goods stuffed into it.
 - **1.7.0**: The counter key (C) now works both ways depending on what you point at: an item in storage or a box puts its identical copies on the counter; an item on the counter takes its identical copies back into boxes or storage. While you drag an item, a hotkey that matches the game's flip/rotate/reset key is left to the game (so the counter key can be F).
 - **1.6.0**: Default keys moved under the left hand: sort **G**, counter **C** (previously F7 / F4; next to the game's Q/E rotate keys); keys you already saved are kept. Rebinding a key in the game's Options no longer triggers sorting or the counter key; messages show the key you actually set.
 - **1.5.1**: "Bring identical items" is now off by default: dragging one item onto the counter moves just that one; point at an item and press F4 for the whole batch (an existing "on" setting is kept; Shift+F4 turns it off).

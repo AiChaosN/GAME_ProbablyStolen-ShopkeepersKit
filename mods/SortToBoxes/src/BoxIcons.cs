@@ -127,7 +127,7 @@ namespace SortToBoxes
         {
             sprite = null;
             tint = Color.white;
-            var labels = BoxLabels.Get(box);
+            var labels = BoxLabels.Union(box);   // 升级过的箱子：各栏勾选的并集
             var contents = Stock.Children(box)
                 .Where(it => it != null && !Stock.IsFixture(it))
                 .OrderBy(it => SafeMinY(it))

@@ -32,6 +32,11 @@ ls -la dist/SortToBoxes
 if [[ "${1:-}" == "install" ]]; then
   dest="$GAME_DIR/Mods/SortToBoxes"
   mkdir -p "$dest"
-  cp dist/SortToBoxes/* "$dest/"
+  # 先拷 DLL：游戏开着时 DLL 被锁，拷不进去就停下，别让 manifest 先被换成新版（DLL 和 manifest 版本不一致）
+  if ! cp dist/SortToBoxes/*.dll "$dest/"; then
+    echo "DLL 拷不进去（游戏开着时 DLL 被锁住）：没有安装，游戏里的 mod 保持原样。关掉游戏后再运行 ./build.sh install" >&2
+    exit 1
+  fi
+  cp dist/SortToBoxes/manifest.xml "$dest/"
   echo "installed to: $dest"
 fi

@@ -12,6 +12,7 @@ namespace SortToBoxes
     ///   - 取消“整类”：下面的货全部取消；
     ///   - 单独勾/取消某件货：只影响这一件（存 @物品id）。整类勾着时取消其中一件，会改成“除了这件以外逐件勾选”。
     /// 勾选立即保存到箱子的 tag（随存档保存）。
+    /// 用扩容套件升级过的储藏区有多栏：每栏单独设置（分类、不参与归箱、不参与上柜台），面板顶上的栏按钮切换正在设置的栏。
     /// </summary>
     internal static class BoxLabelPanel
     {
@@ -23,11 +24,16 @@ namespace SortToBoxes
             catch { return "overlay"; }
         }
 
-        internal static void Open(GameItem box)
+        /// <summary>打开某个箱子第 tab 栏（从 0 起）的分类面板；tab &lt; 0 = 箱子窗口当前显示的那栏。</summary>
+        internal static void Open(GameItem box, int tab = -1)
         {
             try
             {
                 if (box == null || !Stock.IsBox(box)) return;
+                int count = Stock.CompartmentCount(box);
+                if (tab < 0 || tab >= count) tab = Stock.SelectedCompartment(box);
+                if (tab >= count) tab = 0;
+                bool multi = count > 1;
                 var mgr = CustomUIManager.Instance;
                 if (mgr == null)
                 {
@@ -40,7 +46,8 @@ namespace SortToBoxes
                 if (old != null && old.IsAlive) oldPos = old.Rect.anchoredPosition;
 
                 SeenItems.ScanNow();   // 先把眼前的东西记上
-                var selected = BoxLabels.Get(box) ?? new HashSet<string>(StringComparer.Ordinal);
+                var selected = BoxLabels.Get(box, tab) ?? new HashSet<string>(StringComparer.Ordinal);
+                bool noSort = Stock.NoSort.IsOn(box, tab);
 
                 // 库存里每种物品有几件（显示在名字后面）
                 var stockCount = new Dictionary<string, int>(StringComparer.Ordinal);
@@ -56,9 +63,11 @@ namespace SortToBoxes
                     }
                 }
 
-                // 箱里现有物品的大类
+                // 这一栏现有物品的大类
                 var inBox = new Dictionary<string, int>(StringComparer.Ordinal);
-                foreach (var it in Stock.Children(box))
+                var comps = Stock.Compartments(box);
+                var inv = tab < comps.Count ? comps[tab] : null;
+                foreach (var it in Stock.Children(inv))
                 {
                     if (it == null || Stock.IsFixture(it)) continue;
                     var c = Categories.Of(it);
@@ -77,24 +86,67 @@ namespace SortToBoxes
                     .ToList();
 
                 bool zh = Lang.Zh;
-                var b = mgr.CreateWindow(WindowId, (zh ? "箱子分类 · " : "Box categories · ") + Stock.Name(box), LayerId())
-                    .SetSize(760f, 640f)
+                string unit = multi ? (zh ? "这一栏" : "this tab") : (zh ? "这个箱子" : "this box");
+                int tabIndex = tab;
+                var b = mgr.CreateWindow(WindowId, (zh ? "箱子分类 · " : "Box categories · ") + Stock.TargetName(box, tab, count), LayerId())
+                    .SetSize(760f, multi ? 760f : 680f)
                     .SetDraggable(true)
                     .SetCloseOnEscape();
-                b.AddLabel(zh ? "勾“整类”：这一类的货全部进这个箱子，包括以后才见到的同类；也可以只勾其中几件。一个都不勾 = 按箱子里现有的东西自动判断。"
-                               : "Tick \"whole category\" to send every item of that category to this box, including ones you only see later; or tick just some items. Nothing ticked = decide by what the box already holds.");
+
+                if (multi)
+                {
+                    // 升级过的箱子：每栏单独设置，点栏名切换
+                    b.AddLabel(zh ? "这个箱子升级过，有 " + count + " 栏，每栏单独设置。空着、没勾分类的栏是这个箱子的后备空间：其它栏放满了会接着放进去（一次归箱只接一类货）。"
+                                  : "This box is upgraded with " + count + " tabs; each tab has its own settings. An empty tab with nothing ticked is spare room: when the box's other tabs are full, items continue into it (one category per sort).");
+                    b.BeginRow(6f, TextAnchor.MiddleLeft);
+                    for (int i = 0; i < count; i++)
+                    {
+                        int idx = i;
+                        string name = Stock.CompartmentName(box, i);
+                        bool cur = i == tab;
+                        b.AddButton(cur ? (zh ? "【" + name + "】" : "[" + name + "]") : name, () => { if (idx != tabIndex) Open(box, idx); });
+                    }
+                    b.End();
+                }
+
+                b.AddLabel(zh ? "勾“整类”：这一类的货全部进" + unit + "，包括以后才见到的同类；也可以只勾其中几件。一个都不勾 = 按" + unit + "里现有的东西自动判断。"
+                               : "Tick \"whole category\" to send every item of that category to " + unit + ", including ones you only see later; or tick just some items. Nothing ticked = decide by what " + unit + " already holds.");
                 b.AddLabel(zh ? "只列出你在这个存档里见过的货，见过的越多，列表越长。名字后面的 ×N 是仓库和箱子里现有的件数。"
                                : "Only items you have seen in this save are listed; the list grows as you see more. ×N after a name is how many you have in storage and boxes.");
                 string now = inBox.Count == 0
-                    ? (zh ? "箱子现在是空的" : "The box is empty")
-                    : (zh ? "箱里现有：" : "In the box: ") + string.Join(zh ? "、" : ", ", inBox.OrderByDescending(kv => kv.Value).Take(6).Select(kv => Categories.Name(kv.Key) + " " + kv.Value));
+                    ? (zh ? unit + "现在是空的" : (multi ? "This tab" : "The box") + " is empty")
+                    : (zh ? unit + "现有：" : (multi ? "In this tab: " : "In the box: ")) + string.Join(zh ? "、" : ", ", inBox.OrderByDescending(kv => kv.Value).Take(6).Select(kv => Categories.Name(kv.Key) + " " + kv.Value));
                 b.AddLabel(now);
                 var target = box;
                 string sk = KeyNames.Label(SortToBoxesMod.Config?.SellHotkey ?? KeyCode.C);
-                b.AddToggle(zh ? "不参与上柜台：" + sk + " 和“带上同款”都不会拿这个箱子里的东西（放你自己要用的设备、不想卖的东西）"
-                               : "Keep out of the counter: " + sk + " and \"bring identical items\" never take anything from this box (for your own equipment and things you won't sell)",
-                    Stock.IsNoSellBox(box), on => Stock.SetNoSell(target, on));
+                b.AddToggle(zh ? "不参与归箱：归箱、买下自动归箱、柜台收回都不往" + unit + "里放东西（例如你自己用的药品区、装备区）"
+                               : "Keep out of sorting: sorting, auto-sort on purchase and taking items back from the counter never put anything into " + unit + " (e.g. your own medicine or gear)",
+                    noSort, on =>
+                    {
+                        Stock.NoSort.Set(target, tabIndex, on);
+                        Open(target, tabIndex);   // 重画：不参与归箱时分类列表不生效，收起来
+                    });
+                b.AddToggle(zh ? "不参与上柜台：" + sk + " 和“带上同款”都不会拿" + unit + "里的东西（放你自己要用的设备、不想卖的东西）"
+                               : "Keep out of the counter: " + sk + " and \"bring identical items\" never take anything from " + unit + " (for your own equipment and things you won't sell)",
+                    Stock.NoSell.IsOn(box, tab), on => Stock.NoSell.Set(target, tabIndex, on));
                 b.AddSeparator();
+
+                if (noSort)
+                {
+                    // 不参与归箱：分类勾选不生效，不列出来（勾选本身保留，关掉开关后照旧）
+                    b.AddLabel(zh ? unit + "不参与归箱，分类勾选暂不生效（勾选会保留，关掉上面的开关后恢复）。" + unit + "里的东西你自己放、自己拿，归箱不会动它们。"
+                                  : "Kept out of sorting: category ticks don't apply (they're kept and come back when you turn the switch off). You manage what's in " + unit + "; sorting never touches it.");
+                    b.BeginRow(8f, TextAnchor.MiddleCenter);
+                    b.AddButton(zh ? "完成" : "Done", () =>
+                    {
+                        try { mgr.CloseWindow(WindowId); } catch { }
+                    });
+                    b.End();
+                    if (oldPos.HasValue) b.SetPosition(oldPos.Value);
+                    else b.Center();
+                    b.Show();
+                    return;
+                }
 
                 b.BeginScroll(400f);
                 if (order.Count == 0) b.AddLabel(zh ? "还没有见过任何货。" : "You haven't seen any goods yet.");
@@ -115,7 +167,7 @@ namespace SortToBoxes
                         foreach (var info in items) selected.Remove(BoxLabels.ItemKey(info.Id));   // 整类勾着时不需要逐件记
                         if (on) selected.Add(catKey);
                         foreach (var t in itemToggles.Values) t?.SetBool(on, notify: false);
-                        BoxLabels.Set(box, selected);
+                        BoxLabels.Set(box, tabIndex, selected);
                     });
                     catToggle = b.Last;
                     if (items.Count == 0) continue;
@@ -147,7 +199,7 @@ namespace SortToBoxes
                                 }
                                 selected.Remove(key);
                             }
-                            BoxLabels.Set(box, selected);
+                            BoxLabels.Set(box, tabIndex, selected);
                         });
                         itemToggles[id] = b.Last;
                         b.End();
@@ -159,8 +211,8 @@ namespace SortToBoxes
                 b.BeginRow(8f, TextAnchor.MiddleCenter);
                 b.AddButton(zh ? "全部取消（改回自动判断）" : "Clear all (decide automatically)", () =>
                 {
-                    BoxLabels.Set(box, null);
-                    Open(box);
+                    BoxLabels.Set(box, tabIndex, null);
+                    Open(box, tabIndex);
                 });
                 b.AddButton(zh ? "完成" : "Done", () =>
                 {

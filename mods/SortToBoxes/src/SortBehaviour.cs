@@ -156,7 +156,12 @@ namespace SortToBoxes
                 Notify(Lang.T("仓库里没有可用的箱子（储藏区、工具箱、背包）", "No usable boxes in storage (storage bays, toolbox, backpacks)"));
                 return;
             }
-            if (boxes.All(b => b.Total == 0 && b.Labels == null))
+            if (boxes.All(b => b.NoSort))
+            {
+                Notify(Lang.T("所有箱子都设了“不参与归箱”", "Every box is set to \"keep out of sorting\""));
+                return;
+            }
+            if (boxes.All(b => b.NoSort || (b.Total == 0 && b.Labels == null)))
             {
                 Notify(Lang.T("箱子都是空的：往箱子里放一件样品，或 Ctrl+" + KeyNames.Label(SortToBoxesMod.Config.Hotkey) + " 指着箱子勾选分类",
                     "All boxes are empty: put a sample item in a box, or point at a box and press Ctrl+" + KeyNames.Label(SortToBoxesMod.Config.Hotkey) + " to pick its categories"));
@@ -164,20 +169,20 @@ namespace SortToBoxes
             }
             var report = Sorter.SortItems(entry.invElement.childItems.ToList(), boxes);
             Notify(report.Considered == 0 ? Lang.T("仓库里没有要归箱的散件", "Nothing loose in storage to sort") : Summary(report, Kind.Sort));
-            LogReport("归箱（箱子 " + boxes.Count + " 个）", report);
+            LogReport("归箱（参与的栏 " + boxes.Count(b => !b.NoSort) + " 个）", report);
         }
 
         private static void OpenLabelsUnderMouse()
         {
             if (!Ready(true)) return;
-            var box = BoxUnderMouse();
+            var box = BoxUnderMouse(out int tab);
             if (box == null)
             {
                 Notify(Lang.T("把鼠标指着一个箱子（或打开的箱子窗口里）再按 Ctrl+" + KeyNames.Label(SortToBoxesMod.Config.Hotkey),
                     "Point at a box (or inside an open box window) and press Ctrl+" + KeyNames.Label(SortToBoxesMod.Config.Hotkey)));
                 return;
             }
-            BoxLabelPanel.Open(box);
+            BoxLabelPanel.Open(box, tab);
         }
 
         private static void ToggleAuto(SortConfig cfg)
@@ -265,16 +270,26 @@ namespace SortToBoxes
             catch { return null; }
         }
 
-        /// <summary>鼠标下的箱子：指着箱子本身，或指着打开的箱子窗口里（含其中的物品）。</summary>
-        private static GameItem BoxUnderMouse()
+        /// <summary>
+        /// 鼠标下的箱子和栏：指着箱子本身（栏 = 箱子窗口当前显示的那栏，tab = -1），
+        /// 或指着打开的箱子窗口里（含其中的物品、栏头）——那就是指着的那一栏。
+        /// </summary>
+        private static GameItem BoxUnderMouse(out int tab)
         {
+            tab = -1;
             var item = HoveredItem();
             if (item != null && Stock.IsBox(item)) return item;
-            GameInventory inv = item?.parentInventory ?? HoveredInventory();
+            GameInventory inv = null;
+            try { inv = MachineryTabs.FindDropInventoryAt(Input.mousePosition); } catch { }   // 指着栏头
+            if (inv == null) inv = item?.parentInventory ?? HoveredInventory();
             try
             {
                 var parent = inv?.GetParentItem();
-                if (parent != null && Stock.IsBox(parent)) return parent;
+                if (parent != null && Stock.IsBox(parent))
+                {
+                    tab = Stock.CompartmentIndex(parent, inv);
+                    return parent;
+                }
             }
             catch { }
             return null;
