@@ -140,6 +140,10 @@ Drug purity takes care of itself: the game decides which purity each customer ac
 
 Items are placed with the game's own placement function, so each box's own rules still apply (e.g. a regular storage bay doesn't take machines).
 
+## Tip: trash
+
+This mod has no trash key because the game already has one: "Move hovered item to trashcan" in the game's Options (Delete by default); rebind it to something handy, e.g. D. It works in your shop, on your own items, and not while you are dragging something.
+
 ## Install
 
 **Recommended:** subscribe on the [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3835916464), then in game open **Mods**, select the mod, click **Review and enable** and restart when asked. Steam keeps it updated.

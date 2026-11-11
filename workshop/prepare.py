@@ -123,13 +123,15 @@ def main():
                      f'\t"publishedfileid"\t{vdf_str(pid)}',
                      f'\t"title"\t\t{vdf_str(title)}',
                      f'\t"description"\t{vdf_str(desc_file.read_text(encoding="utf-8").strip())}']
+            if a.visibility:
+                lines.append(f'\t"visibility"\t{vdf_str(VIS[a.visibility])}')
             if a.note:
                 lines.append(f'\t"changenote"\t{vdf_str(a.note)}')
             lines += ["}", ""]
             vdf = upload / f"{mod}.meta.vdf"
             upload.mkdir(parents=True, exist_ok=True)
             vdf.write_text("\n".join(lines), encoding="utf-8")
-            print(f"{mod}：只更新标题和介绍（物品 {pid}），不传文件\n  配置：{path_of(vdf)}")
+            print(f"{mod}：只更新标题和介绍（物品 {pid}）" + (f"，可见性改为 {a.visibility}" if a.visibility else "") + f"，不传文件\n  配置：{path_of(vdf)}")
             commands.append(f'+workshop_build_item "{path_of(vdf)}"')
             continue
 

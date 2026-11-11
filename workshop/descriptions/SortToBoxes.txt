@@ -28,6 +28,9 @@
 
 钉住的物品、机器、箱子本身不会被搬；鉴定指南、扫描仪这类装备不会被摆上柜台。所有热键都可以在游戏“选项”里按键绑定。
 
+[h2]小提示：扔垃圾桶[/h2]
+游戏自带“将鼠标指向的物品移入垃圾桶”的按键（默认 Delete），可以在游戏“选项”里改成顺手的键，例如 D。只在店里、对你自己的东西有效。
+
 [h2]安装[/h2]
 订阅后：主菜单 → 改装件 → 选中本 mod → 审阅并启用 → 重启游戏。不需要任何特殊权限。
 
@@ -63,6 +66,9 @@
 [/list]
 
 Pinned items, machines and boxes themselves are never moved; guides, scanners and similar equipment are never put up for sale. Every hotkey can be bound in the game's Options.
+
+[h2]Tip: trash[/h2]
+The game itself has a “Move hovered item to trashcan” key (Delete by default); rebind it in the game's Options, e.g. to D. Works in your shop, on your own items.
 
 [h2]Install[/h2]
 After subscribing: main menu → Mods → select this mod → Review and enable → restart the game. No special capabilities required.

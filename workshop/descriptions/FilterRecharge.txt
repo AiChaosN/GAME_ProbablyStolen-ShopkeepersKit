@@ -1,6 +1,8 @@
 [h1]【玩法】掌柜帮手·滤水器充能[/h1]
 [b]改变游戏机制，影响平衡。[/b] 界面中英双语，跟随游戏语言。
 
+[img]https://raw.githubusercontent.com/AiChaosN/GAME_ProbablyStolen-ShopkeepersKit/main/workshop/previews/FilterRecharge.png[/img]
+
 [h2]做什么[/h2]
 [list]
 [*]把滤水器（普通、高级、水培芦苇滤芯）拖到[b]高级滤水器[/b]上：它剩下的耐久度全部转给高级滤水器，原来那个用完。
@@ -27,6 +29,8 @@
 
 [h1][Gameplay] Shopkeeper's Kit: Filter Recharge[/h1]
 [b]Changes a game mechanic and affects balance.[/b] UI in Chinese and English, following the game language.
+
+[img]https://raw.githubusercontent.com/AiChaosN/GAME_ProbablyStolen-ShopkeepersKit/main/workshop/previews/FilterRecharge.png[/img]
 
 [h2]What it does[/h2]
 [list]
