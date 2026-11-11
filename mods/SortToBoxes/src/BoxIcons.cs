@@ -7,7 +7,7 @@ using UnityEngine.UI;
 namespace SortToBoxes
 {
     /// <summary>
-    /// 在仓库里的箱子（储藏区等）图标右下角画一个小角标，一眼看出这个柜子装的是什么：
+    /// 在仓库里的箱子（储藏区等）图标右下角画一个角标（对角线约为箱子对角线的一半），一眼看出这个柜子装的是什么：
     ///   - 箱子里有东西：画第一件物品（按格子位置，左上角那件）的图标；勾选过分类时优先选属于勾选类型的那件；
     ///   - 勾选了分类但箱子是空的：借库存里一件同类物品的图标；库存里也没有，就画该类型颜色的小色块。
     /// 图标是挂在箱子物品渲染节点（GameItemElement.handler）下的一个子节点，跟着箱子一起移动、随窗口一起显示隐藏；
@@ -18,7 +18,8 @@ namespace SortToBoxes
     internal sealed class BoxIcons
     {
         private const string NodeName = "CHAOS5090_STB_BoxIcon";
-        private const float SizeRatio = 0.3f;    // 角标边长 = 箱子较短边 × 比例
+        private const float DiagonalRatio = 0.5f; // 角标对角线 = 箱子对角线 × 比例（方形箱子 = 边长的一半）
+        private const float MaxSideRatio = 0.8f;  // 细长的箱子：角标边长不超过较短边 × 比例
         private const float MinSide = 12f;
         private const float Margin = 1f;          // 离箱子边缘的距离
 
@@ -224,8 +225,10 @@ namespace SortToBoxes
             if (node.gameObject.activeSelf == dragged) node.gameObject.SetActive(!dragged);
             if (dragged) return;
             if (!TryGetBounds(box, out var bounds)) return;
-            float side = Mathf.Max(MinSide, Mathf.Min(bounds.width, bounds.height) * SizeRatio);
-            side = Mathf.Min(side, Mathf.Min(bounds.width, bounds.height));
+            float shortSide = Mathf.Min(bounds.width, bounds.height);
+            float diagonal = Mathf.Sqrt(bounds.width * bounds.width + bounds.height * bounds.height);
+            float side = Mathf.Max(MinSide, diagonal * DiagonalRatio / Mathf.Sqrt(2f));
+            side = Mathf.Min(side, shortSide * MaxSideRatio);
             var rt = node.rectTransform;
             var size = new Vector2(side, side);
             if ((rt.sizeDelta - size).sqrMagnitude > 0.01f) rt.sizeDelta = size;

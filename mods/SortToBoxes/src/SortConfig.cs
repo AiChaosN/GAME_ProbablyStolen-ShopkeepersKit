@@ -49,8 +49,8 @@ namespace SortToBoxes
                 tooltip: () => Lang.T("打开箱子时，在窗口标题栏的关闭按钮（×）左边显示一个“分类”按钮，点它设置这个箱子收哪些货。关掉后仍可用 Ctrl+归箱热键 指着箱子设置。",
                     "When a box is open, show a Sort button left of the close button (×) in its title bar; click it to choose what the box takes. Without it, use Ctrl+sort hotkey while pointing at the box."));
             iconsEntry = cfg.Define("boxIcons", true, "General", () => Lang.T("在箱子上显示里面物品的小图标", "Show a content badge on boxes"),
-                tooltip: () => Lang.T("仓库里的箱子（储藏区等）右下角画一个小角标：箱子里第一件物品的图标；空箱子勾了分类时用同类物品的图标或类别颜色。只影响显示。",
-                    "Draw a small badge in the bottom-right corner of each box in storage: the icon of its first item; an empty box with categories ticked shows an item of that category or the category's color. Display only."));
+                tooltip: () => Lang.T("仓库里的箱子（储藏区等）右下角画一个角标（约占箱子的一半）：箱子里第一件物品的图标；空箱子勾了分类时用同类物品的图标或类别颜色。只影响显示。",
+                    "Draw a badge (about half the box) in the bottom-right corner of each box in storage: the icon of its first item; an empty box with categories ticked shows an item of that category or the category's color. Display only."));
             affordEntry = cfg.Define("onlyAffordable", true, "General", () => Lang.T("上柜台时只摆顾客买得起的", "Counter key: only items the buyer can afford"),
                 tooltip: () => Lang.T("开启时，上柜台热键只把当前顾客预算买得起的货摆上柜台（买不起的摆上去他也不会买）。关闭则买不起的也摆，排在后面。",
                     "When on, the counter key only puts items within the current buyer's budget on the counter (they won't buy the rest anyway). When off, unaffordable items are added after the others."));

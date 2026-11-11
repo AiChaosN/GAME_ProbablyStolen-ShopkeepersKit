@@ -98,7 +98,7 @@ Ctrl+G while pointing at a box, or the **分类** button left of the close butto
 
 ### Box icons
 
-Each box in storage (storage bays, etc.) gets a small badge in the **bottom-right corner** of its sprite, so you can tell what a cabinet holds without opening it:
+Each box in storage (storage bays, etc.) gets a badge in the **bottom-right corner** of its sprite (its diagonal is about half the box's diagonal, i.e. half the side of a square box), so you can tell what a cabinet holds without opening it:
 
 - a box with items shows the icon of its **first item** (the top-left one); if the box has ticked categories, the first item of a ticked type is preferred;
 - an empty box with ticked categories borrows the icon of an item of that type from your stock; if you have none, it shows a small chip in the type's color.
@@ -190,10 +190,11 @@ In game: Mods screen → select this mod → **设置** (Settings). Or edit `%US
 | `src/SortBehaviour.cs` | Hotkeys and notifications |
 | `src/SortConfig.cs` | Settings via the game's ModConfig |
 
-**Status**: builds and passes the game's mod scanner. 1.8.0 (tabs, Keep out of sorting) is **not yet tested in game**. 1.1.0 was tried in game: G on the counter, the 分类 button and box icons work (the button sat too far from the window and the icon was too big; both changed in 1.2.0). The 1.2.0 changes are **not yet tested in game**. The 分类 button is attached to the box window itself (same parent as the × button); if it looks wrong, turn off `boxButtons` and use Ctrl+G. If the box icons look wrong, turn off `boxIcons`.
+**Status**: builds and passes the game's mod scanner. 1.8.0 (tabs, Keep out of sorting) and 1.8.1 (bigger badges) are **not yet tested in game**. 1.1.0 was tried in game: G on the counter, the 分类 button and box icons work (the button sat too far from the window and the icon was too big; both changed in 1.2.0). The 1.2.0 changes are **not yet tested in game**. The 分类 button is attached to the box window itself (same parent as the × button); if it looks wrong, turn off `boxButtons` and use Ctrl+G. If the box icons look wrong, turn off `boxIcons`.
 
 ## Changelog
 
+- **1.8.1**: Bigger box badges: the diagonal is about half the box's diagonal (previously 30% of the shorter side), capped at 80% of the shorter side for long boxes.
 - **1.8.0**: Upgraded storage bays (expansion kit, several tabs): each tab is treated as a box of its own, with its own categories, Keep out of sorting and Keep out of the counter; tab buttons at the top of the category panel switch between tabs; when a tab is full, items continue into an empty, untagged tab of the same box. Fix: sorting into an upgraded box used to put items only into tab 1 and reported "doesn't fit" once tab 1 was full. New **Keep out of sorting** switch: your own medicine or gear stash no longer gets new goods stuffed into it.
 - **1.7.0**: The counter key (C) now works both ways depending on what you point at: an item in storage or a box puts its identical copies on the counter; an item on the counter takes its identical copies back into boxes or storage. While you drag an item, a hotkey that matches the game's flip/rotate/reset key is left to the game (so the counter key can be F).
 - **1.6.0**: Default keys moved under the left hand: sort **G**, counter **C** (previously F7 / F4; next to the game's Q/E rotate keys); keys you already saved are kept. Rebinding a key in the game's Options no longer triggers sorting or the counter key; messages show the key you actually set.

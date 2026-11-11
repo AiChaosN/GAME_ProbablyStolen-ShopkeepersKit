@@ -4,7 +4,7 @@
   <Name>【便利】掌柜帮手·拖放换件 | [QoL] Shopkeeper's Kit: Drop Swap</Name>
   <Author>ChaosN</Author>
   <ModVersion>1.0.0</ModVersion>
-  <Description>【便利型：不改任何数值，只帮你省操作】换电池、换滤芯不用再打开机器：把新电池直接拖到机器上，就换下里面的旧电池，旧电池放回新电池原来的位置；把新滤芯拖到滤水壶上同理。悬停时显示绿色的使用提示。机器里有空槽时照原版直接放进去；电池拖到电池上互换等原版效果不受影响。可在改装件设置里分别关闭电池、滤芯。界面中英双语，跟随游戏语言。
+  <Description>【便利型：不改任何数值，只帮你省操作】换电池、换滤水器不用再打开机器：把新电池直接拖到机器上，就换下里面的旧电池，旧电池放回新电池原来的位置；把新滤水器拖到水罐上同理。悬停时显示绿色的使用提示。机器里有空槽时照原版直接放进去；电池拖到电池上互换等原版效果不受影响。可在改装件设置里分别关闭电池、滤水器。界面中英双语，跟随游戏语言。
 掌柜帮手系列 · 作者 ChaosN · 由 Claude Code（Anthropic 的 AI 编程助手）协助开发。
 
 [QoL - no balance changes] Swap batteries and filters without opening anything: drop a new battery on a machine and it replaces the battery inside, with the old one going where the new one was; drop a new filter on a water pitcher the same way. Hovering shows the green "use on" hint. Empty slots still work as in the base game, and base-game drops such as battery-on-battery swaps are unchanged. Batteries and filters can be turned off separately in the mod settings. UI in Chinese and English, following the game language.

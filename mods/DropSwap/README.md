@@ -25,6 +25,7 @@ Unchanged:
 - base-game drop effects (e.g. dropping a battery on another battery to swap them) are handled by the base game;
 - slot rules still apply (e.g. a water pitcher refuses UV filters, so nothing is swapped);
 - only your own items, one item at a time; nothing is swapped when you group-drag several items;
+- with Filter Recharge installed, dropping a water filter on a pitcher that holds an Advanced Water Filter recharges it instead of swapping it out;
 - if the old part has a different shape and doesn't fit the new part's old cell, it goes to any free spot in the storage/box the new part came from; if there's no room there either, nothing is swapped and you get a short message.
 
 ## Install

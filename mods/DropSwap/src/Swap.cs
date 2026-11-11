@@ -6,7 +6,7 @@ using HarmonyLib;
 namespace DropSwap
 {
     /// <summary>
-    /// 拖放换件：把电池拖到机器上、把滤芯拖到滤水壶上（不用打开它们），直接换掉里面的旧件，旧件放回新件原来的位置。
+    /// 拖放换件：把电池拖到机器上、把滤水器拖到水罐上（不用打开它们），直接换掉里面的旧件，旧件放回新件原来的位置。
     ///
     /// 原版的拖放（ItemMouseDragHandler）落在一件物品上时：
     ///   1. 这件物品里有空的、能放的格子 → 放进去（槽是空的时原版本来就能直接拖进去，本 mod 不管）；
@@ -113,9 +113,10 @@ namespace DropSwap
         /// 原版对这一对物品没有任何“使用”效果、而本 mod 的换件条件成立时：换件，并跳过原版（原版本来什么都不会做）。
         /// 原版有自己的使用效果时（例如电池拖到电池上），完全交给原版。
         /// </summary>
-        private static bool TargetPrefix(GameItem __instance, GameItem targetItem)
+        private static bool TargetPrefix(GameItem __instance, GameItem targetItem, bool __runOriginal)
         {
-            if (busy) return true;
+            // 别的 mod 已经接手了这次使用（例如滤水器充能：装着高级滤水器时拖滤水器上去是充能）：什么都不做
+            if (!__runOriginal || busy) return true;
             try
             {
                 if (!Find(__instance, targetItem, out var slot, out var old)) return true;
@@ -195,7 +196,7 @@ namespace DropSwap
                     var cur = s.childItem;
                     if (cur == null || ReferenceEquals(cur, src) || KindOf(cur) != kind) continue;
                     if (ReferenceEquals(src.parentInventory, s)) continue;
-                    if (!s.MayHaveValidInventorySlot(src)) continue;               // 槽的规则（例如滤水壶不收紫外线滤芯）
+                    if (!s.MayHaveValidInventorySlot(src)) continue;               // 槽的规则（例如水罐不收紫外线灯）
                     // 机器里还有能直接放的空位：交给原版放进去
                     var free = target.TryFindOneValidInventorySlot(src);
                     if (free != null && free.numTransfer > 0) return false;
@@ -261,7 +262,7 @@ namespace DropSwap
 
         private static void DoSwap(GameItem src, GameItem target, GameSlotInventory slot, GameItem old)
         {
-            string what = Lang.T(KindOf(src) == Kind.Battery ? "电池" : "滤芯", KindOf(src) == Kind.Battery ? "battery" : "filter");
+            string what = Lang.T(KindOf(src) == Kind.Battery ? "电池" : "滤水器", KindOf(src) == Kind.Battery ? "battery" : "filter");
             busy = true;
             try
             {

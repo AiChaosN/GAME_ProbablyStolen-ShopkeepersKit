@@ -1,0 +1,51 @@
+[h1]【玩法】掌柜帮手·滤水器充能[/h1]
+[b]改变游戏机制，影响平衡。[/b] 界面中英双语，跟随游戏语言。
+
+[h2]做什么[/h2]
+[list]
+[*]把滤水器（普通、高级、水培芦苇滤芯）拖到[b]高级滤水器[/b]上：它剩下的耐久度全部转给高级滤水器，原来那个用完。
+[*]高级滤水器的耐久度上限提高到普通滤水器的 [b]20 倍（8000）[/b]，设置里可改成 5 / 10 / 40 倍。
+[*]快满时只转需要的部分，剩下的留在原来的滤水器里。
+[*]不用打开水罐：直接拖到装着高级滤水器的水罐上也行。
+[/list]
+
+[h2]对平衡的影响[/h2]
+[list]
+[*]一个高级滤水器能装 20 个普通滤水器的量。
+[*]高级滤水器每天恢复 50 点照旧，能一直恢复到新上限。
+[*]充满时售价与原版满耐久相同，没充满按比例打折（不会因为上限变高而售价暴涨）。
+[/list]
+
+[h2]安装[/h2]
+订阅后：主菜单 → 改装件 → 选中本 mod → 审阅并启用 → 重启游戏。不需要任何特殊权限。可以和「拖放换件」一起用：水罐里是高级滤水器时，拖滤水器上去是充能，不会把它换下来。
+
+掌柜帮手系列 · 作者 ChaosN · 由 Claude Code（Anthropic 的 AI 编程助手）协助开发。
+源码（MIT）：https://github.com/AiChaosN/GAME_ProbablyStolen-ShopkeepersKit
+欢迎在 GitHub 上提问题（Issues）和 PR；游戏更新后 mod 不能用了，也请告诉我。
+
+------------------------------------------------------------
+
+[h1][Gameplay] Shopkeeper's Kit: Filter Recharge[/h1]
+[b]Changes a game mechanic and affects balance.[/b] UI in Chinese and English, following the game language.
+
+[h2]What it does[/h2]
+[list]
+[*]Drop a water filter (regular, advanced or hydroreed) on an [b]Advanced Water Filter[/b]: all its remaining durability moves over and the source filter is used up.
+[*]The Advanced Water Filter's durability cap rises to [b]20× a regular filter (8000)[/b]; 5 / 10 / 40× in the settings.
+[*]Near the cap only what's needed is moved; the rest stays in the source filter.
+[*]No need to open the pitcher: drop it on a water pitcher holding an Advanced Water Filter.
+[/list]
+
+[h2]Balance[/h2]
+[list]
+[*]One Advanced Water Filter holds as much as 20 regular filters.
+[*]Its daily recovery of 50 still works, up to the new cap.
+[*]A fully charged filter sells for the same as a full one in the base game, less when not full (the higher cap doesn't inflate the price).
+[/list]
+
+[h2]Install[/h2]
+After subscribing: main menu → Mods → select this mod → Review and enable → restart the game. No special capabilities required. Works together with Drop Swap: when a pitcher holds an Advanced Water Filter, dropping a filter on it recharges it instead of swapping it out.
+
+Part of Shopkeeper's Kit by ChaosN. Developed with assistance from Claude Code (Anthropic's AI coding assistant).
+Source (MIT): https://github.com/AiChaosN/GAME_ProbablyStolen-ShopkeepersKit
+Issues and pull requests are welcome on GitHub, including reports when a game update breaks the mod.
