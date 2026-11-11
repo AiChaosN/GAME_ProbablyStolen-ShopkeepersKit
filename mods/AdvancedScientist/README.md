@@ -5,7 +5,7 @@
 > Part of the **Shopkeeper's Kit** series · category **[Gameplay]**: a new profession that changes game mechanics. See the [repository home](../../README.md) for the series and categories.
 > By ChaosN · developed with assistance from [Claude Code](https://claude.com/claude-code) (Anthropic's AI coding assistant). Mod ID: `chaos5090.advanced-scientist`.
 >
-> In development (0.2.0, step two); not on the Steam Workshop yet.
+> In development (0.2.1, step two); not on the Steam Workshop yet.
 
 UI in Chinese or English, following the game's language (Chinese shows Chinese, every other language shows English).
 
@@ -121,5 +121,6 @@ Uninstalling: in existing Advanced Scientist saves the three machines and the ch
 
 ## Changelog
 
+- **0.2.1**: The Blank Module Maker's materials grid grew from 6×3 to 9×6 and its output from 4×2 to 4×4. The materials are big (electronic parts, ingots and scrap are 3×2, wire 2×2, none stack), so even the low-grade recipe didn't fit before.
 - **0.2.0**: Step two: base chips, affix chips, Affix Extractor (sold by Dr. Jackson), Affix Inlayer (starting equipment; given to older saves).
 - **0.1.0**: Step one: profession, two days per day in the Machine Bay, Blank Module Maker.
