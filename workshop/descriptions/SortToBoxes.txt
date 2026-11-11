@@ -8,7 +8,7 @@
 [list]
 [*][b]G[/b]：仓库里散放的货自动归进对应的箱子（储藏区、工具箱、背包）。
 [*]每件货属于 13 个大类之一：食物、饮料与水、日用品、医疗、化学、武器与弹药、材料、工具与设备、模组、种子与农业、养殖、文件证件、奢侈品与收藏。
-[*]箱子收什么：点箱子窗口标题栏 × 左边的 [b]分类[/b] 按钮（或指着箱子按 Ctrl+G），勾整类或单件货。不勾 = 看箱子里现有的东西（有同款的优先）。分类面板只列出你在这个存档里见过的货，不剧透。
+[*]箱子收什么：点箱子窗口标题栏 × 左边的 [b]分类[/b] 按钮（或指着箱子按 Ctrl+G），勾整类或单件货。不勾 = 看箱子里现有的东西（有同款的优先）。分类面板只列出你在这个存档里见过的货，不剧透；每个大类可以折叠，默认收起，标题上写着已勾几件。
 [*]升级过的储藏区（扩容套件，多栏）：每栏单独设置、单独归箱；一栏放满了，接着放进同一个箱子里空着的栏。
 [*]箱子（或某一栏）可以设成[b]不参与归箱[/b]：自用的药品区、装备区不会再被塞进新货。
 [*]箱子右下角有角标（约占箱子的一半），不用打开就知道柜子里装的是什么。
@@ -44,7 +44,7 @@
 [list]
 [*][b]G[/b]: loose items in storage go into the right box (storage bays, toolbox, backpacks).
 [*]Every item belongs to one of 13 categories: food, drinks & water, household, medical, chemistry, weapons & ammo, materials, tools & equipment, modules, seeds & farming, husbandry, documents & cards, luxury & collectibles.
-[*]What a box takes: click the [b]Sort[/b] button left of × in the box window's title bar (or Ctrl+G while pointing at the box) and tick whole categories or single items. Nothing ticked = decide by what the box already holds (identical items first). The panel only lists goods you have seen in this save, so nothing is spoiled.
+[*]What a box takes: click the [b]Sort[/b] button left of × in the box window's title bar (or Ctrl+G while pointing at the box) and tick whole categories or single items. Nothing ticked = decide by what the box already holds (identical items first). The panel only lists goods you have seen in this save, so nothing is spoiled. Each category collapses (collapsed by default, its title shows how many items are ticked).
 [*]Upgraded storage bays (expansion kit, several tabs): each tab has its own settings and is sorted on its own; when a tab is full, items continue into an empty tab of the same box.
 [*]A box (or a tab) can be set to [b]keep out of sorting[/b]: your own medicine or gear stash never gets new goods stuffed into it.
 [*]A badge in each box's bottom-right corner (about half the box) shows what it holds.

@@ -18,6 +18,30 @@ namespace SortToBoxes
     {
         private const string WindowId = "chaos5090_stb_box_labels";
 
+        // 展开着的大类（本次游戏内记住，所有箱子共用）。默认全部收起，只显示“整类”那一行和已勾件数
+        private static readonly HashSet<string> Expanded = new HashSet<string>(StringComparer.Ordinal);
+
+        private sealed class Section
+        {
+            internal string Cat;
+            internal GameObject Grid;
+            internal CustomUIElement Button;
+        }
+
+        private static void SetExpanded(Section sec, bool on, bool zh)
+        {
+            if (sec?.Grid == null) return;
+            if (on) Expanded.Add(sec.Cat); else Expanded.Remove(sec.Cat);
+            try
+            {
+                sec.Grid.SetActive(on);
+                sec.Button?.SetText(on ? (zh ? "收起" : "Hide") : (zh ? "展开" : "Show"));
+                var content = sec.Grid.transform.parent as RectTransform;
+                if (content != null) CustomUIBuilder.RebuildLayout(content);
+            }
+            catch { }
+        }
+
         internal static string LayerId()
         {
             try { return CustomUIManager.HasLayer("paper") ? "paper" : "overlay"; }
@@ -148,6 +172,13 @@ namespace SortToBoxes
                     return;
                 }
 
+                // 大类默认收起：点每类前面的“展开”看里面的货；这两个按钮一次展开 / 收起全部
+                var sections = new List<Section>();
+                b.BeginRow(8f, TextAnchor.MiddleLeft);
+                b.AddButton(zh ? "全部展开" : "Show all", () => { foreach (var sec in sections) SetExpanded(sec, true, zh); });
+                b.AddButton(zh ? "全部收起" : "Hide all", () => { foreach (var sec in sections) SetExpanded(sec, false, zh); });
+                b.End();
+
                 b.BeginScroll(400f);
                 if (order.Count == 0) b.AddLabel(zh ? "还没有见过任何货。" : "You haven't seen any goods yet.");
                 foreach (var cat in order)
@@ -157,19 +188,36 @@ namespace SortToBoxes
                     bool catOn = selected.Contains(catKey);
                     var itemToggles = new Dictionary<string, CustomUIElement>(StringComparer.Ordinal);
                     CustomUIElement catToggle = null;
+                    var section = new Section { Cat = cat };
+
+                    // 标题行写着这一类勾了几件，收起时也看得到
+                    Func<string> catLabel = () =>
+                    {
+                        int n = items.Count;
+                        int ticked = selected.Contains(catKey) ? n : items.Count(i => selected.Contains(BoxLabels.ItemKey(i.Id)));
+                        return zh ? "【" + Categories.Name(cat) + "】整类" + (n > 0 ? "（已勾 " + ticked + "/" + n + "）" : "")
+                                  : "[" + Categories.Name(cat) + "] whole category" + (n > 0 ? " (" + ticked + "/" + n + " ticked)" : "");
+                    };
 
                     b.AddSeparator();
-                    string catLabel = zh ? "【" + Categories.Name(cat) + "】整类" + (items.Count > 0 ? "（见过 " + items.Count + " 种）" : "")
-                                         : "[" + Categories.Name(cat) + "] whole category" + (items.Count > 0 ? " (" + items.Count + " seen)" : "");
-                    b.AddToggle(catLabel, catOn, on =>
+                    b.BeginRow(6f, TextAnchor.MiddleLeft);
+                    if (items.Count > 0)
+                    {
+                        b.AddButton(Expanded.Contains(cat) ? (zh ? "收起" : "Hide") : (zh ? "展开" : "Show"),
+                            () => SetExpanded(section, !Expanded.Contains(section.Cat), zh));
+                        section.Button = b.Last;
+                    }
+                    b.AddToggle(catLabel(), catOn, on =>
                     {
                         selected.Remove(catKey);
                         foreach (var info in items) selected.Remove(BoxLabels.ItemKey(info.Id));   // 整类勾着时不需要逐件记
                         if (on) selected.Add(catKey);
                         foreach (var t in itemToggles.Values) t?.SetBool(on, notify: false);
                         BoxLabels.Set(box, tabIndex, selected);
+                        catToggle?.SetText(catLabel());
                     });
                     catToggle = b.Last;
+                    b.End();
                     if (items.Count == 0) continue;
 
                     b.BeginGrid(3, 232f, 34f, 4f);
@@ -200,11 +248,26 @@ namespace SortToBoxes
                                 selected.Remove(key);
                             }
                             BoxLabels.Set(box, tabIndex, selected);
+                            catToggle?.SetText(catLabel());
                         });
                         itemToggles[id] = b.Last;
                         b.End();
                     }
                     b.End();
+
+                    // 物品格子 = 行的父节点（BeginGrid 建的节点）：收起时整块隐藏，不用重画面板，滚动位置不变
+                    try
+                    {
+                        var first = itemToggles.Values.FirstOrDefault(t => t?.root != null);
+                        section.Grid = first?.root.transform.parent?.parent?.gameObject;
+                    }
+                    catch { section.Grid = null; }
+                    if (section.Grid != null)
+                    {
+                        sections.Add(section);
+                        if (!Expanded.Contains(cat)) section.Grid.SetActive(false);
+                    }
+                    else section.Button?.SetVisible(false);   // 找不到格子：不提供折叠，照旧全部显示
                 }
                 b.End();
 
