@@ -13,6 +13,12 @@ This mod is a **collection of small QoL features with no balance impact**: new f
 
 - Drop to swap: batteries and water filters (details below)
 
+## Screenshots
+
+Left: drop a new battery to replace the one in the machine (current converters swap too). Right: drop a new water filter on a pitcher to replace the used one.
+
+<img src="docs/images/swap-battery.jpg" alt="Battery swap" width="49%"> <img src="docs/images/swap-filter.jpg" alt="Filter swap" width="49%">
+
 ## Drop to swap: batteries and water filters
 
 In the base game, swapping a machine's battery or a water pitcher's filter means opening its window, dragging the old one out and the new one in. Dropping the new one on the **closed** machine works only when the slot is empty; when the old one is still inside, the drop is shown in red and nothing happens.

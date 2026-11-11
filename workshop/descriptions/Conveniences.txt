@@ -2,11 +2,14 @@
 [b]不改任何数值，只帮你省操作。[/b] 界面中英双语，跟随游戏语言。
 不影响平衡的小便利功能合集，以后新增的这类功能都会放在这里。
 
+[img]https://raw.githubusercontent.com/AiChaosN/GAME_ProbablyStolen-ShopkeepersKit/main/mods/Conveniences/docs/images/swap-battery.jpg[/img]
+[img]https://raw.githubusercontent.com/AiChaosN/GAME_ProbablyStolen-ShopkeepersKit/main/mods/Conveniences/docs/images/swap-filter.jpg[/img]
+
 [h2]做什么[/h2]
 原版里换电池、换滤水器要先打开机器窗口，把旧件拖出来再把新件拖进去；直接拖到合着的机器上，槽里有旧件时只会标红。本 mod 让这一下直接生效：
 [list]
-[*][b]换电池[/b]：把新电池拖到机器上，换下里面的旧电池，旧电池放到新电池原来的位置。
-[*][b]换滤水器[/b]：把新滤水器拖到水罐上，同理。
+[*][b]换电池[/b]：把新电池拖到机器上，换下里面的旧电池，旧电池放到新电池原来的位置。电流转换器也算，可以和电池互换。
+[*][b]换滤水器[/b]：把新滤水器拖到水罐上，同理；窗口第一层有滤芯槽的其他设备也一样。
 [*]悬停时显示绿色的使用提示，松手就换。
 [/list]
 
@@ -30,6 +33,9 @@
 [h1][QoL] Shopkeeper's Kit: Quick Swap[/h1]
 [b]No balance changes, it only saves clicks.[/b] UI in Chinese and English, following the game language.
 A collection of small QoL features with no balance impact; new features of this kind will be added here.
+
+[img]https://raw.githubusercontent.com/AiChaosN/GAME_ProbablyStolen-ShopkeepersKit/main/mods/Conveniences/docs/images/swap-battery.jpg[/img]
+[img]https://raw.githubusercontent.com/AiChaosN/GAME_ProbablyStolen-ShopkeepersKit/main/mods/Conveniences/docs/images/swap-filter.jpg[/img]
 
 [h2]What it does[/h2]
 In the base game, swapping a battery or a filter means opening the machine, dragging the old part out and the new one in; dropping the new part on the closed machine only shows red while the old part is inside. This mod makes that drop work:
