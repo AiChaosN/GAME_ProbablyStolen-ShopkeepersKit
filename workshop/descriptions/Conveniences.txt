@@ -19,7 +19,7 @@
 [*]指着[b]容器[/b]、瓶子里有水：倒进去，和松手倒一样。
 [*]指着容器、瓶子是[b]空的[/b]：用自来水来回装瓶倒进去，直到容器满。水质、滤芯消耗都和手动一样。
 [*]瓶子里有水时不接自来水，不会把净水和自来水混在一起。水龙头要先解锁锈水或溢流水管道。W 可以在游戏“选项”里改。
-[*]按完 W 瓶子放回原处，要往别的容器倒就再拖一次。
+[*]按完 W 还拿着，可以接着对下一个容器按 W（拿着大桶给一排小桶灌水）。
 [/list]
 
 [h2]不会改变的[/h2]
@@ -60,7 +60,7 @@ In the base game, swapping a battery or a filter means opening the machine, drag
 [*]Over a [b]container[/b] with liquid in the bottle: pour it in, like dropping it.
 [*]Over a container with an [b]empty[/b] bottle: keep fetching tap water and pouring until the container is full. Water quality and filter wear are the same as doing it by hand.
 [*]A bottle that holds liquid never gets tap water added. The tap needs the rust water or gutterflow pipe. W can be rebound in the game's Options.
-[*]After W the bottle goes back to its place; drag it again to pour somewhere else.
+[*]After W you're still holding it, so you can press W over the next container too (fill a row of barrels from a big one).
 [/list]
 
 [h2]Unchanged[/h2]

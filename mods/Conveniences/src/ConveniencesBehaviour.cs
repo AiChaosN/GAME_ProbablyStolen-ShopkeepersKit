@@ -10,6 +10,7 @@ namespace Conveniences
         {
             try
             {
+                WaterFill.Tick();   // 放下瓶子后补上暂缓的水位贴图更新
                 var cfg = ConveniencesMod.Config;
                 if (cfg == null || !cfg.WaterFill || IsTyping()) return;
                 if (Input.GetKeyDown(cfg.WaterKey)) WaterFill.OnKey();

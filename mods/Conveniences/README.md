@@ -48,7 +48,7 @@ While holding a bottle (any liquid container), press **W** (rebindable in the ga
 - **On a container, bottle is empty**: keep filling the bottle at the tap and pouring it in until the container is full, in one go. It's the same as running back and forth yourself: the water has today's rust water / gutterflow purity and filters wear the same way.
 - A bottle that already holds liquid never gets tap water added, so your clean water isn't mixed with tap water.
 - The tap needs the rust water or gutterflow pipe (game rule). One bottle at a time.
-- After W the bottle goes back to its place (like cancelling the drag with ESC); drag it again to pour somewhere else. If nothing happens (target full, can't pour) you keep holding it.
+- After W you're still holding the bottle, so you can press W over the next container too (e.g. fill a row of small barrels from a big one). Releasing works as in the base game: on a container it pours, on an empty spot it's put down.
 
 ## Install
 
@@ -96,6 +96,7 @@ The swap uses the game's own `GraphUtils.SwapItemsInPlace` (the same function th
 
 ## Changelog
 
+- **1.1.2**: After W you keep holding the bottle, so you can fill several containers in a row (1.1.1 put it back after each press). The held item's fill-level sprite update is deferred until you put it down, so it no longer jumps back. Millilitres in messages fixed (the game stores thousandths of a millilitre).
 - **1.1.1**: Pressing W now ends the drag and puts the bottle back. Fixed: after filling, the bottle looked like it went back but was still being dragged, so releasing it over something else poured again.
 - **1.1.0**: New one-key water filling (W): hold a bottle over the tap to fill it, over a container to pour, and an empty bottle over a container fills it up with tap water.
 - **1.0.0**: First release: drop a battery on a machine or a filter on a water pitcher to swap. (Called "Drop Swap" / `chaos5090.drop-swap` during development; renamed to Quick Swap with the generic ID `chaos5090.conveniences` before release, as the home for QoL features.)

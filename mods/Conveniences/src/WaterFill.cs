@@ -12,9 +12,11 @@ namespace Conveniences
     ///   - 指着另一个容器，瓶子是空的：用自来水反复“装满瓶子 → 倒进去”，直到容器满。等于你自己在水龙头和容器之间来回跑，
     ///     水质（今天的锈水 / 溢流水纯度）、经过滤芯时的耗损都和手动一样，只是一次做完（只放一次声音）。
     /// 瓶子里有水时不会再接自来水，免得把你的净水和自来水混在一起。
-    /// 做完之后结束这次拖动（游戏自己的 ItemMouseDragHandler.Cancel，和按 ESC 一样，瓶子放回原处）：
-    /// 原版只在松手时倒水，拖动途中液体不会变；途中倒了水，瓶子的水位贴图一变，游戏就把它画回原格子，
-    /// 但“拖着”的状态还在，之后在别的东西上松手又会倒一次（用户 2026-11-11 报告）。Cancel 时游戏明确跳过“对目标使用”。
+    /// 按完还拿着瓶子，可以接着对下一个容器按（例如拿着大桶给一排小桶灌水）。
+    /// 原版只在松手时倒水，拖动途中液体不会变；途中倒水后游戏会更新水位贴图（SpriteHelper.UpdateWaterContainerSprite
+    /// 对一部分容器会重设贴图和形状），正拖着的东西被这样一改就画回原格子、拖动却没结束（1.1.0 的问题）。
+    /// 游戏自己在 WaterFeatureHelper 里也特意跳过“正在拖的东西”的贴图更新；这里同样：按键处理期间暂缓手上这件的贴图更新，
+    /// 等放下以后（Tick 发现不再拖着它）再补上。1.1.1 用“按完就结束拖动”绕开，但这样没法连续灌好几个，1.1.2 改成现在的做法。
     /// 水龙头要先解锁锈水或溢流水管道（游戏规则：没解锁时拖到水龙头上什么都不发生）。
     /// </summary>
     internal static class WaterFill
@@ -24,7 +26,66 @@ namespace Conveniences
         // StoreStation.Instance 的 getter 在没有存档时会新建一个对象：直接读私有静态字段（字面量 typeof，扫描器不要求权限）
         private static readonly FieldInfo stationField = AccessTools.Field(typeof(StoreStation), "instance");
 
+        // 按键处理期间为 true：这时手上那件的水位贴图更新暂缓（见类说明）
+        private static bool acting;
+        private static GameItem pendingSprite;
+        private const string HarmonyId = "Conveniences.water";
+        private static Harmony harmony;
+
+        internal static void Apply()
+        {
+            try
+            {
+                harmony = new Harmony(HarmonyId);
+                var m = AccessTools.Method(typeof(SpriteHelper), "UpdateWaterContainerSprite", new[] { typeof(GameItem) });
+                if (m != null && m.DeclaringType == typeof(SpriteHelper))
+                    harmony.Patch(m, prefix: new HarmonyMethod(AccessTools.Method(typeof(WaterFill), nameof(SpritePrefix))));
+                else Log.Warn("找不到 SpriteHelper.UpdateWaterContainerSprite：灌水后手上的瓶子可能会跳回原位");
+            }
+            catch (Exception e) { Log.Warn("灌水贴图补丁失败（灌水照常可用）: " + e.Message); }
+        }
+
+        internal static void Remove()
+        {
+            try { harmony?.UnpatchAll(HarmonyId); } catch { }
+            harmony = null;
+        }
+
+        private static bool SpritePrefix(GameItem gameItem)
+        {
+            try
+            {
+                if (!acting || gameItem == null) return true;
+                if (!ReferenceEquals(gameItem, Swap.DraggedItem())) return true;
+                pendingSprite = gameItem;   // 放下以后再更新
+                return false;
+            }
+            catch { return true; }
+        }
+
+        /// <summary>每帧调用：手上那件放下了，就补上暂缓的贴图更新。</summary>
+        internal static void Tick()
+        {
+            var it = pendingSprite;
+            if (it == null || ReferenceEquals(Swap.DraggedItem(), it)) return;
+            pendingSprite = null;
+            try
+            {
+                if (it is GameItemElement el && el.IsDestroyed()) return;
+                SpriteHelper.UpdateWaterContainerSprite(it);
+                it.Validate();
+            }
+            catch (Exception e) { Log.Warn("补更新瓶子贴图出错: " + e.Message); }
+        }
+
         internal static void OnKey()
+        {
+            acting = true;
+            try { Act(); }
+            finally { acting = false; }
+        }
+
+        private static void Act()
         {
             var bottle = Swap.DraggedItem();
             if (bottle == null || !bottle.IsTag(LiquidTag)) return;   // 没拖着装液体的东西：这个键什么都不做
@@ -46,8 +107,7 @@ namespace Conveniences
             var faucet = Faucet();
             if (faucet != null && ReferenceEquals(target, faucet))
             {
-                int had = WaterHelper.GetTotalVolume(bottle);
-                if (FillFromTap(bottle, sound: true) && WaterHelper.GetTotalVolume(bottle) > had) EndDrag();
+                FillFromTap(bottle, sound: true);
                 return;
             }
             if (!target.IsTag(LiquidTag) || !GeneralHelper.IsItemOwned(target)) return;
@@ -68,8 +128,7 @@ namespace Conveniences
                 int before = WaterHelper.GetTotalVolume(target);
                 bottle.Target(target);
                 int poured = WaterHelper.GetTotalVolume(target) - before;
-                Log.Info("灌水：" + Name(bottle) + " → " + Name(target) + " " + poured + " ml");
-                if (poured > 0) EndDrag();
+                Log.Info("灌水：" + Name(bottle) + " → " + Name(target) + " " + (poured / 1000.0).ToString("0.#") + " ml");
                 return;
             }
 
@@ -94,22 +153,15 @@ namespace Conveniences
                 WaterHelper.UpdateWaterBottleSound(bottle);
                 WaterHelper.UpdateWaterBottleSound(target);
                 if (added > 0) AudioHelper.PourWater();
-                bottle.Validate();
-                target.Validate();
+                target.Validate();   // 手上的瓶子不 Validate：放下后 Tick 会补
             }
             catch { }
             int leftover = WaterHelper.GetTotalVolume(bottle);
-            Notify(Lang.T("往" + Name(target) + "灌了 " + added + " ml 自来水（来回 " + trips + " 趟）" + (leftover > 0 ? "，瓶子里还剩 " + leftover + " ml" : ""),
-                          "Filled " + Name(target) + " with " + added + " ml of tap water (" + trips + " trips)" + (leftover > 0 ? "; " + leftover + " ml left in the bottle" : "")));
-            Log.Info("灌水（自来水）：" + Name(target) + " +" + added + " ml，" + trips + " 趟");
-            if (added > 0 || WaterHelper.GetTotalVolume(bottle) > 0) EndDrag();
-        }
-
-        /// <summary>结束这次拖动，瓶子放回原处（游戏自己的取消，不会再对鼠标下的东西“使用”一次）。</summary>
-        private static void EndDrag()
-        {
-            try { ItemMouseDragHandler.current?.Cancel(); }
-            catch (Exception e) { Log.Warn("结束拖动出错: " + e.Message); }
+            // 游戏内部的液体单位是千分之一毫升
+            string addedMl = (added / 1000.0).ToString("0.#"), leftMl = (leftover / 1000.0).ToString("0.#");
+            Notify(Lang.T("往" + Name(target) + "灌了 " + addedMl + " ml 自来水（来回 " + trips + " 趟）" + (leftover > 0 ? "，瓶子里还剩 " + leftMl + " ml" : ""),
+                          "Filled " + Name(target) + " with " + addedMl + " ml of tap water (" + trips + " trips)" + (leftover > 0 ? "; " + leftMl + " ml left in the bottle" : "")));
+            Log.Info("灌水（自来水）：" + Name(target) + " +" + addedMl + " ml，" + trips + " 趟");
         }
 
         private static GameItem Faucet()
@@ -148,7 +200,6 @@ namespace Conveniences
                 {
                     AudioHelper.UseFaucet();
                     WaterHelper.UpdateWaterBottleSound(bottle);
-                    bottle.Validate();
                 }
                 return true;
             }

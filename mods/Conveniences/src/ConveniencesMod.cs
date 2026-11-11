@@ -22,6 +22,7 @@ namespace Conveniences
 
             Config.RegisterGameOptions(ModId);
             Swap.Apply();
+            WaterFill.Apply();
             try
             {
                 if (host == null)
@@ -45,6 +46,7 @@ namespace Conveniences
         public void OnDisable()
         {
             Swap.Remove();
+            WaterFill.Remove();
             try { ModHelper.RemoveGameOptions(ModId); } catch { }
             try
             {
