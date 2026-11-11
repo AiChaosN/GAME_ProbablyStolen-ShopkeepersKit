@@ -7,7 +7,7 @@
 >
 > **Steam Workshop: [subscribe here](https://steamcommunity.com/sharedfiles/filedetails/?id=3837934061)**
 >
-> 0.3.3 (step two); the chip merger comes later.
+> 0.3.4 (step two); the chip merger comes later.
 
 UI in Chinese or English, following the game's language (Chinese shows Chinese, every other language shows English).
 
@@ -118,12 +118,14 @@ Uninstalling: in existing Advanced Scientist saves the three machines and the ch
 | `src/Progression.cs` | Dr. Jackson sells the extractor (`ModHook.OnPlaceInventorInventoryItemLate`); older saves get the inlayer |
 | `src/TwoDays.cs` | Two days per day in the Machine Bay (`ModHook.OnGoingSleepLate`: run the early / main / late passes again for machines in a bay) |
 | `src/ScientistMod.cs` | Entry point, settings, new item registration (`ModHook.OnModItemDirectoryInit`) |
-| `tools/make_sprites.py` | Generates the pixel art in `Textures/Items/` |
+| `tools/sprite_prompt.md` | Prompt for Codex to draw the machines and chips in the game's style |
+| `tools/make_icon.py` | Profession icon (the game's profession icon style: 19×19 one-colour circle + chip) |
 
 **Status**: builds and passes the game's mod scanner; **not yet tested in game**.
 
 ## Changelog
 
+- **0.3.4**: Sprites in the game's style: the three machines and two chips redrawn by Codex after the game's modules and robot arm (same sizes, old saves unaffected); profession icon now matches the game's round profession icons.
 - **0.3.3**: Recipes use Metal Ingots instead of Scrap Metal (2 / 4 / 6 each); mid / high values 390 / 590; the start kit gives 2 Metal Ingots. Fixed stale in-game descriptions: saves store item names and descriptions, so existing machines kept showing the old recipes; names and descriptions of this mod's machines, chips and blank modules are now refreshed on load for the current version and language. First Workshop release.
 - **0.3.2**: Recipes add wire: 2 / 4 / 6 each of Common Electronic Parts, Scrap Metal and Wire for low / mid / high; slots are now 2 / 4 / 6 (blank modules from older saves get the new count and name on load); materials grid 9×8 → 12×10; mid / high values 230 / 350; the start kit includes 2 wire.
 - **0.3.1**: Recipes now use only Common Electronic Parts + Scrap Metal: 2 / 4 / 6 of each for low / mid / high; materials grid 9×6 → 9×8 (the high recipe is 12 items of 3×2); mid / high blank values 170 / 260 to match the material cost.
