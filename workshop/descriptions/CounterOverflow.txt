@@ -1,6 +1,7 @@
 [h1]【修复】掌柜帮手·柜台不丢货[/h1]
 [b]修游戏 bug，会稍微影响平衡。[/b] 界面中英双语，跟随游戏语言。
 
+[img]https://raw.githubusercontent.com/AiChaosN/GAME_ProbablyStolen-ShopkeepersKit/main/mods/CounterOverflow/docs/images/how-it-works.png[/img]
 [img]https://raw.githubusercontent.com/AiChaosN/GAME_ProbablyStolen-ShopkeepersKit/main/mods/CounterOverflow/docs/images/pages-1.jpg[/img]
 
 [h2]修的是什么[/h2]
@@ -31,6 +32,8 @@
 
 [h1][Fix] Shopkeeper's Kit: Counter Overflow[/h1]
 [b]Fixes a game bug, with a small effect on balance.[/b] UI in Chinese and English, following the game language.
+
+[img]https://raw.githubusercontent.com/AiChaosN/GAME_ProbablyStolen-ShopkeepersKit/main/mods/CounterOverflow/docs/images/how-it-works.png[/img]
 
 [h2]The bug[/h2]
 When a seller (thieves, water sellers, Dr. Jackson offering equipment, ...) lays goods on the counter, anything that doesn't fit is [b]silently destroyed[/b] in the base game; when the counter is completely full, the remaining items are never created. One visit from Dr. Jackson can lose twenty or more items.

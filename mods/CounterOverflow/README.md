@@ -9,6 +9,10 @@
 
 The in-game UI is in Chinese and English and follows the game's language (Chinese when the game is in Chinese, English otherwise).
 
+## At a glance
+
+<img src="docs/images/how-it-works.png" alt="Base game vs this mod" width="85%">
+
 ## Screenshots
 
 Items that don't fit on the counter go onto the next page. The page bar above the customer's head shows the page number and how many items are on other pages; press `Z` `X` or click the buttons to turn pages (the screenshots are from an older version that used `,` `.`). (The game was in Chinese.)

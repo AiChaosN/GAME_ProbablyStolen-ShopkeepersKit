@@ -14,6 +14,12 @@ A code mod for *Probably Stolen* (v0.46D) that takes care of two chores:
 
 The in-game UI is in Chinese and English and follows the game's language (Chinese when the game is in Chinese, English otherwise). Item and box names use the game's own translations.
 
+## Keys at a glance
+
+Default keys; all can be rebound in the game's Options.
+
+<img src="docs/images/keys.png" alt="Keys at a glance" width="80%">
+
 ## Screenshots
 
 **Category panel**: open it with the "Sort" button on the storage window's title bar; tick whole categories or single items. The option at the top keeps the box out of the counter.
