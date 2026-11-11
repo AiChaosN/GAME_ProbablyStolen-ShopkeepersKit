@@ -20,7 +20,11 @@ namespace FilterRecharge
     internal static class FilterInPlace
     {
         private const string LiquidTag = "LIQUID_CONTAINER_TAG";
-        private const int PitcherCapacity = 3000;   // 水罐容量（AmenitiesItemDirectory.WaterPitcher：InitLiquidContainerItem(…, 3000, …)）
+        // 游戏内部的液体单位是千分之一毫升（容量标签 = 毫升 × 1000，GetTotalCapacityML 除以 1000；提示里也除以 1000 显示）。
+        // 1.2.0 把一罐当成了 3000 个内部单位（= 3 ml），批次小了 1000 倍：20 L 的储水罐算成 6667 罐，又卡，
+        // 而且 HandleFilter 每批每种杂质至少扣 1 点耐久，耐久被多扣了几十倍（用户 2026-11-12 报告，一罐水用光了 6210 耐久）。
+        private const int UnitsPerMl = 1000;
+        private const int PitcherCapacity = 3000 * UnitsPerMl;   // 水罐容量 3000 ml（AmenitiesItemDirectory.WaterPitcher：InitLiquidContainerItem(…, 3000, …)）
 
         internal static bool Applies(GameItem src, GameItem target)
         {
@@ -53,7 +57,8 @@ namespace FilterRecharge
             var liquids = Liquid.Liquids;
             var left = new int[liquids.Count];      // 还没过滤的
             var kept = new int[liquids.Count];      // 过滤后留下的
-            for (int i = 0; i < liquids.Count; i++) left[i] = Math.Max(0, target.GetTagReadonly(liquids[i].currentPart).GetInt());
+            var orig = new int[liquids.Count];     // 过滤前
+            for (int i = 0; i < liquids.Count; i++) orig[i] = left[i] = Math.Max(0, target.GetTagReadonly(liquids[i].currentPart).GetInt());
             int remaining = before, batches = 0;
             while (remaining > 0 && batches < 10000)
             {
@@ -92,6 +97,11 @@ namespace FilterRecharge
             }
             int removed = before - WaterHelper.GetTotalVolume(target);
             int used = dur - DurabilityHelper.GetRealDurability(filter);
+            bool ranOut = DurabilityHelper.GetRealDurability(filter) <= 0;
+            // 滤掉了能滤的杂质的多少（耐久中途用完时告诉玩家）
+            long couldRemove = 0;
+            for (int i = 0; i < liquids.Count; i++)
+                if (kept[i] + left[i] < orig[i]) couldRemove += (long)(orig[i] * (1.0 - liquids[i].filterMinimumPurity));
 
             if (removed <= 0 && used <= 0)
             {
@@ -114,9 +124,17 @@ namespace FilterRecharge
             catch (Exception e) { Log.Warn("刷新水质显示出错: " + e.Message); }
 
             int now = DurabilityHelper.GetRealDurability(filter), max = DurabilityHelper.GetMaxDurability(filter);
-            Notify(Lang.T("过滤了" + tName + "：去掉杂质 " + removed + " ml，" + fName + "耐久度 -" + used + " → " + now + "/" + max,
-                          "Filtered " + tName + ": removed " + removed + " ml of impurities, " + fName + " durability -" + used + " → " + now + "/" + max));
-            Log.Info("原地过滤：" + tName + " " + before + " ml，分 " + batches + " 罐，去掉 " + removed + " ml（" + string.Join("，", changed) + "），" + fName + " 耐久 -" + used);
+            string ml = (removed / (double)UnitsPerMl).ToString("0.#");
+            string msg = Lang.T("过滤了" + tName + "：去掉杂质 " + ml + " ml，" + fName + "耐久度 -" + used + " → " + now + "/" + max,
+                                "Filtered " + tName + ": removed " + ml + " ml of impurities, " + fName + " durability -" + used + " → " + now + "/" + max);
+            if (ranOut)
+            {
+                // 中途用完：只滤了一部分（剩下的原样通过，和手动倒一样）
+                int pct = couldRemove > 0 ? (int)Math.Min(100, removed * 100L / couldRemove) : 0;
+                msg += Lang.T("。耐久用完了，只滤了大约 " + pct + "%，充能后可以再滤", ". Durability ran out after about " + pct + "%; recharge and filter again");
+            }
+            Notify(msg);
+            Log.Info("原地过滤：" + tName + " " + (before / (double)UnitsPerMl).ToString("0.#") + " ml，分 " + batches + " 罐，去掉 " + ml + " ml（内部单位：" + string.Join("，", changed) + "），" + fName + " 耐久 -" + used + (ranOut ? "（用完）" : ""));
         }
 
         private static void Notify(string msg)

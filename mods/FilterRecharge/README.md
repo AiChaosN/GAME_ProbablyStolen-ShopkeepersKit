@@ -93,6 +93,7 @@ Mods screen → select this mod → **Settings**, or edit `%USERPROFILE%\AppData
 
 ## Changelog
 
+- **1.2.1**: Fixed a unit bug in in-place filtering: the game stores liquid in thousandths of a millilitre, and 1.2.0 treated one pitcher-load as 3 ml, so batches were 1000× too small: a 20 L water tank became 6667 batches (lag), and since each batch costs at least 1 durability, filters lost dozens of times too much (6000+ for one tank). Now a pitcher-load is the real 3000 ml (about 7 for a full tank); the millilitres in the message are right; if durability runs out midway the message says roughly what percentage was filtered.
 - **1.2.0**: Drop an Advanced Water Filter on a barrel, water tank or other water container to filter it in place (in 3000 ml batches, equivalent to pouring through a pitcher); optional, on by default.
 - **1.1.0**: Box-select several filters and drop them together to charge in one go (on the Advanced Water Filter or a pitcher holding one), with one combined message.
 - **1.0.0**: First release: drop a water filter on an Advanced Water Filter (or a pitcher holding one) to recharge it; cap defaults to 20× a regular filter.
