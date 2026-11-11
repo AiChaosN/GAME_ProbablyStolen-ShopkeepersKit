@@ -21,7 +21,7 @@ Logging into Steam needs your own password and Steam Guard code, so you run the 
 4. **Build and prepare** (in WSL, at the repo root):
    ```bash
    (cd mods/SortToBoxes && ./build.sh)          # build every mod you upload first
-   python3 -I workshop/prepare.py SortToBoxes   # new items are private by default; updates keep the current visibility
+   python3 -I workshop/prepare.py SortToBoxes   # new items are public by default; updates keep the current visibility
    ```
    Without a mod name it prepares all of them. It prints the command for the next step.
 5. **Upload** (in Windows PowerShell): run the printed command, e.g.
@@ -47,7 +47,9 @@ You can also use the Linux SteamCMD and upload straight from WSL:
 3. Put `STEAMCMD="/home/<you>/Tools/steamcmd/steamcmd.sh"` in `local.env`. From then on `prepare.py` uses the WSL SteamCMD by default: WSL paths in the VDF, upload folder `~/ShopkeepersKit-upload`, and the printed command runs in WSL. Add `--steamcmd windows` to use the Windows one instead.
 4. The first `steamcmd.sh +login <your Steam account> +quit` asks for your password and Steam Guard code; after a successful login it is remembered, so later uploads ask once or not at all.
 
-## Test, then go public
+## Testing privately first (optional)
+
+New items are public by default: normally you test the local build first and then upload. If you want to upload privately and test the Workshop copy first, add `--visibility private` when uploading, then:
 
 1. Open your item on the Workshop (Steam profile → Workshop Items) and **subscribe**.
 2. **Move the local copy out of the game's `Mods` folder first** (e.g. to a backup on the desktop). With both present the game prefers the local copy, and a changed source makes the game ask for review again.

@@ -21,7 +21,7 @@
 4. **构建并准备**（在 WSL 里、仓库根目录）：
    ```bash
    (cd mods/SortToBoxes && ./build.sh)          # 每个要上传的 mod 都先构建
-   python3 -I workshop/prepare.py SortToBoxes   # 新建时默认“私密”，只有你自己看得见；更新已有物品时不改可见性
+   python3 -I workshop/prepare.py SortToBoxes   # 新建时默认直接公开；更新已有物品时不改可见性
    ```
    不写 mod 名就是全部都准备。它会打印出下一步要运行的命令。
 5. **上传**（在 Windows 的 PowerShell 里）：运行上一步打印的命令，例如
@@ -47,7 +47,9 @@
 3. 在 `local.env` 里写上 `STEAMCMD="/home/<你>/Tools/steamcmd/steamcmd.sh"`。之后 `prepare.py` 默认用 WSL 版：VDF 里写 WSL 路径，上传目录默认 `~/ShopkeepersKit-upload`，最后打印的是 WSL 里运行的命令。想临时用 Windows 版就加 `--steamcmd windows`。
 4. 第一次运行 `steamcmd.sh +login 你的Steam账号 +quit` 会问密码和手机验证码；登录成功后会记住，之后上传一般只问一次或不再问。
 
-## 测试后公开
+## 先私密测试（可选）
+
+新物品默认直接公开：平时先用本地版测好再上传。如果想先私密上传、订阅创意工坊版测一遍，上传时加 `--visibility private`，测完按下面做：
 
 1. 在创意工坊打开你的物品（Steam 个人资料 → 创意工坊物品），点**订阅**。
 2. **先把游戏 `Mods` 文件夹里同名的本地版本挪走**（例如移到桌面备份）。本地版和创意工坊版同时存在时游戏优先用本地版；而且来源变了，游戏会要求重新确认。

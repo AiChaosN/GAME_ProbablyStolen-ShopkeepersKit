@@ -3,11 +3,11 @@
 本脚本只整理本地文件，不登录、不上传；上传由你自己运行 SteamCMD 完成（见 workshop/README.zh-CN.md）。
 
 用法（在仓库根目录）：
-    python3 -I workshop/prepare.py                       # 所有 mod，新建的物品私密（只有自己看得见）
+    python3 -I workshop/prepare.py                       # 所有 mod，新建的物品直接公开
     python3 -I workshop/prepare.py SortToBoxes           # 只准备一个
     python3 -I workshop/prepare.py --visibility public --note "1.4.2：……"
 
-可见性：新建物品默认私密；更新已有物品时不写可见性（保留你在网页上设的），除非用 --visibility 指定。
+可见性：新建物品默认公开（作者的 mod 在创意工坊上都是公开的）；更新已有物品时不写可见性（保留你在网页上设的），除非用 --visibility 指定。
 
 两种 SteamCMD 都支持（--steamcmd 指定；不指定时：local.env 里 STEAMCMD 指向的 steamcmd.sh 存在就用 WSL 版，否则用 Windows 版）：
   linux：WSL 里的 Linux 版 steamcmd（local.env 的 STEAMCMD，例如 /home/<你>/Tools/steamcmd/steamcmd.sh），VDF 里写 WSL 路径；
@@ -64,7 +64,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("mods", nargs="*", default=MODS)
     ap.add_argument("--visibility", choices=list(VIS), default=None,
-                    help="不给时：新建物品用 private；更新已有物品不改可见性")
+                    help="不给时：新建物品用 public；更新已有物品不改可见性")
     ap.add_argument("--note", default=None, help="更新说明（changenote）；不给时写 “v<版本号>”")
     ap.add_argument("--meta-only", action="store_true",
                     help="只更新已有物品的标题和介绍，不上传 mod 文件和预览图（例如修改介绍文字时）")
@@ -160,7 +160,7 @@ def main():
         ]
         if preview:
             lines.append(f'\t"previewfile"\t{vdf_str(path_of(preview))}')
-        vis = a.visibility or ("private" if pid == "0" else None)
+        vis = a.visibility or ("public" if pid == "0" else None)
         if vis:
             lines.append(f'\t"visibility"\t{vdf_str(VIS[vis])}')
         lines += [
