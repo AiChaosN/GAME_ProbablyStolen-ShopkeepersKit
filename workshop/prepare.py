@@ -9,8 +9,11 @@
 
 可见性：新建物品默认私密；更新已有物品时不写可见性（保留你在网页上设的），除非用 --visibility 指定。
 
-上传目录：local.env 里的 UPLOAD_DIR（WSL 写法，必须在 Windows 盘上，例如 /mnt/c/ShopkeepersKit-upload），
-不设时默认 /mnt/c/ShopkeepersKit-upload。
+两种 SteamCMD 都支持（--steamcmd 指定；不指定时：local.env 里 STEAMCMD 指向的 steamcmd.sh 存在就用 WSL 版，否则用 Windows 版）：
+  linux：WSL 里的 Linux 版 steamcmd（local.env 的 STEAMCMD，例如 /home/<你>/Tools/steamcmd/steamcmd.sh），VDF 里写 WSL 路径；
+         上传目录默认 ~/ShopkeepersKit-upload。
+  windows：Windows 版 C:\steamcmd\steamcmd.exe，VDF 里写 Windows 路径；上传目录必须在 Windows 盘上，默认 /mnt/c/ShopkeepersKit-upload。
+上传目录也可以用 local.env 里的 UPLOAD_DIR 指定。
 物品编号：workshop/ids.json。steamcmd 第一次上传成功后会把新物品的编号写回上传目录里的 VDF；
 下次运行本脚本时会先把它读回来存进 ids.json（记得提交），以后就是更新同一项，不会重复新建。
 做法与官方模组指南一致：https://github.com/dragonpan2/probably-stolen-modding（ModdingGuide “用 steamcmd 发布”）。
@@ -54,9 +57,18 @@ def main():
     ap.add_argument("--visibility", choices=list(VIS), default=None,
                     help="不给时：新建物品用 private；更新已有物品不改可见性")
     ap.add_argument("--note", default=None, help="更新说明（changenote）；不给时写 “v<版本号>”")
+    ap.add_argument("--steamcmd", choices=["linux", "windows"], default=None,
+                    help="用 WSL 里的 Linux 版还是 Windows 版 SteamCMD（默认：local.env 的 STEAMCMD 存在就用 linux）")
     a = ap.parse_args()
 
-    upload = pathlib.Path(local_env().get("UPLOAD_DIR", "/mnt/c/ShopkeepersKit-upload"))
+    env = local_env()
+    steamcmd_sh = env.get("STEAMCMD", "")
+    mode = a.steamcmd or ("linux" if steamcmd_sh and pathlib.Path(steamcmd_sh).is_file() else "windows")
+    if mode == "linux" and not (steamcmd_sh and pathlib.Path(steamcmd_sh).is_file()):
+        sys.exit("用 WSL 版 SteamCMD 时，要在 local.env 里写 STEAMCMD=\"<steamcmd.sh 的完整路径>\"")
+    default_upload = str(pathlib.Path.home() / "ShopkeepersKit-upload") if mode == "linux" else "/mnt/c/ShopkeepersKit-upload"
+    upload = pathlib.Path(env.get("UPLOAD_DIR", default_upload))
+    path_of = (lambda p: str(p)) if mode == "linux" else win_path
     ids_file = WS / "ids.json"
     ids = json.loads(ids_file.read_text(encoding="utf-8")) if ids_file.exists() else {}
 
@@ -73,7 +85,8 @@ def main():
         ids_file.write_text(json.dumps(ids, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
         print("从上次上传的 VDF 读回物品编号，已写入 workshop/ids.json（记得提交）：" + "，".join(changed) + "\n")
 
-    print(f"上传目录：{upload}  ({win_path(upload)})\n")
+    print("SteamCMD：" + ("WSL 版 " + steamcmd_sh if mode == "linux" else "Windows 版 C:\\steamcmd\\steamcmd.exe"))
+    print(f"上传目录：{upload}" + (f"  ({win_path(upload)})" if mode == "windows" else "") + "\n")
     commands = []
     for mod in a.mods:
         if mod not in MODS:
@@ -107,10 +120,10 @@ def main():
             '"workshopitem"', "{",
             f'\t"appid"\t\t{vdf_str(APPID)}',
             f'\t"publishedfileid"\t{vdf_str(pid)}',
-            f'\t"contentfolder"\t{vdf_str(win_path(content))}',
+            f'\t"contentfolder"\t{vdf_str(path_of(content))}',
         ]
         if preview:
-            lines.append(f'\t"previewfile"\t{vdf_str(win_path(preview))}')
+            lines.append(f'\t"previewfile"\t{vdf_str(path_of(preview))}')
         vis = a.visibility or ("private" if pid == "0" else None)
         if vis:
             lines.append(f'\t"visibility"\t{vdf_str(VIS[vis])}')
@@ -124,11 +137,15 @@ def main():
         vdf.write_text("\n".join(lines), encoding="utf-8")
         state = "新建" if pid == "0" else f"更新 {pid}"
         print(f"{mod} {version}：{state}，{('可见性 ' + vis) if vis else '可见性不变'}，预览图 {'有' if preview else '没有（workshop/previews/' + mod + '.png）'}")
-        print(f"  内容：{win_path(content)}\n  配置：{win_path(vdf)}")
-        commands.append(f'+workshop_build_item "{win_path(vdf)}"')
+        print(f"  内容：{path_of(content)}\n  配置：{path_of(vdf)}")
+        commands.append(f'+workshop_build_item "{path_of(vdf)}"')
 
-    print("\n在 Windows 的 PowerShell 里运行（把 你的Steam账号 换成你的登录名；密码和手机验证码会在窗口里问你）：")
-    print("  C:\\steamcmd\\steamcmd.exe +login 你的Steam账号 " + " ".join(commands) + " +quit")
+    if mode == "linux":
+        print("\n在 WSL 里运行（把 你的Steam账号 换成你的登录名；第一次会问密码和手机验证码，之后会记住登录）：")
+        print(f'  "{steamcmd_sh}" +login 你的Steam账号 ' + " ".join(commands) + " +quit")
+    else:
+        print("\n在 Windows 的 PowerShell 里运行（把 你的Steam账号 换成你的登录名；密码和手机验证码会在窗口里问你）：")
+        print("  C:\\steamcmd\\steamcmd.exe +login 你的Steam账号 " + " ".join(commands) + " +quit")
     print("\n第一次上传后，steamcmd 会把新物品编号写回 VDF；再运行一次本脚本就会把编号存进 workshop/ids.json，记得提交。")
 
 

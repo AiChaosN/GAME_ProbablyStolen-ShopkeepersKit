@@ -31,6 +31,22 @@
    窗口里会问密码和 Steam 令牌验证码。
 6. **记下物品编号**：上传成功后，steamcmd 会把新物品的编号写回 `C:\ShopkeepersKit-upload\<mod>.vdf`。再运行一次 `python3 -I workshop/prepare.py`，它会把编号读回来存进 `workshop/ids.json`，然后提交到仓库。**以后再上传就是更新同一项；没记下编号的话每次都会新建一个重复的物品。**
 
+## 在 WSL 里上传（不用切到 Windows）
+
+也可以用 Linux 版 SteamCMD，在 WSL 里直接上传：
+
+1. 下载解压（只做一次）：
+   ```bash
+   mkdir -p ~/Tools/steamcmd && cd ~/Tools/steamcmd
+   curl -fsSL https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz | tar -xz
+   ```
+2. 装 32 位运行库（只做一次，要输入你的 sudo 密码；Ubuntu 22.04 不用另外添加 i386 架构）：
+   ```bash
+   sudo apt-get install -y lib32gcc-s1
+   ```
+3. 在 `local.env` 里写上 `STEAMCMD="/home/<你>/Tools/steamcmd/steamcmd.sh"`。之后 `prepare.py` 默认用 WSL 版：VDF 里写 WSL 路径，上传目录默认 `~/ShopkeepersKit-upload`，最后打印的是 WSL 里运行的命令。想临时用 Windows 版就加 `--steamcmd windows`。
+4. 第一次运行 `steamcmd.sh +login 你的Steam账号 +quit` 会问密码和手机验证码；登录成功后会记住，之后上传一般只问一次或不再问。
+
 ## 测试后公开
 
 1. 在创意工坊打开你的物品（Steam 个人资料 → 创意工坊物品），点**订阅**。

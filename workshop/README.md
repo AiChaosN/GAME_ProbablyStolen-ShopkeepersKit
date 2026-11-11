@@ -31,6 +31,22 @@ Logging into Steam needs your own password and Steam Guard code, so you run the 
    It asks for your password and Steam Guard code.
 6. **Record the item ID**: after a successful upload, steamcmd writes the new item's ID back into `C:\ShopkeepersKit-upload\<mod>.vdf`. Run `python3 -I workshop/prepare.py` once more and it copies the ID into `workshop/ids.json`; commit that file. **Later uploads then update the same item; without the ID every upload creates a duplicate.**
 
+## Uploading from WSL (no need to switch to Windows)
+
+You can also use the Linux SteamCMD and upload straight from WSL:
+
+1. Download and unpack (once):
+   ```bash
+   mkdir -p ~/Tools/steamcmd && cd ~/Tools/steamcmd
+   curl -fsSL https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz | tar -xz
+   ```
+2. Install the 32-bit runtime (once, asks for your sudo password; on Ubuntu 22.04 there's no need to add the i386 architecture):
+   ```bash
+   sudo apt-get install -y lib32gcc-s1
+   ```
+3. Put `STEAMCMD="/home/<you>/Tools/steamcmd/steamcmd.sh"` in `local.env`. From then on `prepare.py` uses the WSL SteamCMD by default: WSL paths in the VDF, upload folder `~/ShopkeepersKit-upload`, and the printed command runs in WSL. Add `--steamcmd windows` to use the Windows one instead.
+4. The first `steamcmd.sh +login <your Steam account> +quit` asks for your password and Steam Guard code; after a successful login it is remembered, so later uploads ask once or not at all.
+
 ## Test, then go public
 
 1. Open your item on the Workshop (Steam profile → Workshop Items) and **subscribe**.
