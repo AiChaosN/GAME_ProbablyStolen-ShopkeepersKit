@@ -48,7 +48,16 @@ def win_path(p: pathlib.Path) -> str:
 
 
 def vdf_str(s: str) -> str:
-    return '"' + s.replace("\\", "\\\\").replace('"', '\\"') + '"'
+    # SteamCMD 读 VDF 时不认 \" 转义：文本里出现英文双引号会被当成字符串结束，后面的内容被截掉
+    # （2026-11-11 归类入箱的创意工坊介绍就这样被截断了）。所以把英文双引号换成中文引号“”，交替成对。
+    out, open_q = [], True
+    for ch in s:
+        if ch == '"':
+            out.append("“" if open_q else "”")
+            open_q = not open_q
+        else:
+            out.append(ch)
+    return '"' + "".join(out).replace("\\", "\\\\") + '"'
 
 
 def main():
@@ -57,6 +66,10 @@ def main():
     ap.add_argument("--visibility", choices=list(VIS), default=None,
                     help="不给时：新建物品用 private；更新已有物品不改可见性")
     ap.add_argument("--note", default=None, help="更新说明（changenote）；不给时写 “v<版本号>”")
+    ap.add_argument("--meta-only", action="store_true",
+                    help="只更新已有物品的标题和介绍，不上传 mod 文件和预览图（例如修改介绍文字时）")
+    ap.add_argument("--description", default=None,
+                    help="用这个文件代替 workshop/descriptions/<mod>.txt（例如用某个旧版本的介绍）")
     ap.add_argument("--steamcmd", choices=["linux", "windows"], default=None,
                     help="用 WSL 里的 Linux 版还是 Windows 版 SteamCMD（默认：local.env 的 STEAMCMD 存在就用 linux）")
     a = ap.parse_args()
@@ -97,9 +110,28 @@ def main():
             sys.exit(f"{mod}：找不到 {dist}，先在 mods/{mod} 里运行 ./build.sh")
         r = ET.parse(manifest).getroot()   # 不是合法 XML 会直接报错退出
         title, version = r.findtext("Name"), r.findtext("ModVersion")
-        desc_file = WS / "descriptions" / f"{mod}.txt"
+        desc_file = pathlib.Path(a.description) if a.description else WS / "descriptions" / f"{mod}.txt"
         if not desc_file.exists():
             sys.exit(f"{mod}：缺少创意工坊介绍 {desc_file}")
+
+        pid = str(ids.get(mod, 0) or 0)
+        if a.meta_only:
+            if pid == "0":
+                sys.exit(f"{mod}：还没上传过，不能只更新介绍")
+            lines = ['"workshopitem"', "{",
+                     f'\t"appid"\t\t{vdf_str(APPID)}',
+                     f'\t"publishedfileid"\t{vdf_str(pid)}',
+                     f'\t"title"\t\t{vdf_str(title)}',
+                     f'\t"description"\t{vdf_str(desc_file.read_text(encoding="utf-8").strip())}']
+            if a.note:
+                lines.append(f'\t"changenote"\t{vdf_str(a.note)}')
+            lines += ["}", ""]
+            vdf = upload / f"{mod}.meta.vdf"
+            upload.mkdir(parents=True, exist_ok=True)
+            vdf.write_text("\n".join(lines), encoding="utf-8")
+            print(f"{mod}：只更新标题和介绍（物品 {pid}），不传文件\n  配置：{path_of(vdf)}")
+            commands.append(f'+workshop_build_item "{path_of(vdf)}"')
+            continue
 
         out = upload / mod
         content = out / "content"
@@ -118,7 +150,6 @@ def main():
             shutil.copy2(preview_src, preview)
             shutil.copy2(preview_src, content / "preview.png")   # 游戏离线、拿不到创意工坊预览图时用文件夹里这张
 
-        pid = str(ids.get(mod, 0) or 0)
         lines = [
             '"workshopitem"', "{",
             f'\t"appid"\t\t{vdf_str(APPID)}',
