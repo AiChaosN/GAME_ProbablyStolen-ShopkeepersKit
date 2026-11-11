@@ -126,10 +126,10 @@
      "w": 60,
      "h": 22,
      "color": "#2b2733",
-     "text": "Fries\n200",
+     "text": "Fries\n100",
      "translations": {
-      "zh": "薯条\n200",
-      "zh-Hans": "薯条\n200"
+      "zh": "薯条\n100",
+      "zh-Hans": "薯条\n100"
      }
     },
     {
@@ -158,10 +158,10 @@
      "w": 60,
      "h": 22,
      "color": "#2b2733",
-     "text": "Burger\n300",
+     "text": "Burger\n400",
      "translations": {
-      "zh": "肉汉堡\n300",
-      "zh-Hans": "肉汉堡\n300"
+      "zh": "肉汉堡\n400",
+      "zh-Hans": "肉汉堡\n400"
      }
     },
     {
@@ -219,10 +219,10 @@
      "w": 253,
      "h": 42.8,
      "color": "#2b2733",
-     "text": "Fries: deep fryer, overnight. 1 nutrifruit.\nFried chicken: deep fryer, overnight. 1 piece of meat.\nMeat burger: food processor, \"Burger\". Meat + nutrifruit (bun) + fillerweed.\nSuper combo: food processor, \"Combo\". Burger + fries + fried chicken.",
+     "text": "Fries: deep fryer, overnight. 1 nutrifruit.\nFried chicken: deep fryer, overnight. 1 piece of meat.\nMeat burger: food processor, \"Burger\". Meat + fillerweed + nutrifruit (bun).\nSuper combo: food processor, \"Combo\". Burger + fries + fried chicken.",
      "translations": {
-      "zh": "薯条：油锅，过一夜。营养果 ×1。\n炸鸡：油锅，过一夜。肉 ×1。\n肉汉堡：食品加工器，点“做汉堡”。肉 + 营养果（面包胚）+ 填料草。\n超级大套餐：食品加工器，点“配套餐”。汉堡 + 薯条 + 炸鸡。",
-      "zh-Hans": "薯条：油锅，过一夜。营养果 ×1。\n炸鸡：油锅，过一夜。肉 ×1。\n肉汉堡：食品加工器，点“做汉堡”。肉 + 营养果（面包胚）+ 填料草。\n超级大套餐：食品加工器，点“配套餐”。汉堡 + 薯条 + 炸鸡。"
+      "zh": "薯条：油锅，过一夜。营养果 ×1。\n炸鸡：油锅，过一夜。肉 ×1。\n肉汉堡：食品加工器，点“做汉堡”。肉 + 填料草 + 营养果（面包胚）。\n超级大套餐：食品加工器，点“配套餐”。汉堡 + 薯条 + 炸鸡。",
+      "zh-Hans": "薯条：油锅，过一夜。营养果 ×1。\n炸鸡：油锅，过一夜。肉 ×1。\n肉汉堡：食品加工器，点“做汉堡”。肉 + 填料草 + 营养果（面包胚）。\n超级大套餐：食品加工器，点“配套餐”。汉堡 + 薯条 + 炸鸡。"
      }
     },
     {
@@ -264,10 +264,10 @@
      "w": 253,
      "h": 32.599999999999994,
      "color": "#2b2733",
-     "text": "Every dish scores 0-100 points in five grades, up to Michelin at +200%. Points come from the meat's calories, oil purity, the burger's ingredient ratio and the machine's quality modules. See the last page.",
+     "text": "Every dish scores 0-100 points in five grades, up to Michelin at +300%. Ingredients and oil give at most 50 points; the other 50 only come from the machine's quality modules. See the last page.",
      "translations": {
-      "zh": "每份菜 0–100 分，分五档，最高米其林，价格 +200%。分数看肉的千卡、油的纯净度、汉堡的食材比例和机器上的品质模组。详见最后一页。",
-      "zh-Hans": "每份菜 0–100 分，分五档，最高米其林，价格 +200%。分数看肉的千卡、油的纯净度、汉堡的食材比例和机器上的品质模组。详见最后一页。"
+      "zh": "每份菜 0–100 分，分五档，最高米其林，价格 +300%。食材和油最多 50 分，剩下的 50 分只能靠机器上的品质模组。详见最后一页。",
+      "zh-Hans": "每份菜 0–100 分，分五档，最高米其林，价格 +300%。食材和油最多 50 分，剩下的 50 分只能靠机器上的品质模组。详见最后一页。"
      }
     },
     {
@@ -447,10 +447,10 @@
      "w": 253,
      "h": 22.4,
      "color": "#2b2733",
-     "text": "The fryer has the game's standard module grid. Quality modules raise the score: +100% quality gives the full 20 points.",
+     "text": "Efficiency: less power. Performance: every full +100% gives one more dish per portion. Quality: +1 point per +2%, up to 50.",
      "translations": {
-      "zh": "油锅有游戏标准的模组格。品质模组加分：品质加成 +100% 拿满 20 分。",
-      "zh-Hans": "油锅有游戏标准的模组格。品质模组加分：品质加成 +100% 拿满 20 分。"
+      "zh": "效率：省电。性能：每满 +100%，每份多出一个。质量：每 +2% 加 1 分，最多 50 分。",
+      "zh-Hans": "效率：省电。性能：每满 +100%，每份多出一个。质量：每 +2% 加 1 分，最多 50 分。"
      }
     },
     {
@@ -538,12 +538,12 @@
      "x": 35,
      "y": 124,
      "w": 253,
-     "h": 32.599999999999994,
+     "h": 42.8,
      "color": "#2b2733",
-     "text": "Put meat, nutrifruit and fillerweed in \"Ingredients\" and click \"Burger\" in the title bar: everything in the grid becomes one burger. It needs at least meat and nutrifruit. Each click uses 5 charge.",
+     "text": "Put meat, fillerweed and nutrifruit in \"Ingredients\" and click \"Burger\" in the title bar: everything in the grid becomes one burger. It needs more than 1000 kcal of meat, 600 of fillerweed and 400 of nutrifruit. Each click uses 5 charge.",
      "translations": {
-      "zh": "“食材”格放肉、营养果、填料草，点标题栏的“做汉堡”：格子里的全部食材做成一个汉堡。至少要有肉和营养果。每按一次耗 5 电。",
-      "zh-Hans": "“食材”格放肉、营养果、填料草，点标题栏的“做汉堡”：格子里的全部食材做成一个汉堡。至少要有肉和营养果。每按一次耗 5 电。"
+      "zh": "“食材”格放肉、填料草、营养果，点标题栏的“做汉堡”：格子里的全部食材做成一个汉堡。肉要超过 1000 千卡，填料草超过 600，营养果超过 400。每按一次耗 5 电。",
+      "zh-Hans": "“食材”格放肉、填料草、营养果，点标题栏的“做汉堡”：格子里的全部食材做成一个汉堡。肉要超过 1000 千卡，填料草超过 600，营养果超过 400。每按一次耗 5 电。"
      }
     },
     {
@@ -552,14 +552,14 @@
      "style": "body",
      "align": "left",
      "x": 35,
-     "y": 158.6,
+     "y": 168.8,
      "w": 253,
-     "h": 22.4,
+     "h": 32.599999999999994,
      "color": "#8a3b4a",
-     "text": "The ratio is counted in calories. Ideal: meat 55% : nutrifruit 30% : fillerweed 15%. The message after each burger shows your ratio.",
+     "text": "Meat: every 500 kcal above 1000 gives +10 points. Ratio (by calories): ideal meat 5 : fillerweed 3 : nutrifruit 2; the further off, the more points are taken away. At most 50 points from the ingredients.",
      "translations": {
-      "zh": "比例按千卡算，理想是 肉 55% : 营养果 30% : 填料草 15%。每做一个汉堡，提示里会写出这次的比例。",
-      "zh-Hans": "比例按千卡算，理想是 肉 55% : 营养果 30% : 填料草 15%。每做一个汉堡，提示里会写出这次的比例。"
+      "zh": "肉：超过 1000 千卡后每多 500 加 10 分。比例（按千卡）：理想 肉 5 : 填料草 3 : 营养果 2，偏得越多扣得越多。食材部分最多 50 分。",
+      "zh-Hans": "肉：超过 1000 千卡后每多 500 加 10 分。比例（按千卡）：理想 肉 5 : 填料草 3 : 营养果 2，偏得越多扣得越多。食材部分最多 50 分。"
      }
     },
     {
@@ -568,14 +568,14 @@
      "style": "body",
      "align": "left",
      "x": 35,
-     "y": 183.0,
+     "y": 203.4,
      "w": 253,
      "h": 22.4,
      "color": "#2b2733",
-     "text": "Example: standard raw meat (1200) + 2 nutrifruit (480) + fillerweed (259) = 62 : 25 : 13.",
+     "text": "Example: 3 standard raw meat (3600) + 8 fillerweed (2072) + 6 nutrifruit (1440) = 51 : 29 : 20, 50 meat points, ratio −1.",
      "translations": {
-      "zh": "例：标准生肉（1200）+ 营养果 ×2（480）+ 填料草（259）= 62 : 25 : 13。",
-      "zh-Hans": "例：标准生肉（1200）+ 营养果 ×2（480）+ 填料草（259）= 62 : 25 : 13。"
+      "zh": "例：标准生肉 ×3（3600）+ 填料草 ×8（2072）+ 营养果 ×6（1440）= 51 : 29 : 20，肉 50 分，比例 −1。",
+      "zh-Hans": "例：标准生肉 ×3（3600）+ 填料草 ×8（2072）+ 营养果 ×6（1440）= 51 : 29 : 20，肉 50 分，比例 −1。"
      }
     },
     {
@@ -585,7 +585,7 @@
      "fit": "stretch",
      "color": "#b5793a",
      "x": 31,
-     "y": 211.4,
+     "y": 231.8,
      "w": 261,
      "h": 14
     },
@@ -597,7 +597,7 @@
      "valign": "middle",
      "wrap": false,
      "x": 37,
-     "y": 211.4,
+     "y": 231.8,
      "w": 249,
      "h": 14,
      "color": "#f4f1e6",
@@ -613,14 +613,14 @@
      "style": "body",
      "align": "left",
      "x": 35,
-     "y": 231.4,
+     "y": 251.8,
      "w": 253,
      "h": 22.4,
      "color": "#2b2733",
-     "text": "Put a burger, fries and fried chicken in \"Plating\" and click \"Combo\". The combo's grade is the lowest of the three.",
+     "text": "Put a burger, fries and fried chicken in \"Plating\" and click \"Combo\". The combo's score is the weighted average: burger 4 : chicken 2 : fries 1.",
      "translations": {
-      "zh": "“配餐”格放汉堡、薯条、炸鸡各一份，点“配套餐”。套餐的档次取三样里最低的。",
-      "zh-Hans": "“配餐”格放汉堡、薯条、炸鸡各一份，点“配套餐”。套餐的档次取三样里最低的。"
+      "zh": "“配餐”格放汉堡、薯条、炸鸡各一份，点“配套餐”。套餐的分是加权平均：汉堡 4 : 炸鸡 2 : 薯条 1。",
+      "zh-Hans": "“配餐”格放汉堡、薯条、炸鸡各一份，点“配套餐”。套餐的分是加权平均：汉堡 4 : 炸鸡 2 : 薯条 1。"
      }
     }
    ]
@@ -1928,10 +1928,10 @@
      "w": 80,
      "h": 11,
      "color": "#2b2733",
-     "text": "90+ pts",
+     "text": "98+ pts",
      "translations": {
-      "zh": "90 以上 分",
-      "zh-Hans": "90 以上 分"
+      "zh": "98 以上 分",
+      "zh-Hans": "98 以上 分"
      }
     },
     {
@@ -1945,10 +1945,10 @@
      "w": 66,
      "h": 11,
      "color": "#b8860b",
-     "text": "+200%",
+     "text": "+300%",
      "translations": {
-      "zh": "+200%",
-      "zh-Hans": "+200%"
+      "zh": "+300%",
+      "zh-Hans": "+300%"
      }
     },
     {
@@ -1977,10 +1977,10 @@
      "w": 80,
      "h": 11,
      "color": "#2b2733",
-     "text": "75-89 pts",
+     "text": "90-97 pts",
      "translations": {
-      "zh": "75–89 分",
-      "zh-Hans": "75–89 分"
+      "zh": "90–97 分",
+      "zh-Hans": "90–97 分"
      }
     },
     {
@@ -2026,10 +2026,10 @@
      "w": 80,
      "h": 11,
      "color": "#2b2733",
-     "text": "55-74 pts",
+     "text": "75-89 pts",
      "translations": {
-      "zh": "55–74 分",
-      "zh-Hans": "55–74 分"
+      "zh": "75–89 分",
+      "zh-Hans": "75–89 分"
      }
     },
     {
@@ -2075,10 +2075,10 @@
      "w": 80,
      "h": 11,
      "color": "#2b2733",
-     "text": "30-54 pts",
+     "text": "50-74 pts",
      "translations": {
-      "zh": "30–54 分",
-      "zh-Hans": "30–54 分"
+      "zh": "50–74 分",
+      "zh-Hans": "50–74 分"
      }
     },
     {
@@ -2124,10 +2124,10 @@
      "w": 80,
      "h": 11,
      "color": "#2b2733",
-     "text": "under 30 pts",
+     "text": "under 50 pts",
      "translations": {
-      "zh": "30 以下 分",
-      "zh-Hans": "30 以下 分"
+      "zh": "50 以下 分",
+      "zh-Hans": "50 以下 分"
      }
     },
     {
@@ -2184,12 +2184,12 @@
      "x": 35,
      "y": 154,
      "w": 253,
-     "h": 42.8,
+     "h": 53.0,
      "color": "#2b2733",
-     "text": "Fried chicken = meat calories 35 + oil purity 45 + modules 20\nFries = nutrifruit calories 25 + oil purity 55 + modules 20\nBurger = meat calories 30 + ratio 50 + modules 20\nSuper combo = the lowest of the three",
+     "text": "Fries (100): 5 per 300 kcal of nutrifruit, up to 15; oil up to 35.\nFried chicken (200): 5 per 1000 kcal of meat, up to 15; oil up to 35.\nBurger (400): meat +10 per 500 kcal above 1000, minus the ratio penalty, up to 50.\nSuper combo (900): weighted average, burger 4 : chicken 2 : fries 1.",
      "translations": {
-      "zh": "炸鸡 = 肉的千卡 35 + 油的纯净度 45 + 模组 20\n薯条 = 营养果的千卡 25 + 油的纯净度 55 + 模组 20\n肉汉堡 = 肉的千卡 30 + 比例 50 + 模组 20\n超级大套餐 = 三样里最低的",
-      "zh-Hans": "炸鸡 = 肉的千卡 35 + 油的纯净度 45 + 模组 20\n薯条 = 营养果的千卡 25 + 油的纯净度 55 + 模组 20\n肉汉堡 = 肉的千卡 30 + 比例 50 + 模组 20\n超级大套餐 = 三样里最低的"
+      "zh": "薯条（100）：营养果每 300 千卡 5 分，最多 15；油最多 35。\n炸鸡（200）：肉每 1000 千卡 5 分，最多 15；油最多 35。\n肉汉堡（400）：肉超过 1000 后每多 500 加 10 分，减去比例扣分，最多 50。\n超级大套餐（900）：加权平均，汉堡 4 : 炸鸡 2 : 薯条 1。",
+      "zh-Hans": "薯条（100）：营养果每 300 千卡 5 分，最多 15；油最多 35。\n炸鸡（200）：肉每 1000 千卡 5 分，最多 15；油最多 35。\n肉汉堡（400）：肉超过 1000 后每多 500 加 10 分，减去比例扣分，最多 50。\n超级大套餐（900）：加权平均，汉堡 4 : 炸鸡 2 : 薯条 1。"
      }
     },
     {
@@ -2198,14 +2198,14 @@
      "style": "body",
      "align": "left",
      "x": 35,
-     "y": 198.8,
+     "y": 209.0,
      "w": 253,
-     "h": 32.599999999999994,
+     "h": 22.4,
      "color": "#4d5a73",
-     "text": "Meat: full at 1200 kcal (a burger counts all its meat). Nutrifruit: full at 384 kcal. Oil purity: full at 98%, none at 70%. Modules: full at +100% quality. Ratio: ideal meat 55 : nutrifruit 30 : fillerweed 15.",
+     "text": "Oil purity: 95%+ gives 35, 85%+ gives 20, 60%+ gives 5, lower gives 0.",
      "translations": {
-      "zh": "肉：1200 千卡满分（汉堡算所有肉加起来）。营养果：384 千卡满分。油的纯净度：98% 满分，70% 以下 0 分。模组：品质加成 +100% 满分。比例：理想 肉 55 : 营养果 30 : 填料草 15。",
-      "zh-Hans": "肉：1200 千卡满分（汉堡算所有肉加起来）。营养果：384 千卡满分。油的纯净度：98% 满分，70% 以下 0 分。模组：品质加成 +100% 满分。比例：理想 肉 55 : 营养果 30 : 填料草 15。"
+      "zh": "油的纯净度：95% 以上 35 分，85% 以上 20 分，60% 以上 5 分，更低 0 分。",
+      "zh-Hans": "油的纯净度：95% 以上 35 分，85% 以上 20 分，60% 以上 5 分，更低 0 分。"
      }
     },
     {
@@ -2218,10 +2218,10 @@
      "w": 253,
      "h": 22.4,
      "color": "#b8860b",
-     "text": "Fat meat or standard raw meat in fresh oil with good quality modules makes Michelin fried chicken.",
+     "text": "The other 50 points only come from quality modules: +1 point per +2% quality.",
      "translations": {
-      "zh": "肥肉或标准生肉、新油、好的品质模组，炸鸡就是米其林。",
-      "zh-Hans": "肥肉或标准生肉、新油、好的品质模组，炸鸡就是米其林。"
+      "zh": "剩下的 50 分只能靠品质模组：品质加成每 +2% 加 1 分。",
+      "zh-Hans": "剩下的 50 分只能靠品质模组：品质加成每 +2% 加 1 分。"
      }
     }
    ]

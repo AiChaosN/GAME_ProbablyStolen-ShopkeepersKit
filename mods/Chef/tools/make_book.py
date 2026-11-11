@@ -163,15 +163,15 @@ p.add(title("Chef's Recipes", "厨师菜谱"))
 p.add([image("chef_fries", 52, 54, 22, 44), image("chef_fried_chicken", 96, 60, 38, 38),
        image("chef_burger", 154, 60, 38, 38), image("chef_combo", 212, 50, 50, 50)])
 cap_y = 102
-for x, en, zh in ((38, "Fries\n200", "薯条\n200"), (90, "Fried chicken\n200", "炸鸡\n200"), (148, "Burger\n300", "肉汉堡\n300"), (208, "Super combo\n900", "超级大套餐\n900")):
+for x, en, zh in ((38, "Fries\n100", "薯条\n100"), (90, "Fried chicken\n200", "炸鸡\n200"), (148, "Burger\n400", "肉汉堡\n400"), (208, "Super combo\n900", "超级大套餐\n900")):
     p.add([dict(type="text", id=nid("cap"), style="caption", align="center", x=x, y=cap_y, w=60, h=22, color=INK, **tr(en, zh))])
 p.y = 126
 p.sec("How each dish is made", "做法", TEAL)
-p.p("Fries: deep fryer, overnight. 1 nutrifruit.\nFried chicken: deep fryer, overnight. 1 piece of meat.\nMeat burger: food processor, \"Burger\". Meat + nutrifruit (bun) + fillerweed.\nSuper combo: food processor, \"Combo\". Burger + fries + fried chicken.",
-    "薯条：油锅，过一夜。营养果 ×1。\n炸鸡：油锅，过一夜。肉 ×1。\n肉汉堡：食品加工器，点“做汉堡”。肉 + 营养果（面包胚）+ 填料草。\n超级大套餐：食品加工器，点“配套餐”。汉堡 + 薯条 + 炸鸡。")
+p.p("Fries: deep fryer, overnight. 1 nutrifruit.\nFried chicken: deep fryer, overnight. 1 piece of meat.\nMeat burger: food processor, \"Burger\". Meat + fillerweed + nutrifruit (bun).\nSuper combo: food processor, \"Combo\". Burger + fries + fried chicken.",
+    "薯条：油锅，过一夜。营养果 ×1。\n炸鸡：油锅，过一夜。肉 ×1。\n肉汉堡：食品加工器，点“做汉堡”。肉 + 填料草 + 营养果（面包胚）。\n超级大套餐：食品加工器，点“配套餐”。汉堡 + 薯条 + 炸鸡。")
 p.sec("Quality", "品质", AMBER)
-p.p("Every dish scores 0-100 points in five grades, up to Michelin at +200%. Points come from the meat's calories, oil purity, the burger's ingredient ratio and the machine's quality modules. See the last page.",
-    "每份菜 0–100 分，分五档，最高米其林，价格 +200%。分数看肉的千卡、油的纯净度、汉堡的食材比例和机器上的品质模组。详见最后一页。")
+p.p("Every dish scores 0-100 points in five grades, up to Michelin at +300%. Ingredients and oil give at most 50 points; the other 50 only come from the machine's quality modules. See the last page.",
+    "每份菜 0–100 分，分五档，最高米其林，价格 +300%。食材和油最多 50 分，剩下的 50 分只能靠机器上的品质模组。详见最后一页。")
 p.p("Hover over a dish to see its grade and points.", "鼠标指着菜能看到档次和得分。", color=SLATE)
 pages.append(p.done())
 
@@ -187,8 +187,8 @@ p.sec("Frying", "炸", AMBER)
 p.p("Put nutrifruit and meat in the basket and sleep. Each night everything in the basket is fried into the output: nutrifruit → fries, meat → fried chicken. Each portion soaks up 100 ml of oil; one night uses 20 charge.",
     "炸篮放营养果和肉，睡一觉。每晚把炸篮里的东西炸好放进出锅格：营养果 → 薯条，肉 → 炸鸡。每份吸掉 100 ml 油，每晚耗 20 电。")
 p.sec("Modules", "模组", SLATE)
-p.p("The fryer has the game's standard module grid. Quality modules raise the score: +100% quality gives the full 20 points.",
-    "油锅有游戏标准的模组格。品质模组加分：品质加成 +100% 拿满 20 分。")
+p.p("Efficiency: less power. Performance: every full +100% gives one more dish per portion. Quality: +1 point per +2%, up to 50.",
+    "效率：省电。性能：每满 +100%，每份多出一个。质量：每 +2% 加 1 分，最多 50 分。")
 p.p("Hover over the fryer to see the oil in it and how many portions it can still fry.", "鼠标指着油锅能看到里面的油，还能炸几份。", color=SLATE)
 pages.append(p.done())
 
@@ -198,15 +198,15 @@ p.add(title("Food Processor", "食品加工器"))
 p.add([image("chef_processor", 127, 52, 60, 40)])
 p.y = 98
 p.sec("Burger", "做汉堡", TEAL)
-p.p("Put meat, nutrifruit and fillerweed in \"Ingredients\" and click \"Burger\" in the title bar: everything in the grid becomes one burger. It needs at least meat and nutrifruit. Each click uses 5 charge.",
-    "“食材”格放肉、营养果、填料草，点标题栏的“做汉堡”：格子里的全部食材做成一个汉堡。至少要有肉和营养果。每按一次耗 5 电。")
-p.p("The ratio is counted in calories. Ideal: meat 55% : nutrifruit 30% : fillerweed 15%. The message after each burger shows your ratio.",
-    "比例按千卡算，理想是 肉 55% : 营养果 30% : 填料草 15%。每做一个汉堡，提示里会写出这次的比例。", color=WINE)
-p.p("Example: standard raw meat (1200) + 2 nutrifruit (480) + fillerweed (259) = 62 : 25 : 13.",
-    "例：标准生肉（1200）+ 营养果 ×2（480）+ 填料草（259）= 62 : 25 : 13。")
+p.p("Put meat, fillerweed and nutrifruit in \"Ingredients\" and click \"Burger\" in the title bar: everything in the grid becomes one burger. It needs more than 1000 kcal of meat, 600 of fillerweed and 400 of nutrifruit. Each click uses 5 charge.",
+    "“食材”格放肉、填料草、营养果，点标题栏的“做汉堡”：格子里的全部食材做成一个汉堡。肉要超过 1000 千卡，填料草超过 600，营养果超过 400。每按一次耗 5 电。")
+p.p("Meat: every 500 kcal above 1000 gives +10 points. Ratio (by calories): ideal meat 5 : fillerweed 3 : nutrifruit 2; the further off, the more points are taken away. At most 50 points from the ingredients.",
+    "肉：超过 1000 千卡后每多 500 加 10 分。比例（按千卡）：理想 肉 5 : 填料草 3 : 营养果 2，偏得越多扣得越多。食材部分最多 50 分。", color=WINE)
+p.p("Example: 3 standard raw meat (3600) + 8 fillerweed (2072) + 6 nutrifruit (1440) = 51 : 29 : 20, 50 meat points, ratio −1.",
+    "例：标准生肉 ×3（3600）+ 填料草 ×8（2072）+ 营养果 ×6（1440）= 51 : 29 : 20，肉 50 分，比例 −1。")
 p.sec("Super combo", "配套餐", AMBER)
-p.p("Put a burger, fries and fried chicken in \"Plating\" and click \"Combo\". The combo's grade is the lowest of the three.",
-    "“配餐”格放汉堡、薯条、炸鸡各一份，点“配套餐”。套餐的档次取三样里最低的。")
+p.p("Put a burger, fries and fried chicken in \"Plating\" and click \"Combo\". The combo's score is the weighted average: burger 4 : chicken 2 : fries 1.",
+    "“配餐”格放汉堡、薯条、炸鸡各一份，点“配套餐”。套餐的分是加权平均：汉堡 4 : 炸鸡 2 : 薯条 1。")
 pages.append(p.done())
 
 # ---------------------------------------------------------------- 4 食用油
@@ -262,11 +262,11 @@ p.add(title("Quality", "品质"))
 p.y = 46
 p.sec("Five grades", "五个档次", AMBER, gap=4)
 tiers = [
-    ("Michelin", "米其林", "90+", "90 以上", "+200%"),
-    ("Chef's", "主厨", "75-89", "75–89", "+100%"),
-    ("Tasty", "美味", "55-74", "55–74", "+50%"),
-    ("Plain", "普通", "30-54", "30–54", "base", "原价"),
-    ("Inedible", "难以下咽", "under 30", "30 以下", "−50%"),
+    ("Michelin", "米其林", "98+", "98 以上", "+300%"),
+    ("Chef's", "主厨", "90-97", "90–97", "+100%"),
+    ("Tasty", "美味", "75-89", "75–89", "+50%"),
+    ("Plain", "普通", "50-74", "50–74", "base", "原价"),
+    ("Inedible", "难以下咽", "under 50", "50 以下", "−50%"),
 ]
 for i, t in enumerate(tiers):
     en, zh, s_en, s_zh = t[0], t[1], t[2], t[3]
@@ -280,12 +280,12 @@ for i, t in enumerate(tiers):
     ])
     p.y += 12
 p.sec("Points", "怎么拿分", TEAL)
-p.p("Fried chicken = meat calories 35 + oil purity 45 + modules 20\nFries = nutrifruit calories 25 + oil purity 55 + modules 20\nBurger = meat calories 30 + ratio 50 + modules 20\nSuper combo = the lowest of the three",
-    "炸鸡 = 肉的千卡 35 + 油的纯净度 45 + 模组 20\n薯条 = 营养果的千卡 25 + 油的纯净度 55 + 模组 20\n肉汉堡 = 肉的千卡 30 + 比例 50 + 模组 20\n超级大套餐 = 三样里最低的")
-p.p("Meat: full at 1200 kcal (a burger counts all its meat). Nutrifruit: full at 384 kcal. Oil purity: full at 98%, none at 70%. Modules: full at +100% quality. Ratio: ideal meat 55 : nutrifruit 30 : fillerweed 15.",
-    "肉：1200 千卡满分（汉堡算所有肉加起来）。营养果：384 千卡满分。油的纯净度：98% 满分，70% 以下 0 分。模组：品质加成 +100% 满分。比例：理想 肉 55 : 营养果 30 : 填料草 15。", color=SLATE)
-p.p("Fat meat or standard raw meat in fresh oil with good quality modules makes Michelin fried chicken.",
-    "肥肉或标准生肉、新油、好的品质模组，炸鸡就是米其林。", color=TIER_COLORS[4])
+p.p("Fries (100): 5 per 300 kcal of nutrifruit, up to 15; oil up to 35.\nFried chicken (200): 5 per 1000 kcal of meat, up to 15; oil up to 35.\nBurger (400): meat +10 per 500 kcal above 1000, minus the ratio penalty, up to 50.\nSuper combo (900): weighted average, burger 4 : chicken 2 : fries 1.",
+    "薯条（100）：营养果每 300 千卡 5 分，最多 15；油最多 35。\n炸鸡（200）：肉每 1000 千卡 5 分，最多 15；油最多 35。\n肉汉堡（400）：肉超过 1000 后每多 500 加 10 分，减去比例扣分，最多 50。\n超级大套餐（900）：加权平均，汉堡 4 : 炸鸡 2 : 薯条 1。")
+p.p("Oil purity: 95%+ gives 35, 85%+ gives 20, 60%+ gives 5, lower gives 0.",
+    "油的纯净度：95% 以上 35 分，85% 以上 20 分，60% 以上 5 分，更低 0 分。", color=SLATE)
+p.p("The other 50 points only come from quality modules: +1 point per +2% quality.",
+    "剩下的 50 分只能靠品质模组：品质加成每 +2% 加 1 分。", color=TIER_COLORS[4])
 pages.append(p.done())
 
 book = {

@@ -60,11 +60,9 @@ namespace Chef
 
         internal static string FryerDesc() => Lang.T(
             "“油桶”槽放一桶食用油（游戏的任何桶、瓶子都行，油里不能有水），电源槽放电池。炸篮里放营养果、肉，每晚炸好放进出锅格：营养果 → 薯条，肉 → 炸鸡。"
-            + "每份吸掉 100 ml 油，炸得越多油越脏：把油倒进装着滤油网的滤水壶滤掉大颗粒炸渣，再倒进装着滤水器的滤水壶滤掉小颗粒油渣。"
-            + "油越纯净、肉和营养果的千卡越高、模组品质加成越高，炸出来越好。",
+            + "每份吸掉 100 ml 油，炸得越多油越脏：把油倒进装着滤油网的滤水壶滤掉大颗粒炸渣，再倒进装着滤水器的滤水壶滤掉小颗粒油渣。品质看营养果 / 肉的千卡、油的纯净度和品质模组。",
             "Put a container of cooking oil in the \"Oil\" slot (any of the game's jugs or bottles; no water in the oil) and a battery in the power slot. Put nutrifruit and meat in the basket; each night they are fried into the output: nutrifruit → fries, meat → fried chicken. "
-            + "Each portion soaks up 100 ml of oil and the oil gets dirtier: pour it through a water pitcher with an oil strainer to remove large crumbs, then through one with a water filter to remove fine residue. "
-            + "Purer oil, higher-calorie meat and nutrifruit and better quality modules make better food.");
+            + "Each portion soaks up 100 ml of oil and the oil gets dirtier: pour it through a water pitcher with an oil strainer to remove large crumbs, then through one with a water filter to remove fine residue. Quality depends on the calories, oil purity and quality modules.");
 
         internal static GameItem CreateFryer()
         {
@@ -73,12 +71,14 @@ namespace Chef
             var oilSlot = new GameSlotInventory();
             var basket = new GameGridInventory(6, 4);
             var output = new GameGridInventory(6, 6);
+            var note = NoteSlot();
             var window = MachineHelper.CreateMachineryWindow(true,
                 MachineHelper.PowerPanel(battery),
                 MachineHelper.Panel(Lang.T("模组", "Modules"), modules, "module"),
                 MachineHelper.Panel(Lang.T("油桶", "Oil"), oilSlot, "container"),
                 MachineHelper.Panel(Lang.T("炸篮", "Basket"), basket, "input"),
-                MachineHelper.Panel(Lang.T("出锅", "Output"), output, "output"));
+                MachineHelper.Panel(Lang.T("出锅", "Output"), output, "output"),
+                MachineHelper.NotePanel(note));
             var machine = NewMachine(window, "chef_fryer", FryerName(), FryerDesc(), 450L, FryerPower, battery, modules);
             oilSlot.mayInventoryAddItemFunc = (item, _) => Owned(item) && item.IsTag("LIQUID_CONTAINER_TAG");
             try { oilSlot.SetBackgroundFadeSprite("Items/water_container4", "xl"); } catch { }   // 和游戏的净水器一样，空槽里画一个淡淡的桶
@@ -119,42 +119,42 @@ namespace Chef
                 return;
             }
 
-            double purity = oil.Purity;
+            int oilPts = Quality.OilPoints(oil.Purity);
             int module = Quality.ModulePoints(machine);
-            int fried = 0;
+            int copies = Quality.Copies(machine);
+            int fried = 0, made = 0;
             bool full = false;
-            var made = new List<string>();
+            var names = new List<string>();
             foreach (var it in food)
             {
                 bool fruit = Ingredients.IsFruit(it);
                 int kcal = Ingredients.UnitKcal(it);
                 int units = Math.Max(1, it.unitCount);
-                for (int u = 0; u < units && fried < portions; u++)
+                for (int u = 0; u < units && fried < portions && !full; u++)
                 {
                     var s = Score.Empty;
                     s.Module = module;
-                    if (fruit)
+                    s.Oil = oilPts;
+                    if (fruit) s.Fruit = Quality.FruitPoints(kcal);
+                    else s.Meat = Quality.ChickenMeatPoints(kcal);
+                    int thisPortion = 0;
+                    for (int c = 0; c < copies; c++)   // 性能模组：每满 +100% 多出一份
                     {
-                        s.Fruit = Quality.FruitPoints(kcal, 25);
-                        s.Oil = Quality.OilPoints(purity, 55);
+                        var dish = Food.Make(fruit ? Dish.Fries : Dish.Chicken, s, kcal + 90);
+                        if (dish == null || !GraphUtils.CanAccept(output, dish))
+                        {
+                            dish?.Destroy();
+                            full = true;
+                            break;
+                        }
+                        GraphUtils.TryAcceptAll(output, dish);
+                        thisPortion++;
+                        if (c == 0) names.Add(dish.name);
                     }
-                    else
-                    {
-                        s.Meat = Quality.MeatPoints(kcal, 35);
-                        s.Oil = Quality.OilPoints(purity, 45);
-                    }
-                    var dish = Food.Make(fruit ? Dish.Fries : Dish.Chicken, s, kcal + 90);
-                    if (dish == null) { full = true; break; }
-                    if (!GraphUtils.CanAccept(output, dish))
-                    {
-                        dish.Destroy();
-                        full = true;
-                        break;
-                    }
-                    GraphUtils.TryAcceptAll(output, dish);
+                    if (thisPortion == 0) break;
                     Ingredients.ConsumeOne(basket, it);
                     fried++;
-                    made.Add(dish.name);
+                    made += thisPortion;
                 }
                 if (full || fried >= portions) break;
             }
@@ -167,7 +167,7 @@ namespace Chef
             Oil.AfterFrying(container, fried);
             try { MachineHelper.OnMachineActioned(machine, modules); } catch { }
             machine.Validate();
-            Log.Info("油锅：炸了 " + fried + " 份（" + string.Join("、", made) + "），油纯净度 " + Oil.Percent(purity) + " → " + Oil.Percent(Oil.Read(container).Purity));
+            Log.Info("油锅：炸了 " + fried + " 份食材，出了 " + made + " 份（" + string.Join("、", names) + "），油纯净度 " + Oil.Percent(oil.Purity) + " → " + Oil.Percent(Oil.Read(container).Purity));
         }
 
         // ================================================================== 食品加工器
@@ -175,10 +175,10 @@ namespace Chef
         internal static string ProcessorName() => Lang.T("食品加工器", "Food Processor");
 
         internal static string ProcessorDesc() => Lang.T(
-            "“食材”格放肉、营养果、填料草，点标题栏的“做汉堡”，用掉格子里全部食材做一个肉汉堡：千卡比例越接近 肉 55% : 营养果 30% : 填料草 15% 越好，肉的千卡越高越好。"
-            + "“配餐”格放汉堡、薯条、炸鸡各一份，点“配套餐”做超级大套餐（品质取三样里最低的）。每次耗一点电；模组品质加成越高做得越好。",
-            "Put meat, nutrifruit and fillerweed in \"Ingredients\" and click \"Burger\" in the title bar to turn all of them into one meat burger: the closer the calorie ratio is to meat 55% : nutrifruit 30% : fillerweed 15% and the more calories in the meat, the better. "
-            + "Put a burger, fries and fried chicken in \"Plating\" and click \"Combo\" for a super combo (its quality is the lowest of the three). Each click uses a little power; quality modules help.");
+            "“食材”格放肉、填料草、营养果，点标题栏的“做汉堡”，用掉格子里全部食材做一个肉汉堡：肉要超过 1000 千卡、填料草超过 600、营养果超过 400；"
+            + "肉越多分越高，千卡比例越接近 肉 5 : 填料草 3 : 营养果 2 越好。“配餐”格放汉堡、薯条、炸鸡各一份，点“配套餐”做超级大套餐。每次耗一点电；品质模组加分。",
+            "Put meat, fillerweed and nutrifruit in \"Ingredients\" and click \"Burger\" in the title bar to turn all of them into one meat burger: it needs more than 1000 kcal of meat, 600 of fillerweed and 400 of nutrifruit; "
+            + "more meat scores higher, and the closer the calorie ratio is to meat 5 : fillerweed 3 : nutrifruit 2, the better. Put a burger, fries and fried chicken in \"Plating\" and click \"Combo\" for a super combo. Each click uses a little power; quality modules add points.");
 
         internal static GameItem CreateProcessor()
         {
@@ -187,12 +187,14 @@ namespace Chef
             var ingredients = new GameGridInventory(8, 6);
             var plating = new GameGridInventory(7, 4);
             var output = new GameGridInventory(6, 6);
+            var note = NoteSlot();
             var window = MachineHelper.CreateMachineryWindow(true,
                 MachineHelper.PowerPanel(battery),
                 MachineHelper.Panel(Lang.T("模组", "Modules"), modules, "module"),
                 MachineHelper.Panel(Lang.T("食材", "Ingredients"), ingredients, "input"),
                 MachineHelper.Panel(Lang.T("配餐", "Plating"), plating, "plating"),
-                MachineHelper.Panel(Lang.T("产出", "Output"), output, "output"));
+                MachineHelper.Panel(Lang.T("产出", "Output"), output, "output"),
+                MachineHelper.NotePanel(note));
             var machine = NewMachine(window, "chef_processor", ProcessorName(), ProcessorDesc(), 400L, ProcessorPower, battery, modules);
             ingredients.mayInventoryAddItemFunc = (item, _) => Owned(item) && Ingredients.IsIngredient(item);
             plating.mayInventoryAddItemFunc = (item, _) => Owned(item) && (item.identifier == Food.BurgerId || item.identifier == Food.FriesId || item.identifier == Food.ChickenId);
@@ -203,42 +205,56 @@ namespace Chef
             return machine;
         }
 
+        /// <summary>把 copies 份同样的菜放进产出格，返回放进去几份（放不下就停）。</summary>
+        private static int Produce(GameGridInventory output, int copies, Func<GameItem> make, out string name)
+        {
+            name = null;
+            int n = 0;
+            for (int c = 0; c < copies; c++)
+            {
+                var dish = make();
+                if (dish == null || !GraphUtils.CanAccept(output, dish))
+                {
+                    dish?.Destroy();
+                    break;
+                }
+                GraphUtils.TryAcceptAll(output, dish);
+                name = dish.name;
+                n++;
+            }
+            return n;
+        }
+
         private static string MakeBurger(GameItem machine, GameSlotInventory battery, GameGridInventory modules, GameGridInventory ingredients, GameGridInventory output)
         {
             var all = ingredients.childItems.Where(i => Owned(i) && Ingredients.IsIngredient(i)).ToList();
             int meat = all.Where(Ingredients.IsMeat).Sum(Ingredients.Kcal);
-            int fruit = all.Where(Ingredients.IsFruit).Sum(Ingredients.Kcal);
             int weed = all.Where(Ingredients.IsWeed).Sum(Ingredients.Kcal);
-            if (meat <= 0) return Lang.T("“食材”格里要有肉", "Put some meat in \"Ingredients\"");
-            if (fruit <= 0) return Lang.T("“食材”格里要有营养果（做面包胚）", "Put some nutrifruit in \"Ingredients\" (for the bun)");
+            int fruit = all.Where(Ingredients.IsFruit).Sum(Ingredients.Kcal);
+            var lacking = new List<string>();
+            if (meat <= Quality.BurgerMinMeat) lacking.Add(Lang.T("肉 " + meat + "（要超过 " + Quality.BurgerMinMeat + "）", "meat " + meat + " (needs more than " + Quality.BurgerMinMeat + ")"));
+            if (weed <= Quality.BurgerMinWeed) lacking.Add(Lang.T("填料草 " + weed + "（要超过 " + Quality.BurgerMinWeed + "）", "fillerweed " + weed + " (needs more than " + Quality.BurgerMinWeed + ")"));
+            if (fruit <= Quality.BurgerMinFruit) lacking.Add(Lang.T("营养果 " + fruit + "（要超过 " + Quality.BurgerMinFruit + "）", "nutrifruit " + fruit + " (needs more than " + Quality.BurgerMinFruit + ")"));
+            if (lacking.Count > 0) return Lang.T("食材不够（千卡）：", "Not enough ingredients (kcal): ") + string.Join(Lang.T("、", ", "), lacking);
+            if (!CanPower(machine, battery)) return Lang.T("没电：在电源槽里放一块有电的电池", "No power: put a charged battery in the power slot");
 
             var s = Score.Empty;
-            s.Meat = Quality.MeatPoints(meat, 30);
-            s.Ratio = Quality.RatioPoints(meat, fruit, weed);
+            s.Meat = Quality.BurgerMeatPoints(meat);
+            s.Ratio = Quality.RatioPenalty(meat, weed, fruit);
             s.Module = Quality.ModulePoints(machine);
-            var burger = Food.Make(Dish.Burger, s, meat + fruit + weed);
-            if (burger == null) return Lang.T("做不出汉堡（物品没登记上，详见日志）", "Couldn't make a burger (item not registered; see the log)");
-            if (!GraphUtils.CanAccept(output, burger))
-            {
-                burger.Destroy();
-                return Lang.T("“产出”格满了，先把做好的拿走", "\"Output\" is full; take the finished food out first");
-            }
-            if (!CanPower(machine, battery))
-            {
-                burger.Destroy();
-                return Lang.T("没电：在电源槽里放一块有电的电池", "No power: put a charged battery in the power slot");
-            }
+            int n = Produce(output, Quality.Copies(machine), () => Food.Make(Dish.Burger, s, meat + weed + fruit), out var name);
+            if (n == 0) return Lang.T("“产出”格满了，先把做好的拿走", "\"Output\" is full; take the finished food out first");
             DrawPower(machine, battery);
             Ingredients.ConsumeAll(ingredients, all);
-            GraphUtils.TryAcceptAll(output, burger);
             try { MachineHelper.OnMachineActioned(machine, modules); } catch { }
             machine.Validate();
 
-            double total = meat + fruit + weed;
-            string ratio = Pct(meat / total) + " : " + Pct(fruit / total) + " : " + Pct(weed / total);
-            Log.Info("食品加工器：做出 " + burger.name + "，" + s.Total + " 分（肉 " + s.Meat + "、比例 " + s.Ratio + "、模组 " + s.Module + "），千卡比例 " + ratio);
-            return Lang.T("做出 " + burger.name + "，" + s.Total + " 分。千卡比例 肉 : 营养果 : 填料草 = " + ratio + "（理想 55 : 30 : 15）",
-                          "Made " + burger.name + ", " + s.Total + " pts. Calorie ratio meat : nutrifruit : fillerweed = " + ratio + " (ideal 55 : 30 : 15)");
+            double total = meat + weed + fruit;
+            string ratio = Pct(meat / total) + " : " + Pct(weed / total) + " : " + Pct(fruit / total);
+            string count = n > 1 ? " ×" + n : "";
+            Log.Info("食品加工器：做出 " + name + count + "，" + s.Total + " 分（肉 " + s.Meat + "、比例 " + s.Ratio + "、模组 " + s.Module + "），千卡比例 " + ratio);
+            return Lang.T("做出 " + name + count + "，" + s.Total + " 分（肉 " + s.Meat + "，比例 " + s.Ratio + "，模组 " + s.Module + "）。肉 : 填料草 : 营养果 = " + ratio + "（理想 50 : 30 : 20）",
+                          "Made " + name + count + ", " + s.Total + " pts (meat " + s.Meat + ", ratio " + s.Ratio + ", modules " + s.Module + "). Meat : fillerweed : nutrifruit = " + ratio + " (ideal 50 : 30 : 20)");
         }
 
         private static string MakeCombo(GameItem machine, GameSlotInventory battery, GameGridInventory modules, GameGridInventory plating, GameGridInventory output)
@@ -253,30 +269,82 @@ namespace Chef
             if (chicken == null) missing.Add(Food.DishName(Dish.Chicken));
             if (missing.Count > 0)
                 return Lang.T("“配餐”格里要有汉堡、薯条、炸鸡各一份，还差：", "\"Plating\" needs a burger, fries and fried chicken; missing: ") + string.Join(Lang.T("、", ", "), missing);
+            if (!CanPower(machine, battery)) return Lang.T("没电：在电源槽里放一块有电的电池", "No power: put a charged battery in the power slot");
 
-            int min = new[] { Food.ScoreOf(burger), Food.ScoreOf(fries), Food.ScoreOf(chicken) }.Min();
+            // 加权平均：薯条 1、炸鸡 2、汉堡 4
+            int score = (int)Math.Round((Math.Max(0, Food.ScoreOf(fries)) + 2.0 * Math.Max(0, Food.ScoreOf(chicken)) + 4.0 * Math.Max(0, Food.ScoreOf(burger))) / 7.0);
             int kcal = Ingredients.UnitKcal(burger) + Ingredients.UnitKcal(fries) + Ingredients.UnitKcal(chicken);
-            var combo = Food.MakeCombo(Math.Max(0, min), kcal);
-            if (combo == null) return Lang.T("做不出套餐（物品没登记上，详见日志）", "Couldn't make a combo (item not registered; see the log)");
-            if (!GraphUtils.CanAccept(output, combo))
-            {
-                combo.Destroy();
-                return Lang.T("“产出”格满了，先把做好的拿走", "\"Output\" is full; take the finished food out first");
-            }
-            if (!CanPower(machine, battery))
-            {
-                combo.Destroy();
-                return Lang.T("没电：在电源槽里放一块有电的电池", "No power: put a charged battery in the power slot");
-            }
+            int n = Produce(output, Quality.Copies(machine), () => Food.MakeCombo(score, kcal), out var name);
+            if (n == 0) return Lang.T("“产出”格满了，先把做好的拿走", "\"Output\" is full; take the finished food out first");
             DrawPower(machine, battery);
             Ingredients.ConsumeOne(plating, burger);
             Ingredients.ConsumeOne(plating, fries);
             Ingredients.ConsumeOne(plating, chicken);
-            GraphUtils.TryAcceptAll(output, combo);
             try { MachineHelper.OnMachineActioned(machine, modules); } catch { }
             machine.Validate();
-            Log.Info("食品加工器：做出 " + combo.name + "（" + min + " 分）");
-            return Lang.T("做出 ", "Made ") + combo.name;
+            string count = n > 1 ? " ×" + n : "";
+            Log.Info("食品加工器：做出 " + name + count + "（" + score + " 分）");
+            return Lang.T("做出 " + name + count + "，" + score + " 分", "Made " + name + count + ", " + score + " pts");
+        }
+
+        // ================================================================== 说明便签（和游戏的净水器、水培架一样：一张便利贴放在机器的便签槽里）
+
+        private const string NoteTag = "CHAOS5090_CHEF_NOTE";
+
+        private static GameSlotInventory NoteSlot()
+        {
+            var slot = new GameSlotInventory();
+            slot.mayInventoryAddItemFunc = (item, _) => item != null && item.identifier == "postit";
+            try { slot.SetBackgroundFadeSprite("Items/items_tool", "postit"); } catch { }
+            return slot;
+        }
+
+        private static string ModuleLine() => Lang.T(
+            "[模组影响]： 效率影响功耗 性能影响产量（每满 +100% 每份多出一个） 质量影响品质分（每 +2% 加 1 分，最多 50 分）",
+            "[Module Impact]:    Efficiency: Power Consumption   Performance: Output (+1 per full +100%)   Quality: Score (+1 per +2%, up to 50)");
+
+        /// <summary>给机器放一张说明便签（开局 / 王尔德送机器时调用；物品工厂里不能放子物品）。</summary>
+        internal static GameItem WithNote(GameItem machine)
+        {
+            if (machine == null) return null;
+            try
+            {
+                string kind = machine.identifier == FryerId ? "fryer" : machine.identifier == ProcessorId ? "processor" : null;
+                if (kind == null) return machine;
+                var note = DirectoryMaster.Item("postit");
+                if (note == null) return machine;
+                note.ModifyTag(NoteTag, s => s.Enable().SetString(kind));
+                ApplyNote(note);
+                if (GraphUtils.TryAcceptAll(machine, note) > 0 || note.parentInventory == null) note.Destroy();
+            }
+            catch (Exception e) { Log.Warn("放说明便签出错: " + e.Message); }
+            return machine;
+        }
+
+        internal static bool IsOurNote(GameItem it) => it != null && it.identifier == "postit" && !string.IsNullOrEmpty(it.GetTagReadonly(NoteTag).GetString());
+
+        /// <summary>按当前语言写便签的文字（读档时也调用）。</summary>
+        internal static void ApplyNote(GameItem note)
+        {
+            string kind = note.GetTagReadonly(NoteTag).GetString();
+            if (kind == "fryer")
+            {
+                note.name = Lang.T("油锅说明", "Deep Fryer Instructions");
+                note.shortDescription = Lang.T(
+                    "放入一桶食用油（油里不能有水）、要炸的营养果和肉，以及一个电量充足的电源。油锅在夜间运作：营养果炸成薯条，肉炸成炸鸡，每份吸掉 100 ml 油。油越纯净越好，详见厨师菜谱。",
+                    "Insert a container of cooking oil (no water in it), nutrifruit and meat to fry, and a power source with enough energy. The fryer works overnight: nutrifruit becomes fries, meat becomes fried chicken, each portion soaking up 100 ml of oil. The purer the oil the better; see the chef's recipe book.");
+            }
+            else
+            {
+                note.name = Lang.T("食品加工器说明", "Food Processor Instructions");
+                note.shortDescription = Lang.T(
+                    "“食材”格放肉、填料草、营养果，点“做汉堡”；“配餐”格放汉堡、薯条、炸鸡，点“配套餐”。需要一个电量充足的电源，按一下立刻做好。详见厨师菜谱。",
+                    "Put meat, fillerweed and nutrifruit in \"Ingredients\" and click \"Burger\"; put a burger, fries and fried chicken in \"Plating\" and click \"Combo\". Needs a power source with enough energy; it works instantly. See the chef's recipe book.");
+            }
+            note.flavorText = ModuleLine();
+            note.SetGameItemType("DOCUMENT");
+            note.EnableTag("IMPORTANT_TAG");
+            note.unitValue = 0L;
         }
 
         private static string Pct(double f) => Math.Round(f * 100).ToString("0") + "%";

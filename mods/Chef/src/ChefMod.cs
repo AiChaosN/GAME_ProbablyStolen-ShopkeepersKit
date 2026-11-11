@@ -150,6 +150,7 @@ namespace Chef
                         case Recipe.ItemId: it.name = Recipe.Name(); it.shortDescription = Recipe.Desc(); n++; break;
                         default:
                             if (Food.IsDish(it)) { Food.Apply(it); n++; }
+                            else if (Machines.IsOurNote(it)) { Machines.ApplyNote(it); n++; }
                             break;
                     }
                 }

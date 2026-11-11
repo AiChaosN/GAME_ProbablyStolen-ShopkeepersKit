@@ -26,9 +26,9 @@ namespace Chef
             ModHelper.AddStartingScenario(modId, Id,
                 () => Lang.T("厨师", "Chef"),
                 () => Lang.T("开快餐店的厨师。油锅把营养果炸成薯条、把肉炸成炸鸡；食品加工器把肉、营养果、填料草做成肉汉堡，再配成超级大套餐。"
-                             + "品质看肉的千卡、油的纯净度、食材比例和机器上的模组，米其林级的菜价格 +200%。食用油炸多了会脏：大颗粒用滤油网滤，小颗粒用滤水壶滤。",
+                             + "品质看肉的千卡、油的纯净度、食材比例和机器上的模组，米其林级的菜价格 +300%。食用油炸多了会脏：大颗粒用滤油网滤，小颗粒用滤水壶滤。",
                              "A fast-food chef. The deep fryer turns nutrifruit into fries and meat into fried chicken; the food processor turns meat, nutrifruit and fillerweed into burgers and plates super combos. "
-                             + "Quality depends on the meat's calories, oil purity, ingredient ratio and the machines' modules; Michelin-grade food sells for +200%. Oil gets dirty with use: strain large crumbs with the strainer and fine residue with a water pitcher."),
+                             + "Quality depends on the meat's calories, oil purity, ingredient ratio and the machines' modules; Michelin-grade food sells for +300%. Oil gets dirty with use: strain large crumbs with the strainer and fine residue with a water pitcher."),
                 new Func<string>[]
                 {
                     () => Lang.T("油锅、食品加工器（各附一块电池）", "Deep fryer and food processor (each with a battery)"),
@@ -76,8 +76,8 @@ namespace Chef
                 Log.Error("开局发放失败：存档或仓库还没准备好");
                 return;
             }
-            Give(inv, DirectoryMaster.Item(Machines.FryerId), "油锅");
-            Give(inv, DirectoryMaster.Item(Machines.ProcessorId), "食品加工器");
+            Give(inv, Machines.WithNote(DirectoryMaster.Item(Machines.FryerId)), "油锅");
+            Give(inv, Machines.WithNote(DirectoryMaster.Item(Machines.ProcessorId)), "食品加工器");
             Give(inv, PreBuiltItemHelper.EnergyCredit(100), "电池");
             Give(inv, PreBuiltItemHelper.EnergyCredit(100), "电池");
             Give(inv, DirectoryMaster.Item(Items.BarrelId), "食用油桶");
@@ -106,8 +106,8 @@ namespace Chef
             {
                 foreach (var (item, what) in new[]
                 {
-                    (DirectoryMaster.Item(Machines.FryerId), "油锅"),
-                    (DirectoryMaster.Item(Machines.ProcessorId), "食品加工器"),
+                    (Machines.WithNote(DirectoryMaster.Item(Machines.FryerId)), "油锅"),
+                    (Machines.WithNote(DirectoryMaster.Item(Machines.ProcessorId)), "食品加工器"),
                     (DirectoryMaster.Item(Items.BarrelId), "食用油桶"),
                     (DirectoryMaster.Item(Items.StrainerId), "滤油网"),
                     (Recipe.Spawn(), "厨师菜谱"),

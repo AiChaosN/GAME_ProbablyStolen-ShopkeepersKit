@@ -7,19 +7,23 @@ namespace Chef
     internal enum Dish { Fries, Chicken, Burger, Combo }
 
     /// <summary>
-    /// 品质分（满分 100）→ 档次 → 价格倍率（用户 2026-11-12 定：米其林 = 价值 +200%）。
-    ///   炸鸡：肉的千卡 35 + 油的纯净度 45 + 模组 20
-    ///   薯条：营养果的千卡 25 + 油的纯净度 55 + 模组 20
-    ///   汉堡：肉的千卡 30 + 食材比例 50 + 模组 20（不过油）
-    ///   超级大套餐：取三样里最低的分
+    /// 品质分（满分 100）。用户 2026-11-12 定的规则：食材 / 油最多 50 分，剩下的 50 分只能靠机器上的品质模组。
+    ///   薯条（100）：营养果每 300 千卡 5 分，最多 15；油的纯净度 ≥95% / ≥85% / ≥60% 得 35 / 20 / 5，更低 0；
+    ///   炸鸡（200）：肉每 1000 千卡 5 分，最多 15；油同上；
+    ///   肉汉堡（400）：肉要超过 1000 千卡、填料草超过 600、营养果超过 400 才能做；肉每多 500 千卡 +10 分；
+    ///                  比例 肉 : 菜（填料草）: 面（营养果）= 5 : 3 : 2，偏离多少扣多少；食材部分最多 50；
+    ///   超级大套餐（900）：薯条、炸鸡、汉堡的分按 1 : 2 : 4 加权平均；
+    ///   品质模组：品质加成每 +2% 加 1 分，最多 50。
+    /// 档次：米其林 ≥98（+300%）、主厨 ≥90（+100%）、美味 ≥75（+50%）、普通 ≥50（原价）、难以下咽 &lt;50（−50%）。
+    /// “每 300 千卡 5 分”这类按整档算（向下取整）。
     /// </summary>
     internal static class Quality
     {
         internal const int Awful = 0, Normal = 1, Tasty = 2, ChefTier = 3, Michelin = 4;
 
-        internal static int TierOf(int score) => score >= 90 ? Michelin : score >= 75 ? ChefTier : score >= 55 ? Tasty : score >= 30 ? Normal : Awful;
+        internal static int TierOf(int score) => score >= 98 ? Michelin : score >= 90 ? ChefTier : score >= 75 ? Tasty : score >= 50 ? Normal : Awful;
 
-        internal static double Multiplier(int tier) => tier switch { Michelin => 3.0, ChefTier => 2.0, Tasty => 1.5, Normal => 1.0, _ => 0.5 };
+        internal static double Multiplier(int tier) => tier switch { Michelin => 4.0, ChefTier => 2.0, Tasty => 1.5, Normal => 1.0, _ => 0.5 };
 
         internal static string TierName(int tier) => tier switch
         {
@@ -32,50 +36,62 @@ namespace Chef
 
         internal static string PriceChange(int tier) => tier switch
         {
-            Michelin => "+200%",
+            Michelin => "+300%",
             ChefTier => "+100%",
             Tasty => "+50%",
             Normal => "±0",
             _ => "−50%",
         };
 
-        // ---- 各项得分
+        internal const int IngredientMax = 50, ModuleMax = 50;
+        internal const int FruitMax = 15, ChickenMeatMax = 15, OilMax = 35, BurgerMeatMax = 50;
+        internal const int BurgerMinMeat = 1000, BurgerMinWeed = 600, BurgerMinFruit = 400;   // 千卡，要“超过”
+        internal const double IdealMeat = 0.5, IdealWeed = 0.3, IdealFruit = 0.2;
+        internal const double RatioPenaltyPerUnit = 50;   // 三项偏差（绝对值相加，0~2）× 50 = 扣分
 
-        internal const double MeatFullKcal = 1200;   // 标准生肉
-        internal const double FruitFullKcal = 384;   // 大营养果
-        internal const double OilZero = 0.70, OilFull = 0.98;
-        internal const double ModuleFull = 100;      // 模组品质加成 +100% 拿满分
-        internal const double IdealMeat = 0.55, IdealFruit = 0.30, IdealWeed = 0.15;
-        internal const double RatioZero = 0.5;       // 三样比例偏差（绝对值相加）到 0.5 就是 0 分
+        internal static int FruitPoints(int kcal) => Math.Min(FruitMax, kcal / 300 * 5);
+        internal static int ChickenMeatPoints(int kcal) => Math.Min(ChickenMeatMax, kcal / 1000 * 5);
+        internal static int OilPoints(double purity) => purity >= 0.95 ? 35 : purity >= 0.85 ? 20 : purity >= 0.60 ? 5 : 0;
+        internal static int BurgerMeatPoints(int meatKcal) => meatKcal <= BurgerMinMeat ? 0 : Math.Min(BurgerMeatMax, (meatKcal - BurgerMinMeat) / 500 * 10);
 
-        internal static int MeatPoints(double kcal, int weight) => Pts(weight, kcal / MeatFullKcal);
-        internal static int FruitPoints(double kcal, int weight) => Pts(weight, kcal / FruitFullKcal);
-        internal static int OilPoints(double purity, int weight) => Pts(weight, (purity - OilZero) / (OilFull - OilZero));
+        /// <summary>比例偏离的扣分（≤ 0）。</summary>
+        internal static int RatioPenalty(double meat, double weed, double fruit)
+        {
+            double total = meat + weed + fruit;
+            if (total <= 0) return 0;
+            double d = Math.Abs(meat / total - IdealMeat) + Math.Abs(weed / total - IdealWeed) + Math.Abs(fruit / total - IdealFruit);
+            return -(int)Math.Round(d * RatioPenaltyPerUnit);
+        }
 
+        /// <summary>品质模组：品质加成每 +2% 加 1 分，最多 50。</summary>
         internal static int ModulePoints(GameItem machine)
         {
             int bonus = 0;
             try { bonus = MachineryHelper.GetCurrentQualityBonus(machine); } catch { }
-            return Pts(20, bonus / ModuleFull);
+            return Math.Max(0, Math.Min(ModuleMax, bonus / 2));
         }
 
-        internal static int RatioPoints(double meat, double fruit, double weed)
+        /// <summary>性能模组：每满 +100% 多做一份（向下取整）。返回一次做几份。</summary>
+        internal static int Copies(GameItem machine)
         {
-            double total = meat + fruit + weed;
-            if (total <= 0) return 0;
-            double d = Math.Abs(meat / total - IdealMeat) + Math.Abs(fruit / total - IdealFruit) + Math.Abs(weed / total - IdealWeed);
-            return Pts(50, 1 - d / RatioZero);
+            int perf = 0;
+            try { perf = MachineryHelper.GetCurrentPerformanceBonus(machine); } catch { }
+            return 1 + Math.Max(0, perf) / 100;
         }
-
-        private static int Pts(int weight, double frac) => (int)Math.Round(weight * Math.Max(0, Math.Min(1, frac)));
     }
 
-    /// <summary>一份菜的得分明细（存在菜自己的 tag 上，鼠标指着时显示）。不适用的项是 -1。</summary>
+    /// <summary>一份菜的得分明细（存在菜自己的 tag 上，鼠标指着时显示）。不适用的项是 Score.None。</summary>
     internal struct Score
     {
+        internal const int None = int.MinValue;
         internal int Meat, Fruit, Oil, Ratio, Module;
-        internal int Total => Math.Max(0, Meat) + Math.Max(0, Fruit) + Math.Max(0, Oil) + Math.Max(0, Ratio) + Math.Max(0, Module);
-        internal static Score Empty => new Score { Meat = -1, Fruit = -1, Oil = -1, Ratio = -1, Module = -1 };
+
+        private static int V(int x) => x == None ? 0 : x;
+
+        /// <summary>食材 / 油 / 比例部分（0~50）+ 模组（0~50）。</summary>
+        internal int Total => Math.Max(0, Math.Min(Quality.IngredientMax, V(Meat) + V(Fruit) + V(Oil) + V(Ratio))) + Math.Max(0, V(Module));
+
+        internal static Score Empty => new Score { Meat = None, Fruit = None, Oil = None, Ratio = None, Module = None };
     }
 
     /// <summary>四道菜：物品定义、按得分生成、读回得分。</summary>
@@ -92,7 +108,7 @@ namespace Chef
 
         internal static string Id(Dish d) => d switch { Dish.Fries => FriesId, Dish.Chicken => ChickenId, Dish.Burger => BurgerId, _ => ComboId };
         private static string Sprite(Dish d) => d switch { Dish.Fries => "chef_fries", Dish.Chicken => "chef_fried_chicken", Dish.Burger => "chef_burger", _ => "chef_combo" };
-        internal static long BasePrice(Dish d) => d switch { Dish.Fries => 200L, Dish.Chicken => 200L, Dish.Burger => 300L, _ => 900L };
+        internal static long BasePrice(Dish d) => d switch { Dish.Fries => 100L, Dish.Chicken => 200L, Dish.Burger => 400L, _ => 900L };
 
         internal static string DishName(Dish d) => d switch
         {
@@ -104,10 +120,10 @@ namespace Chef
 
         internal static string Describe(Dish d) => d switch
         {
-            Dish.Fries => Lang.T("营养果切条下油锅炸的。品质看油的纯净度和营养果的千卡。", "Nutrifruit cut into sticks and deep-fried. Quality depends on oil purity and the nutrifruit's calories."),
-            Dish.Chicken => Lang.T("肉裹粉下油锅炸的。品质看肉的千卡和油的纯净度。", "Meat, coated and deep-fried. Quality depends on the meat's calories and oil purity."),
-            Dish.Burger => Lang.T("营养果面包胚夹肉饼和填料草。品质看肉的千卡和三样食材的比例。", "A nutrifruit bun with a meat patty and fillerweed. Quality depends on the meat's calories and the ratio of the three ingredients."),
-            _ => Lang.T("汉堡、薯条、炸鸡各一份。品质取三样里最低的。", "A burger, fries and fried chicken. Quality is that of the lowest of the three."),
+            Dish.Fries => Lang.T("营养果切条下油锅炸的。品质看营养果的千卡、油的纯净度和油锅的品质模组。", "Nutrifruit cut into sticks and deep-fried. Quality depends on the nutrifruit's calories, oil purity and the fryer's quality modules."),
+            Dish.Chicken => Lang.T("肉裹粉下油锅炸的。品质看肉的千卡、油的纯净度和油锅的品质模组。", "Meat, coated and deep-fried. Quality depends on the meat's calories, oil purity and the fryer's quality modules."),
+            Dish.Burger => Lang.T("营养果面包胚夹肉饼和填料草。品质看肉的量、三样食材的比例和加工器的品质模组。", "A nutrifruit bun with a meat patty and fillerweed. Quality depends on the amount of meat, the ratio of the three ingredients and the processor's quality modules."),
+            _ => Lang.T("汉堡、薯条、炸鸡各一份。品质按 汉堡 4 : 炸鸡 2 : 薯条 1 加权平均。", "A burger, fries and fried chicken. Quality is the weighted average: burger 4 : chicken 2 : fries 1."),
         };
 
         internal static bool IsDish(GameItem it) => it != null && (it.identifier == FriesId || it.identifier == ChickenId || it.identifier == BurgerId || it.identifier == ComboId);
@@ -153,7 +169,7 @@ namespace Chef
             return it;
         }
 
-        /// <summary>套餐：品质取三样里最低的。</summary>
+        /// <summary>套餐：品质是三样的加权平均（薯条 1、炸鸡 2、汉堡 4）。</summary>
         internal static GameItem MakeCombo(int minScore, int kcal)
         {
             var it = DirectoryMaster.Item(ComboId);
@@ -204,21 +220,23 @@ namespace Chef
             b.AddLine(" " + Lang.T("品质：", "Quality: ") + Quality.TierName(tier) + Lang.T("（" + score + " 分，价格 " + Quality.PriceChange(tier) + "）", " (" + score + " pts, price " + Quality.PriceChange(tier) + ")"), true, color);
             if (it.GetTagReadonly(ComboTag).GetInt() == 1)
             {
-                b.AddLine(" " + Lang.T("取汉堡、薯条、炸鸡里最低的分", "Lowest score of the burger, fries and chicken"), true, RenderHandler.ColorPalette.LightGray);
+                b.AddLine(" " + Lang.T("汉堡、炸鸡、薯条的分按 4 : 2 : 1 加权平均", "Weighted average of burger, chicken and fries (4 : 2 : 1)"), true, RenderHandler.ColorPalette.LightGray);
                 return;
             }
             var parts = new List<string>();
-            void Part(string tag, string zh, string en, int max)
+            void Part(string tag, string zh, string en, string max)
             {
+                if (!it.IsTag(tag)) return;
                 int v = it.GetTagReadonly(tag).GetInt();
-                if (it.IsTag(tag) && v >= 0) parts.Add(Lang.T(zh, en) + " " + v + "/" + max);
+                if (v == Score.None) return;
+                parts.Add(Lang.T(zh, en) + " " + (max == null ? v.ToString() : v + "/" + max));
             }
             var d = DishOf(it);
-            Part(MeatTag, "肉", "Meat", d == Dish.Burger ? 30 : 35);
-            Part(FruitTag, "营养果", "Nutrifruit", 25);
-            Part(OilTag, "油", "Oil", d == Dish.Fries ? 55 : 45);
-            Part(RatioTag, "比例", "Ratio", 50);
-            Part(ModuleTag, "模组", "Modules", 20);
+            Part(MeatTag, "肉", "Meat", d == Dish.Burger ? Quality.BurgerMeatMax.ToString() : Quality.ChickenMeatMax.ToString());
+            Part(FruitTag, "营养果", "Nutrifruit", Quality.FruitMax.ToString());
+            Part(OilTag, "油", "Oil", Quality.OilMax.ToString());
+            Part(RatioTag, "比例", "Ratio", null);
+            Part(ModuleTag, "模组", "Modules", Quality.ModuleMax.ToString());
             if (parts.Count > 0) b.AddLine(" " + string.Join(" · ", parts), true, RenderHandler.ColorPalette.LightGray);
         }
 
