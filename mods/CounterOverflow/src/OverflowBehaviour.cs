@@ -13,6 +13,7 @@ namespace CounterOverflow
     {
         private float nextTick;
         private int announcedPages;
+        private bool wholesaleAnnounced;
         private readonly PageBar bar = new PageBar();
 
         private void OnDestroy()
@@ -43,7 +44,15 @@ namespace CounterOverflow
                 }
 
                 // 货第一次分成多页（或页数变多）：1 秒后提示一次，避免盖住顾客刚来时的其他提示
-                if (!Overflow.Active) announcedPages = 0;
+                if (!Overflow.Active) { announcedPages = 0; wholesaleAnnounced = false; }
+                else if (!wholesaleAnnounced && announcedPages > 0 && Time.unscaledTime - Overflow.LastPagedAt >= 4f && OffersWholesale())
+                {
+                    // 这位卖家给批发价：告诉玩家批发会连同后面几页一起买下（价格已经算进去了）
+                    wholesaleAnnounced = true;
+                    int hidden = Overflow.HiddenCount();
+                    Notify(Lang.T("批发会连同后面几页的 " + hidden + " 件一起买下，批发价已经算进去了",
+                                  "Wholesale includes the " + hidden + " item(s) on the other pages; the wholesale price already counts them"));
+                }
                 else if (Overflow.PageCount > announcedPages && Overflow.LastPagedAt >= 0f && Time.unscaledTime - Overflow.LastPagedAt >= 1f)
                 {
                     announcedPages = Overflow.PageCount;
@@ -58,6 +67,12 @@ namespace CounterOverflow
             }
 
             bar.Tick(cfg != null && cfg.PageBar); // 自己吞异常
+        }
+
+        private static bool OffersWholesale()
+        {
+            try { return Game.Store?.currentClientInstance?.GetClientBlueprint()?.isOfferWholesale ?? false; }
+            catch { return false; }
         }
 
         internal static void Next() => Flip(+1);

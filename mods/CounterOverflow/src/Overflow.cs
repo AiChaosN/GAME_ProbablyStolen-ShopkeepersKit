@@ -105,6 +105,19 @@ namespace CounterOverflow
                     harmony.Patch(addById, prefix: new HarmonyMethod(AccessTools.Method(typeof(Overflow), nameof(AddByIdPrefix))) { priority = Priority.Last });
                 else
                     Log.Warn("找不到 PlayerStore.TryAddDirectSellingItemToTable(string, ...)：柜台完全满时仍会有货不生成");
+
+                // “卖家的所有货”把后面几页也算进去：批发价、批发成交、“货都卖完了”判断、违禁品检查都用它
+                var allNonOwned = AccessTools.Method(typeof(EmporiumEntry), "GetAllNonOwnedItem", Type.EmptyTypes);
+                if (allNonOwned != null && allNonOwned.DeclaringType == typeof(EmporiumEntry))
+                    harmony.Patch(allNonOwned, postfix: new HarmonyMethod(AccessTools.Method(typeof(Overflow), nameof(AllNonOwnedPostfix))));
+                else
+                    Log.Warn("找不到 EmporiumEntry.GetAllNonOwnedItem：批发时只算当前这一页");
+                // 批发成交前：后面几页的货补上“放上秤”时的价格调整（原版批发会先把柜台上的货挪上秤）
+                var wholesale = AccessTools.Method(typeof(NegociationUIManager), "OnWholesaleClick", Type.EmptyTypes);
+                if (wholesale != null && wholesale.DeclaringType == typeof(NegociationUIManager))
+                    harmony.Patch(wholesale, prefix: new HarmonyMethod(AccessTools.Method(typeof(Overflow), nameof(WholesalePrefix))));
+                else
+                    Log.Warn("找不到 NegociationUIManager.OnWholesaleClick：后面几页的货批发时不加秤上的价格调整");
                 Applied = true;
             }
             catch (Exception e)
@@ -159,6 +172,66 @@ namespace CounterOverflow
             {
                 Log.Warn("生成分页物品失败，按原版处理: " + e.Message);
                 return true;
+            }
+        }
+
+        /// <summary>后面几页（没摆出来的页）里顾客的货。</summary>
+        internal static List<GameItem> HiddenCustomerItems()
+        {
+            var list = new List<GameItem>();
+            for (int i = 0; i < pages.Count; i++)
+            {
+                if (i == current || pages[i] == null) continue;
+                foreach (var it in pages[i].childItems)
+                {
+                    if (it == null || GeneralHelper.IsItemOwned(it)) continue;
+                    if (it is GameItemElement el && el.IsDestroyed()) continue;
+                    list.Add(it);
+                }
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// 原版的 EmporiumEntry.GetAllNonOwnedItem = 柜台 + 秤上顾客的货。分页时把后面几页的也加上，于是：
+        /// 批发价、批发成交包括所有页；单独买完这一页后，顾客不会以为货卖完了就走；违禁品 / 赃物检查也看得到后面几页。
+        /// </summary>
+        private static void AllNonOwnedPostfix(List<GameItem> __result)
+        {
+            try
+            {
+                if (__result == null || pages.Count <= 1 || !(OverflowMod.Config?.Enabled ?? false)) return;
+                foreach (var it in HiddenCustomerItems())
+                    if (!__result.Contains(it)) __result.Add(it);
+            }
+            catch (Exception e)
+            {
+                Log.Warn("把后面几页算进顾客的货时出错: " + e.Message);
+            }
+        }
+
+        /// <summary>
+        /// 原版批发时先把柜台上的货全挪上秤（SwapInv），货放上秤时才加上这位顾客的价格调整（加价、折扣、上瘾惩罚……）。
+        /// 后面几页的货不上秤，这里在批发成交前给它们补上同样的调整，批发价和原版的算法一致。
+        /// </summary>
+        private static void WholesalePrefix()
+        {
+            try
+            {
+                if (pages.Count <= 1 || !(OverflowMod.Config?.Enabled ?? false)) return;
+                var client = Game.Store?.currentClientInstance?.GetClientBlueprint();
+                if (client == null || !client.isOfferWholesale) return;
+                var hidden = HiddenCustomerItems();
+                foreach (var it in hidden)
+                {
+                    try { it.OnAddedToWeightedArea(); }
+                    catch (Exception e) { Log.Warn("给 " + Name(it) + " 加秤上的价格调整出错: " + e.Message); }
+                }
+                if (hidden.Count > 0) Log.Info("批发：连同后面几页的 " + hidden.Count + " 件一起买下");
+            }
+            catch (Exception e)
+            {
+                Log.Warn("批发前处理后面几页出错: " + e.Message);
             }
         }
 
@@ -307,6 +380,12 @@ namespace CounterOverflow
         internal static void Tick()
         {
             if (pages.Count == 0) return;
+            // 后面几页都空了（例如批发把货全买走、买下的货已挪进仓库）：回到原版状态，翻页条消失
+            if (pages.Count > 1 && HiddenPagesEmpty() && !CustomerGoodsOnScale())
+            {
+                Reset();
+                return;
+            }
             if (ownerLocation != null)
             {
                 if (CurrentLocationId() != ownerLocation) Release("离开" + ownerLocation);
@@ -328,6 +407,23 @@ namespace CounterOverflow
             Release(cur == null ? "顾客离开" : "换了顾客");
         }
 
+        private static bool HiddenPagesEmpty()
+        {
+            for (int i = 0; i < pages.Count; i++)
+                if (i != current && pages[i] != null && pages[i].childItems.Count > 0) return false;
+            return true;
+        }
+
+        private static bool CustomerGoodsOnScale()
+        {
+            try
+            {
+                var back = EmporiumEntry.Instance?.backInvinvElement;
+                return back != null && back.childItems.Any(x => x != null && !GeneralHelper.IsItemOwned(x));
+            }
+            catch { return true; }
+        }
+
         /// <summary>顾客走了：没摆出来的页里，顾客的货销毁（与原版处理柜台剩货一致），属于你的放进仓库。</summary>
         internal static void Release(string why)
         {
@@ -343,12 +439,24 @@ namespace CounterOverflow
                         if (item == null || (item is GameItemElement el && el.IsDestroyed())) continue;
                         if (GeneralHelper.IsItemOwned(item))
                         {
+                            // 属于你的（例如批发买下的、剧情赠品）：先放仓库；仓库满了就按游戏的顺序找别处（秤、展示柜、柜台……），绝不销毁
                             var wh = EmporiumEntry.Instance?.invElement;
                             if (wh != null && MoveInto(item, wh))
                             {
                                 kept++;
                                 continue;
                             }
+                            if (wh != null)
+                            {
+                                GraphUtils.EmporiumTryAdd(wh, item);
+                                if (item.parentInventory != null && !ReferenceEquals(item.parentInventory, grid))
+                                {
+                                    kept++;
+                                    continue;
+                                }
+                            }
+                            Log.Warn("店里所有地方都放不下属于你的 " + Name(item) + "，只能按原版处理");
+                            if (item.parentInventory == null || (item is GameItemElement gone && gone.IsDestroyed())) continue;
                         }
                         item.parentInventory?.Expel(item);
                         item.Destroy();

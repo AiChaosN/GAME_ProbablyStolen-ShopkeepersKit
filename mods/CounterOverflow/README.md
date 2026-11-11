@@ -51,7 +51,8 @@ You will see goods the base game would have destroyed, such as thieves' loot cra
 
 ### Notes
 
-- A **wholesale** offer (one price for everything on the counter) only covers the page currently shown.
+- A **wholesale** offer (one price for all the seller's goods) now buys **every page**, and the wholesale price already includes them (since 1.4.1; before, it only covered the page shown and the seller left afterwards, so the other pages couldn't be bought). You get a one-time hint when goods are paged.
+- If you buy everything on the current page one by one, the seller no longer thinks they're sold out and leaves; the other pages can still be flipped to and bought (since 1.4.1).
 - Pages not on display are not saved if you save and reload while goods are paged (in the base game they would have been destroyed anyway).
 - If an item's old cell is taken when you flip back (e.g. you put something of yours there), it finds another free spot; if nothing fits, you get a "N items on this page don't fit" message.
 
@@ -117,6 +118,7 @@ Each page is an invisible grid with the counter's shape at the time, so an item'
 
 ## Changelog
 
+- **1.4.1**: Fixed wholesale covering only one page: the wholesale price and purchase now include all pages, and the other pages' goods get the same price adjustments as goods placed on the scale, matching the base game. The seller no longer leaves early after you buy the current page one by one. The page bar disappears once the other pages are empty. When a customer leaves, your own goods that don't fit in storage go elsewhere in the shop instead of being destroyed.
 - **1.4.0**: The page bar now also shows at Dr. Jackson's shop at night (above the counter); pages there are cleaned up when you leave the location rather than by watching who the customer is (his goods are laid out before he appears). Page keys in this README corrected to Z / X.
 - **1.3.0**: Default page keys moved under the left hand: **Z / X** (previously `,` `.`); keys you already saved are kept. Rebinding a key in the game's Options no longer turns pages.
 - **1.2.2**: Author name changed to ChaosN; screenshots and a Workshop preview added (no functional changes).
