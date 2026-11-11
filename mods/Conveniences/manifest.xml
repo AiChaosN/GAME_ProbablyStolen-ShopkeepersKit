@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Mod>
-  <ID>chaos5090.drop-swap</ID>
-  <Name>【便利】掌柜帮手·拖放换件 | [QoL] Shopkeeper's Kit: Drop Swap</Name>
+  <ID>chaos5090.conveniences</ID>
+  <Name>【便利】掌柜帮手·便利替换 | [QoL] Shopkeeper's Kit: Quick Swap</Name>
   <Author>ChaosN</Author>
   <ModVersion>1.0.0</ModVersion>
   <Description>【便利型：不改任何数值，只帮你省操作】换电池、换滤水器不用再打开机器：把新电池直接拖到机器上，就换下里面的旧电池，旧电池放回新电池原来的位置；把新滤水器拖到水罐上同理。悬停时显示绿色的使用提示。机器里有空槽时照原版直接放进去；电池拖到电池上互换等原版效果不受影响。可在改装件设置里分别关闭电池、滤水器。界面中英双语，跟随游戏语言。
@@ -14,7 +14,7 @@ Part of Shopkeeper's Kit by ChaosN. Developed with assistance from Claude Code (
   </GameVersions>
   <Prerequisites />
   <Assemblies>
-    <Assembly>DropSwap.dll</Assembly>
+    <Assembly>Conveniences.dll</Assembly>
   </Assemblies>
   <!-- 不需要特殊权限：补丁目标与字段查找都用字面量 typeof -->
   <Capabilities />

@@ -33,7 +33,7 @@
 - 韧棉织物虽然也能当滤芯用，但它是做衣服的材料，不拿来充，免得误拖掉；紫外线灯没有耐久度，也不参与；
 - 没充过能的高级滤水器和原版完全一样。
 
-## 和「拖放换件」一起用
+## 和「便利替换」一起用
 
 两个 mod 可以同时装。水罐里装着**高级滤水器**时，拖滤水器上去是**充能**（满了就提示已满，不会把它换下来）；装着普通滤水器时，拖滤水器上去才是**换件**。
 
@@ -74,7 +74,7 @@
 
 | 文件 | 内容 |
 |---|---|
-| `src/Recharge.cs` | 判断与充能。补丁：`GameItem.MayTarget` / `CanTarget` 后置（把“滤水器 → 高级滤水器”算作可以使用），`GameItem.Target` 前置（充能并跳过原版，优先级高于拖放换件），`GameSlotInventory.MayHaveValidInventorySlot` 后置（只在鼠标正拖着这件物品时，把装着高级滤水器的槽报告为放不进，让拖到水罐上悬停时显示绿色）。耐久度用游戏的 `DurabilityHelper.SetDurability`（当前 / 上限 / 默认三个值） |
+| `src/Recharge.cs` | 判断与充能。补丁：`GameItem.MayTarget` / `CanTarget` 后置（把“滤水器 → 高级滤水器”算作可以使用），`GameItem.Target` 前置（充能并跳过原版，优先级高于便利替换），`GameSlotInventory.MayHaveValidInventorySlot` 后置（只在鼠标正拖着这件物品时，把装着高级滤水器的槽报告为放不进，让拖到水罐上悬停时显示绿色）。耐久度用游戏的 `DurabilityHelper.SetDurability`（当前 / 上限 / 默认三个值） |
 | `src/FilterRechargeMod.cs` | 入口、配置 |
 
 **状态**：已编译、已通过游戏扫描器检查；**尚未进游戏实测**。

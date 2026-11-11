@@ -1,14 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <!--
-    Probably Stolen (Unity 2021.3 Mono) 的「拖放换件」mod。
+    Probably Stolen (Unity 2021.3 Mono) 的「便利替换」mod。
     与 VisitorForecast 相同：netstandard2.1，只引用游戏 Managed 目录里已有的程序集。
     游戏路径可用 -p:GameDir=... 覆盖。
   -->
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <AssemblyName>DropSwap</AssemblyName>
-    <RootNamespace>DropSwap</RootNamespace>
+    <AssemblyName>Conveniences</AssemblyName>
+    <RootNamespace>Conveniences</RootNamespace>
     <LangVersion>9.0</LangVersion>
     <Nullable>disable</Nullable>
     <Version>1.0.0</Version>

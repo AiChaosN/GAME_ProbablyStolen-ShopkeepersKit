@@ -56,7 +56,7 @@ namespace FilterRecharge
                 }
                 harmony.Patch(may, postfix: new HarmonyMethod(AccessTools.Method(typeof(Recharge), nameof(MayTargetPostfix))));
                 harmony.Patch(can, postfix: new HarmonyMethod(AccessTools.Method(typeof(Recharge), nameof(CanTargetPostfix))));
-                // 先于其他 mod 的 Target 前置执行（例如拖放换件：装着高级滤水器时，拖滤水器上去是充能，不是换件）
+                // 先于其他 mod 的 Target 前置执行（例如便利替换：装着高级滤水器时，拖滤水器上去是充能，不是换件）
                 harmony.Patch(target, prefix: new HarmonyMethod(AccessTools.Method(typeof(Recharge), nameof(TargetPrefix))) { priority = Priority.High });
                 Applied = true;
             }

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# 编译 DropSwap.dll 并组装 dist/DropSwap/（可直接复制到游戏的 Mods 目录）。
+# 编译 Conveniences.dll 并组装 dist/Conveniences/（可直接复制到游戏的 Mods 目录）。
 #   ./build.sh                 只编译 + 打包
-#   ./build.sh install         另外复制到 "$GAME_DIR/Mods/DropSwap"（不会启动游戏；游戏开着时 DLL 被锁会失败）
+#   ./build.sh install         另外复制到 "$GAME_DIR/Mods/Conveniences"（不会启动游戏；游戏开着时 DLL 被锁会失败）
 # 游戏目录：环境变量 GAME_DIR > 仓库根目录 local.env > 默认的 Steam 安装位置。
 set -euo pipefail
 cd "$(dirname "$0")"
@@ -22,21 +22,21 @@ python3 -I -c 'import sys, xml.etree.ElementTree as E; E.parse(sys.argv[1])' man
 
 dotnet build -c Release -p:GameDir="$GAME_DIR"
 
-rm -rf dist/DropSwap
-mkdir -p dist/DropSwap
-cp bin/Release/DropSwap.dll dist/DropSwap/
-cp manifest.xml dist/DropSwap/
-echo "dist: $(pwd)/dist/DropSwap"
-ls -la dist/DropSwap
+rm -rf dist/Conveniences
+mkdir -p dist/Conveniences
+cp bin/Release/Conveniences.dll dist/Conveniences/
+cp manifest.xml dist/Conveniences/
+echo "dist: $(pwd)/dist/Conveniences"
+ls -la dist/Conveniences
 
 if [[ "${1:-}" == "install" ]]; then
-  dest="$GAME_DIR/Mods/DropSwap"
+  dest="$GAME_DIR/Mods/Conveniences"
   mkdir -p "$dest"
   # 先拷 DLL：游戏开着时 DLL 被锁，拷不进去就停下，别让 manifest 先被换成新版（DLL 和 manifest 版本不一致）
-  if ! cp dist/DropSwap/*.dll "$dest/"; then
+  if ! cp dist/Conveniences/*.dll "$dest/"; then
     echo "DLL 拷不进去（游戏开着时 DLL 被锁住）：没有安装，游戏里的 mod 保持原样。关掉游戏后再运行 ./build.sh install" >&2
     exit 1
   fi
-  cp dist/DropSwap/manifest.xml "$dest/"
+  cp dist/Conveniences/manifest.xml "$dest/"
   echo "installed to: $dest"
 fi

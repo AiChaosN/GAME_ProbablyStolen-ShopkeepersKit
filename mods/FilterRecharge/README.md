@@ -33,7 +33,7 @@ The used-up source filter stays where it was with 0 durability (as used-up filte
 - Kotton Fabric also works as a filter, but it's a clothing material, so it's never used for charging (no accidental drains); UV Lamps have no durability and are not involved;
 - an Advanced Water Filter that was never charged behaves exactly as in the base game.
 
-## With Drop Swap
+## With Quick Swap
 
 Both mods can be installed together. When a pitcher holds an **Advanced Water Filter**, dropping a water filter on it **recharges** it (if it's full you get a message; it is never swapped out). When the pitcher holds a regular filter, the drop **swaps** it.
 
@@ -74,7 +74,7 @@ Mods screen → select this mod → **Settings**, or edit `%USERPROFILE%\AppData
 
 | File | Contents |
 |---|---|
-| `src/Recharge.cs` | Rules and charging. Patches: postfixes on `GameItem.MayTarget` / `CanTarget` (count "water filter → Advanced Water Filter" as a use), prefix on `GameItem.Target` (charge and skip the original; runs before Drop Swap), postfix on `GameSlotInventory.MayHaveValidInventorySlot` (only while the mouse is dragging that very item: report a slot holding the Advanced Water Filter as not insertable, so hovering a pitcher turns green). Durability is set through the game's `DurabilityHelper.SetDurability` (current / cap / default) |
+| `src/Recharge.cs` | Rules and charging. Patches: postfixes on `GameItem.MayTarget` / `CanTarget` (count "water filter → Advanced Water Filter" as a use), prefix on `GameItem.Target` (charge and skip the original; runs before Quick Swap), postfix on `GameSlotInventory.MayHaveValidInventorySlot` (only while the mouse is dragging that very item: report a slot holding the Advanced Water Filter as not insertable, so hovering a pitcher turns green). Durability is set through the game's `DurabilityHelper.SetDurability` (current / cap / default) |
 | `src/FilterRechargeMod.cs` | Entry point, settings |
 
 **Status**: builds and passes the game's mod scanner; **not yet tested in game**.

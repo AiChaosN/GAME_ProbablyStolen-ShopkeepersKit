@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Reflection;
 using HarmonyLib;
 
-namespace DropSwap
+namespace Conveniences
 {
     /// <summary>
-    /// 拖放换件：把电池拖到机器上、把滤水器拖到水罐上（不用打开它们），直接换掉里面的旧件，旧件放回新件原来的位置。
+    /// 便利替换：把电池拖到机器上、把滤水器拖到水罐上（不用打开它们），直接换掉里面的旧件，旧件放回新件原来的位置。
     ///
     /// 原版的拖放（ItemMouseDragHandler）落在一件物品上时：
     ///   1. 这件物品里有空的、能放的格子 → 放进去（槽是空的时原版本来就能直接拖进去，本 mod 不管）；
@@ -26,7 +26,7 @@ namespace DropSwap
         private const string FilterTag = "WATER_FILTER";
         private const string RechargeableMachineTag = "MACHINE_RECHARGABLE_TAG";
 
-        private const string HarmonyId = "DropSwap.patches";
+        private const string HarmonyId = "Conveniences.patches";
         private static Harmony harmony;
         internal static bool Applied { get; private set; }
         internal static bool HighlightApplied { get; private set; }
@@ -43,7 +43,7 @@ namespace DropSwap
             try { harmony = new Harmony(HarmonyId); }
             catch (Exception e)
             {
-                Log.Error("Harmony 初始化失败，拖放换件不可用: " + e.Message);
+                Log.Error("Harmony 初始化失败，便利替换不可用: " + e.Message);
                 return;
             }
 
@@ -55,7 +55,7 @@ namespace DropSwap
                 if (may == null || can == null || target == null ||
                     may.DeclaringType != typeof(GameItem) || can.DeclaringType != typeof(GameItem) || target.DeclaringType != typeof(GameItem))
                 {
-                    Log.Warn("找不到 GameItem.MayTarget / CanTarget / Target（游戏更新了？），拖放换件不可用");
+                    Log.Warn("找不到 GameItem.MayTarget / CanTarget / Target（游戏更新了？），便利替换不可用");
                     return;
                 }
                 harmony.Patch(may, postfix: new HarmonyMethod(AccessTools.Method(typeof(Swap), nameof(MayTargetPostfix))));
@@ -65,7 +65,7 @@ namespace DropSwap
             }
             catch (Exception e)
             {
-                Log.Error("打补丁失败，拖放换件不可用: " + Log.Describe(e));
+                Log.Error("打补丁失败，便利替换不可用: " + Log.Describe(e));
                 Remove();
                 return;
             }
@@ -166,7 +166,7 @@ namespace DropSwap
 
         private static bool Enabled(Kind k)
         {
-            var cfg = DropSwapMod.Config;
+            var cfg = ConveniencesMod.Config;
             if (cfg == null) return false;
             return k == Kind.Battery ? cfg.Batteries : k == Kind.Filter && cfg.Filters;
         }

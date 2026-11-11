@@ -21,11 +21,11 @@ ChaosN 为《Probably Stolen》做的 mod 系列。每个 mod 名字前标出**�
 |---|---|---|---|---|---|
 | [掌柜帮手·归类入箱 Sort To Boxes](mods/SortToBoxes/README.zh-CN.md) | 【便利】 | G / C | 收货：仓库散件按大类（13 类，每件货只属于一个类）归进对应的箱子，箱子可勾选整类或单件、右下角显示内容角标，可选买下时自动归箱。卖货：一键把买家会买的货摆上柜台，放一件自动带上同款 | `chaos5090.sort-to-boxes` | [订阅](https://steamcommunity.com/sharedfiles/filedetails/?id=3835916464) |
 | [掌柜帮手·柜台不丢货 Counter Overflow](mods/CounterOverflow/README.zh-CN.md) | 【修复】 | Z / X | 卖家摆货时柜台放不下的货不再被销毁，分到后面的页：柜台上方有翻页条，每页记住货的位置，拿下来的货随时能放回去 | `chaos5090.counter-overflow` | [订阅](https://steamcommunity.com/sharedfiles/filedetails/?id=3835916532) |
-| [掌柜帮手·拖放换件 Drop Swap](mods/DropSwap/README.zh-CN.md) | 【便利】 | — | 换电池、换滤芯不用打开机器：新电池直接拖到机器上（新滤芯拖到滤水壶上）就换下旧件，旧件放回新件原来的位置 | `chaos5090.drop-swap` | 还没上传 |
+| [掌柜帮手·便利替换 Quick Swap](mods/Conveniences/README.zh-CN.md) | 【便利】 | — | 不影响平衡的小便利功能合集。目前：换电池、换滤水器不用打开机器，新件直接拖到机器（水罐）上就换下旧件，旧件放回新件原来的位置 | `chaos5090.conveniences` | 还没上传 |
 | [掌柜帮手·滤水器充能 Filter Recharge](mods/FilterRecharge/README.zh-CN.md) | 【玩法】 | — | 滤水器拖到高级滤水器上把耐久度转过去，高级滤水器上限提高到普通的 20 倍（可调） | `chaos5090.filter-recharge` | 还没上传 |
 | [掌柜帮手·访客预测 Visitor Forecast](mods/VisitorForecast/README.zh-CN.md) | 【情报】 | V | 开门前预测今天谁会来（阵营、来意、想要什么、预算、概率） | `chaos5090.visitor-forecast` | [订阅](https://steamcommunity.com/sharedfiles/filedetails/?id=3835916583) |
 
-归类入箱、柜台不丢货、拖放换件、滤水器充能的界面中英双语，跟随游戏的语言设置；访客预测目前只有中文。
+归类入箱、柜台不丢货、便利替换、滤水器充能的界面中英双语，跟随游戏的语言设置；访客预测目前只有中文。
 
 ## 安装
 
@@ -37,6 +37,7 @@ ChaosN 为《Probably Stolen》做的 mod 系列。每个 mod 名字前标出**�
 
 - 游戏内名称与创意工坊标题：`【分类】掌柜帮手·<中文名> | [<英文分类>] Shopkeeper's Kit: <英文名>`
 - mod ID：`chaos5090.<英文名小写连字符>`。发布后不要再改，因为游戏按 ID 保存配置（`ModConfigs/<ID>.json`）
+- 以后新增的、只省操作不影响平衡的小功能，都放进「便利替换」（`chaos5090.conveniences`），不再单独开 mod。它的 ID 用通用的 `conveniences`，名字以后随内容改也不用动 ID；已经发布的归类入箱保持独立
 - 作者字段统一写 `ChaosN`；Claude Code 协助的说明写在简介和 README 里
 - 默认热键放在左手区（归箱 G、上柜台 C、访客预测 V、翻页 Z/X），避开游戏自带键（Q E R F S P K O B、空格、数字键）和常见 mod 的 F5 客户需求高亮、F6 智能整理、F8 作弊菜单、F10 物品名称常显；输入文字或在设置里改键时不会触发
 

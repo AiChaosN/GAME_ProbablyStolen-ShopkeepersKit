@@ -17,7 +17,7 @@
 [/list]
 
 [h2]安装[/h2]
-订阅后：主菜单 → 改装件 → 选中本 mod → 审阅并启用 → 重启游戏。不需要任何特殊权限。可以和「拖放换件」一起用：水罐里是高级滤水器时，拖滤水器上去是充能，不会把它换下来。
+订阅后：主菜单 → 改装件 → 选中本 mod → 审阅并启用 → 重启游戏。不需要任何特殊权限。可以和「便利替换」一起用：水罐里是高级滤水器时，拖滤水器上去是充能，不会把它换下来。
 
 掌柜帮手系列 · 作者 ChaosN · 由 Claude Code（Anthropic 的 AI 编程助手）协助开发。
 源码（MIT）：https://github.com/AiChaosN/GAME_ProbablyStolen-ShopkeepersKit
@@ -44,7 +44,7 @@
 [/list]
 
 [h2]Install[/h2]
-After subscribing: main menu → Mods → select this mod → Review and enable → restart the game. No special capabilities required. Works together with Drop Swap: when a pitcher holds an Advanced Water Filter, dropping a filter on it recharges it instead of swapping it out.
+After subscribing: main menu → Mods → select this mod → Review and enable → restart the game. No special capabilities required. Works together with Quick Swap: when a pitcher holds an Advanced Water Filter, dropping a filter on it recharges it instead of swapping it out.
 
 Part of Shopkeeper's Kit by ChaosN. Developed with assistance from Claude Code (Anthropic's AI coding assistant).
 Source (MIT): https://github.com/AiChaosN/GAME_ProbablyStolen-ShopkeepersKit

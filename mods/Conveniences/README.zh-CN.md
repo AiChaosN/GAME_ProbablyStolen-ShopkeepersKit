@@ -1,15 +1,19 @@
-# 【便利】掌柜帮手·拖放换件 Drop Swap
+# 【便利】掌柜帮手·便利替换 Quick Swap
 
 [English](README.md) | **中文**
 
 > **掌柜帮手 / Shopkeeper's Kit** 系列 · 分类 **【便利】**：不改任何数值，只帮你省操作。系列与分类说明见 [仓库首页](../../README.zh-CN.md)。
-> 作者 ChaosN · 由 [Claude Code](https://claude.com/claude-code)（Anthropic 的 AI 编程助手）协助开发。mod ID：`chaos5090.drop-swap`。
+> 作者 ChaosN · 由 [Claude Code](https://claude.com/claude-code)（Anthropic 的 AI 编程助手）协助开发。mod ID：`chaos5090.conveniences`。
 >
 > 还没上传到 Steam 创意工坊。
 
 界面中英双语，跟随游戏的语言设置（中文显示中文，其他语言显示英文）。
 
-## 做什么
+本 mod 是**不影响平衡的小便利功能合集**：以后新增的这类功能都放在这里，不再单独开 mod。目前包含：
+
+- 拖上去就换：电池、滤水器（下面详细说明）
+
+## 拖上去就换：电池、滤水器
 
 原版里给机器换电池、给水罐换滤水器，要先打开它的窗口，把旧件拖出来，再把新件拖进去。把新件直接拖到**合着的**机器上时，槽空着能放进去；槽里已经有旧件就标红、什么都不做。
 
@@ -30,18 +34,18 @@
 
 ## 安装
 
-1. 构建（见[仓库首页](../../README.zh-CN.md)“从源码构建”）后，把 `dist/DropSwap/` 整个文件夹复制到游戏目录的 `Mods` 文件夹里：
+1. 构建（见[仓库首页](../../README.zh-CN.md)“从源码构建”）后，把 `dist/Conveniences/` 整个文件夹复制到游戏目录的 `Mods` 文件夹里：
    ```
-   <游戏目录>/Mods/DropSwap/manifest.xml
-   <游戏目录>/Mods/DropSwap/DropSwap.dll
+   <游戏目录>/Mods/Conveniences/manifest.xml
+   <游戏目录>/Mods/Conveniences/Conveniences.dll
    ```
    游戏开着的时候 DLL 被锁住，替换前先退出游戏。
-2. 启动游戏 → 主菜单 **改装件** → 选中 **【便利】掌柜帮手·拖放换件** → **审阅并启用** → 按提示重启游戏。
+2. 启动游戏 → 主菜单 **改装件** → 选中 **【便利】掌柜帮手·便利替换** → **审阅并启用** → 按提示重启游戏。
 3. 本 mod **不申请任何特殊权限**；用游戏自带的扫描器检查（[`tools/ScanCheck`](../../tools/ScanCheck)）结果是无权限、无拦截、无发现。
 
 ## 设置
 
-改装件界面选中本 mod → **设置**；或编辑 `%USERPROFILE%\AppData\LocalLow\Questing Goose Studio\Probably Stolen\ModConfigs\chaos5090.drop-swap.json`。
+改装件界面选中本 mod → **设置**；或编辑 `%USERPROFILE%\AppData\LocalLow\Questing Goose Studio\Probably Stolen\ModConfigs\chaos5090.conveniences.json`。
 
 | 键 | 默认 | 说明 |
 |---|---|---|
@@ -54,14 +58,14 @@
 2. 水罐同理：装着滤水器的水罐，拖一个新滤水器上去。
 3. 机器电池槽空着时拖电池上去：照原版直接放进去。
 4. 电池拖到另一块电池上：照原版互换。
-5. 游戏日志 `Player.log` 里搜 `[DropSwap]`：每次换件有一行“换件：旧 → 新（机器）”。
+5. 游戏日志 `Player.log` 里搜 `[Conveniences]`：每次换件有一行“换件：旧 → 新（机器）”。
 
 ## 实现
 
 | 文件 | 内容 |
 |---|---|
 | `src/Swap.cs` | 判断与换件。补丁：`GameItem.MayTarget` / `CanTarget` 后置（满足换件条件时算作“可以对它使用”），`GameItem.Target` 前置（原版对这一对没有使用效果时换件），`GameSlotInventory.MayHaveValidInventorySlot` 后置（只在鼠标正拖着这件物品时，把“装着旧件的槽”报告为放不进，让悬停显示绿色） |
-| `src/DropSwapMod.cs` | 入口、配置 |
+| `src/ConveniencesMod.cs` | 入口、配置 |
 
 换件优先用游戏自己的 `GraphUtils.SwapItemsInPlace`（原版电池互换用的同一个函数）。机器的电池槽用游戏的 `MachineHelper.GetBatterySlot`；其他槽从窗口第一层（单槽窗口或机器面板）找，不进入里面装着的物品。
 
@@ -69,4 +73,4 @@
 
 ## 更新记录
 
-- **1.0.0**：首版：拖到机器上换电池、拖到水罐上换滤水器。
+- **1.0.0**：首版：拖到机器上换电池、拖到水罐上换滤水器。（开发时叫“拖放换件”、ID `chaos5090.drop-swap`；上传前改名为“便利替换”，ID 改为通用的 `chaos5090.conveniences`，作为便利功能合集）

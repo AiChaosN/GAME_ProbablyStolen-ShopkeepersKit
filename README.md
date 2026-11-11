@@ -21,11 +21,11 @@ Developed with assistance from [Claude Code](https://claude.com/claude-code) (An
 |---|---|---|---|---|---|
 | [Sort To Boxes](mods/SortToBoxes/README.md) | [QoL] | G / C | Storing: loose items in storage go into the box for their category (13 categories, each item in exactly one); tag boxes with whole categories or single items; a badge shows each box's contents; optional auto-sort on purchase. Selling: one key puts everything the buyer wants on the counter; placing one item brings its identical copies | `chaos5090.sort-to-boxes` | [Subscribe](https://steamcommunity.com/sharedfiles/filedetails/?id=3835916464) |
 | [Counter Overflow](mods/CounterOverflow/README.md) | [Fix] | Z / X | Items a seller can't fit on the counter go onto extra pages instead of being destroyed: page bar above the counter, each page keeps its layout, items you take off can always go back | `chaos5090.counter-overflow` | [Subscribe](https://steamcommunity.com/sharedfiles/filedetails/?id=3835916532) |
-| [Drop Swap](mods/DropSwap/README.md) | [QoL] | — | Swap batteries and filters without opening anything: drop a new battery on a machine (or a filter on a water pitcher) to replace the old part, which goes where the new one was | `chaos5090.drop-swap` | Not uploaded yet |
+| [Quick Swap](mods/Conveniences/README.md) | [QoL] | — | A collection of small QoL features with no balance impact. Currently: swap batteries and water filters without opening anything; drop the new part on the machine (or pitcher) and the old one goes where the new one was | `chaos5090.conveniences` | Not uploaded yet |
 | [Filter Recharge](mods/FilterRecharge/README.md) | [Gameplay] | — | Drop a water filter on an Advanced Water Filter to move its durability over; the advanced filter's cap rises to 20× a regular one (adjustable) | `chaos5090.filter-recharge` | Not uploaded yet |
 | [Visitor Forecast](mods/VisitorForecast/README.md) | [Info] | V | Before opening, forecasts who will visit today (faction, intent, wanted goods, budget, probability) | `chaos5090.visitor-forecast` | [Subscribe](https://steamcommunity.com/sharedfiles/filedetails/?id=3835916583) |
 
-Sort To Boxes, Counter Overflow, Drop Swap and Filter Recharge show their UI in Chinese or English, following the game's language; Visitor Forecast is currently Chinese only.
+Sort To Boxes, Counter Overflow, Quick Swap and Filter Recharge show their UI in Chinese or English, following the game's language; Visitor Forecast is currently Chinese only.
 
 ## Install
 
@@ -37,6 +37,7 @@ Manual install: build `dist/<name>/` as described under "Build from source", cop
 
 - In-game name and Workshop title: `【分类】掌柜帮手·<Chinese name> | [<category>] Shopkeeper's Kit: <English name>`
 - Mod ID: `chaos5090.<english-name-in-kebab-case>`. Never change it after release: the game stores settings by ID (`ModConfigs/<ID>.json`)
+- New small QoL features with no balance impact go into Quick Swap (`chaos5090.conveniences`) instead of new mods. Its ID is the generic `conveniences`, so the name can follow its contents without changing the ID; Sort To Boxes, already released, stays separate
 - The author field is always `ChaosN`; the Claude Code credit goes in the description and README
 - Default hotkeys sit under the left hand (sort G, counter C, forecast V, pages Z/X), avoiding the game's own keys (Q E R F S P K O B, Space, digits) and F5 Client Demand Highlight, F6 Smart Inventory Arrange, F8 Cheat Menu, F10 Show Item Names; they don't fire while you type or rebind keys in Options
 

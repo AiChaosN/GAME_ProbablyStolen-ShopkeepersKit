@@ -1,20 +1,20 @@
 using System;
 
-namespace DropSwap
+namespace Conveniences
 {
     /// <summary>
     /// 入口。ModLoader 会对本程序集调用 Harmony.PatchAll（本 mod 不用 [HarmonyPatch] 特性，那一步什么也不做），
     /// 然后依次调用 Init / OnEnable。补丁在 Init 里手动打。没有热键、没有界面，不需要常驻对象。
     /// </summary>
-    public sealed class DropSwapMod : IMod
+    public sealed class ConveniencesMod : IMod
     {
-        internal static DropSwapConfig Config;
-        internal static string ModId = "chaos5090.drop-swap";
+        internal static ConveniencesConfig Config;
+        internal static string ModId = "chaos5090.conveniences";
 
         public void Init(ModManifest manifest)
         {
             ModId = manifest?.ID ?? ModId;
-            Config = new DropSwapConfig();
+            Config = new ConveniencesConfig();
             try { Config.Init(ModId); }
             catch (Exception e) { Log.Warn("配置初始化失败，使用默认值（电池、滤水器都开）: " + e.Message); }
 
@@ -35,7 +35,7 @@ namespace DropSwap
     }
 
     /// <summary>配置存在游戏自带的 ModConfig（ModConfigs/&lt;mod ID&gt;.json），改装件界面的“设置”里能改。</summary>
-    internal sealed class DropSwapConfig
+    internal sealed class ConveniencesConfig
     {
         internal bool Batteries = true;
         internal bool Filters = true;

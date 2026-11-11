@@ -1,15 +1,19 @@
-# [QoL] Shopkeeper's Kit: Drop Swap
+# [QoL] Shopkeeper's Kit: Quick Swap
 
 **English** | [中文](README.zh-CN.md)
 
 > Part of the **Shopkeeper's Kit** series · category **[QoL]**: no balance changes, it only saves clicks. See the [repository home](../../README.md) for the series and categories.
-> By ChaosN · developed with assistance from [Claude Code](https://claude.com/claude-code) (Anthropic's AI coding assistant). Mod ID: `chaos5090.drop-swap`.
+> By ChaosN · developed with assistance from [Claude Code](https://claude.com/claude-code) (Anthropic's AI coding assistant). Mod ID: `chaos5090.conveniences`.
 >
 > Not on the Steam Workshop yet.
 
 UI in Chinese or English, following the game's language (Chinese shows Chinese, every other language shows English).
 
-## What it does
+This mod is a **collection of small QoL features with no balance impact**: new features of this kind go here instead of into separate mods. It currently contains:
+
+- Drop to swap: batteries and water filters (details below)
+
+## Drop to swap: batteries and water filters
 
 In the base game, swapping a machine's battery or a water pitcher's filter means opening its window, dragging the old one out and the new one in. Dropping the new one on the **closed** machine works only when the slot is empty; when the old one is still inside, the drop is shown in red and nothing happens.
 
@@ -30,18 +34,18 @@ Unchanged:
 
 ## Install
 
-1. After building (see "Build from source" on the [repository home](../../README.md)), copy the whole `dist/DropSwap/` folder into the game's `Mods` folder:
+1. After building (see "Build from source" on the [repository home](../../README.md)), copy the whole `dist/Conveniences/` folder into the game's `Mods` folder:
    ```
-   <game folder>/Mods/DropSwap/manifest.xml
-   <game folder>/Mods/DropSwap/DropSwap.dll
+   <game folder>/Mods/Conveniences/manifest.xml
+   <game folder>/Mods/Conveniences/Conveniences.dll
    ```
    The DLL is locked while the game runs, so quit the game first.
-2. Start the game → main menu **Mods** → select **[QoL] Shopkeeper's Kit: Drop Swap** → **Review and enable** → restart when asked.
+2. Start the game → main menu **Mods** → select **[QoL] Shopkeeper's Kit: Quick Swap** → **Review and enable** → restart when asked.
 3. This mod requests **no special capabilities**; the game's own scanner ([`tools/ScanCheck`](../../tools/ScanCheck)) reports no capabilities, not refused, no findings.
 
 ## Settings
 
-Mods screen → select this mod → **Settings**, or edit `%USERPROFILE%\AppData\LocalLow\Questing Goose Studio\Probably Stolen\ModConfigs\chaos5090.drop-swap.json`.
+Mods screen → select this mod → **Settings**, or edit `%USERPROFILE%\AppData\LocalLow\Questing Goose Studio\Probably Stolen\ModConfigs\chaos5090.conveniences.json`.
 
 | Key | Default | Meaning |
 |---|---|---|
@@ -54,14 +58,14 @@ Mods screen → select this mod → **Settings**, or edit `%USERPROFILE%\AppData
 2. Same with a water pitcher that has a filter: drop a new filter on it.
 3. Machine with an empty battery slot: the battery goes in as in the base game.
 4. Battery dropped on another battery: swapped as in the base game.
-5. Search `Player.log` for `[DropSwap]`: every swap logs "换件：old → new (machine)".
+5. Search `Player.log` for `[Conveniences]`: every swap logs "换件：old → new (machine)".
 
 ## Implementation
 
 | File | Contents |
 |---|---|
 | `src/Swap.cs` | Rules and the swap. Patches: postfixes on `GameItem.MayTarget` / `CanTarget` (count the drop as "use on" when the swap rule holds), prefix on `GameItem.Target` (swap when the base game has no use effect for that pair), postfix on `GameSlotInventory.MayHaveValidInventorySlot` (only while the mouse is dragging that very item: report a slot holding the old part as not insertable, so hovering turns green) |
-| `src/DropSwapMod.cs` | Entry point, settings |
+| `src/ConveniencesMod.cs` | Entry point, settings |
 
 The swap uses the game's own `GraphUtils.SwapItemsInPlace` (the same function the base-game battery swap uses). A machine's battery slot comes from the game's `MachineHelper.GetBatterySlot`; other slots are taken from the top level of the item's window (single-slot windows or machine panels), never from items stored inside.
 
@@ -69,4 +73,4 @@ The swap uses the game's own `GraphUtils.SwapItemsInPlace` (the same function th
 
 ## Changelog
 
-- **1.0.0**: First release: drop a battery on a machine or a filter on a water pitcher to swap.
+- **1.0.0**: First release: drop a battery on a machine or a filter on a water pitcher to swap. (Called "Drop Swap" / `chaos5090.drop-swap` during development; renamed to Quick Swap with the generic ID `chaos5090.conveniences` before release, as the home for QoL features.)

@@ -1,5 +1,6 @@
-[h1]【便利】掌柜帮手·拖放换件[/h1]
+[h1]【便利】掌柜帮手·便利替换[/h1]
 [b]不改任何数值，只帮你省操作。[/b] 界面中英双语，跟随游戏语言。
+不影响平衡的小便利功能合集，以后新增的这类功能都会放在这里。
 
 [h2]做什么[/h2]
 原版里换电池、换滤水器要先打开机器窗口，把旧件拖出来再把新件拖进去；直接拖到合着的机器上，槽里有旧件时只会标红。本 mod 让这一下直接生效：
@@ -26,8 +27,9 @@
 
 ------------------------------------------------------------
 
-[h1][QoL] Shopkeeper's Kit: Drop Swap[/h1]
+[h1][QoL] Shopkeeper's Kit: Quick Swap[/h1]
 [b]No balance changes, it only saves clicks.[/b] UI in Chinese and English, following the game language.
+A collection of small QoL features with no balance impact; new features of this kind will be added here.
 
 [h2]What it does[/h2]
 In the base game, swapping a battery or a filter means opening the machine, dragging the old part out and the new one in; dropping the new part on the closed machine only shows red while the old part is inside. This mod makes that drop work:

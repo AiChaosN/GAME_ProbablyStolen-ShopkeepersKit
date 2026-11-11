@@ -23,7 +23,7 @@ import argparse, json, pathlib, re, shutil, sys, xml.etree.ElementTree as ET
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 WS = ROOT / "workshop"
 APPID = "4348910"   # Probably Stolen 的 Steam appid（创意工坊内容在 steamapps/workshop/content/4348910/）
-MODS = ["SortToBoxes", "CounterOverflow", "VisitorForecast", "DropSwap", "FilterRecharge"]
+MODS = ["SortToBoxes", "CounterOverflow", "VisitorForecast", "Conveniences", "FilterRecharge"]
 VIS = {"public": "0", "friends": "1", "private": "2", "unlisted": "3"}
 
 

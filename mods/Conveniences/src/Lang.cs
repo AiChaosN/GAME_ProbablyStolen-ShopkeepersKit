@@ -1,6 +1,6 @@
 using System;
 
-namespace DropSwap
+namespace Conveniences
 {
     /// <summary>
     /// 界面语言跟随游戏：用游戏自己判断语言的同一个函数 LocHelper.GetCurrentLocaleCode()
