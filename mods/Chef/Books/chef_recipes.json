@@ -66,9 +66,10 @@
      "align": "center",
      "wrap": false,
      "x": 20,
-     "y": 26,
+     "y": 24,
      "w": 274,
      "h": 24,
+     "color": "#2b2733",
      "text": "Chef's Recipes",
      "translations": {
       "zh": "厨师菜谱",
@@ -81,9 +82,9 @@
      "sprite": "chef_fries",
      "fit": "fit",
      "x": 52,
-     "y": 58,
-     "w": 24,
-     "h": 48
+     "y": 54,
+     "w": 22,
+     "h": 44
     },
     {
      "type": "image",
@@ -91,75 +92,162 @@
      "sprite": "chef_fried_chicken",
      "fit": "fit",
      "x": 96,
-     "y": 66,
-     "w": 40,
-     "h": 40
+     "y": 60,
+     "w": 38,
+     "h": 38
     },
     {
      "type": "image",
      "id": "img4",
      "sprite": "chef_burger",
      "fit": "fit",
-     "x": 156,
-     "y": 66,
-     "w": 40,
-     "h": 40
+     "x": 154,
+     "y": 60,
+     "w": 38,
+     "h": 38
     },
     {
      "type": "image",
      "id": "img5",
      "sprite": "chef_combo",
      "fit": "fit",
-     "x": 214,
-     "y": 54,
-     "w": 52,
-     "h": 52
-    },
-    {
-     "type": "flow",
-     "id": "flow6",
-     "x": 35,
-     "y": 114,
-     "w": 253,
-     "h": 256,
-     "spacing": 4
+     "x": 212,
+     "y": 50,
+     "w": 50,
+     "h": 50
     },
     {
      "type": "text",
-     "id": "t7",
-     "flow": "flow6",
-     "style": "section",
-     "autoHeight": true,
-     "w": 0,
-     "h": 0,
-     "text": "Four dishes",
+     "id": "cap6",
+     "style": "caption",
+     "align": "center",
+     "x": 38,
+     "y": 102,
+     "w": 60,
+     "h": 22,
+     "color": "#2b2733",
+     "text": "Fries\n200",
      "translations": {
-      "zh": "四道菜",
-      "zh-Hans": "四道菜"
+      "zh": "薯条\n200",
+      "zh-Hans": "薯条\n200"
      }
     },
     {
      "type": "text",
-     "id": "t8",
-     "flow": "flow6",
+     "id": "cap7",
+     "style": "caption",
+     "align": "center",
+     "x": 90,
+     "y": 102,
+     "w": 60,
+     "h": 22,
+     "color": "#2b2733",
+     "text": "Fried chicken\n200",
+     "translations": {
+      "zh": "炸鸡\n200",
+      "zh-Hans": "炸鸡\n200"
+     }
+    },
+    {
+     "type": "text",
+     "id": "cap8",
+     "style": "caption",
+     "align": "center",
+     "x": 148,
+     "y": 102,
+     "w": 60,
+     "h": 22,
+     "color": "#2b2733",
+     "text": "Burger\n300",
+     "translations": {
+      "zh": "肉汉堡\n300",
+      "zh-Hans": "肉汉堡\n300"
+     }
+    },
+    {
+     "type": "text",
+     "id": "cap9",
+     "style": "caption",
+     "align": "center",
+     "x": 208,
+     "y": 102,
+     "w": 60,
+     "h": 22,
+     "color": "#2b2733",
+     "text": "Super combo\n900",
+     "translations": {
+      "zh": "超级大套餐\n900",
+      "zh-Hans": "超级大套餐\n900"
+     }
+    },
+    {
+     "type": "image",
+     "id": "bar10",
+     "sprite": "notebook_manual_section",
+     "fit": "stretch",
+     "color": "#3f6f73",
+     "x": 31,
+     "y": 132,
+     "w": 261,
+     "h": 14
+    },
+    {
+     "type": "text",
+     "id": "sec11",
+     "style": "label",
+     "align": "left",
+     "valign": "middle",
+     "wrap": false,
+     "x": 37,
+     "y": 132,
+     "w": 249,
+     "h": 14,
+     "color": "#f4f1e6",
+     "text": "How each dish is made",
+     "translations": {
+      "zh": "做法",
+      "zh-Hans": "做法"
+     }
+    },
+    {
+     "type": "text",
+     "id": "t12",
      "style": "body",
-     "autoHeight": true,
-     "w": 0,
-     "h": 0,
-     "text": "Fries: 200. Deep fryer, 1 nutrifruit.\nFried chicken: 200. Deep fryer, 1 piece of meat.\nMeat burger: 300. Food processor: meat + nutrifruit + fillerweed.\nSuper combo: 900. Food processor: a burger + fries + fried chicken.",
+     "align": "left",
+     "x": 35,
+     "y": 152,
+     "w": 253,
+     "h": 42.8,
+     "color": "#2b2733",
+     "text": "Fries: deep fryer, overnight. 1 nutrifruit.\nFried chicken: deep fryer, overnight. 1 piece of meat.\nMeat burger: food processor, \"Burger\". Meat + nutrifruit (bun) + fillerweed.\nSuper combo: food processor, \"Combo\". Burger + fries + fried chicken.",
      "translations": {
-      "zh": "薯条：200。油锅，营养果 ×1。\n炸鸡：200。油锅，肉 ×1。\n肉汉堡：300。食品加工器：肉 + 营养果 + 填料草。\n超级大套餐：900。食品加工器：汉堡 + 薯条 + 炸鸡。",
-      "zh-Hans": "薯条：200。油锅，营养果 ×1。\n炸鸡：200。油锅，肉 ×1。\n肉汉堡：300。食品加工器：肉 + 营养果 + 填料草。\n超级大套餐：900。食品加工器：汉堡 + 薯条 + 炸鸡。"
+      "zh": "薯条：油锅，过一夜。营养果 ×1。\n炸鸡：油锅，过一夜。肉 ×1。\n肉汉堡：食品加工器，点“做汉堡”。肉 + 营养果（面包胚）+ 填料草。\n超级大套餐：食品加工器，点“配套餐”。汉堡 + 薯条 + 炸鸡。",
+      "zh-Hans": "薯条：油锅，过一夜。营养果 ×1。\n炸鸡：油锅，过一夜。肉 ×1。\n肉汉堡：食品加工器，点“做汉堡”。肉 + 营养果（面包胚）+ 填料草。\n超级大套餐：食品加工器，点“配套餐”。汉堡 + 薯条 + 炸鸡。"
      }
     },
     {
+     "type": "image",
+     "id": "bar13",
+     "sprite": "notebook_manual_section",
+     "fit": "stretch",
+     "color": "#b5793a",
+     "x": 31,
+     "y": 200.8,
+     "w": 261,
+     "h": 14
+    },
+    {
      "type": "text",
-     "id": "t9",
-     "flow": "flow6",
-     "style": "section",
-     "autoHeight": true,
-     "w": 0,
-     "h": 0,
+     "id": "sec14",
+     "style": "label",
+     "align": "left",
+     "valign": "middle",
+     "wrap": false,
+     "x": 37,
+     "y": 200.8,
+     "w": 249,
+     "h": 14,
+     "color": "#f4f1e6",
      "text": "Quality",
      "translations": {
       "zh": "品质",
@@ -168,30 +256,34 @@
     },
     {
      "type": "text",
-     "id": "t10",
-     "flow": "flow6",
+     "id": "t15",
      "style": "body",
-     "autoHeight": true,
-     "w": 0,
-     "h": 0,
-     "text": "Every dish scores 0-100 points:\nInedible (under 30): price −50%\nPlain (30-54): base price\nTasty (55-74): +50%\nChef's (75-89): +100%\nMichelin (90+): +200%",
+     "align": "left",
+     "x": 35,
+     "y": 220.8,
+     "w": 253,
+     "h": 32.599999999999994,
+     "color": "#2b2733",
+     "text": "Every dish scores 0-100 points in five grades, up to Michelin at +200%. Points come from the meat's calories, oil purity, the burger's ingredient ratio and the machine's quality modules. See the last page.",
      "translations": {
-      "zh": "每份菜 0–100 分：\n难以下咽（30 分以下）：价格 −50%\n普通（30–54）：原价\n美味（55–74）：+50%\n主厨（75–89）：+100%\n米其林（90 以上）：+200%",
-      "zh-Hans": "每份菜 0–100 分：\n难以下咽（30 分以下）：价格 −50%\n普通（30–54）：原价\n美味（55–74）：+50%\n主厨（75–89）：+100%\n米其林（90 以上）：+200%"
+      "zh": "每份菜 0–100 分，分五档，最高米其林，价格 +200%。分数看肉的千卡、油的纯净度、汉堡的食材比例和机器上的品质模组。详见最后一页。",
+      "zh-Hans": "每份菜 0–100 分，分五档，最高米其林，价格 +200%。分数看肉的千卡、油的纯净度、汉堡的食材比例和机器上的品质模组。详见最后一页。"
      }
     },
     {
      "type": "text",
-     "id": "t11",
-     "flow": "flow6",
+     "id": "t16",
      "style": "body",
-     "autoHeight": true,
-     "w": 0,
-     "h": 0,
-     "text": "Hover over a dish to see its score and where the points came from. Points come from four things: the meat's calories, oil purity, the ingredient ratio and the machine's quality modules.",
+     "align": "left",
+     "x": 35,
+     "y": 255.4,
+     "w": 253,
+     "h": 12.2,
+     "color": "#4d5a73",
+     "text": "Hover over a dish to see its grade and points.",
      "translations": {
-      "zh": "鼠标指着菜能看到得分和每一项拿了多少分。分数看四样：肉的千卡、油的纯净度、食材比例、机器上的品质模组。",
-      "zh-Hans": "鼠标指着菜能看到得分和每一项拿了多少分。分数看四样：肉的千卡、油的纯净度、食材比例、机器上的品质模组。"
+      "zh": "鼠标指着菜能看到档次和得分。",
+      "zh-Hans": "鼠标指着菜能看到档次和得分。"
      }
     }
    ]
@@ -201,107 +293,180 @@
    "elements": [
     {
      "type": "text",
-     "id": "title12",
+     "id": "title17",
      "style": "serif_title",
      "align": "center",
      "wrap": false,
      "x": 20,
-     "y": 26,
+     "y": 24,
      "w": 274,
      "h": 24,
+     "color": "#2b2733",
      "text": "Deep Fryer",
      "translations": {
-      "zh": "油锅：薯条和炸鸡",
-      "zh-Hans": "油锅：薯条和炸鸡"
+      "zh": "油锅",
+      "zh-Hans": "油锅"
      }
     },
     {
      "type": "image",
-     "id": "img13",
+     "id": "img18",
      "sprite": "chef_fryer",
      "fit": "fit",
-     "x": 133,
+     "x": 127,
      "y": 52,
-     "w": 48,
-     "h": 48
+     "w": 60,
+     "h": 40
     },
     {
-     "type": "flow",
-     "id": "flow14",
+     "type": "image",
+     "id": "bar19",
+     "sprite": "notebook_manual_section",
+     "fit": "stretch",
+     "color": "#3f6f73",
+     "x": 31,
+     "y": 104,
+     "w": 261,
+     "h": 14
+    },
+    {
+     "type": "text",
+     "id": "sec20",
+     "style": "label",
+     "align": "left",
+     "valign": "middle",
+     "wrap": false,
+     "x": 37,
+     "y": 104,
+     "w": 249,
+     "h": 14,
+     "color": "#f4f1e6",
+     "text": "Setting up",
+     "translations": {
+      "zh": "准备",
+      "zh-Hans": "准备"
+     }
+    },
+    {
+     "type": "text",
+     "id": "t21",
+     "style": "body",
+     "align": "left",
      "x": 35,
-     "y": 106,
+     "y": 124,
      "w": 253,
-     "h": 264,
-     "spacing": 4
+     "h": 32.599999999999994,
+     "color": "#2b2733",
+     "text": "Put a container of cooking oil in the \"Oil\" slot: the cooking oil jug, or any of the game's jugs and bottles you poured oil into. It needs at least 1 L, and no water in it. Put a battery in the power slot.",
+     "translations": {
+      "zh": "“油桶”槽放一桶食用油：食用油桶，或者倒了油的游戏里任何桶、瓶子都行。至少 1 L，油里不能有水。电源槽放电池。",
+      "zh-Hans": "“油桶”槽放一桶食用油：食用油桶，或者倒了油的游戏里任何桶、瓶子都行。至少 1 L，油里不能有水。电源槽放电池。"
+     }
+    },
+    {
+     "type": "image",
+     "id": "bar22",
+     "sprite": "notebook_manual_section",
+     "fit": "stretch",
+     "color": "#b5793a",
+     "x": 31,
+     "y": 162.6,
+     "w": 261,
+     "h": 14
     },
     {
      "type": "text",
-     "id": "t15",
-     "flow": "flow14",
-     "style": "section",
-     "autoHeight": true,
-     "w": 0,
-     "h": 0,
-     "text": "How to use",
+     "id": "sec23",
+     "style": "label",
+     "align": "left",
+     "valign": "middle",
+     "wrap": false,
+     "x": 37,
+     "y": 162.6,
+     "w": 249,
+     "h": 14,
+     "color": "#f4f1e6",
+     "text": "Frying",
      "translations": {
-      "zh": "用法",
-      "zh-Hans": "用法"
+      "zh": "炸",
+      "zh-Hans": "炸"
      }
     },
     {
      "type": "text",
-     "id": "t16",
-     "flow": "flow14",
+     "id": "t24",
      "style": "body",
-     "autoHeight": true,
-     "w": 0,
-     "h": 0,
-     "text": "Drop a cooking oil jug on the fryer to pour oil in (up to 5 L; it needs at least 1 L to fry). Put a battery in the power slot and nutrifruit or meat in the basket, then sleep: the fried food is in the output. Each portion soaks up 100 ml of oil; one night uses 20 charge.",
+     "align": "left",
+     "x": 35,
+     "y": 182.6,
+     "w": 253,
+     "h": 32.599999999999994,
+     "color": "#2b2733",
+     "text": "Put nutrifruit and meat in the basket and sleep. Each night everything in the basket is fried into the output: nutrifruit → fries, meat → fried chicken. Each portion soaks up 100 ml of oil; one night uses 20 charge.",
      "translations": {
-      "zh": "把食用油桶拖到油锅上倒油（最多 5 L，至少 1 L 才炸）。电源槽放电池，炸篮放营养果或肉，睡一觉，出锅格里就是炸好的。每份吸掉 100 ml 油，每晚耗 20 电。",
-      "zh-Hans": "把食用油桶拖到油锅上倒油（最多 5 L，至少 1 L 才炸）。电源槽放电池，炸篮放营养果或肉，睡一觉，出锅格里就是炸好的。每份吸掉 100 ml 油，每晚耗 20 电。"
+      "zh": "炸篮放营养果和肉，睡一觉。每晚把炸篮里的东西炸好放进出锅格：营养果 → 薯条，肉 → 炸鸡。每份吸掉 100 ml 油，每晚耗 20 电。",
+      "zh-Hans": "炸篮放营养果和肉，睡一觉。每晚把炸篮里的东西炸好放进出锅格：营养果 → 薯条，肉 → 炸鸡。每份吸掉 100 ml 油，每晚耗 20 电。"
+     }
+    },
+    {
+     "type": "image",
+     "id": "bar25",
+     "sprite": "notebook_manual_section",
+     "fit": "stretch",
+     "color": "#4d5a73",
+     "x": 31,
+     "y": 221.2,
+     "w": 261,
+     "h": 14
+    },
+    {
+     "type": "text",
+     "id": "sec26",
+     "style": "label",
+     "align": "left",
+     "valign": "middle",
+     "wrap": false,
+     "x": 37,
+     "y": 221.2,
+     "w": 249,
+     "h": 14,
+     "color": "#f4f1e6",
+     "text": "Modules",
+     "translations": {
+      "zh": "模组",
+      "zh-Hans": "模组"
      }
     },
     {
      "type": "text",
-     "id": "t17",
-     "flow": "flow14",
-     "style": "section",
-     "autoHeight": true,
-     "w": 0,
-     "h": 0,
-     "text": "Score",
-     "translations": {
-      "zh": "得分",
-      "zh-Hans": "得分"
-     }
-    },
-    {
-     "type": "text",
-     "id": "t18",
-     "flow": "flow14",
+     "id": "t27",
      "style": "body",
-     "autoHeight": true,
-     "w": 0,
-     "h": 0,
-     "text": "Fried chicken = meat calories 35 (full at 1200 kcal) + oil purity 45 + modules 20\nFries = nutrifruit calories 25 (full at 384 kcal) + oil purity 55 + modules 20",
+     "align": "left",
+     "x": 35,
+     "y": 241.2,
+     "w": 253,
+     "h": 22.4,
+     "color": "#2b2733",
+     "text": "The fryer has the game's standard module grid. Quality modules raise the score: +100% quality gives the full 20 points.",
      "translations": {
-      "zh": "炸鸡 = 肉的千卡 35（1200 千卡满分）+ 油的纯净度 45 + 模组 20\n薯条 = 营养果的千卡 25（384 千卡满分）+ 油的纯净度 55 + 模组 20",
-      "zh-Hans": "炸鸡 = 肉的千卡 35（1200 千卡满分）+ 油的纯净度 45 + 模组 20\n薯条 = 营养果的千卡 25（384 千卡满分）+ 油的纯净度 55 + 模组 20"
+      "zh": "油锅有游戏标准的模组格。品质模组加分：品质加成 +100% 拿满 20 分。",
+      "zh-Hans": "油锅有游戏标准的模组格。品质模组加分：品质加成 +100% 拿满 20 分。"
      }
     },
     {
      "type": "text",
-     "id": "t19",
-     "flow": "flow14",
+     "id": "t28",
      "style": "body",
-     "autoHeight": true,
-     "w": 0,
-     "h": 0,
-     "text": "Oil purity: full points at 98% or more, none at 70% or less. Modules: put quality modules in the fryer's module grid; +100% quality gives the full 20 points.",
+     "align": "left",
+     "x": 35,
+     "y": 265.59999999999997,
+     "w": 253,
+     "h": 22.4,
+     "color": "#4d5a73",
+     "text": "Hover over the fryer to see the oil in it and how many portions it can still fry.",
      "translations": {
-      "zh": "油的纯净度：98% 以上满分，70% 以下 0 分。模组：油锅的模组格放品质模组，品质加成 +100% 拿满 20 分。",
-      "zh-Hans": "油的纯净度：98% 以上满分，70% 以下 0 分。模组：油锅的模组格放品质模组，品质加成 +100% 拿满 20 分。"
+      "zh": "鼠标指着油锅能看到里面的油，还能炸几份。",
+      "zh-Hans": "鼠标指着油锅能看到里面的油，还能炸几份。"
      }
     }
    ]
@@ -311,14 +476,15 @@
    "elements": [
     {
      "type": "text",
-     "id": "title20",
+     "id": "title29",
      "style": "serif_title",
      "align": "center",
      "wrap": false,
      "x": 20,
-     "y": 26,
+     "y": 24,
      "w": 274,
      "h": 24,
+     "color": "#2b2733",
      "text": "Food Processor",
      "translations": {
       "zh": "食品加工器",
@@ -327,31 +493,37 @@
     },
     {
      "type": "image",
-     "id": "img21",
+     "id": "img30",
      "sprite": "chef_processor",
      "fit": "fit",
-     "x": 133,
+     "x": 127,
      "y": 52,
-     "w": 48,
-     "h": 48
+     "w": 60,
+     "h": 40
     },
     {
-     "type": "flow",
-     "id": "flow22",
-     "x": 35,
-     "y": 106,
-     "w": 253,
-     "h": 264,
-     "spacing": 4
+     "type": "image",
+     "id": "bar31",
+     "sprite": "notebook_manual_section",
+     "fit": "stretch",
+     "color": "#3f6f73",
+     "x": 31,
+     "y": 104,
+     "w": 261,
+     "h": 14
     },
     {
      "type": "text",
-     "id": "t23",
-     "flow": "flow22",
-     "style": "section",
-     "autoHeight": true,
-     "w": 0,
-     "h": 0,
+     "id": "sec32",
+     "style": "label",
+     "align": "left",
+     "valign": "middle",
+     "wrap": false,
+     "x": 37,
+     "y": 104,
+     "w": 249,
+     "h": 14,
+     "color": "#f4f1e6",
      "text": "Burger",
      "translations": {
       "zh": "做汉堡",
@@ -360,40 +532,75 @@
     },
     {
      "type": "text",
-     "id": "t24",
-     "flow": "flow22",
+     "id": "t33",
      "style": "body",
-     "autoHeight": true,
-     "w": 0,
-     "h": 0,
-     "text": "Put meat, nutrifruit and fillerweed in \"Ingredients\" and click \"Burger\" in the title bar: everything in the grid becomes one burger (it needs at least meat and nutrifruit). Each click uses 5 charge.",
+     "align": "left",
+     "x": 35,
+     "y": 124,
+     "w": 253,
+     "h": 32.599999999999994,
+     "color": "#2b2733",
+     "text": "Put meat, nutrifruit and fillerweed in \"Ingredients\" and click \"Burger\" in the title bar: everything in the grid becomes one burger. It needs at least meat and nutrifruit. Each click uses 5 charge.",
      "translations": {
-      "zh": "“食材”格放肉、营养果、填料草，点标题栏的“做汉堡”：格子里的全部食材做成一个汉堡（至少要有肉和营养果）。每按一次耗 5 电。",
-      "zh-Hans": "“食材”格放肉、营养果、填料草，点标题栏的“做汉堡”：格子里的全部食材做成一个汉堡（至少要有肉和营养果）。每按一次耗 5 电。"
+      "zh": "“食材”格放肉、营养果、填料草，点标题栏的“做汉堡”：格子里的全部食材做成一个汉堡。至少要有肉和营养果。每按一次耗 5 电。",
+      "zh-Hans": "“食材”格放肉、营养果、填料草，点标题栏的“做汉堡”：格子里的全部食材做成一个汉堡。至少要有肉和营养果。每按一次耗 5 电。"
      }
     },
     {
      "type": "text",
-     "id": "t25",
-     "flow": "flow22",
+     "id": "t34",
      "style": "body",
-     "autoHeight": true,
-     "w": 0,
-     "h": 0,
-     "text": "Score = meat calories 30 (all meat in the burger, full at 1200 kcal) + ratio 50 + modules 20.\nThe ratio is by calories; ideal is meat 55% : nutrifruit 30% : fillerweed 15%. Example: standard raw meat 1200 + 2 nutrifruit 480 + fillerweed 259 = 62 : 25 : 13, about 36 ratio points.",
+     "align": "left",
+     "x": 35,
+     "y": 158.6,
+     "w": 253,
+     "h": 22.4,
+     "color": "#8a3b4a",
+     "text": "The ratio is counted in calories. Ideal: meat 55% : nutrifruit 30% : fillerweed 15%. The message after each burger shows your ratio.",
      "translations": {
-      "zh": "得分 = 肉的千卡 30（汉堡里所有肉加起来，1200 千卡满分）+ 比例 50 + 模组 20。\n比例按千卡算，理想是 肉 55% : 营养果 30% : 填料草 15%。例：标准生肉 1200 + 营养果 ×2（480）+ 填料草 259 = 62 : 25 : 13，比例分约 36。",
-      "zh-Hans": "得分 = 肉的千卡 30（汉堡里所有肉加起来，1200 千卡满分）+ 比例 50 + 模组 20。\n比例按千卡算，理想是 肉 55% : 营养果 30% : 填料草 15%。例：标准生肉 1200 + 营养果 ×2（480）+ 填料草 259 = 62 : 25 : 13，比例分约 36。"
+      "zh": "比例按千卡算，理想是 肉 55% : 营养果 30% : 填料草 15%。每做一个汉堡，提示里会写出这次的比例。",
+      "zh-Hans": "比例按千卡算，理想是 肉 55% : 营养果 30% : 填料草 15%。每做一个汉堡，提示里会写出这次的比例。"
      }
     },
     {
      "type": "text",
-     "id": "t26",
-     "flow": "flow22",
-     "style": "section",
-     "autoHeight": true,
-     "w": 0,
-     "h": 0,
+     "id": "t35",
+     "style": "body",
+     "align": "left",
+     "x": 35,
+     "y": 183.0,
+     "w": 253,
+     "h": 22.4,
+     "color": "#2b2733",
+     "text": "Example: standard raw meat (1200) + 2 nutrifruit (480) + fillerweed (259) = 62 : 25 : 13.",
+     "translations": {
+      "zh": "例：标准生肉（1200）+ 营养果 ×2（480）+ 填料草（259）= 62 : 25 : 13。",
+      "zh-Hans": "例：标准生肉（1200）+ 营养果 ×2（480）+ 填料草（259）= 62 : 25 : 13。"
+     }
+    },
+    {
+     "type": "image",
+     "id": "bar36",
+     "sprite": "notebook_manual_section",
+     "fit": "stretch",
+     "color": "#b5793a",
+     "x": 31,
+     "y": 211.4,
+     "w": 261,
+     "h": 14
+    },
+    {
+     "type": "text",
+     "id": "sec37",
+     "style": "label",
+     "align": "left",
+     "valign": "middle",
+     "wrap": false,
+     "x": 37,
+     "y": 211.4,
+     "w": 249,
+     "h": 14,
+     "color": "#f4f1e6",
      "text": "Super combo",
      "translations": {
       "zh": "配套餐",
@@ -402,16 +609,18 @@
     },
     {
      "type": "text",
-     "id": "t27",
-     "flow": "flow22",
+     "id": "t38",
      "style": "body",
-     "autoHeight": true,
-     "w": 0,
-     "h": 0,
-     "text": "Put a burger, fries and fried chicken in \"Plating\" and click \"Combo\". The combo's quality is that of the lowest of the three.",
+     "align": "left",
+     "x": 35,
+     "y": 231.4,
+     "w": 253,
+     "h": 22.4,
+     "color": "#2b2733",
+     "text": "Put a burger, fries and fried chicken in \"Plating\" and click \"Combo\". The combo's grade is the lowest of the three.",
      "translations": {
-      "zh": "“配餐”格放汉堡、薯条、炸鸡各一份，点“配套餐”。套餐的品质取三样里最低的。",
-      "zh-Hans": "“配餐”格放汉堡、薯条、炸鸡各一份，点“配套餐”。套餐的品质取三样里最低的。"
+      "zh": "“配餐”格放汉堡、薯条、炸鸡各一份，点“配套餐”。套餐的档次取三样里最低的。",
+      "zh-Hans": "“配餐”格放汉堡、薯条、炸鸡各一份，点“配套餐”。套餐的档次取三样里最低的。"
      }
     }
    ]
@@ -421,71 +630,109 @@
    "elements": [
     {
      "type": "text",
-     "id": "title28",
+     "id": "title39",
      "style": "serif_title",
      "align": "center",
      "wrap": false,
      "x": 20,
-     "y": 26,
+     "y": 24,
      "w": 274,
      "h": 24,
+     "color": "#2b2733",
      "text": "Cooking Oil",
      "translations": {
-      "zh": "食用油和过滤",
-      "zh-Hans": "食用油和过滤"
+      "zh": "食用油",
+      "zh-Hans": "食用油"
      }
     },
     {
      "type": "image",
-     "id": "img29",
+     "id": "img40",
      "sprite": "chef_oil_barrel",
      "fit": "fit",
-     "x": 113,
+     "x": 108,
      "y": 50,
-     "w": 32,
-     "h": 48
+     "w": 30,
+     "h": 45
     },
     {
      "type": "image",
-     "id": "img30",
+     "id": "img41",
      "sprite": "chef_strainer",
      "fit": "fit",
-     "x": 169,
-     "y": 58,
-     "w": 40,
-     "h": 40
+     "x": 172,
+     "y": 56,
+     "w": 36,
+     "h": 36
     },
     {
-     "type": "flow",
-     "id": "flow31",
-     "x": 35,
-     "y": 106,
-     "w": 253,
-     "h": 264,
-     "spacing": 4
+     "type": "image",
+     "id": "bar42",
+     "sprite": "notebook_manual_section",
+     "fit": "stretch",
+     "color": "#8a3b4a",
+     "x": 31,
+     "y": 104,
+     "w": 261,
+     "h": 14
     },
     {
      "type": "text",
-     "id": "t32",
-     "flow": "flow31",
-     "style": "body",
-     "autoHeight": true,
-     "w": 0,
-     "h": 0,
-     "text": "Every night of frying dirties the oil: some is soaked up, large crumbs and fine residue are left behind, and 4% of the fresh oil turns into aged oil. Purity = the share of fresh oil.",
+     "id": "sec43",
+     "style": "label",
+     "align": "left",
+     "valign": "middle",
+     "wrap": false,
+     "x": 37,
+     "y": 104,
+     "w": 249,
+     "h": 14,
+     "color": "#f4f1e6",
+     "text": "Oil gets dirty",
      "translations": {
-      "zh": "每炸一晚油都会变脏：一部分被吸掉，留下大颗粒炸渣和小颗粒油渣，还有 4% 的新油变成老化油。纯净度 = 新油占的比例。",
-      "zh-Hans": "每炸一晚油都会变脏：一部分被吸掉，留下大颗粒炸渣和小颗粒油渣，还有 4% 的新油变成老化油。纯净度 = 新油占的比例。"
+      "zh": "油会变脏",
+      "zh-Hans": "油会变脏"
      }
     },
     {
      "type": "text",
-     "id": "t33",
-     "flow": "flow31",
-     "style": "section",
-     "autoHeight": true,
-     "w": 0,
-     "h": 0,
+     "id": "t44",
+     "style": "body",
+     "align": "left",
+     "x": 35,
+     "y": 124,
+     "w": 253,
+     "h": 32.599999999999994,
+     "color": "#2b2733",
+     "text": "Each night of frying leaves large crumbs and fine residue in the oil, and 4% of the cooking oil turns into aged oil. Oil purity = the share of cooking oil in the container.",
+     "translations": {
+      "zh": "每炸一晚，油里会多出大颗粒炸渣和小颗粒油渣，还有 4% 的食用油变成老化油。油的纯净度 = 食用油在桶里占的比例。",
+      "zh-Hans": "每炸一晚，油里会多出大颗粒炸渣和小颗粒油渣，还有 4% 的食用油变成老化油。油的纯净度 = 食用油在桶里占的比例。"
+     }
+    },
+    {
+     "type": "image",
+     "id": "bar45",
+     "sprite": "notebook_manual_section",
+     "fit": "stretch",
+     "color": "#3f6f73",
+     "x": 31,
+     "y": 162.6,
+     "w": 261,
+     "h": 14
+    },
+    {
+     "type": "text",
+     "id": "sec46",
+     "style": "label",
+     "align": "left",
+     "valign": "middle",
+     "wrap": false,
+     "x": 37,
+     "y": 162.6,
+     "w": 249,
+     "h": 14,
+     "color": "#f4f1e6",
      "text": "Filtering",
      "translations": {
       "zh": "过滤",
@@ -494,44 +741,79 @@
     },
     {
      "type": "text",
-     "id": "t34",
-     "flow": "flow31",
+     "id": "t47",
      "style": "body",
-     "autoHeight": true,
-     "w": 0,
-     "h": 0,
-     "text": "Large crumbs: drop the oil strainer on the fryer (or a jug).\nFine residue: drop the fryer (or a jug) on a water pitcher with a water filter in it. Large crumbs can be filtered this way too, but they wear the filter out fast, so strain first.",
+     "align": "left",
+     "x": 35,
+     "y": 182.6,
+     "w": 253,
+     "h": 53.0,
+     "color": "#2b2733",
+     "text": "1. Put the oil strainer in a water pitcher and pour the oil in: the large crumbs stay behind.\n2. Swap in a water filter and pour the oil through again: the fine residue stays behind.\nFiltered oil is \"recycled oil\".",
      "translations": {
-      "zh": "大颗粒炸渣：把滤油网拖到油锅（或油桶）上。\n小颗粒油渣：把油锅（或油桶）拖到装着滤水器的滤水壶上。大颗粒也能这样滤，但很伤滤嘴，先用滤油网。",
-      "zh-Hans": "大颗粒炸渣：把滤油网拖到油锅（或油桶）上。\n小颗粒油渣：把油锅（或油桶）拖到装着滤水器的滤水壶上。大颗粒也能这样滤，但很伤滤嘴，先用滤油网。"
+      "zh": "1. 滤油网装进滤水壶，把油倒进去：大颗粒炸渣被滤掉。\n2. 换成滤水器，再倒一遍：小颗粒油渣被滤掉。\n滤过的油叫“二次食用油”。",
+      "zh-Hans": "1. 滤油网装进滤水壶，把油倒进去：大颗粒炸渣被滤掉。\n2. 换成滤水器，再倒一遍：小颗粒油渣被滤掉。\n滤过的油叫“二次食用油”。"
      }
     },
     {
      "type": "text",
-     "id": "t35",
-     "flow": "flow31",
+     "id": "t48",
      "style": "body",
-     "autoHeight": true,
-     "w": 0,
-     "h": 0,
-     "text": "Aged oil can't be filtered: cleaned oil is \"recycled oil\" and never gets back to 100%. Pouring in fresh oil brings the purity back up. Under 70% it is spent oil; \"Dump oil\" in the fryer's title bar (click twice) empties it.",
+     "align": "left",
+     "x": 35,
+     "y": 237.6,
+     "w": 253,
+     "h": 12.2,
+     "color": "#8a3b4a",
+     "text": "Large crumbs also clog a water filter fast, so strain first.",
      "translations": {
-      "zh": "老化油滤不掉：滤干净的油叫“二次食用油”，纯净度回不到 100%。往里倒新油能把纯净度拉回来。低于 70% 是废油，点油锅标题栏的“倒掉油”（点两次）清空。",
-      "zh-Hans": "老化油滤不掉：滤干净的油叫“二次食用油”，纯净度回不到 100%。往里倒新油能把纯净度拉回来。低于 70% 是废油，点油锅标题栏的“倒掉油”（点两次）清空。"
+      "zh": "大颗粒也能用滤水器滤，但很伤滤嘴，先用滤油网。",
+      "zh-Hans": "大颗粒也能用滤水器滤，但很伤滤嘴，先用滤油网。"
+     }
+    },
+    {
+     "type": "image",
+     "id": "bar49",
+     "sprite": "notebook_manual_section",
+     "fit": "stretch",
+     "color": "#4d5a73",
+     "x": 31,
+     "y": 255.79999999999998,
+     "w": 261,
+     "h": 14
+    },
+    {
+     "type": "text",
+     "id": "sec50",
+     "style": "label",
+     "align": "left",
+     "valign": "middle",
+     "wrap": false,
+     "x": 37,
+     "y": 255.79999999999998,
+     "w": 249,
+     "h": 14,
+     "color": "#f4f1e6",
+     "text": "Good to know",
+     "translations": {
+      "zh": "注意",
+      "zh-Hans": "注意"
      }
     },
     {
      "type": "text",
-     "id": "t36",
-     "flow": "flow31",
+     "id": "t51",
      "style": "body",
-     "autoHeight": true,
-     "w": 0,
-     "h": 0,
-     "text": "Hover over the fryer or a jug to see the oil's state.",
+     "align": "left",
+     "x": 35,
+     "y": 275.79999999999995,
+     "w": 253,
+     "h": 32.599999999999994,
+     "color": "#2b2733",
+     "text": "Aged oil can't be filtered, so recycled oil never gets back to 100%; pouring in fresh oil brings it back up. No water in the oil, or the fryer won't use it. Spent oil can be poured down the drain.",
      "translations": {
-      "zh": "鼠标指着油锅、油桶能看到油的状态。",
-      "zh-Hans": "鼠标指着油锅、油桶能看到油的状态。"
+      "zh": "老化油滤不掉，所以二次食用油回不到 100%；倒新油进去能拉回来。油里不能混水，否则油锅不用。不要的油倒进下水口。",
+      "zh-Hans": "老化油滤不掉，所以二次食用油回不到 100%；倒新油进去能拉回来。油里不能混水，否则油锅不用。不要的油倒进下水口。"
      }
     }
    ]
@@ -541,14 +823,15 @@
    "elements": [
     {
      "type": "text",
-     "id": "title37",
+     "id": "title52",
      "style": "serif_title",
      "align": "center",
      "wrap": false,
      "x": 20,
-     "y": 26,
+     "y": 24,
      "w": 274,
      "h": 24,
+     "color": "#2b2733",
      "text": "Calories",
      "translations": {
       "zh": "食材的千卡",
@@ -556,22 +839,28 @@
      }
     },
     {
-     "type": "flow",
-     "id": "flow38",
-     "x": 35,
-     "y": 60,
-     "w": 253,
-     "h": 310,
-     "spacing": 4
+     "type": "image",
+     "id": "bar53",
+     "sprite": "notebook_manual_section",
+     "fit": "stretch",
+     "color": "#8a3b4a",
+     "x": 31,
+     "y": 50,
+     "w": 261,
+     "h": 14
     },
     {
      "type": "text",
-     "id": "t39",
-     "flow": "flow38",
-     "style": "section",
-     "autoHeight": true,
-     "w": 0,
-     "h": 0,
+     "id": "sec54",
+     "style": "label",
+     "align": "left",
+     "valign": "middle",
+     "wrap": false,
+     "x": 37,
+     "y": 50,
+     "w": 249,
+     "h": 14,
+     "color": "#f4f1e6",
      "text": "Meat",
      "translations": {
       "zh": "肉",
@@ -580,26 +869,547 @@
     },
     {
      "type": "text",
-     "id": "t40",
-     "flow": "flow38",
+     "id": "n55",
      "style": "body",
-     "autoHeight": true,
-     "w": 0,
-     "h": 0,
-     "text": "Fat meat 1250 · Raw meat (standard) 1200 · Peat 800 · Raw meat (small) 550 · Meat scrap 350 · Morsel 275 · Small morsel 140. Fish and eel meat depend on their size.",
+     "wrap": false,
+     "x": 41,
+     "y": 68,
+     "w": 150,
+     "h": 11,
+     "color": "#2b2733",
+     "text": "Fat meat",
      "translations": {
-      "zh": "肥肉 1250 · 生肉（标准）1200 · “泥炭”合成肉 800 · 生肉（小）550 · 肉边角料 350 · 一口食物 275 · 一小口食物 140。鱼肉、鳗鱼肉看大小。",
-      "zh-Hans": "肥肉 1250 · 生肉（标准）1200 · “泥炭”合成肉 800 · 生肉（小）550 · 肉边角料 350 · 一口食物 275 · 一小口食物 140。鱼肉、鳗鱼肉看大小。"
+      "zh": "肥肉",
+      "zh-Hans": "肥肉"
      }
     },
     {
      "type": "text",
-     "id": "t41",
-     "flow": "flow38",
-     "style": "section",
-     "autoHeight": true,
-     "w": 0,
-     "h": 0,
+     "id": "v56",
+     "style": "body",
+     "align": "right",
+     "wrap": false,
+     "x": 224,
+     "y": 68,
+     "w": 60,
+     "h": 11,
+     "color": "#2b2733",
+     "text": "1250",
+     "translations": {
+      "zh": "1250",
+      "zh-Hans": "1250"
+     }
+    },
+    {
+     "type": "text",
+     "id": "d57",
+     "style": "body",
+     "wrap": false,
+     "x": 73.69999999999999,
+     "y": 68,
+     "w": 194.5,
+     "h": 11,
+     "color": "#8b8778",
+     "text": "....................................................................................",
+     "translations": {
+      "zh": "​",
+      "zh-Hans": "​"
+     }
+    },
+    {
+     "type": "text",
+     "id": "d58",
+     "style": "body",
+     "wrap": false,
+     "x": 59.0,
+     "y": 68,
+     "w": 209.2,
+     "h": 11,
+     "color": "#8b8778",
+     "text": "​",
+     "translations": {
+      "zh": "...........................................................................................",
+      "zh-Hans": "..........................................................................................."
+     }
+    },
+    {
+     "type": "text",
+     "id": "n59",
+     "style": "body",
+     "wrap": false,
+     "x": 41,
+     "y": 79,
+     "w": 150,
+     "h": 11,
+     "color": "#2b2733",
+     "text": "Raw meat (standard)",
+     "translations": {
+      "zh": "生肉（标准）",
+      "zh-Hans": "生肉（标准）"
+     }
+    },
+    {
+     "type": "text",
+     "id": "v60",
+     "style": "body",
+     "align": "right",
+     "wrap": false,
+     "x": 224,
+     "y": 79,
+     "w": 60,
+     "h": 11,
+     "color": "#2b2733",
+     "text": "1200",
+     "translations": {
+      "zh": "1200",
+      "zh-Hans": "1200"
+     }
+    },
+    {
+     "type": "text",
+     "id": "d61",
+     "style": "body",
+     "wrap": false,
+     "x": 112.24999999999999,
+     "y": 79,
+     "w": 155.95,
+     "h": 11,
+     "color": "#8b8778",
+     "text": "...................................................................",
+     "translations": {
+      "zh": "​",
+      "zh-Hans": "​"
+     }
+    },
+    {
+     "type": "text",
+     "id": "d62",
+     "style": "body",
+     "wrap": false,
+     "x": 89.0,
+     "y": 79,
+     "w": 179.2,
+     "h": 11,
+     "color": "#8b8778",
+     "text": "​",
+     "translations": {
+      "zh": ".............................................................................",
+      "zh-Hans": "............................................................................."
+     }
+    },
+    {
+     "type": "text",
+     "id": "n63",
+     "style": "body",
+     "wrap": false,
+     "x": 41,
+     "y": 90,
+     "w": 150,
+     "h": 11,
+     "color": "#2b2733",
+     "text": "Peat",
+     "translations": {
+      "zh": "“泥炭”合成肉",
+      "zh-Hans": "“泥炭”合成肉"
+     }
+    },
+    {
+     "type": "text",
+     "id": "v64",
+     "style": "body",
+     "align": "right",
+     "wrap": false,
+     "x": 224,
+     "y": 90,
+     "w": 60,
+     "h": 11,
+     "color": "#2b2733",
+     "text": "800",
+     "translations": {
+      "zh": "800",
+      "zh-Hans": "800"
+     }
+    },
+    {
+     "type": "text",
+     "id": "d65",
+     "style": "body",
+     "wrap": false,
+     "x": 59.15,
+     "y": 90,
+     "w": 213.24999999999997,
+     "h": 11,
+     "color": "#8b8778",
+     "text": "............................................................................................",
+     "translations": {
+      "zh": "​",
+      "zh-Hans": "​"
+     }
+    },
+    {
+     "type": "text",
+     "id": "d66",
+     "style": "body",
+     "wrap": false,
+     "x": 96.5,
+     "y": 90,
+     "w": 175.89999999999998,
+     "h": 11,
+     "color": "#8b8778",
+     "text": "​",
+     "translations": {
+      "zh": "............................................................................",
+      "zh-Hans": "............................................................................"
+     }
+    },
+    {
+     "type": "text",
+     "id": "n67",
+     "style": "body",
+     "wrap": false,
+     "x": 41,
+     "y": 101,
+     "w": 150,
+     "h": 11,
+     "color": "#2b2733",
+     "text": "Raw meat (small)",
+     "translations": {
+      "zh": "生肉（小）",
+      "zh-Hans": "生肉（小）"
+     }
+    },
+    {
+     "type": "text",
+     "id": "v68",
+     "style": "body",
+     "align": "right",
+     "wrap": false,
+     "x": 224,
+     "y": 101,
+     "w": 60,
+     "h": 11,
+     "color": "#2b2733",
+     "text": "550",
+     "translations": {
+      "zh": "550",
+      "zh-Hans": "550"
+     }
+    },
+    {
+     "type": "text",
+     "id": "d69",
+     "style": "body",
+     "wrap": false,
+     "x": 102.79999999999998,
+     "y": 101,
+     "w": 169.6,
+     "h": 11,
+     "color": "#8b8778",
+     "text": ".........................................................................",
+     "translations": {
+      "zh": "​",
+      "zh-Hans": "​"
+     }
+    },
+    {
+     "type": "text",
+     "id": "d70",
+     "style": "body",
+     "wrap": false,
+     "x": 81.5,
+     "y": 101,
+     "w": 190.89999999999998,
+     "h": 11,
+     "color": "#8b8778",
+     "text": "​",
+     "translations": {
+      "zh": "...................................................................................",
+      "zh-Hans": "..................................................................................."
+     }
+    },
+    {
+     "type": "text",
+     "id": "n71",
+     "style": "body",
+     "wrap": false,
+     "x": 41,
+     "y": 112,
+     "w": 150,
+     "h": 11,
+     "color": "#2b2733",
+     "text": "Meat scrap",
+     "translations": {
+      "zh": "肉边角料",
+      "zh-Hans": "肉边角料"
+     }
+    },
+    {
+     "type": "text",
+     "id": "v72",
+     "style": "body",
+     "align": "right",
+     "wrap": false,
+     "x": 224,
+     "y": 112,
+     "w": 60,
+     "h": 11,
+     "color": "#2b2733",
+     "text": "350",
+     "translations": {
+      "zh": "350",
+      "zh-Hans": "350"
+     }
+    },
+    {
+     "type": "text",
+     "id": "d73",
+     "style": "body",
+     "wrap": false,
+     "x": 80.3,
+     "y": 112,
+     "w": 192.09999999999997,
+     "h": 11,
+     "color": "#8b8778",
+     "text": "...................................................................................",
+     "translations": {
+      "zh": "​",
+      "zh-Hans": "​"
+     }
+    },
+    {
+     "type": "text",
+     "id": "d74",
+     "style": "body",
+     "wrap": false,
+     "x": 74.0,
+     "y": 112,
+     "w": 198.39999999999998,
+     "h": 11,
+     "color": "#8b8778",
+     "text": "​",
+     "translations": {
+      "zh": "......................................................................................",
+      "zh-Hans": "......................................................................................"
+     }
+    },
+    {
+     "type": "text",
+     "id": "n75",
+     "style": "body",
+     "wrap": false,
+     "x": 41,
+     "y": 123,
+     "w": 150,
+     "h": 11,
+     "color": "#2b2733",
+     "text": "Morsel",
+     "translations": {
+      "zh": "一口食物",
+      "zh-Hans": "一口食物"
+     }
+    },
+    {
+     "type": "text",
+     "id": "v76",
+     "style": "body",
+     "align": "right",
+     "wrap": false,
+     "x": 224,
+     "y": 123,
+     "w": 60,
+     "h": 11,
+     "color": "#2b2733",
+     "text": "275",
+     "translations": {
+      "zh": "275",
+      "zh-Hans": "275"
+     }
+    },
+    {
+     "type": "text",
+     "id": "d77",
+     "style": "body",
+     "wrap": false,
+     "x": 66.35,
+     "y": 123,
+     "w": 206.04999999999998,
+     "h": 11,
+     "color": "#8b8778",
+     "text": ".........................................................................................",
+     "translations": {
+      "zh": "​",
+      "zh-Hans": "​"
+     }
+    },
+    {
+     "type": "text",
+     "id": "d78",
+     "style": "body",
+     "wrap": false,
+     "x": 74.0,
+     "y": 123,
+     "w": 198.39999999999998,
+     "h": 11,
+     "color": "#8b8778",
+     "text": "​",
+     "translations": {
+      "zh": "......................................................................................",
+      "zh-Hans": "......................................................................................"
+     }
+    },
+    {
+     "type": "text",
+     "id": "n79",
+     "style": "body",
+     "wrap": false,
+     "x": 41,
+     "y": 134,
+     "w": 150,
+     "h": 11,
+     "color": "#2b2733",
+     "text": "Small morsel",
+     "translations": {
+      "zh": "一小口食物",
+      "zh-Hans": "一小口食物"
+     }
+    },
+    {
+     "type": "text",
+     "id": "v80",
+     "style": "body",
+     "align": "right",
+     "wrap": false,
+     "x": 224,
+     "y": 134,
+     "w": 60,
+     "h": 11,
+     "color": "#2b2733",
+     "text": "140",
+     "translations": {
+      "zh": "140",
+      "zh-Hans": "140"
+     }
+    },
+    {
+     "type": "text",
+     "id": "d81",
+     "style": "body",
+     "wrap": false,
+     "x": 88.25,
+     "y": 134,
+     "w": 184.14999999999998,
+     "h": 11,
+     "color": "#8b8778",
+     "text": "................................................................................",
+     "translations": {
+      "zh": "​",
+      "zh-Hans": "​"
+     }
+    },
+    {
+     "type": "text",
+     "id": "d82",
+     "style": "body",
+     "wrap": false,
+     "x": 81.5,
+     "y": 134,
+     "w": 190.89999999999998,
+     "h": 11,
+     "color": "#8b8778",
+     "text": "​",
+     "translations": {
+      "zh": "...................................................................................",
+      "zh-Hans": "..................................................................................."
+     }
+    },
+    {
+     "type": "text",
+     "id": "n83",
+     "style": "body",
+     "wrap": false,
+     "x": 41,
+     "y": 145,
+     "w": 150,
+     "h": 11,
+     "color": "#2b2733",
+     "text": "Fish, eel",
+     "translations": {
+      "zh": "鱼肉、鳗鱼肉",
+      "zh-Hans": "鱼肉、鳗鱼肉"
+     }
+    },
+    {
+     "type": "text",
+     "id": "v84",
+     "style": "body",
+     "align": "right",
+     "wrap": false,
+     "x": 224,
+     "y": 145,
+     "w": 60,
+     "h": 11,
+     "color": "#2b2733",
+     "text": "by size",
+     "translations": {
+      "zh": "看大小",
+      "zh-Hans": "看大小"
+     }
+    },
+    {
+     "type": "text",
+     "id": "d85",
+     "style": "body",
+     "wrap": false,
+     "x": 73.69999999999999,
+     "y": 145,
+     "w": 187.3,
+     "h": 11,
+     "color": "#8b8778",
+     "text": ".................................................................................",
+     "translations": {
+      "zh": "​",
+      "zh-Hans": "​"
+     }
+    },
+    {
+     "type": "text",
+     "id": "d86",
+     "style": "body",
+     "wrap": false,
+     "x": 89.0,
+     "y": 145,
+     "w": 173.5,
+     "h": 11,
+     "color": "#8b8778",
+     "text": "​",
+     "translations": {
+      "zh": "...........................................................................",
+      "zh-Hans": "..........................................................................."
+     }
+    },
+    {
+     "type": "image",
+     "id": "bar87",
+     "sprite": "notebook_manual_section",
+     "fit": "stretch",
+     "color": "#6f7a3a",
+     "x": 31,
+     "y": 162,
+     "w": 261,
+     "h": 14
+    },
+    {
+     "type": "text",
+     "id": "sec88",
+     "style": "label",
+     "align": "left",
+     "valign": "middle",
+     "wrap": false,
+     "x": 37,
+     "y": 162,
+     "w": 249,
+     "h": 14,
+     "color": "#f4f1e6",
      "text": "Nutrifruit",
      "translations": {
       "zh": "营养果",
@@ -608,26 +1418,287 @@
     },
     {
      "type": "text",
-     "id": "t42",
-     "flow": "flow38",
+     "id": "n89",
      "style": "body",
-     "autoHeight": true,
-     "w": 0,
-     "h": 0,
-     "text": "Small 144 · Normal 240 · Large 384 · Huge 768. Plant traits change it; hover over a fruit to see.",
+     "wrap": false,
+     "x": 41,
+     "y": 180,
+     "w": 150,
+     "h": 11,
+     "color": "#2b2733",
+     "text": "Huge",
      "translations": {
-      "zh": "小 144 · 普通 240 · 大 384 · 巨大 768。种植特性会改变，鼠标指着能看到。",
-      "zh-Hans": "小 144 · 普通 240 · 大 384 · 巨大 768。种植特性会改变，鼠标指着能看到。"
+      "zh": "巨大",
+      "zh-Hans": "巨大"
      }
     },
     {
      "type": "text",
-     "id": "t43",
-     "flow": "flow38",
-     "style": "section",
-     "autoHeight": true,
-     "w": 0,
-     "h": 0,
+     "id": "v90",
+     "style": "body",
+     "align": "right",
+     "wrap": false,
+     "x": 224,
+     "y": 180,
+     "w": 60,
+     "h": 11,
+     "color": "#2b2733",
+     "text": "768",
+     "translations": {
+      "zh": "768",
+      "zh-Hans": "768"
+     }
+    },
+    {
+     "type": "text",
+     "id": "d91",
+     "style": "body",
+     "wrap": false,
+     "x": 60.8,
+     "y": 180,
+     "w": 211.59999999999997,
+     "h": 11,
+     "color": "#8b8778",
+     "text": "............................................................................................",
+     "translations": {
+      "zh": "​",
+      "zh-Hans": "​"
+     }
+    },
+    {
+     "type": "text",
+     "id": "d92",
+     "style": "body",
+     "wrap": false,
+     "x": 59.0,
+     "y": 180,
+     "w": 213.39999999999998,
+     "h": 11,
+     "color": "#8b8778",
+     "text": "​",
+     "translations": {
+      "zh": ".............................................................................................",
+      "zh-Hans": "............................................................................................."
+     }
+    },
+    {
+     "type": "text",
+     "id": "n93",
+     "style": "body",
+     "wrap": false,
+     "x": 41,
+     "y": 191,
+     "w": 150,
+     "h": 11,
+     "color": "#2b2733",
+     "text": "Large",
+     "translations": {
+      "zh": "大",
+      "zh-Hans": "大"
+     }
+    },
+    {
+     "type": "text",
+     "id": "v94",
+     "style": "body",
+     "align": "right",
+     "wrap": false,
+     "x": 224,
+     "y": 191,
+     "w": 60,
+     "h": 11,
+     "color": "#2b2733",
+     "text": "384",
+     "translations": {
+      "zh": "384",
+      "zh-Hans": "384"
+     }
+    },
+    {
+     "type": "text",
+     "id": "d95",
+     "style": "body",
+     "wrap": false,
+     "x": 63.05,
+     "y": 191,
+     "w": 209.34999999999997,
+     "h": 11,
+     "color": "#8b8778",
+     "text": "...........................................................................................",
+     "translations": {
+      "zh": "​",
+      "zh-Hans": "​"
+     }
+    },
+    {
+     "type": "text",
+     "id": "d96",
+     "style": "body",
+     "wrap": false,
+     "x": 51.5,
+     "y": 191,
+     "w": 220.89999999999998,
+     "h": 11,
+     "color": "#8b8778",
+     "text": "​",
+     "translations": {
+      "zh": "................................................................................................",
+      "zh-Hans": "................................................................................................"
+     }
+    },
+    {
+     "type": "text",
+     "id": "n97",
+     "style": "body",
+     "wrap": false,
+     "x": 41,
+     "y": 202,
+     "w": 150,
+     "h": 11,
+     "color": "#2b2733",
+     "text": "Normal",
+     "translations": {
+      "zh": "普通",
+      "zh-Hans": "普通"
+     }
+    },
+    {
+     "type": "text",
+     "id": "v98",
+     "style": "body",
+     "align": "right",
+     "wrap": false,
+     "x": 224,
+     "y": 202,
+     "w": 60,
+     "h": 11,
+     "color": "#2b2733",
+     "text": "240",
+     "translations": {
+      "zh": "240",
+      "zh-Hans": "240"
+     }
+    },
+    {
+     "type": "text",
+     "id": "d99",
+     "style": "body",
+     "wrap": false,
+     "x": 67.55,
+     "y": 202,
+     "w": 204.84999999999997,
+     "h": 11,
+     "color": "#8b8778",
+     "text": ".........................................................................................",
+     "translations": {
+      "zh": "​",
+      "zh-Hans": "​"
+     }
+    },
+    {
+     "type": "text",
+     "id": "d100",
+     "style": "body",
+     "wrap": false,
+     "x": 59.0,
+     "y": 202,
+     "w": 213.39999999999998,
+     "h": 11,
+     "color": "#8b8778",
+     "text": "​",
+     "translations": {
+      "zh": ".............................................................................................",
+      "zh-Hans": "............................................................................................."
+     }
+    },
+    {
+     "type": "text",
+     "id": "n101",
+     "style": "body",
+     "wrap": false,
+     "x": 41,
+     "y": 213,
+     "w": 150,
+     "h": 11,
+     "color": "#2b2733",
+     "text": "Small",
+     "translations": {
+      "zh": "小",
+      "zh-Hans": "小"
+     }
+    },
+    {
+     "type": "text",
+     "id": "v102",
+     "style": "body",
+     "align": "right",
+     "wrap": false,
+     "x": 224,
+     "y": 213,
+     "w": 60,
+     "h": 11,
+     "color": "#2b2733",
+     "text": "144",
+     "translations": {
+      "zh": "144",
+      "zh-Hans": "144"
+     }
+    },
+    {
+     "type": "text",
+     "id": "d103",
+     "style": "body",
+     "wrap": false,
+     "x": 63.65,
+     "y": 213,
+     "w": 208.74999999999997,
+     "h": 11,
+     "color": "#8b8778",
+     "text": "..........................................................................................",
+     "translations": {
+      "zh": "​",
+      "zh-Hans": "​"
+     }
+    },
+    {
+     "type": "text",
+     "id": "d104",
+     "style": "body",
+     "wrap": false,
+     "x": 51.5,
+     "y": 213,
+     "w": 220.89999999999998,
+     "h": 11,
+     "color": "#8b8778",
+     "text": "​",
+     "translations": {
+      "zh": "................................................................................................",
+      "zh-Hans": "................................................................................................"
+     }
+    },
+    {
+     "type": "image",
+     "id": "bar105",
+     "sprite": "notebook_manual_section",
+     "fit": "stretch",
+     "color": "#3f6f73",
+     "x": 31,
+     "y": 230,
+     "w": 261,
+     "h": 14
+    },
+    {
+     "type": "text",
+     "id": "sec106",
+     "style": "label",
+     "align": "left",
+     "valign": "middle",
+     "wrap": false,
+     "x": 37,
+     "y": 230,
+     "w": 249,
+     "h": 14,
+     "color": "#f4f1e6",
      "text": "Fillerweed",
      "translations": {
       "zh": "填料草",
@@ -636,44 +1707,521 @@
     },
     {
      "type": "text",
-     "id": "t44",
-     "flow": "flow38",
+     "id": "n107",
      "style": "body",
-     "autoHeight": true,
-     "w": 0,
-     "h": 0,
-     "text": "Normal 259 · Small 155.",
+     "wrap": false,
+     "x": 41,
+     "y": 248,
+     "w": 150,
+     "h": 11,
+     "color": "#2b2733",
+     "text": "Normal",
      "translations": {
-      "zh": "普通 259 · 小 155。",
-      "zh-Hans": "普通 259 · 小 155。"
+      "zh": "普通",
+      "zh-Hans": "普通"
      }
     },
     {
      "type": "text",
-     "id": "t45",
-     "flow": "flow38",
-     "style": "section",
-     "autoHeight": true,
-     "w": 0,
-     "h": 0,
-     "text": "Tips",
+     "id": "v108",
+     "style": "body",
+     "align": "right",
+     "wrap": false,
+     "x": 224,
+     "y": 248,
+     "w": 60,
+     "h": 11,
+     "color": "#2b2733",
+     "text": "259",
      "translations": {
-      "zh": "小窍门",
-      "zh-Hans": "小窍门"
+      "zh": "259",
+      "zh-Hans": "259"
      }
     },
     {
      "type": "text",
-     "id": "t46",
-     "flow": "flow38",
+     "id": "d109",
      "style": "body",
-     "autoHeight": true,
-     "w": 0,
-     "h": 0,
-     "text": "Fried chicken from fat meat or standard raw meat in fresh oil, with good quality modules, is Michelin grade. For burgers, balance the ratio with large or small nutrifruit.",
+     "wrap": false,
+     "x": 67.55,
+     "y": 248,
+     "w": 204.84999999999997,
+     "h": 11,
+     "color": "#8b8778",
+     "text": ".........................................................................................",
      "translations": {
-      "zh": "肥肉或标准生肉、新油、好的品质模组，炸鸡就是米其林。做汉堡用大、小营养果来调比例。",
-      "zh-Hans": "肥肉或标准生肉、新油、好的品质模组，炸鸡就是米其林。做汉堡用大、小营养果来调比例。"
+      "zh": "​",
+      "zh-Hans": "​"
+     }
+    },
+    {
+     "type": "text",
+     "id": "d110",
+     "style": "body",
+     "wrap": false,
+     "x": 59.0,
+     "y": 248,
+     "w": 213.39999999999998,
+     "h": 11,
+     "color": "#8b8778",
+     "text": "​",
+     "translations": {
+      "zh": ".............................................................................................",
+      "zh-Hans": "............................................................................................."
+     }
+    },
+    {
+     "type": "text",
+     "id": "n111",
+     "style": "body",
+     "wrap": false,
+     "x": 41,
+     "y": 259,
+     "w": 150,
+     "h": 11,
+     "color": "#2b2733",
+     "text": "Small",
+     "translations": {
+      "zh": "小",
+      "zh-Hans": "小"
+     }
+    },
+    {
+     "type": "text",
+     "id": "v112",
+     "style": "body",
+     "align": "right",
+     "wrap": false,
+     "x": 224,
+     "y": 259,
+     "w": 60,
+     "h": 11,
+     "color": "#2b2733",
+     "text": "155",
+     "translations": {
+      "zh": "155",
+      "zh-Hans": "155"
+     }
+    },
+    {
+     "type": "text",
+     "id": "d113",
+     "style": "body",
+     "wrap": false,
+     "x": 63.65,
+     "y": 259,
+     "w": 208.74999999999997,
+     "h": 11,
+     "color": "#8b8778",
+     "text": "..........................................................................................",
+     "translations": {
+      "zh": "​",
+      "zh-Hans": "​"
+     }
+    },
+    {
+     "type": "text",
+     "id": "d114",
+     "style": "body",
+     "wrap": false,
+     "x": 51.5,
+     "y": 259,
+     "w": 220.89999999999998,
+     "h": 11,
+     "color": "#8b8778",
+     "text": "​",
+     "translations": {
+      "zh": "................................................................................................",
+      "zh-Hans": "................................................................................................"
+     }
+    },
+    {
+     "type": "text",
+     "id": "t115",
+     "style": "body",
+     "align": "left",
+     "x": 35,
+     "y": 276,
+     "w": 253,
+     "h": 12.2,
+     "color": "#4d5a73",
+     "text": "Plant traits change the calories; hover over an ingredient to see them.",
+     "translations": {
+      "zh": "种植特性会改变千卡，鼠标指着食材能看到。",
+      "zh-Hans": "种植特性会改变千卡，鼠标指着食材能看到。"
+     }
+    }
+   ]
+  },
+  {
+   "name": "Quality",
+   "elements": [
+    {
+     "type": "text",
+     "id": "title116",
+     "style": "serif_title",
+     "align": "center",
+     "wrap": false,
+     "x": 20,
+     "y": 24,
+     "w": 274,
+     "h": 24,
+     "color": "#2b2733",
+     "text": "Quality",
+     "translations": {
+      "zh": "品质",
+      "zh-Hans": "品质"
+     }
+    },
+    {
+     "type": "image",
+     "id": "bar117",
+     "sprite": "notebook_manual_section",
+     "fit": "stretch",
+     "color": "#b5793a",
+     "x": 31,
+     "y": 50,
+     "w": 261,
+     "h": 14
+    },
+    {
+     "type": "text",
+     "id": "sec118",
+     "style": "label",
+     "align": "left",
+     "valign": "middle",
+     "wrap": false,
+     "x": 37,
+     "y": 50,
+     "w": 249,
+     "h": 14,
+     "color": "#f4f1e6",
+     "text": "Five grades",
+     "translations": {
+      "zh": "五个档次",
+      "zh-Hans": "五个档次"
+     }
+    },
+    {
+     "type": "text",
+     "id": "tier119",
+     "style": "label",
+     "wrap": false,
+     "x": 41,
+     "y": 68,
+     "w": 90,
+     "h": 11,
+     "color": "#b8860b",
+     "text": "Michelin",
+     "translations": {
+      "zh": "米其林",
+      "zh-Hans": "米其林"
+     }
+    },
+    {
+     "type": "text",
+     "id": "pts120",
+     "style": "body",
+     "wrap": false,
+     "x": 135,
+     "y": 68,
+     "w": 80,
+     "h": 11,
+     "color": "#2b2733",
+     "text": "90+ pts",
+     "translations": {
+      "zh": "90 以上 分",
+      "zh-Hans": "90 以上 分"
+     }
+    },
+    {
+     "type": "text",
+     "id": "price121",
+     "style": "label",
+     "align": "right",
+     "wrap": false,
+     "x": 218,
+     "y": 68,
+     "w": 66,
+     "h": 11,
+     "color": "#b8860b",
+     "text": "+200%",
+     "translations": {
+      "zh": "+200%",
+      "zh-Hans": "+200%"
+     }
+    },
+    {
+     "type": "text",
+     "id": "tier122",
+     "style": "label",
+     "wrap": false,
+     "x": 41,
+     "y": 80,
+     "w": 90,
+     "h": 11,
+     "color": "#c0602a",
+     "text": "Chef's",
+     "translations": {
+      "zh": "主厨",
+      "zh-Hans": "主厨"
+     }
+    },
+    {
+     "type": "text",
+     "id": "pts123",
+     "style": "body",
+     "wrap": false,
+     "x": 135,
+     "y": 80,
+     "w": 80,
+     "h": 11,
+     "color": "#2b2733",
+     "text": "75-89 pts",
+     "translations": {
+      "zh": "75–89 分",
+      "zh-Hans": "75–89 分"
+     }
+    },
+    {
+     "type": "text",
+     "id": "price124",
+     "style": "label",
+     "align": "right",
+     "wrap": false,
+     "x": 218,
+     "y": 80,
+     "w": 66,
+     "h": 11,
+     "color": "#c0602a",
+     "text": "+100%",
+     "translations": {
+      "zh": "+100%",
+      "zh-Hans": "+100%"
+     }
+    },
+    {
+     "type": "text",
+     "id": "tier125",
+     "style": "label",
+     "wrap": false,
+     "x": 41,
+     "y": 92,
+     "w": 90,
+     "h": 11,
+     "color": "#4f7a3a",
+     "text": "Tasty",
+     "translations": {
+      "zh": "美味",
+      "zh-Hans": "美味"
+     }
+    },
+    {
+     "type": "text",
+     "id": "pts126",
+     "style": "body",
+     "wrap": false,
+     "x": 135,
+     "y": 92,
+     "w": 80,
+     "h": 11,
+     "color": "#2b2733",
+     "text": "55-74 pts",
+     "translations": {
+      "zh": "55–74 分",
+      "zh-Hans": "55–74 分"
+     }
+    },
+    {
+     "type": "text",
+     "id": "price127",
+     "style": "label",
+     "align": "right",
+     "wrap": false,
+     "x": 218,
+     "y": 92,
+     "w": 66,
+     "h": 11,
+     "color": "#4f7a3a",
+     "text": "+50%",
+     "translations": {
+      "zh": "+50%",
+      "zh-Hans": "+50%"
+     }
+    },
+    {
+     "type": "text",
+     "id": "tier128",
+     "style": "label",
+     "wrap": false,
+     "x": 41,
+     "y": 104,
+     "w": 90,
+     "h": 11,
+     "color": "#55525e",
+     "text": "Plain",
+     "translations": {
+      "zh": "普通",
+      "zh-Hans": "普通"
+     }
+    },
+    {
+     "type": "text",
+     "id": "pts129",
+     "style": "body",
+     "wrap": false,
+     "x": 135,
+     "y": 104,
+     "w": 80,
+     "h": 11,
+     "color": "#2b2733",
+     "text": "30-54 pts",
+     "translations": {
+      "zh": "30–54 分",
+      "zh-Hans": "30–54 分"
+     }
+    },
+    {
+     "type": "text",
+     "id": "price130",
+     "style": "label",
+     "align": "right",
+     "wrap": false,
+     "x": 218,
+     "y": 104,
+     "w": 66,
+     "h": 11,
+     "color": "#55525e",
+     "text": "base",
+     "translations": {
+      "zh": "原价",
+      "zh-Hans": "原价"
+     }
+    },
+    {
+     "type": "text",
+     "id": "tier131",
+     "style": "label",
+     "wrap": false,
+     "x": 41,
+     "y": 116,
+     "w": 90,
+     "h": 11,
+     "color": "#9a3a3a",
+     "text": "Inedible",
+     "translations": {
+      "zh": "难以下咽",
+      "zh-Hans": "难以下咽"
+     }
+    },
+    {
+     "type": "text",
+     "id": "pts132",
+     "style": "body",
+     "wrap": false,
+     "x": 135,
+     "y": 116,
+     "w": 80,
+     "h": 11,
+     "color": "#2b2733",
+     "text": "under 30 pts",
+     "translations": {
+      "zh": "30 以下 分",
+      "zh-Hans": "30 以下 分"
+     }
+    },
+    {
+     "type": "text",
+     "id": "price133",
+     "style": "label",
+     "align": "right",
+     "wrap": false,
+     "x": 218,
+     "y": 116,
+     "w": 66,
+     "h": 11,
+     "color": "#9a3a3a",
+     "text": "−50%",
+     "translations": {
+      "zh": "−50%",
+      "zh-Hans": "−50%"
+     }
+    },
+    {
+     "type": "image",
+     "id": "bar134",
+     "sprite": "notebook_manual_section",
+     "fit": "stretch",
+     "color": "#3f6f73",
+     "x": 31,
+     "y": 134,
+     "w": 261,
+     "h": 14
+    },
+    {
+     "type": "text",
+     "id": "sec135",
+     "style": "label",
+     "align": "left",
+     "valign": "middle",
+     "wrap": false,
+     "x": 37,
+     "y": 134,
+     "w": 249,
+     "h": 14,
+     "color": "#f4f1e6",
+     "text": "Points",
+     "translations": {
+      "zh": "怎么拿分",
+      "zh-Hans": "怎么拿分"
+     }
+    },
+    {
+     "type": "text",
+     "id": "t136",
+     "style": "body",
+     "align": "left",
+     "x": 35,
+     "y": 154,
+     "w": 253,
+     "h": 42.8,
+     "color": "#2b2733",
+     "text": "Fried chicken = meat calories 35 + oil purity 45 + modules 20\nFries = nutrifruit calories 25 + oil purity 55 + modules 20\nBurger = meat calories 30 + ratio 50 + modules 20\nSuper combo = the lowest of the three",
+     "translations": {
+      "zh": "炸鸡 = 肉的千卡 35 + 油的纯净度 45 + 模组 20\n薯条 = 营养果的千卡 25 + 油的纯净度 55 + 模组 20\n肉汉堡 = 肉的千卡 30 + 比例 50 + 模组 20\n超级大套餐 = 三样里最低的",
+      "zh-Hans": "炸鸡 = 肉的千卡 35 + 油的纯净度 45 + 模组 20\n薯条 = 营养果的千卡 25 + 油的纯净度 55 + 模组 20\n肉汉堡 = 肉的千卡 30 + 比例 50 + 模组 20\n超级大套餐 = 三样里最低的"
+     }
+    },
+    {
+     "type": "text",
+     "id": "t137",
+     "style": "body",
+     "align": "left",
+     "x": 35,
+     "y": 198.8,
+     "w": 253,
+     "h": 32.599999999999994,
+     "color": "#4d5a73",
+     "text": "Meat: full at 1200 kcal (a burger counts all its meat). Nutrifruit: full at 384 kcal. Oil purity: full at 98%, none at 70%. Modules: full at +100% quality. Ratio: ideal meat 55 : nutrifruit 30 : fillerweed 15.",
+     "translations": {
+      "zh": "肉：1200 千卡满分（汉堡算所有肉加起来）。营养果：384 千卡满分。油的纯净度：98% 满分，70% 以下 0 分。模组：品质加成 +100% 满分。比例：理想 肉 55 : 营养果 30 : 填料草 15。",
+      "zh-Hans": "肉：1200 千卡满分（汉堡算所有肉加起来）。营养果：384 千卡满分。油的纯净度：98% 满分，70% 以下 0 分。模组：品质加成 +100% 满分。比例：理想 肉 55 : 营养果 30 : 填料草 15。"
+     }
+    },
+    {
+     "type": "text",
+     "id": "t138",
+     "style": "body",
+     "align": "left",
+     "x": 35,
+     "y": 233.4,
+     "w": 253,
+     "h": 22.4,
+     "color": "#b8860b",
+     "text": "Fat meat or standard raw meat in fresh oil with good quality modules makes Michelin fried chicken.",
+     "translations": {
+      "zh": "肥肉或标准生肉、新油、好的品质模组，炸鸡就是米其林。",
+      "zh-Hans": "肥肉或标准生肉、新油、好的品质模组，炸鸡就是米其林。"
      }
     }
    ]

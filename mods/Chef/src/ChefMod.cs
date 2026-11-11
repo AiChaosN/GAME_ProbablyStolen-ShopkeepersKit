@@ -23,11 +23,18 @@ namespace Chef
                 {
                     ModHook.OnModItemDirectoryInit += RegisterItems;
                     ModHook.OnCreateTooltipLate += OnTooltip;
+                    ModHook.OnGameLoadedInit += Scenario.EnsureUpgrade;
+                    ModHook.OnNewGameStarted += OnNewGame;
                     ModHook.OnGameLoadedLate += OnGameLoaded;
                     hooked = true;
                 }
             }
             catch (Exception e) { Log.Error("订阅游戏事件失败: " + Log.Describe(e)); }
+
+            try { Oil.Register(); }
+            catch (Exception e) { Log.Error("登记食用油液体失败: " + Log.Describe(e)); }
+            try { Patches.Apply(); }
+            catch (Exception e) { Log.Error("油的显示 / 定价补丁失败: " + Log.Describe(e)); }
 
             try
             {
@@ -48,7 +55,8 @@ namespace Chef
             catch (Exception e) { Log.Error("创建按钮对象失败: " + Log.Describe(e)); }
 
             try { Scenario.Register(ModId); }
-            catch (Exception e) { Log.Error("登记职业 / 人脉升级失败: " + Log.Describe(e)); }
+            catch (Exception e) { Log.Error("登记职业失败: " + Log.Describe(e)); }
+            Scenario.EnsureUpgrade();   // 存档已经开着（开发者模式重新加载 mod）时直接登记
 
             Log.Info("已加载：职业“厨师”、王尔德人脉“退休大厨”、油锅、食品加工器、食用油、四道菜、厨师菜谱");
         }
@@ -81,6 +89,8 @@ namespace Chef
             catch (Exception e) { Log.Error("登记新物品出错: " + Log.Describe(e)); }
         }
 
+        private static void OnNewGame(string _) => Scenario.EnsureUpgrade();
+
         private static int tooltipErrors;
 
         private static void OnTooltip(RichTextBuilder b, GameItem it)
@@ -93,25 +103,22 @@ namespace Chef
                     Food.Tooltip(b, it);
                     return;
                 }
-                if (Oil.IsHolder(it))
+                if (it.identifier == Machines.FryerId)
                 {
-                    var m = Oil.Read(it);
-                    b.AddLine(" " + Lang.T("食用油 ", "Cooking oil ") + Oil.Ml(m.Total) + " / " + Oil.Ml(Oil.Capacity(it)) + " · " + Oil.StateName(m), true, RenderHandler.ColorPalette.LightYellow);
-                    if (m.Total > 0)
+                    var c = Machines.FryerContainer(it);
+                    if (c == null)
                     {
-                        var color = m.Purity >= 0.95 ? RenderHandler.ColorPalette.LightGreen : m.Purity >= 0.85 ? RenderHandler.ColorPalette.LightYellow : RenderHandler.ColorPalette.LightRed;
-                        b.AddLine(" " + Lang.T("纯净度 ", "Purity ") + Oil.Percent(m.Purity), true, color);
-                        b.AddLine(" " + Lang.T("大颗粒炸渣：", "Large crumbs: ") + Oil.Amount(m.Big) + Lang.T(" · 小颗粒油渣：", " · Fine residue: ") + Oil.Amount(m.Small), true, RenderHandler.ColorPalette.LightGray);
-                        if (m.Aged > 0) b.AddLine(" " + Lang.T("老化油（滤不掉）：", "Aged oil (can't be filtered): ") + Oil.Ml(m.Aged), true, RenderHandler.ColorPalette.LightGray);
+                        b.AddLine(" " + Lang.T("“油桶”槽里没放油", "No oil in the \"Oil\" slot"), true, RenderHandler.ColorPalette.LightRed);
+                        return;
                     }
-                    if (it.identifier == Machines.FryerId)
-                    {
-                        int n = Oil.Portions(m);
-                        b.AddLine(" " + (n > 0 ? Lang.T("这锅油还能炸 " + n + " 份", "Enough oil for " + n + " more portions")
-                                               : Lang.T("油不够（至少 " + Oil.Ml(Oil.MinToFry) + " 才炸）", "Not enough oil (needs at least " + Oil.Ml(Oil.MinToFry) + ")")),
-                                  true, RenderHandler.ColorPalette.LightGray);
-                    }
+                    var m = Oil.Read(c);
+                    Oil.Tooltip(b, m, isFryer: true);
+                    string why = Oil.CannotFry(m);
+                    b.AddLine(" " + (why ?? Lang.T("这桶油还能炸 " + Oil.Portions(m) + " 份", "Enough oil for " + Oil.Portions(m) + " more portions")),
+                              true, why == null ? RenderHandler.ColorPalette.LightGray : RenderHandler.ColorPalette.LightRed);
+                    return;
                 }
+                if (it.IsTag("LIQUID_CONTAINER_TAG")) Oil.Tooltip(b, Oil.Read(it), isFryer: false);
             }
             catch (Exception e)
             {
@@ -125,6 +132,7 @@ namespace Chef
         /// </summary>
         private static void OnGameLoaded()
         {
+            try { Oil.Register(); } catch { }   // 刷新液体的显示名字（跟随当前语言）
             try
             {
                 var store = Game.Store;
@@ -162,6 +170,8 @@ namespace Chef
                 {
                     ModHook.OnModItemDirectoryInit -= RegisterItems;
                     ModHook.OnCreateTooltipLate -= OnTooltip;
+                    ModHook.OnGameLoadedInit -= Scenario.EnsureUpgrade;
+                    ModHook.OnNewGameStarted -= OnNewGame;
                     ModHook.OnGameLoadedLate -= OnGameLoaded;
                     hooked = false;
                 }
@@ -169,6 +179,7 @@ namespace Chef
             catch { }
             try { ModHelper.RemoveStartingScenarios(ModId); } catch { }
             try { ModHelper.RemoveNetworkUpgrades(ModId); } catch { }
+            Patches.Remove();
             try
             {
                 if (host != null) UnityEngine.Object.Destroy(host);
@@ -204,6 +215,7 @@ namespace Chef
             {
                 try
                 {
+                    EnsurePaperSprites();
                     if (ModHelper.OpenPaper(ChefMod.ModId, BookId) == null)
                         Ui.Notify(Lang.T("菜谱打不开（书没读到，详见日志）", "Couldn't open the recipe book (book not loaded; see the log)"));
                 }
@@ -219,5 +231,38 @@ namespace Chef
         }
 
         internal static GameItem Spawn() => DirectoryMaster.Item(ItemId);
+
+        /// <summary>
+        /// 书的底纸和按钮用游戏自己的贴图（和鉴定指南一样）。但游戏发行版里没有纸质书的贴图目录（日志：
+        /// “No paper asset catalog … Vanilla sprite names will not resolve”），按名字找不到，按钮就画成蓝框、底纸也没有。
+        /// 这些贴图本身在游戏资源里（sharedassets1），进了游戏就已经加载：按名字从已加载的贴图里找出来，
+        /// 登记到本 mod 的书用贴图表（LoadedMod.PaperSprites），PaperUI 找不到游戏贴图时会来这里找。不复制游戏的美术文件。
+        /// </summary>
+        private static readonly string[] PaperSpriteNames =
+        {
+            "notebook_manual", "notebook_manual_section", "paper_buttons_close1", "paper_buttons_screen_0", "paper_buttons_l_1", "paper_buttons1",
+        };
+
+        internal static void EnsurePaperSprites()
+        {
+            try
+            {
+                var mod = ModLoader.Mods.Find(m => m.Manifest != null && m.Manifest.ID == ChefMod.ModId);
+                if (mod == null) return;
+                var missing = new HashSet<string>(PaperSpriteNames);
+                missing.RemoveWhere(n => mod.PaperSprites.ContainsKey(n));
+                if (missing.Count == 0) return;
+                foreach (var sp in UnityEngine.Resources.FindObjectsOfTypeAll<UnityEngine.Sprite>())
+                {
+                    if (sp == null || !missing.Contains(sp.name)) continue;
+                    mod.PaperSprites[sp.name] = sp;
+                    missing.Remove(sp.name);
+                    if (missing.Count == 0) break;
+                }
+                if (missing.Count > 0) Log.Warn("书用的游戏贴图没找到：" + string.Join("、", missing));
+                else Log.Info("书用的游戏贴图已就位");
+            }
+            catch (Exception e) { Log.Warn("准备书用贴图出错: " + e.Message); }
+        }
     }
 }

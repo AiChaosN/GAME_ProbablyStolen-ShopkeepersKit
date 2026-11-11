@@ -7,6 +7,11 @@ namespace Chef
     ///   - 职业“厨师”（ModHelper.AddStartingScenario，职业选择界面），开局全套；
     ///   - 别的职业：花王尔德的恩惠买人脉“退休大厨”（ModHelper.AddNetworkUpgrade，和游戏的“退休农夫 / 退休化学家”一样），立刻送一套入门厨具。
     /// 厨师开局时把“退休大厨”直接设成已解锁（state = 2，和游戏给农夫职业预先解锁“退休农夫”一样），不会再送一套。
+    ///
+    /// 人脉升级不能在 mod 初始化（主菜单）时登记：ModHelper.AddNetworkUpgrade 最后会读 PlayerStore.Instance，
+    /// 主菜单里还没有存档，这个 getter 会去 new 一个 PlayerStore，在构造函数里崩掉（0.1.0 的日志里就是这样）。
+    /// 所以等存档建好（读档 OnGameLoadedInit、新开局 OnNewGameStarted、开局发放 OnStart）再登记；
+    /// 游戏读档时会把登记过的升级补进存档（NetworkUpgrade.AddMissingAfterLoad），重复登记没关系。
     /// </summary>
     internal static class Scenario
     {
@@ -35,7 +40,18 @@ namespace Chef
                 iconKey: modId + ":" + IconSprite,
                 tag: () => Lang.T("快餐", "Fast food"),
                 tagTone: StartingScenario.TagTone.Positive);
+        }
 
+        /// <summary>登记王尔德的人脉升级“退休大厨”。只在存档已经建好时做（见类说明）。</summary>
+        internal static void EnsureUpgrade()
+        {
+            if (Game.Store == null) return;
+            try { RegisterUpgrade(ChefMod.ModId); }
+            catch (Exception e) { Log.Error("登记人脉升级“退休大厨”失败: " + Log.Describe(e)); }
+        }
+
+        private static void RegisterUpgrade(string modId)
+        {
             ModHelper.AddNetworkUpgrade(modId, UpgradeId, UpgradeCost, "Chef",
                 () => Lang.T("退休大厨", "Retired Chef"),
                 () => Lang.T("立即获取一套入门级厨具：油锅、食品加工器、一桶食用油、一张滤油网和厨师菜谱。（解锁快餐内容。）",
@@ -74,6 +90,7 @@ namespace Chef
             for (int i = 0; i < 2; i++) Give(inv, DirectoryMaster.Item("fat_meat"), "肥肉");
             Give(inv, DirectoryMaster.Item("processed_meat"), "泥炭合成肉");
             store.playerCash += StartCashChange;
+            EnsureUpgrade();
             try
             {
                 var up = ModHelper.GetNetworkUpgrade(UpgradeId);

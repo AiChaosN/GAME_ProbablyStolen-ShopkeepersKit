@@ -59,50 +59,60 @@ namespace Chef
         internal static string FryerName() => Lang.T("油锅", "Deep Fryer");
 
         internal static string FryerDesc() => Lang.T(
-            "把食用油桶拖到油锅上倒油（最多 5 L），电源槽放电池。炸篮里放营养果、肉，每晚炸好放进出锅格：营养果 → 薯条，肉 → 炸鸡。"
-            + "每份吸掉 100 ml 油，炸得越多油越脏：大颗粒炸渣用滤油网滤（拖到油锅上），小颗粒油渣把油锅拖到装着滤水器的滤水壶上滤。"
-            + "油越纯净、肉和营养果的千卡越高、模组品质加成越高，炸出来越好。标题栏的“倒掉油”清空油槽。",
-            "Drop a cooking oil jug on the fryer to pour oil in (up to 5 L) and put a battery in the power slot. Put nutrifruit and meat in the basket; each night they are fried into the output: nutrifruit → fries, meat → fried chicken. "
-            + "Each portion soaks up 100 ml of oil and the oil gets dirtier: strain large crumbs with an oil strainer (drop it on the fryer), and filter fine residue by dropping the fryer on a water pitcher with a filter. "
-            + "Purer oil, higher-calorie meat and nutrifruit and better quality modules make better food. \"Dump oil\" in the title bar empties the tank.");
+            "“油桶”槽放一桶食用油（游戏的任何桶、瓶子都行，油里不能有水），电源槽放电池。炸篮里放营养果、肉，每晚炸好放进出锅格：营养果 → 薯条，肉 → 炸鸡。"
+            + "每份吸掉 100 ml 油，炸得越多油越脏：把油倒进装着滤油网的滤水壶滤掉大颗粒炸渣，再倒进装着滤水器的滤水壶滤掉小颗粒油渣。"
+            + "油越纯净、肉和营养果的千卡越高、模组品质加成越高，炸出来越好。",
+            "Put a container of cooking oil in the \"Oil\" slot (any of the game's jugs or bottles; no water in the oil) and a battery in the power slot. Put nutrifruit and meat in the basket; each night they are fried into the output: nutrifruit → fries, meat → fried chicken. "
+            + "Each portion soaks up 100 ml of oil and the oil gets dirtier: pour it through a water pitcher with an oil strainer to remove large crumbs, then through one with a water filter to remove fine residue. "
+            + "Purer oil, higher-calorie meat and nutrifruit and better quality modules make better food.");
 
         internal static GameItem CreateFryer()
         {
             var battery = new GameSlotInventory();
             var modules = new GameGridInventory(ModuleShape, 7);
+            var oilSlot = new GameSlotInventory();
             var basket = new GameGridInventory(6, 4);
             var output = new GameGridInventory(6, 6);
             var window = MachineHelper.CreateMachineryWindow(true,
                 MachineHelper.PowerPanel(battery),
                 MachineHelper.Panel(Lang.T("模组", "Modules"), modules, "module"),
+                MachineHelper.Panel(Lang.T("油桶", "Oil"), oilSlot, "container"),
                 MachineHelper.Panel(Lang.T("炸篮", "Basket"), basket, "input"),
                 MachineHelper.Panel(Lang.T("出锅", "Output"), output, "output"));
             var machine = NewMachine(window, "chef_fryer", FryerName(), FryerDesc(), 450L, FryerPower, battery, modules);
-            Oil.InitHolder(machine, FryerTankMl, 0);
-            Items.InitOilSource(machine);
+            oilSlot.mayInventoryAddItemFunc = (item, _) => Owned(item) && item.IsTag("LIQUID_CONTAINER_TAG");
+            try { oilSlot.SetBackgroundFadeSprite("Items/water_container4", "xl"); } catch { }   // 和游戏的净水器一样，空槽里画一个淡淡的桶
             basket.mayInventoryAddItemFunc = (item, _) => Owned(item) && (Ingredients.IsMeat(item) || Ingredients.IsFruit(item));
             output.mayInventoryAddItemFunc = (item, _) => Food.IsDish(item);
             machine.onCycleEndSlotItemFunc = (self, inv, slot) =>
             {
-                try { Fry(machine, battery, modules, basket, output); }
+                try { Fry(machine, battery, modules, oilSlot, basket, output); }
                 catch (Exception e) { Log.Error("油锅处理出错: " + Log.Describe(e)); }
             };
-            Buttons.Register(window, machine, (() => Lang.T("倒掉油", "Dump oil"), () => DumpOil(machine)));
             return machine;
         }
 
-        private static void Fry(GameItem machine, GameSlotInventory battery, GameGridInventory modules, GameGridInventory basket, GameGridInventory output)
+        /// <summary>油锅“油桶”槽里的容器（鼠标说明用）。面板顺序：电源 0、模组 1、油桶 2。</summary>
+        internal static GameItem FryerContainer(GameItem fryer)
+        {
+            try { return (MachineHelper.GetSlot(fryer, 2) as GameSlotInventory)?.childItem; }
+            catch { return null; }
+        }
+
+        private static void Fry(GameItem machine, GameSlotInventory battery, GameGridInventory modules, GameSlotInventory oilSlot, GameGridInventory basket, GameGridInventory output)
         {
             if (!Owned(machine)) return;
             var food = basket.childItems.Where(i => Owned(i) && (Ingredients.IsMeat(i) || Ingredients.IsFruit(i))).ToList();
             if (food.Count == 0) return;
-            var oil = Oil.Read(machine);
-            int portions = Oil.Portions(oil);
-            if (portions <= 0)
+            var container = oilSlot.childItem;
+            var oil = Oil.Read(container);
+            string why = container == null ? "没放油桶" : Oil.CannotFry(oil);
+            if (why != null)
             {
-                Log.Info("油锅：油不够（" + oil.Total + " ml，至少要 " + Oil.MinToFry + " ml），今晚不炸");
+                Log.Info("油锅：" + why + "，今晚不炸");
                 return;
             }
+            int portions = Oil.Portions(oil);
             if (!CanPower(machine, battery))
             {
                 Log.Info("油锅：没电，今晚不炸");
@@ -154,32 +164,10 @@ namespace Chef
                 return;
             }
             DrawPower(machine, battery);
-            Oil.AfterFrying(ref oil, fried);
-            Oil.Write(machine, oil);
+            Oil.AfterFrying(container, fried);
             try { MachineHelper.OnMachineActioned(machine, modules); } catch { }
             machine.Validate();
-            Log.Info("油锅：炸了 " + fried + " 份（" + string.Join("、", made) + "），油纯净度 " + Oil.Percent(purity) + " → " + Oil.Percent(oil.Purity));
-        }
-
-        // 倒油要点两次（3 秒内），免得误点把新油倒了
-        private static GameItem dumpArmed;
-        private static float dumpArmedAt = -10f;
-
-        private static string DumpOil(GameItem machine)
-        {
-            var m = Oil.Read(machine);
-            if (m.Total <= 0) return Lang.T("油锅里没有油", "The fryer has no oil");
-            if (!ReferenceEquals(dumpArmed, machine) || Time.unscaledTime - dumpArmedAt > 3f)
-            {
-                dumpArmed = machine;
-                dumpArmedAt = Time.unscaledTime;
-                return Lang.T("再点一次确认倒掉 " + Oil.Ml(m.Total) + " 油（" + Oil.StateName(m) + "，纯净度 " + Oil.Percent(m.Purity) + "）",
-                              "Click again to dump " + Oil.Ml(m.Total) + " of oil (" + Oil.StateName(m) + ", purity " + Oil.Percent(m.Purity) + ")");
-            }
-            dumpArmed = null;
-            Oil.Write(machine, new Oil.Mix());
-            machine.Validate();
-            return Lang.T("倒掉了 " + Oil.Ml(m.Total) + " 油", "Dumped " + Oil.Ml(m.Total) + " of oil");
+            Log.Info("油锅：炸了 " + fried + " 份（" + string.Join("、", made) + "），油纯净度 " + Oil.Percent(purity) + " → " + Oil.Percent(Oil.Read(container).Purity));
         }
 
         // ================================================================== 食品加工器
