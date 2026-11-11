@@ -12,6 +12,9 @@ namespace Conveniences
     ///   - 指着另一个容器，瓶子是空的：用自来水反复“装满瓶子 → 倒进去”，直到容器满。等于你自己在水龙头和容器之间来回跑，
     ///     水质（今天的锈水 / 溢流水纯度）、经过滤芯时的耗损都和手动一样，只是一次做完（只放一次声音）。
     /// 瓶子里有水时不会再接自来水，免得把你的净水和自来水混在一起。
+    /// 做完之后结束这次拖动（游戏自己的 ItemMouseDragHandler.Cancel，和按 ESC 一样，瓶子放回原处）：
+    /// 原版只在松手时倒水，拖动途中液体不会变；途中倒了水，瓶子的水位贴图一变，游戏就把它画回原格子，
+    /// 但“拖着”的状态还在，之后在别的东西上松手又会倒一次（用户 2026-11-11 报告）。Cancel 时游戏明确跳过“对目标使用”。
     /// 水龙头要先解锁锈水或溢流水管道（游戏规则：没解锁时拖到水龙头上什么都不发生）。
     /// </summary>
     internal static class WaterFill
@@ -43,7 +46,8 @@ namespace Conveniences
             var faucet = Faucet();
             if (faucet != null && ReferenceEquals(target, faucet))
             {
-                FillFromTap(bottle, sound: true);
+                int had = WaterHelper.GetTotalVolume(bottle);
+                if (FillFromTap(bottle, sound: true) && WaterHelper.GetTotalVolume(bottle) > had) EndDrag();
                 return;
             }
             if (!target.IsTag(LiquidTag) || !GeneralHelper.IsItemOwned(target)) return;
@@ -65,6 +69,7 @@ namespace Conveniences
                 bottle.Target(target);
                 int poured = WaterHelper.GetTotalVolume(target) - before;
                 Log.Info("灌水：" + Name(bottle) + " → " + Name(target) + " " + poured + " ml");
+                if (poured > 0) EndDrag();
                 return;
             }
 
@@ -97,6 +102,14 @@ namespace Conveniences
             Notify(Lang.T("往" + Name(target) + "灌了 " + added + " ml 自来水（来回 " + trips + " 趟）" + (leftover > 0 ? "，瓶子里还剩 " + leftover + " ml" : ""),
                           "Filled " + Name(target) + " with " + added + " ml of tap water (" + trips + " trips)" + (leftover > 0 ? "; " + leftover + " ml left in the bottle" : "")));
             Log.Info("灌水（自来水）：" + Name(target) + " +" + added + " ml，" + trips + " 趟");
+            if (added > 0 || WaterHelper.GetTotalVolume(bottle) > 0) EndDrag();
+        }
+
+        /// <summary>结束这次拖动，瓶子放回原处（游戏自己的取消，不会再对鼠标下的东西“使用”一次）。</summary>
+        private static void EndDrag()
+        {
+            try { ItemMouseDragHandler.current?.Cancel(); }
+            catch (Exception e) { Log.Warn("结束拖动出错: " + e.Message); }
         }
 
         private static GameItem Faucet()
