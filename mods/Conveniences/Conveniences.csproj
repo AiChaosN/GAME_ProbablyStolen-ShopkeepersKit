@@ -11,7 +11,7 @@
     <RootNamespace>Conveniences</RootNamespace>
     <LangVersion>9.0</LangVersion>
     <Nullable>disable</Nullable>
-    <Version>1.0.0</Version>
+    <Version>1.1.0</Version>
     <Deterministic>true</Deterministic>
     <DebugType>none</DebugType>
     <DebugSymbols>false</DebugSymbols>

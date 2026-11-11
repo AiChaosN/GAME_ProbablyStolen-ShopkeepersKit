@@ -13,6 +13,14 @@
 [*]悬停时显示绿色的使用提示，松手就换。
 [/list]
 
+[h2]一键灌水（W）[/h2]
+[list]
+[*]拖着瓶子指着[b]水龙头[/b]按 W：装满自来水，不用松手。
+[*]指着[b]容器[/b]、瓶子里有水：倒进去，和松手倒一样。
+[*]指着容器、瓶子是[b]空的[/b]：用自来水来回装瓶倒进去，直到容器满。水质、滤芯消耗都和手动一样。
+[*]瓶子里有水时不接自来水，不会把净水和自来水混在一起。水龙头要先解锁锈水或溢流水管道。W 可以在游戏“选项”里改。
+[/list]
+
 [h2]不会改变的[/h2]
 [list]
 [*]槽空着时照原版直接放进去；电池拖到电池上互换等原版效果照旧。
@@ -43,6 +51,14 @@ In the base game, swapping a battery or a filter means opening the machine, drag
 [*][b]Batteries[/b]: drop a new battery on a machine; it replaces the battery inside and the old one goes where the new one was.
 [*][b]Filters[/b]: drop a new filter on a water pitcher, same thing.
 [*]Hovering shows the green "use on" hint; release to swap.
+[/list]
+
+[h2]One-key water filling (W)[/h2]
+[list]
+[*]Hold a bottle over the [b]tap[/b] and press W: fill it with tap water without letting go.
+[*]Over a [b]container[/b] with liquid in the bottle: pour it in, like dropping it.
+[*]Over a container with an [b]empty[/b] bottle: keep fetching tap water and pouring until the container is full. Water quality and filter wear are the same as doing it by hand.
+[*]A bottle that holds liquid never gets tap water added. The tap needs the rust water or gutterflow pipe. W can be rebound in the game's Options.
 [/list]
 
 [h2]Unchanged[/h2]

@@ -12,6 +12,7 @@ UI in Chinese or English, following the game's language (Chinese shows Chinese, 
 This mod is a **collection of small QoL features with no balance impact**: new features of this kind go here instead of into separate mods. It currently contains:
 
 - Drop to swap: batteries and water filters (details below)
+- One-key water filling: hold a bottle and press W to fill a tank with tap water (1.1.0)
 
 ## Screenshots
 
@@ -38,6 +39,16 @@ Unchanged:
 - with Filter Recharge installed, dropping a water filter on a pitcher that holds an Advanced Water Filter recharges it instead of swapping it out;
 - if the old part has a different shape and doesn't fit the new part's old cell, it goes to any free spot in the storage/box the new part came from; if there's no room there either, nothing is swapped and you get a short message.
 
+## One-key water filling (W)
+
+While holding a bottle (any liquid container), press **W** (rebindable in the game's Options; R is taken by the game's "reset orientation of the held item", so it isn't used):
+
+- **On the tap**: fill the bottle with tap water without letting go.
+- **On a container, bottle has liquid**: pour it in, exactly like dropping it (same sounds and filter wear).
+- **On a container, bottle is empty**: keep filling the bottle at the tap and pouring it in until the container is full, in one go. It's the same as running back and forth yourself: the water has today's rust water / gutterflow purity and filters wear the same way.
+- A bottle that already holds liquid never gets tap water added, so your clean water isn't mixed with tap water.
+- The tap needs the rust water or gutterflow pipe (game rule). One bottle at a time.
+
 ## Install
 
 1. After building (see "Build from source" on the [repository home](../../README.md)), copy the whole `dist/Conveniences/` folder into the game's `Mods` folder:
@@ -57,6 +68,8 @@ Mods screen → select this mod → **Settings**, or edit `%USERPROFILE%\AppData
 |---|---|---|
 | `batteries` | `true` | Drop a battery on a machine to swap |
 | `filters` | `true` | Drop a filter on a water pitcher to swap |
+| `waterFill` | `true` | One-key water filling |
+| `waterKey` | `W` | Water key (can also be bound in the game's Options) |
 
 ## How to test
 
@@ -64,14 +77,17 @@ Mods screen → select this mod → **Settings**, or edit `%USERPROFILE%\AppData
 2. Same with a water pitcher that has a filter: drop a new filter on it.
 3. Machine with an empty battery slot: the battery goes in as in the base game.
 4. Battery dropped on another battery: swapped as in the base game.
-5. Search `Player.log` for `[Conveniences]`: every swap logs "换件：old → new (machine)".
+5. Water: hold an empty bottle over a water tank and press W: the tank fills with tap water and you get "Filled … with N ml (M trips)"; with a filled bottle W pours just that bottle; over the tap W fills the bottle.
+6. Search `Player.log` for `[Conveniences]`: every swap logs "换件：old → new (machine)", every fill logs "灌水…".
 
 ## Implementation
 
 | File | Contents |
 |---|---|
 | `src/Swap.cs` | Rules and the swap. Patches: postfixes on `GameItem.MayTarget` / `CanTarget` (count the drop as "use on" when the swap rule holds), prefix on `GameItem.Target` (swap when the base game has no use effect for that pair), postfix on `GameSlotInventory.MayHaveValidInventorySlot` (only while the mouse is dragging that very item: report a slot holding the old part as not insertable, so hovering turns green) |
-| `src/ConveniencesMod.cs` | Entry point, settings |
+| `src/WaterFill.cs` | One-key water filling (a single pour uses the game's `GameItem.Target`; filling up with tap water uses the game's `WaterHelper.AddWater` / `TransferLiquid`, with the tap's own rules) |
+| `src/ConveniencesBehaviour.cs` | The water key |
+| `src/ConveniencesMod.cs` | Entry point, settings, key binding in the game's Options |
 
 The swap uses the game's own `GraphUtils.SwapItemsInPlace` (the same function the base-game battery swap uses). A machine's battery slot comes from the game's `MachineHelper.GetBatterySlot`; other slots are taken from the top level of the item's window (single-slot windows or machine panels), never from items stored inside.
 
@@ -79,4 +95,5 @@ The swap uses the game's own `GraphUtils.SwapItemsInPlace` (the same function th
 
 ## Changelog
 
+- **1.1.0**: New one-key water filling (W): hold a bottle over the tap to fill it, over a container to pour, and an empty bottle over a container fills it up with tap water.
 - **1.0.0**: First release: drop a battery on a machine or a filter on a water pitcher to swap. (Called "Drop Swap" / `chaos5090.drop-swap` during development; renamed to Quick Swap with the generic ID `chaos5090.conveniences` before release, as the home for QoL features.)

@@ -247,6 +247,18 @@ namespace Conveniences
             catch { return false; }
         }
 
+        /// <summary>鼠标正拖着的物品（没在拖时为 null）。</summary>
+        internal static GameItemElement DraggedItem()
+        {
+            try
+            {
+                var drag = ItemMouseDragHandler.current;
+                if (drag == null || !drag.IsDraggingItem || dragItemField == null) return null;
+                return dragItemField.GetValue(drag) as GameItemElement;
+            }
+            catch { return null; }
+        }
+
         private static bool IsMouseDragging(GameItem item)
         {
             try
