@@ -5,7 +5,9 @@
 > Part of the **Shopkeeper's Kit** series · category **[Gameplay]**: a new profession that changes game mechanics. See the [repository home](../../README.md) for the series and categories.
 > By ChaosN · developed with assistance from [Claude Code](https://claude.com/claude-code) (Anthropic's AI coding assistant). Mod ID: `chaos5090.advanced-scientist`.
 >
-> 0.3.3 (step two), on the Steam Workshop; the chip merger comes later.
+> **Steam Workshop: [subscribe here](https://steamcommunity.com/sharedfiles/filedetails/?id=3837934061)**
+>
+> 0.3.3 (step two); the chip merger comes later.
 
 UI in Chinese or English, following the game's language (Chinese shows Chinese, every other language shows English).
 

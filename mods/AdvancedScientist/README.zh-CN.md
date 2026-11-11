@@ -5,7 +5,9 @@
 > **掌柜帮手 / Shopkeeper's Kit** 系列 · 分类 **【玩法】**：新职业，改变游戏机制。系列与分类说明见 [仓库首页](../../README.zh-CN.md)。
 > 作者 ChaosN · 由 [Claude Code](https://claude.com/claude-code)（Anthropic 的 AI 编程助手）协助开发。mod ID：`chaos5090.advanced-scientist`。
 >
-> 0.3.3（第二步），已上传 Steam 创意工坊；词条合成机后续加入。
+> **Steam 创意工坊：[点这里订阅](https://steamcommunity.com/sharedfiles/filedetails/?id=3837934061)**
+>
+> 0.3.3（第二步）；词条合成机后续加入。
 
 界面中英双语，跟随游戏的语言设置（中文显示中文，其他语言显示英文）。
 
