@@ -132,13 +132,15 @@ namespace AdvancedScientist
             if (it == null) return null;
             try
             {
+                Affix a = null;
                 if (it.identifier == BaseId)
-                    return Affix.Base(it.GetTagReadonly(PTag).GetInt(), it.GetTagReadonly(ETag).GetInt(), it.GetTagReadonly(QTag).GetInt());
-                if (it.identifier == EffectId)
+                    a = Affix.Base(it.GetTagReadonly(PTag).GetInt(), it.GetTagReadonly(ETag).GetInt(), it.GetTagReadonly(QTag).GetInt());
+                else if (it.identifier == EffectId)
                 {
                     var id = it.GetTagReadonly(EffectTag).GetString();
-                    return string.IsNullOrEmpty(id) ? null : Affix.Special(id);
+                    if (!string.IsNullOrEmpty(id)) a = Affix.Special(id);
                 }
+                return a;
             }
             catch { }
             return null;
@@ -267,21 +269,27 @@ namespace AdvancedScientist
 
         /// <summary>
         /// 能放进提取机的模组：自己的、通用型的机器模组（游戏的 性能 / 效率 / 品质 / 超频 / 节能 / 精细 / 流线 / 神经核心，以及定制模组）。
-        /// 不收：功能型模组（化学、农业、熔炉……带 ADDITIONAL_EFFECT_STRING）、节点、损坏 / 报废的、违禁品和赃物（提取等于洗白）、什么都提不出的。
+        /// 违禁品（神经核心）和赃物也收，提取出来的芯片和空白模组都是干净的（用户 2026-11-12 定：不让违禁 / 赃物标记跟着走）。
+        /// 不收：功能型模组（化学、农业、熔炉……带 ADDITIONAL_EFFECT_STRING）、节点、损坏 / 报废的、什么都提不出的。
         /// </summary>
-        internal static bool Extractable(GameItem it)
+        internal static bool Extractable(GameItem it) => RefuseReason(it) == null;
+
+        /// <summary>不能提取的原因（给玩家看）；能提取时返回 null。</summary>
+        internal static string RefuseReason(GameItem it)
         {
             try
             {
-                if (it == null || !GeneralHelper.IsItemOwned(it)) return false;
-                if (!it.IsGameItemType("MODULE") || !it.IsTag("MODULE_TAG") || !it.IsTag("SHIP_MODULE_TAG")) return false;
-                if (it.GetTagReadonly("MODULE_TYPE").GetString() != "MODULE_TYPE_UNIVERSAL") return false;
-                if (it.IsTag("ADDITIONAL_EFFECT_STRING") || it.IsGameItemType("NODE")) return false;
-                if (it.identifier == "system_module_corrupt" || it.identifier == "system_module_ruined") return false;
-                if (ContrabandHelper.IsContraband(it) || StolenHelper.IsStolenItem(it)) return false;
-                return Extract(it).Count > 0;
+                if (it == null) return Lang.T("没有东西", "Nothing");
+                if (!GeneralHelper.IsItemOwned(it)) return Lang.T("这不是你的东西", "That isn't yours");
+                if (!it.IsGameItemType("MODULE") || !it.IsTag("MODULE_TAG")) return Lang.T("词条提取机只收模组", "The Affix Extractor only takes modules");
+                if (!it.IsTag("SHIP_MODULE_TAG") || it.GetTagReadonly("MODULE_TYPE").GetString() != "MODULE_TYPE_UNIVERSAL" || it.IsTag("ADDITIONAL_EFFECT_STRING"))
+                    return Lang.T("这是功能型模组（化学、农业、熔炉……），按“装了几个”起作用，没有可以提取的数值", "This is a functional module (chemistry, farming, furnace, ...); it works by count and has no stats to extract");
+                if (it.IsGameItemType("NODE")) return Lang.T("节点没有自己的数值，不能提取", "Nodes have no stats of their own");
+                if (it.identifier == "system_module_corrupt" || it.identifier == "system_module_ruined") return Lang.T("损坏 / 报废的模组不能提取", "Corrupt or ruined modules can't be extracted");
+                if (Extract(it).Count == 0) return Lang.T("这个模组没有数值也没有词条，提取不出东西", "This module has no stats or affixes to extract");
+                return null;
             }
-            catch { return false; }
+            catch { return Lang.T("这个模组不能提取", "This module can't be extracted"); }
         }
     }
 }

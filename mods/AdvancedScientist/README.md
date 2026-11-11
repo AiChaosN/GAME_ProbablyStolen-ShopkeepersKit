@@ -5,7 +5,7 @@
 > Part of the **Shopkeeper's Kit** series · category **[Gameplay]**: a new profession that changes game mechanics. See the [repository home](../../README.md) for the series and categories.
 > By ChaosN · developed with assistance from [Claude Code](https://claude.com/claude-code) (Anthropic's AI coding assistant). Mod ID: `chaos5090.advanced-scientist`.
 >
-> In development (0.2.1, step two); not on the Steam Workshop yet.
+> In development (0.3.0, step two); not on the Steam Workshop yet.
 
 UI in Chinese or English, following the game's language (Chinese shows Chinese, every other language shows English).
 
@@ -37,11 +37,11 @@ Starts with:
 | ④ Affix Inlayer | blank module + chips → custom module | **done in 0.2.0** |
 | ③ Chip Merger | two base chips → one, stats summed, each stat capped at ±500 | step three |
 
-All machines work per day: they use 30 charge and run once each night. ② is sold by Dr. Jackson (at his shop at night or when he visits yours; to Advanced Scientists only, and only while you don't own one), and ③ will be too; ④ is starting equipment, and saves started with 0.1.0 get one when loaded.
+All machines work **at the click of a button**: open the machine and click "Make / Extract / Inlay" left of × in its title bar; each click runs once and uses 30 charge, and a message tells you what was made or why not (not enough materials, output full, no power, ...). ② is sold by Dr. Jackson (at his shop at night or when he visits yours; to Advanced Scientists only, and only while you don't own one), and ③ will be too; ④ is starting equipment, and saves started with 0.1.0 get one when loaded.
 
 ### ① Blank Module Maker
 
-Put materials in the "Materials" grid and a battery in the power slot. Each night it makes one blank module, the **best grade** the materials allow:
+Put materials in the "Materials" grid (9×6) and a battery in the power slot, then click "Make" for one blank module, the **best grade** the materials allow:
 
 | Output | Slots | Materials | Value |
 |---|---|---|---|
@@ -50,8 +50,7 @@ Put materials in the "Materials" grid and a battery in the power slot. Each nigh
 | High-grade blank module | 3 | Rare Electronic Parts ×1 + Metal Ingot ×2 + Wire ×4 | 450 |
 
 - All three are the game's own 2×2 "Blank Module"; the slot count is stored on the item and shown in its name. If you uninstall this mod they turn back into ordinary blank modules instead of vanishing.
-- Uses 30 charge per night; if the output grid is full or there's no charge, it skips the night without using materials.
-- In a Machine Bay, an Advanced Scientist gets two per night.
+- Uses 30 charge per click; if the output grid is full or there's no charge, nothing is made and no materials are used.
 
 ### Chips
 
@@ -64,20 +63,21 @@ The chip's name shows its contents, e.g. "Base Chip (Perf +36 / Eff -44 / Qual +
 
 ### ② Affix Extractor
 
-Put a module in the "Module" slot; once per night:
+Put a module in the "Module" slot and click "Extract":
 
 - **Game modules**: the stats become a base chip, each special affix an affix chip, and the module becomes a **low-grade blank** (1 slot).
   - When the game generates a module, the affix multipliers are already baked into its stats (Premium ×1.2, Inferior ×0.8, Overvolted and Degrading ×2, Negative Feedback ×1.25). Extraction divides them out: the base chip holds the raw stats, the multiplier travels with the affix chip and applies again when inlaid.
   - Learning Algorithm modules: half their fully-learned stats (fully learned is 2× the original in the game).
 - **Custom modules**: the inlaid chips come back unchanged and the module becomes a blank of the **same grade**.
-- Refused: functional modules (chemistry, farming, furnace, printer, ...), nodes, corrupt / ruined modules, contraband and stolen goods (extraction would launder them).
-- If the output grid can't fit a blank module it skips the night; chips that don't fit go to storage.
+- Contraband such as neural cores and stolen goods can be extracted too; the chips and blank module that come out are clean.
+- Refused: functional modules (chemistry, farming, furnace, printer, ...), nodes, corrupt / ruined modules; you get a message saying why when you try.
+- If the output grid can't fit a blank module nothing happens; chips that don't fit go to storage.
 
 ### ④ Affix Inlayer
 
-Put a blank module (or a custom module with free slots) in the "Blank module" slot and chips in the "Chips" grid; once per night:
+Put a blank module (or a custom module with free slots) in the "Blank module" slot and chips in the "Chips" grid, then click "Inlay":
 
-- Fills every free slot in one night: **base chips first** (stats add up), **then affix chips**.
+- Fills every free slot in one go: **base chips first** (stats add up), **then affix chips**.
 - Affixes follow the game's rules: at most 2 per module, no duplicates, no conflicting pairs (e.g. Premium with Inferior, Learning Algorithm with other multiplier affixes). Chips that can't be inlaid stay in the grid.
 - The result is called "Custom Module (N/slots used)"; hovering shows the game's own stat and affix tooltip, and it works in machines like any module.
 - Value = blank module value + chip values (plus the game's own value adjustment for affixes).
@@ -121,6 +121,7 @@ Uninstalling: in existing Advanced Scientist saves the three machines and the ch
 
 ## Changelog
 
+- **0.3.0**: The three machines now work at the click of a title-bar button ("Make / Extract / Inlay") instead of overnight, with a message about the result or why not; the extractor accepts contraband such as neural cores and stolen goods, and the results are clean; refused modules show why.
 - **0.2.1**: The Blank Module Maker's materials grid grew from 6×3 to 9×6 and its output from 4×2 to 4×4. The materials are big (electronic parts, ingots and scrap are 3×2, wire 2×2, none stack), so even the low-grade recipe didn't fit before.
 - **0.2.0**: Step two: base chips, affix chips, Affix Extractor (sold by Dr. Jackson), Affix Inlayer (starting equipment; given to older saves).
 - **0.1.0**: Step one: profession, two days per day in the Machine Bay, Blank Module Maker.

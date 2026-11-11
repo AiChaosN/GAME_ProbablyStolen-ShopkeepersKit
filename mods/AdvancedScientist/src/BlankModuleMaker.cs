@@ -4,10 +4,9 @@ using System.Linq;
 namespace AdvancedScientist
 {
     /// <summary>
-    /// ① 空白模组制造机：照游戏的“酒窖”（MachineWineRack）搭——电池槽 + 材料格 + 产出格，每晚结算时耗一次电、做一个空白模组。
-    /// 材料够哪档做哪档，优先做高档（配方见 Recipe）。产出格放不下、没电时这一晚不做，也不扣材料。
-    /// 机器每晚的处理挂在 onCycleEndSlotItemFunc：游戏每晚对你所有的物品调用一次，放在哪里都行；
-    /// 放在机器区里时，高级科学家的“一天两天”会让它多做一次（TwoDays）。
+    /// ① 空白模组制造机：照游戏的“酒窖”（MachineWineRack）搭——电池槽 + 材料格 + 产出格。
+    /// 点窗口标题栏的“制造”按钮（MachineButtons）立刻做一个空白模组，从电池扣一次电（0.3.0 起；之前是每晚做一个）。
+    /// 材料够哪档做哪档，优先做高档（配方见 Recipe）。产出格放不下、没电时不做，也不扣材料。
     /// </summary>
     internal static class BlankModuleMaker
     {
@@ -43,41 +42,37 @@ namespace AdvancedScientist
             input.onSlotAddItemLateFunc = delegate { machine.Validate(); };
             input.onSlotRemoveItemLateFunc = delegate { machine.Validate(); };
 
-            machine.onCycleEndSlotItemFunc = (self, inv, slot) =>
-            {
-                try { Process(machine, battery, input, output); }
-                catch (Exception e) { Log.Error("空白模组制造机处理出错: " + Log.Describe(e)); }
-            };
+            MachineButtons.Register(window, machine, () => Lang.T("制造", "Make"), () => Make(machine, battery, input, output));
             return machine;
         }
 
         private static string Describe()
         {
             string lines = string.Join(Lang.T("；", "; "), Recipe.All.Reverse().Select(r => BlankModules.TierName(r.Tier) + " = " + r.Describe()));
-            return Lang.T("每晚耗电，用材料格里的材料做一个空白模组；材料够哪档做哪档，优先做高档。", "Each night it uses power to make one blank module from the materials; it makes the best grade the materials allow. ") + lines;
+            return Lang.T("点窗口标题栏的“制造”按钮，耗电用材料格里的材料做一个空白模组；材料够哪档做哪档，优先做高档。", "Click \"Make\" in the window's title bar to use power and make one blank module from the materials; it makes the best grade the materials allow. ") + lines;
         }
 
-        private static void Process(GameItem machine, GameSlotInventory battery, GameGridInventory input, GameGridInventory output)
+        /// <summary>做一个空白模组；返回给玩家看的结果。</summary>
+        internal static string Make(GameItem machine, GameSlotInventory battery, GameGridInventory input, GameGridInventory output)
         {
             var recipe = Recipe.Best(input);
-            if (recipe == null) return;
+            if (recipe == null)
+                return Lang.T("材料不够。低级 = ", "Not enough materials. Low grade = ") + Recipe.All.Last().Describe();
             var made = BlankModules.Create(recipe.Tier);
             if (made == null)
             {
                 Log.Warn("做不出空白模组：游戏里找不到 blank_module");
-                return;
+                return Lang.T("做不出空白模组（游戏里找不到这个物品）", "Can't make a blank module (item missing in the game)");
             }
             if (!GraphUtils.CanAccept(output, made))
             {
                 made.Destroy();
-                Log.Info("空白模组制造机：产出格满了，今晚不做");
-                return;
+                return Lang.T("产出格满了，先把做好的拿走", "The output grid is full; take the finished modules out first");
             }
             if (!MachineHelper.TryDrawCyclePower(machine, battery))
             {
                 made.Destroy();
-                Log.Info("空白模组制造机：没电，今晚不做");
-                return;
+                return Lang.T("没电：在电源槽里放一块有电的电池", "No power: put a charged battery in the power slot");
             }
             recipe.Consume(input);
             if (GraphUtils.TryAcceptAll(output, made) > 0)
@@ -86,6 +81,7 @@ namespace AdvancedScientist
             }
             machine.Validate();
             Log.Info("空白模组制造机：做出 " + made.name + "（" + recipe.Describe() + "）");
+            return Lang.T("做出 ", "Made ") + made.name;
         }
     }
 }

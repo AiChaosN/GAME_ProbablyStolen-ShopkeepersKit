@@ -12,6 +12,7 @@ namespace AdvancedScientist
         internal static ScientistConfig Config;
         internal static string ModId = "chaos5090.advanced-scientist";
         private static bool hooked;
+        private static UnityEngine.GameObject host;
 
         public void Init(ModManifest manifest)
         {
@@ -40,6 +41,17 @@ namespace AdvancedScientist
                 if (dir != null && dir.factoryDictionary != null) RegisterItems(dir);
             }
             catch (Exception e) { Log.Warn("查找物品目录失败（等游戏建好后再登记）: " + e.Message); }
+
+            try
+            {
+                if (host == null)
+                {
+                    host = new UnityEngine.GameObject("AdvancedScientist");
+                    UnityEngine.Object.DontDestroyOnLoad(host);
+                    host.AddComponent<ScientistBehaviour>();   // 机器窗口上的“制造 / 提取 / 镶嵌”按钮
+                }
+            }
+            catch (Exception e) { Log.Error("创建按钮对象失败: " + Log.Describe(e)); }
 
             try { Scenario.Register(ModId); }
             catch (Exception e) { Log.Error("登记职业失败: " + Log.Describe(e)); }
@@ -90,6 +102,12 @@ namespace AdvancedScientist
             }
             catch { }
             try { ModHelper.RemoveStartingScenarios(ModId); } catch { }
+            try
+            {
+                if (host != null) UnityEngine.Object.Destroy(host);
+                host = null;
+            }
+            catch { }
         }
     }
 
