@@ -5,7 +5,7 @@
 > Part of the **Shopkeeper's Kit** series · category **[Gameplay]**: changes a game mechanic and affects balance. See the [repository home](../../README.md) for the series and categories.
 > By ChaosN · developed with assistance from [Claude Code](https://claude.com/claude-code) (Anthropic's AI coding assistant). Mod ID: `chaos5090.filter-recharge`.
 >
-> Not on the Steam Workshop yet.
+> **Steam Workshop: [subscribe here](https://steamcommunity.com/sharedfiles/filedetails/?id=3837823741)**
 
 UI in Chinese or English, following the game's language (Chinese shows Chinese, every other language shows English).
 

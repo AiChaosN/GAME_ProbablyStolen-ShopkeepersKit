@@ -5,7 +5,7 @@
 > **掌柜帮手 / Shopkeeper's Kit** 系列 · 分类 **【玩法】**：改变游戏机制，影响平衡。系列与分类说明见 [仓库首页](../../README.zh-CN.md)。
 > 作者 ChaosN · 由 [Claude Code](https://claude.com/claude-code)（Anthropic 的 AI 编程助手）协助开发。mod ID：`chaos5090.filter-recharge`。
 >
-> 还没上传到 Steam 创意工坊。
+> **Steam 创意工坊：[点这里订阅](https://steamcommunity.com/sharedfiles/filedetails/?id=3837823741)**
 
 界面中英双语，跟随游戏的语言设置（中文显示中文，其他语言显示英文）。
 
