@@ -16,6 +16,7 @@ In the base game the **Advanced Water Filter** has 400 durability and recovers 5
 - drop a **water filter** (a regular Water Filter, another Advanced Water Filter, or a Hydroreed Filter) on an Advanced Water Filter: **all** its remaining durability moves over and the source filter is used up;
 - the Advanced Water Filter's durability cap rises to **20× a regular filter = 8000** (5 / 10 / 40× in the settings);
 - near the cap only what's needed is moved; the rest stays in the source filter;
+- **batch charging**: box-select several filters and drop them together; they're used one after another with a single combined message (e.g. "durability +1600 → 2000/8000 (4 filters)"), and once it's full the rest are left untouched;
 - no need to open the pitcher: drop it on a **water pitcher holding an Advanced Water Filter** (or any other item with a filter slot at the top of its window);
 - hovering shows the green "use Water Filter on Advanced Water Filter" hint; after releasing, a message shows e.g. "Advanced Water Filter durability +400 → 1200/8000".
 
@@ -29,7 +30,7 @@ The used-up source filter stays where it was with 0 durability (as used-up filte
 
 ### Unchanged
 
-- only your own items, one at a time; nothing happens when group-dragging;
+- only your own items;
 - Kotton Fabric also works as a filter, but it's a clothing material, so it's never used for charging (no accidental drains); UV Lamps have no durability and are not involved;
 - an Advanced Water Filter that was never charged behaves exactly as in the base game.
 
@@ -81,4 +82,5 @@ Mods screen → select this mod → **Settings**, or edit `%USERPROFILE%\AppData
 
 ## Changelog
 
+- **1.1.0**: Box-select several filters and drop them together to charge in one go (on the Advanced Water Filter or a pitcher holding one), with one combined message.
 - **1.0.0**: First release: drop a water filter on an Advanced Water Filter (or a pitcher holding one) to recharge it; cap defaults to 20× a regular filter.

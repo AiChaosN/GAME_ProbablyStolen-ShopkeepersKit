@@ -8,6 +8,7 @@
 [*]把滤水器（普通、高级、水培芦苇滤芯）拖到[b]高级滤水器[/b]上：它剩下的耐久度全部转给高级滤水器，原来那个用完。
 [*]高级滤水器的耐久度上限提高到普通滤水器的 [b]20 倍（8000）[/b]，设置里可改成 5 / 10 / 40 倍。
 [*]快满时只转需要的部分，剩下的留在原来的滤水器里。
+[*][b]可以批量[/b]：框选好几个滤水器一起拖上去，一个接一个充进去。
 [*]不用打开水罐：直接拖到装着高级滤水器的水罐上也行。
 [/list]
 
@@ -37,6 +38,7 @@
 [*]Drop a water filter (regular, advanced or hydroreed) on an [b]Advanced Water Filter[/b]: all its remaining durability moves over and the source filter is used up.
 [*]The Advanced Water Filter's durability cap rises to [b]20× a regular filter (8000)[/b]; 5 / 10 / 40× in the settings.
 [*]Near the cap only what's needed is moved; the rest stays in the source filter.
+[*][b]Batch charging[/b]: box-select several filters and drop them together.
 [*]No need to open the pitcher: drop it on a water pitcher holding an Advanced Water Filter.
 [/list]
 

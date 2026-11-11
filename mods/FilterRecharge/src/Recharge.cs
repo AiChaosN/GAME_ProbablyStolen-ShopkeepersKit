@@ -12,7 +12,7 @@ namespace FilterRecharge
     ///
     /// 走的是游戏原版“对物品使用”的流程（GameItem.MayTarget / CanTarget / Target，电池拖到电池上互换也是这个流程）：
     /// MayTarget / CanTarget 后置把这一对算作“可以使用”（悬停显示绿色“对 X 使用 Y”），Target 前置执行充能并跳过原版
-    /// （原版对这一对本来没有任何效果）。只对自己的单件物品生效。
+    /// （原版对这一对本来没有任何效果）。只对自己的单件物品生效；框选一起拖时一件接一件充（游戏对选中的每一件依次“使用”）。
     ///
     /// 耐久度的存法与原版相同（DurabilityHelper 的 当前 / 上限 / 默认 三个标签）。充能时把上限和默认值一起设成新的上限：
     /// 只改上限的话，原版的估价公式里“上限 / 默认”这一项会让售价翻十倍。这样充满时售价与原版满耐久时相同，没充满按比例打折。
@@ -129,7 +129,7 @@ namespace FilterRecharge
             if (!__result || busy || item == null) return;
             try
             {
-                if (!IsSource(item) || !IsMouseDragging(item)) return;
+                if (!IsSource(item) || !(IsMouseDragging(item) || IsGroupDraggingItem(item))) return;
                 var adv = __instance.childItem;
                 if (!IsAdvanced(adv)) return;
                 var owner = GraphUtils.FindParentType<GameItem>(__instance);
@@ -168,8 +168,7 @@ namespace FilterRecharge
             if (src == null || target == null || ReferenceEquals(src, target)) return null;
             if (!IsSource(src) || src.unitCount != 1) return null;
             if (!GeneralHelper.IsItemOwned(src) || !GeneralHelper.IsItemOwned(target)) return null;
-            if (IsGroupDragging()) return null;
-
+            // 框选一起拖也可以：游戏对选中的每一件依次“使用”，一件接一件充进去（提示合并成一条，见 Batch）
             if (IsAdvanced(target)) return target;
 
             busy = true;
@@ -208,6 +207,16 @@ namespace FilterRecharge
             }
         }
 
+        private static bool IsGroupDraggingItem(GameItem item)
+        {
+            try
+            {
+                var multi = ItemMultiSelectHandler.current;
+                return multi != null && multi.IsGroupDraggingItem(item);
+            }
+            catch { return false; }
+        }
+
         private static bool IsGroupDragging()
         {
             try
@@ -219,6 +228,49 @@ namespace FilterRecharge
         }
 
         // ------------------------------------------------------------------ 充能
+
+        // 同一帧里连续充（框选一起拖）的汇总：下一帧只提示一次
+        private static class Batch
+        {
+            internal static GameItem Adv;
+            internal static int Count, Moved, UsedUp, Skipped, From, Now, Max;
+            internal static bool Scheduled;
+
+            internal static void Add(GameItem adv, int moved, bool usedUp, bool skipped, int from, int now, int max)
+            {
+                if (!ReferenceEquals(Adv, adv) || !Scheduled)
+                {
+                    if (Scheduled) Flush();
+                    Adv = adv; Count = Moved = UsedUp = Skipped = 0; From = from;
+                }
+                if (skipped) Skipped++; else { Count++; Moved += moved; if (usedUp) UsedUp++; }
+                Now = now; Max = max;
+                if (!Scheduled)
+                {
+                    Scheduled = true;
+                    try { LetterboxManager.RunNextUpdate(Flush); }
+                    catch { Flush(); }
+                }
+            }
+
+            internal static void Flush()
+            {
+                if (!Scheduled) return;
+                Scheduled = false;
+                string advName = Name(Adv);
+                string msg;
+                if (Count == 0)
+                    msg = Lang.T(advName + "已经满了（" + Now + "/" + Max + "）", advName + " is already full (" + Now + "/" + Max + ")");
+                else
+                {
+                    msg = Lang.T(advName + "耐久度 +" + Moved + " → " + Now + "/" + Max, advName + " durability +" + Moved + " → " + Now + "/" + Max);
+                    if (Count > 1) msg += Lang.T("（" + Count + " 个滤水器）", " (" + Count + " filters)");
+                    if (Skipped > 0) msg += Lang.T("，满了，另外 " + Skipped + " 个没用上", "; full, " + Skipped + " more left unused");
+                }
+                Notify(msg);
+                Adv = null;
+            }
+        }
 
         private static void Charge(GameItem src, GameItem adv)
         {
@@ -237,7 +289,7 @@ namespace FilterRecharge
             int room = newMax - advCur;
             if (room <= 0)
             {
-                Notify(Lang.T(advName + "已经满了（" + advCur + "/" + newMax + "）", advName + " is already full (" + advCur + "/" + newMax + ")"));
+                Batch.Add(adv, 0, false, true, advCur, advCur, newMax);
                 return;
             }
 
@@ -255,10 +307,7 @@ namespace FilterRecharge
             try { adv.Validate(); } catch { }
             try { src.Validate(); } catch { }
 
-            string left = srcCur - moved > 0 ? Lang.T("，" + srcName + "还剩 " + (srcCur - moved), ", " + srcName + " has " + (srcCur - moved) + " left")
-                                               : Lang.T("，" + srcName + "已用完", ", " + srcName + " is used up");
-            Notify(Lang.T(advName + "耐久度 +" + moved + " → " + (advCur + moved) + "/" + newMax + left,
-                          advName + " durability +" + moved + " → " + (advCur + moved) + "/" + newMax + left));
+            Batch.Add(adv, moved, srcCur - moved <= 0, false, advCur, advCur + moved, newMax);
             Log.Info("充能：" + srcName + " " + srcCur + " → " + (srcCur - moved) + "，" + advName + " " + advCur + "/" + advMax + " → " + (advCur + moved) + "/" + newMax);
         }
 
