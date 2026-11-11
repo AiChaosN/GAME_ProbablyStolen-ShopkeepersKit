@@ -6,28 +6,39 @@ namespace AdvancedScientist
 {
     /// <summary>
     /// 三档空白模组（都是游戏原有的 2×2 “空白模组” blank_module）：
-    ///   低级 = 1 个词条槽，中级 = 2 个，高级 = 3 个。
-    /// 槽数存在物品自己的 tag 里（随存档保存），名字和价值也一起改；没有这个 tag 的空白模组（游戏原生的）算 1 个槽。
+    ///   低级 = 2 个词条槽，中级 = 4 个，高级 = 6 个（0.3.2 起，用户定；之前是 1 / 2 / 3）。
+    /// 档次（1 / 2 / 3）存在物品自己的 tag 里（随存档保存），槽数 = 档次 × 2，所以旧存档里做好的空白模组自动变成新槽数；
+    /// 名字和价值也一起改；没有这个 tag 的空白模组（游戏原生的）算低级。
     /// 用原有的物品 id 而不是新 id：卸载本 mod 后，中级 / 高级会退回成普通空白模组，不会凭空消失。
     /// </summary>
     internal static class BlankModules
     {
         internal const string VanillaId = "blank_module";
-        internal const string SlotsTag = "CHAOS5090_AS_SLOTS";
+        internal const string SlotsTag = "CHAOS5090_AS_SLOTS";   // 名字沿用旧的，存的是档次 1 / 2 / 3
 
-        internal static int SlotsOf(GameItem it)
+        /// <summary>档次 1 / 2 / 3；不是空白模组时返回 0，游戏原生的空白模组算 1。</summary>
+        internal static int TierOf(GameItem it)
         {
             if (it == null || it.identifier != VanillaId) return 0;
-            try { return Math.Max(1, it.GetTagReadonly(SlotsTag).GetInt()); }
+            try { return Math.Max(1, Math.Min(3, it.GetTagReadonly(SlotsTag).GetInt())); }
             catch { return 1; }
         }
 
-        internal static string TierName(int tier) =>
-            tier >= 3 ? Lang.T("高级空白模组（3 个词条槽）", "High-grade Blank Module (3 slots)")
-          : tier == 2 ? Lang.T("中级空白模组（2 个词条槽）", "Mid-grade Blank Module (2 slots)")
-                      : Lang.T("低级空白模组（1 个词条槽）", "Low-grade Blank Module (1 slot)");
+        internal static int SlotsForTier(int tier) => Math.Max(1, Math.Min(3, tier)) * 2;
 
-        internal static long TierValue(int tier) => tier >= 3 ? 450L : tier == 2 ? 180L : 60L;   // 原版空白模组价值 60
+        internal static int SlotsOf(GameItem it)
+        {
+            int tier = TierOf(it);
+            return tier == 0 ? 0 : SlotsForTier(tier);
+        }
+
+        internal static string TierName(int tier) =>
+            tier >= 3 ? Lang.T("高级空白模组（6 个词条槽）", "High-grade Blank Module (6 slots)")
+          : tier == 2 ? Lang.T("中级空白模组（4 个词条槽）", "Mid-grade Blank Module (4 slots)")
+                      : Lang.T("低级空白模组（2 个词条槽）", "Low-grade Blank Module (2 slots)");
+
+        // 价值跟材料成本差不多（普通电子元件 33、废金属 10、线缆 16）：低级 = 原版空白模组 60，中级 4+4+4 ≈ 236，高级 6+6+6 ≈ 354
+        internal static long TierValue(int tier) => tier >= 3 ? 350L : tier == 2 ? 230L : 60L;
 
         internal static GameItem Create(int tier)
         {
@@ -41,7 +52,7 @@ namespace AdvancedScientist
         }
     }
 
-    /// <summary>空白模组制造机的三档配方（按游戏里材料的价值配：普通电子元件 33、废金属 10、金属锭 50、线缆 16、稀有电子元件 350）。</summary>
+    /// <summary>空白模组制造机的三档配方：普通电子元件 + 废金属 + 线缆，低 / 中 / 高级各 2 / 4 / 6 个（用户 2026-11-12 定）。</summary>
     internal sealed class Recipe
     {
         internal int Tier;
@@ -49,9 +60,9 @@ namespace AdvancedScientist
 
         internal static readonly Recipe[] All =
         {
-            new Recipe { Tier = 3, Needs = new[] { ("rare_electronic", 1), ("metal_ingot", 2), ("wire", 4) } },
-            new Recipe { Tier = 2, Needs = new[] { ("common_electronic", 4), ("metal_ingot", 1), ("wire", 2) } },
-            new Recipe { Tier = 1, Needs = new[] { ("common_electronic", 2), ("scrap_metal", 2) } },
+            new Recipe { Tier = 3, Needs = new[] { ("common_electronic", 6), ("scrap_metal", 6), ("wire", 6) } },
+            new Recipe { Tier = 2, Needs = new[] { ("common_electronic", 4), ("scrap_metal", 4), ("wire", 4) } },
+            new Recipe { Tier = 1, Needs = new[] { ("common_electronic", 2), ("scrap_metal", 2), ("wire", 2) } },
         };
 
         internal static readonly HashSet<string> Materials = new HashSet<string>(All.SelectMany(r => r.Needs.Select(n => n.id)));

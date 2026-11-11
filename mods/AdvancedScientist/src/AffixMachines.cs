@@ -8,7 +8,7 @@ namespace AdvancedScientist
     /// <summary>
     /// 两台都是点窗口标题栏的按钮（“提取 / 镶嵌”，MachineButtons）立刻做、从电池扣一次电（0.3.0 起；之前是每晚做一次）。
     /// ② 词条提取机：放一个模组进去，把它的词条做成芯片（基础芯片 + 特殊词条芯片），模组变回空白模组。
-    ///   游戏原生的模组 → 低级空白模组（1 个词条槽）；定制模组 → 同档的空白模组（词条原样取出）。
+    ///   游戏原生的模组 → 低级空白模组（2 个词条槽）；定制模组 → 同档的空白模组（词条原样取出）。
     /// ④ 词条镶嵌机：放一个空白模组 / 定制模组和若干芯片，把芯片镶到空着的词条槽上（先基础芯片，再特殊词条芯片），
     ///   特殊词条最多 2 个、不能重复、不能和已有的互斥（游戏自己的规则）；镶不上的芯片留在格子里。
     /// 两台都照游戏的酒窖搭：电池槽 + 输入 + 输出。
@@ -135,8 +135,8 @@ namespace AdvancedScientist
                 MachineHelper.Panel(Lang.T("空白模组", "Blank module"), moduleSlot, "module"),
                 MachineHelper.Panel(Lang.T("芯片", "Chips"), chips, "chips"));
             var machine = NewMachine(window, "as_affix_inlayer", Lang.T("词条镶嵌机", "Affix Inlayer"),
-                Lang.T("放一个空白模组（或还有空槽的定制模组）和芯片，点窗口标题栏的“镶嵌”按钮（耗电），把芯片镶到空着的词条槽上：低 / 中 / 高级空白模组有 1 / 2 / 3 个槽；先镶基础芯片（数值相加），再镶特殊词条芯片（最多 2 个、不能互斥）。镶不上的芯片留在格子里。",
-                       "Put in a blank module (or a custom module with free slots) and chips, then click \"Inlay\" in the title bar (uses power) to inlay chips into free slots: low / mid / high grade blanks have 1 / 2 / 3 slots; base chips first (stats add up), then affix chips (at most 2, no conflicting ones). Chips that can't be inlaid stay in the grid."),
+                Lang.T("放一个空白模组（或还有空槽的定制模组）和芯片，点窗口标题栏的“镶嵌”按钮（耗电），把芯片镶到空着的词条槽上：低 / 中 / 高级空白模组有 2 / 4 / 6 个槽；先镶基础芯片（数值相加），再镶特殊词条芯片（最多 2 个、不能互斥）。镶不上的芯片留在格子里。",
+                       "Put in a blank module (or a custom module with free slots) and chips, then click \"Inlay\" in the title bar (uses power) to inlay chips into free slots: low / mid / high grade blanks have 2 / 4 / 6 slots; base chips first (stats add up), then affix chips (at most 2, no conflicting ones). Chips that can't be inlaid stay in the grid."),
                 600L);
             MachineHelper.SetupBatterySlot(battery, machine);
             MachineryHelper.InitMachinery(machine, PowerPerNight);

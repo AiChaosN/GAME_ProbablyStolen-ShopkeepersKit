@@ -40,6 +40,24 @@ namespace AdvancedScientist
 
         internal static void OnGameLoaded()
         {
+            // 本 mod 做的空白模组 / 定制模组：按当前规则刷新名字（槽数改过）
+            try
+            {
+                var store = Game.Store;
+                if (store != null)
+                {
+                    int n = 0;
+                    foreach (var it in store.FindAllItem())
+                    {
+                        if (it == null || it.identifier != BlankModules.VanillaId || !it.IsTag(BlankModules.SlotsTag)) continue;
+                        CustomModules.RefreshName(it);
+                        n++;
+                    }
+                    if (n > 0) Log.Info("刷新了 " + n + " 个空白 / 定制模组的名字");
+                }
+            }
+            catch (Exception e) { Log.Warn("刷新模组名字出错: " + e.Message); }
+
             try
             {
                 if (!ModHelper.IsStartingScenario(Scenario.Id)) return;

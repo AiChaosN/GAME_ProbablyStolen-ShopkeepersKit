@@ -175,6 +175,17 @@ namespace AdvancedScientist
 
         internal static int FreeSlots(GameItem module) => Math.Max(0, BlankModules.SlotsOf(module) - Read(module).Count);
 
+        /// <summary>按当前规则刷新名字（读档时用：槽数从 1/2/3 改成 2/4/6 后，旧的空白模组名字里还写着旧槽数）。</summary>
+        internal static void RefreshName(GameItem module)
+        {
+            int tier = BlankModules.TierOf(module);
+            if (tier == 0) return;
+            int n = Read(module).Count, slots = BlankModules.SlotsForTier(tier);
+            string want = n == 0 ? BlankModules.TierName(tier)
+                : Lang.T("定制模组（已镶 " + n + "/" + slots + "）", "Custom Module (" + n + "/" + slots + " slots used)");
+            if (module.name != want) module.name = want;
+        }
+
         /// <summary>这个特殊词条还能不能加到这份记录上（不重复、不和已有的互斥、特殊词条不超过 2 个、只能用在模组上的词条）。</summary>
         internal static bool CanAddSpecial(List<Affix> list, string effect)
         {
@@ -193,7 +204,8 @@ namespace AdvancedScientist
         /// <summary>写入记录并重算模组：数值、特殊词条、价值、名字。</summary>
         internal static void Write(GameItem module, List<Affix> list)
         {
-            int tier = Math.Max(1, BlankModules.SlotsOf(module));
+            int tier = Math.Max(1, BlankModules.TierOf(module));
+            int slots = BlankModules.SlotsForTier(tier);
             var bases = list.Where(a => a.IsBase).ToList();
             var specials = list.Where(a => !a.IsBase).ToList();
             var ordered = bases.Concat(specials).ToList();
@@ -218,7 +230,7 @@ namespace AdvancedScientist
             ModuleEffectHelper.ResetAllTempStat(module);
 
             module.name = ordered.Count == 0 ? BlankModules.TierName(tier)
-                : Lang.T("定制模组（已镶 " + ordered.Count + "/" + tier + "）", "Custom Module (" + ordered.Count + "/" + tier + " slots used)");
+                : Lang.T("定制模组（已镶 " + ordered.Count + "/" + slots + "）", "Custom Module (" + ordered.Count + "/" + slots + " slots used)");
             try { module.Validate(); } catch { }
         }
 

@@ -17,9 +17,9 @@ namespace AdvancedScientist
         internal static GameItem Create()
         {
             var battery = new GameSlotInventory();
-            // 材料都很大：电子元件 / 金属锭 / 废金属 3×2，线缆 2×2，而且不叠放。配方最多要 38 格（中级），
-            // 0.2.0 的 6×3 连低级配方（24 格）都放不下（用户 2026-11-12 报告）。9×6 一行正好放 3 个 3×2。
-            var input = new GameGridInventory(9, 6);
+            // 材料都很大：普通电子元件、废金属 3×2，线缆 2×2，都不叠放。高级配方 6 + 6 + 6 = 12 件 3×2 + 6 件 2×2 = 96 格；
+            // 12×10 = 120 格，留点余量（0.2.0 的 6×3 连低级都放不下）。
+            var input = new GameGridInventory(12, 10);
             var output = new GameGridInventory(4, 4);   // 4 个 2×2 空白模组（机器区一晚做两个，攒几天也放得下）
             var window = MachineHelper.CreateMachineryWindow(true,
                 MachineHelper.PowerPanel(battery),

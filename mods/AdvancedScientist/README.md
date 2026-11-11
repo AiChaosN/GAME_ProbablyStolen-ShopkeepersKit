@@ -5,7 +5,7 @@
 > Part of the **Shopkeeper's Kit** series · category **[Gameplay]**: a new profession that changes game mechanics. See the [repository home](../../README.md) for the series and categories.
 > By ChaosN · developed with assistance from [Claude Code](https://claude.com/claude-code) (Anthropic's AI coding assistant). Mod ID: `chaos5090.advanced-scientist`.
 >
-> In development (0.3.0, step two); not on the Steam Workshop yet.
+> In development (0.3.2, step two); not on the Steam Workshop yet.
 
 UI in Chinese or English, following the game's language (Chinese shows Chinese, every other language shows English).
 
@@ -16,7 +16,7 @@ Found on **page 2** of the profession screen when starting a new game. A module-
 Starts with:
 
 - a **Machine Bay** (the game's area for placing machines);
-- the **Blank Module Maker** and the **Affix Inlayer**, each with a battery (100 charge), plus materials for one low-grade blank module (2 Common Electronic Parts, 2 Scrap Metal);
+- the **Blank Module Maker** and the **Affix Inlayer**, each with a battery (100 charge), plus materials for one low-grade blank module (2 each of Common Electronic Parts, Scrap Metal and Wire);
 - three random modules (performance / efficiency / quality);
 - 200 less starting cash (the starting equipment is valuable; the base-game chemist has 300 less).
 
@@ -32,7 +32,7 @@ Starts with:
 
 | Machine | What it does | Status |
 |---|---|---|
-| ① Blank Module Maker | materials → low / mid / high grade blank modules (1 / 2 / 3 slots) | **done in 0.1.0** |
+| ① Blank Module Maker | materials → low / mid / high grade blank modules (2 / 4 / 6 slots) | **done in 0.1.0** |
 | ② Affix Extractor | module → base chip (performance / efficiency / quality) + affix chips; the module becomes blank | **done in 0.2.0** |
 | ④ Affix Inlayer | blank module + chips → custom module | **done in 0.2.0** |
 | ③ Chip Merger | two base chips → one, stats summed, each stat capped at ±500 | step three |
@@ -41,14 +41,15 @@ All machines work **at the click of a button**: open the machine and click "Make
 
 ### ① Blank Module Maker
 
-Put materials in the "Materials" grid (9×6) and a battery in the power slot, then click "Make" for one blank module, the **best grade** the materials allow:
+Put materials in the "Materials" grid (12×10) and a battery in the power slot, then click "Make" for one blank module, the **best grade** the materials allow:
 
 | Output | Slots | Materials | Value |
 |---|---|---|---|
-| Low-grade blank module | 1 | Common Electronic Parts ×2 + Scrap Metal ×2 | 60 |
-| Mid-grade blank module | 2 | Common Electronic Parts ×4 + Metal Ingot ×1 + Wire ×2 | 180 |
-| High-grade blank module | 3 | Rare Electronic Parts ×1 + Metal Ingot ×2 + Wire ×4 | 450 |
+| Low-grade blank module | 2 | Common Electronic Parts ×2 + Scrap Metal ×2 + Wire ×2 | 60 |
+| Mid-grade blank module | 4 | Common Electronic Parts ×4 + Scrap Metal ×4 + Wire ×4 | 230 |
+| High-grade blank module | 6 | Common Electronic Parts ×6 + Scrap Metal ×6 + Wire ×6 | 350 |
 
+- Values roughly match the material cost (Common Electronic Parts 33, Scrap Metal 10, Wire 16), so crafting them to sell makes no profit.
 - All three are the game's own 2×2 "Blank Module"; the slot count is stored on the item and shown in its name. If you uninstall this mod they turn back into ordinary blank modules instead of vanishing.
 - Uses 30 charge per click; if the output grid is full or there's no charge, nothing is made and no materials are used.
 
@@ -65,7 +66,7 @@ The chip's name shows its contents, e.g. "Base Chip (Perf +36 / Eff -44 / Qual +
 
 Put a module in the "Module" slot and click "Extract":
 
-- **Game modules**: the stats become a base chip, each special affix an affix chip, and the module becomes a **low-grade blank** (1 slot).
+- **Game modules**: the stats become a base chip, each special affix an affix chip, and the module becomes a **low-grade blank** (2 slots).
   - When the game generates a module, the affix multipliers are already baked into its stats (Premium ×1.2, Inferior ×0.8, Overvolted and Degrading ×2, Negative Feedback ×1.25). Extraction divides them out: the base chip holds the raw stats, the multiplier travels with the affix chip and applies again when inlaid.
   - Learning Algorithm modules: half their fully-learned stats (fully learned is 2× the original in the game).
 - **Custom modules**: the inlaid chips come back unchanged and the module becomes a blank of the **same grade**.
@@ -96,7 +97,7 @@ Uninstalling: in existing Advanced Scientist saves the three machines and the ch
 > Back up your saves first (`save_*.es3` in `%USERPROFILE%\AppData\LocalLow\Questing Goose Studio\Probably Stolen\`) and test with a new game.
 
 1. New game → page 2 of the profession screen shows "Advanced Scientist" (icon: a flask and a module). Start with it.
-2. Storage holds the Machine Bay, the Blank Module Maker, the Affix Inlayer, two batteries, three modules, 2 Common Electronic Parts and 2 Scrap Metal.
+2. Storage holds the Machine Bay, the Blank Module Maker, the Affix Inlayer, two batteries, three modules, 2 each of Common Electronic Parts, Scrap Metal and Wire.
 3. Put the maker in the Machine Bay, the battery in its power slot, the parts and scrap in "Materials", and sleep: the "Output" grid should have a low-grade blank module.
 4. Add two sets of materials and sleep: in the Machine Bay it makes two per night (the ability).
 5. Inlaying: put the low-grade blank module into the inlayer's "Blank module" slot. Chips need the extractor first (next step).
@@ -121,6 +122,8 @@ Uninstalling: in existing Advanced Scientist saves the three machines and the ch
 
 ## Changelog
 
+- **0.3.2**: Recipes add wire: 2 / 4 / 6 each of Common Electronic Parts, Scrap Metal and Wire for low / mid / high; slots are now 2 / 4 / 6 (blank modules from older saves get the new count and name on load); materials grid 9×8 → 12×10; mid / high values 230 / 350; the start kit includes 2 wire.
+- **0.3.1**: Recipes now use only Common Electronic Parts + Scrap Metal: 2 / 4 / 6 of each for low / mid / high; materials grid 9×6 → 9×8 (the high recipe is 12 items of 3×2); mid / high blank values 170 / 260 to match the material cost.
 - **0.3.0**: The three machines now work at the click of a title-bar button ("Make / Extract / Inlay") instead of overnight, with a message about the result or why not; the extractor accepts contraband such as neural cores and stolen goods, and the results are clean; refused modules show why.
 - **0.2.1**: The Blank Module Maker's materials grid grew from 6×3 to 9×6 and its output from 4×2 to 4×4. The materials are big (electronic parts, ingots and scrap are 3×2, wire 2×2, none stack), so even the low-grade recipe didn't fit before.
 - **0.2.0**: Step two: base chips, affix chips, Affix Extractor (sold by Dr. Jackson), Affix Inlayer (starting equipment; given to older saves).

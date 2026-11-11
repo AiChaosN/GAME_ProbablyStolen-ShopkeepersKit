@@ -17,8 +17,8 @@ namespace AdvancedScientist
         {
             ModHelper.AddStartingScenario(modId, Id,
                 () => Lang.T("高级科学家", "Advanced Scientist"),
-                () => Lang.T("精通模组工艺的科学家。用空白模组制造机把电子元件和金属做成空白模组（低 / 中 / 高级，可镶 1 / 2 / 3 个词条），用词条提取机（找杰克逊博士买）把模组的词条做成芯片，再用词条镶嵌机镶到空白模组上。职业能力：机器区里的机器每天按两天运转（设置里可关）。",
-                             "A scientist skilled in module crafting. The Blank Module Maker turns electronic parts and metal into blank modules (low / mid / high grade, 1 / 2 / 3 slots); the Affix Extractor (sold by Dr. Jackson) turns a module's affixes into chips, and the Affix Inlayer puts chips into blank modules. Ability: machines in the Machine Bay run two days' worth every day (can be turned off in the settings)."),
+                () => Lang.T("精通模组工艺的科学家。用空白模组制造机把电子元件和金属做成空白模组（低 / 中 / 高级，可镶 2 / 4 / 6 个词条），用词条提取机（找杰克逊博士买）把模组的词条做成芯片，再用词条镶嵌机镶到空白模组上。职业能力：机器区里的机器每天按两天运转（设置里可关）。",
+                             "A scientist skilled in module crafting. The Blank Module Maker turns electronic parts and metal into blank modules (low / mid / high grade, 2 / 4 / 6 slots); the Affix Extractor (sold by Dr. Jackson) turns a module's affixes into chips, and the Affix Inlayer puts chips into blank modules. Ability: machines in the Machine Bay run two days' worth every day (can be turned off in the settings)."),
                 new Func<string>[]
                 {
                     () => Lang.T("机器区", "Machine Bay"),
@@ -52,6 +52,7 @@ namespace AdvancedScientist
             Give(inv, ItemSpawner.Spawn("random_quality_module"), "随机品质模组");
             for (int i = 0; i < 2; i++) Give(inv, DirectoryMaster.Item("common_electronic"), "普通电子元件");
             for (int i = 0; i < 2; i++) Give(inv, DirectoryMaster.Item("scrap_metal"), "废金属");
+            for (int i = 0; i < 2; i++) Give(inv, DirectoryMaster.Item("wire"), "线缆");
             store.playerCash += StartCashChange;
             Log.Info("高级科学家开局：已发放开局物品，资金 " + StartCashChange);
         }
