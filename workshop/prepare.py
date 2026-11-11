@@ -23,7 +23,7 @@ import argparse, json, pathlib, re, shutil, sys, xml.etree.ElementTree as ET
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 WS = ROOT / "workshop"
 APPID = "4348910"   # Probably Stolen 的 Steam appid（创意工坊内容在 steamapps/workshop/content/4348910/）
-MODS = ["SortToBoxes", "CounterOverflow", "VisitorForecast", "Conveniences", "FilterRecharge"]
+MODS = ["SortToBoxes", "CounterOverflow", "VisitorForecast", "Conveniences", "FilterRecharge", "AdvancedScientist"]
 VIS = {"public": "0", "friends": "1", "private": "2", "unlisted": "3"}
 
 
@@ -106,8 +106,11 @@ def main():
         if content.exists():
             shutil.rmtree(content)
         content.mkdir(parents=True)
-        for f in dist.iterdir():   # 内容根目录直接放 manifest.xml 和 DLL（不要再套一层文件夹）
-            shutil.copy2(f, content / f.name)
+        for f in dist.iterdir():   # 内容根目录直接放 manifest.xml 和 DLL（不要再套一层文件夹）；贴图等子文件夹整个复制
+            if f.is_dir():
+                shutil.copytree(f, content / f.name)
+            else:
+                shutil.copy2(f, content / f.name)
         preview_src = WS / "previews" / f"{mod}.png"
         preview = None
         if preview_src.exists():

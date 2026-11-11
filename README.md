@@ -23,9 +23,10 @@ Developed with assistance from [Claude Code](https://claude.com/claude-code) (An
 | [Counter Overflow](mods/CounterOverflow/README.md) | [Fix] | Z / X | Items a seller can't fit on the counter go onto extra pages instead of being destroyed: page bar above the counter, each page keeps its layout, items you take off can always go back | `chaos5090.counter-overflow` | [Subscribe](https://steamcommunity.com/sharedfiles/filedetails/?id=3835916532) |
 | [Quick Swap](mods/Conveniences/README.md) | [QoL] | — | A collection of small QoL features with no balance impact. Currently: swap batteries and water filters without opening anything; drop the new part on the machine (or pitcher) and the old one goes where the new one was | `chaos5090.conveniences` | Not uploaded yet |
 | [Filter Recharge](mods/FilterRecharge/README.md) | [Gameplay] | — | Drop a water filter on an Advanced Water Filter to move its durability over; the advanced filter's cap rises to 20× a regular one (adjustable) | `chaos5090.filter-recharge` | Not uploaded yet |
+| [Advanced Scientist](mods/AdvancedScientist/README.md) | [Gameplay] | — | New profession: module crafting (Blank Module Maker; affix extraction / merging / inlaying to come); machines in the Machine Bay run two days per day. In development | `chaos5090.advanced-scientist` | Not uploaded yet |
 | [Visitor Forecast](mods/VisitorForecast/README.md) | [Info] | V | Before opening, forecasts who will visit today (faction, intent, wanted goods, budget, probability) | `chaos5090.visitor-forecast` | [Subscribe](https://steamcommunity.com/sharedfiles/filedetails/?id=3835916583) |
 
-Sort To Boxes, Counter Overflow, Quick Swap and Filter Recharge show their UI in Chinese or English, following the game's language; Visitor Forecast is currently Chinese only.
+Sort To Boxes, Counter Overflow, Quick Swap, Filter Recharge and Advanced Scientist show their UI in Chinese or English, following the game's language; Visitor Forecast is currently Chinese only.
 
 ## Install
 
