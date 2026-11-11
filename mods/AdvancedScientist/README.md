@@ -5,7 +5,7 @@
 > Part of the **Shopkeeper's Kit** series · category **[Gameplay]**: a new profession that changes game mechanics. See the [repository home](../../README.md) for the series and categories.
 > By ChaosN · developed with assistance from [Claude Code](https://claude.com/claude-code) (Anthropic's AI coding assistant). Mod ID: `chaos5090.advanced-scientist`.
 >
-> In development (0.1.0, step one); not on the Steam Workshop yet.
+> In development (0.2.0, step two); not on the Steam Workshop yet.
 
 UI in Chinese or English, following the game's language (Chinese shows Chinese, every other language shows English).
 
@@ -16,7 +16,7 @@ Found on **page 2** of the profession screen when starting a new game. A module-
 Starts with:
 
 - a **Machine Bay** (the game's area for placing machines);
-- the **Blank Module Maker**, plus a battery (100 charge) and materials for one low-grade blank module (2 Common Electronic Parts, 2 Scrap Metal);
+- the **Blank Module Maker** and the **Affix Inlayer**, each with a battery (100 charge), plus materials for one low-grade blank module (2 Common Electronic Parts, 2 Scrap Metal);
 - three random modules (performance / efficiency / quality);
 - 200 less starting cash (the starting equipment is valuable; the base-game chemist has 300 less).
 
@@ -33,11 +33,11 @@ Starts with:
 | Machine | What it does | Status |
 |---|---|---|
 | ① Blank Module Maker | materials → low / mid / high grade blank modules (1 / 2 / 3 slots) | **done in 0.1.0** |
-| ② Affix Extractor | module → base chip (performance / efficiency / quality) + special-affix chips; the module becomes blank | step two |
-| ④ Inlayer | blank module + chips → a module with stats | step two |
+| ② Affix Extractor | module → base chip (performance / efficiency / quality) + affix chips; the module becomes blank | **done in 0.2.0** |
+| ④ Affix Inlayer | blank module + chips → custom module | **done in 0.2.0** |
 | ③ Chip Merger | two base chips → one, stats summed, each stat capped at ±500 | step three |
 
-All machines work per day: they use power and run once each night. ② and ③ will be sold by Dr. Jackson (to Advanced Scientists only); ④ will be handed to existing Advanced Scientist saves.
+All machines work per day: they use 30 charge and run once each night. ② is sold by Dr. Jackson (at his shop at night or when he visits yours; to Advanced Scientists only, and only while you don't own one), and ③ will be too; ④ is starting equipment, and saves started with 0.1.0 get one when loaded.
 
 ### ① Blank Module Maker
 
@@ -53,6 +53,35 @@ Put materials in the "Materials" grid and a battery in the power slot. Each nigh
 - Uses 30 charge per night; if the output grid is full or there's no charge, it skips the night without using materials.
 - In a Machine Bay, an Advanced Scientist gets two per night.
 
+### Chips
+
+| Chip | Holds | Value |
+|---|---|---|
+| Base Chip (green) | one set of stats: performance / efficiency / quality, each capped at ±500 | half the sum of the absolute stats (16 performance ≈ 8) |
+| Affix Chip (purple) | one of the game's module affixes: Premium, Inferior, Overvolted, Degrading, Negative Feedback, Learning Algorithm, Receiver, Top Mount, Side Mount | 30 |
+
+The chip's name shows its contents, e.g. "Base Chip (Perf +36 / Eff -44 / Qual +0)".
+
+### ② Affix Extractor
+
+Put a module in the "Module" slot; once per night:
+
+- **Game modules**: the stats become a base chip, each special affix an affix chip, and the module becomes a **low-grade blank** (1 slot).
+  - When the game generates a module, the affix multipliers are already baked into its stats (Premium ×1.2, Inferior ×0.8, Overvolted and Degrading ×2, Negative Feedback ×1.25). Extraction divides them out: the base chip holds the raw stats, the multiplier travels with the affix chip and applies again when inlaid.
+  - Learning Algorithm modules: half their fully-learned stats (fully learned is 2× the original in the game).
+- **Custom modules**: the inlaid chips come back unchanged and the module becomes a blank of the **same grade**.
+- Refused: functional modules (chemistry, farming, furnace, printer, ...), nodes, corrupt / ruined modules, contraband and stolen goods (extraction would launder them).
+- If the output grid can't fit a blank module it skips the night; chips that don't fit go to storage.
+
+### ④ Affix Inlayer
+
+Put a blank module (or a custom module with free slots) in the "Blank module" slot and chips in the "Chips" grid; once per night:
+
+- Fills every free slot in one night: **base chips first** (stats add up), **then affix chips**.
+- Affixes follow the game's rules: at most 2 per module, no duplicates, no conflicting pairs (e.g. Premium with Inferior, Learning Algorithm with other multiplier affixes). Chips that can't be inlaid stay in the grid.
+- The result is called "Custom Module (N/slots used)"; hovering shows the game's own stat and affix tooltip, and it works in machines like any module.
+- Value = blank module value + chip values (plus the game's own value adjustment for affixes).
+
 ## Install
 
 1. After building (see "Build from source" on the [repository home](../../README.md)), copy the whole `dist/AdvancedScientist/` folder (including the sprites under `Textures/Items/`) into the game's `Mods` folder.
@@ -60,17 +89,19 @@ Put materials in the "Materials" grid and a battery in the power slot. Each nigh
 3. New game → page 2 of the profession screen → Advanced Scientist.
 4. This mod requests **no special capabilities** and uses only the game's official mod APIs (new profession, new items, nightly event); the game's own scanner reports no capabilities, not refused, no findings.
 
-Uninstalling: in existing Advanced Scientist saves the Blank Module Maker disappears because the game no longer knows it (true for any mod that adds items); blank modules stay (as ordinary blank modules).
+Uninstalling: in existing Advanced Scientist saves the three machines and the chips disappear because the game no longer knows them (true for any mod that adds items); blank and custom modules stay (custom modules keep their stats and affixes, they just can't be inlaid further).
 
 ## How to test
 
 > Back up your saves first (`save_*.es3` in `%USERPROFILE%\AppData\LocalLow\Questing Goose Studio\Probably Stolen\`) and test with a new game.
 
 1. New game → page 2 of the profession screen shows "Advanced Scientist" (icon: a flask and a module). Start with it.
-2. Storage holds the Machine Bay, the Blank Module Maker, a battery, three modules, 2 Common Electronic Parts and 2 Scrap Metal.
+2. Storage holds the Machine Bay, the Blank Module Maker, the Affix Inlayer, two batteries, three modules, 2 Common Electronic Parts and 2 Scrap Metal.
 3. Put the maker in the Machine Bay, the battery in its power slot, the parts and scrap in "Materials", and sleep: the "Output" grid should have a low-grade blank module.
 4. Add two sets of materials and sleep: in the Machine Bay it makes two per night (the ability).
-5. Search `Player.log` for `[AdvancedScientist]`: look for the item registration, the profession start, "空白模组制造机：做出 …" and "机器区多运转一天：N 台".
+5. Inlaying: put the low-grade blank module into the inlayer's "Blank module" slot. Chips need the extractor first (next step).
+6. Extracting: buy the Affix Extractor from Dr. Jackson (once the story has introduced him), put a random module in and sleep: the output holds a base chip (maybe affix chips too) and a low-grade blank module. Put the base chip in the inlayer and sleep: the blank becomes "Custom Module (1/1 slots used)"; hover it to see the stats.
+7. Search `Player.log` for `[AdvancedScientist]`: item registration, the profession start, "空白模组制造机：做出 …", "词条提取机：…", "词条镶嵌机：镶上 …", "机器区多运转一天：N 台".
 
 ## Implementation
 
@@ -79,6 +110,9 @@ Uninstalling: in existing Advanced Scientist saves the Blank Module Maker disapp
 | `src/Scenario.cs` | Profession via `ModHelper.AddStartingScenario`; starting items |
 | `src/BlankModuleMaker.cs` | ① Blank Module Maker (built like the game's Age Well: battery slot + materials + output, nightly `onCycleEndSlotItemFunc`) |
 | `src/BlankModules.cs` | Blank module grades and recipes |
+| `src/Affixes.cs` | Affixes, the two chips, custom modules (the inlaid list is stored in a tag on the module and everything is recomputed from it: stats summed, then affixes added with the game's `ModuleEffectHelper.AddEffectToModule`) |
+| `src/AffixMachines.cs` | ② Affix Extractor, ④ Affix Inlayer |
+| `src/Progression.cs` | Dr. Jackson sells the extractor (`ModHook.OnPlaceInventorInventoryItemLate`); older saves get the inlayer |
 | `src/TwoDays.cs` | Two days per day in the Machine Bay (`ModHook.OnGoingSleepLate`: run the early / main / late passes again for machines in a bay) |
 | `src/ScientistMod.cs` | Entry point, settings, new item registration (`ModHook.OnModItemDirectoryInit`) |
 | `tools/make_sprites.py` | Generates the pixel art in `Textures/Items/` |
@@ -87,4 +121,5 @@ Uninstalling: in existing Advanced Scientist saves the Blank Module Maker disapp
 
 ## Changelog
 
+- **0.2.0**: Step two: base chips, affix chips, Affix Extractor (sold by Dr. Jackson), Affix Inlayer (starting equipment; given to older saves).
 - **0.1.0**: Step one: profession, two days per day in the Machine Bay, Blank Module Maker.

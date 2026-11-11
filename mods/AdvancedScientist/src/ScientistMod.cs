@@ -26,6 +26,8 @@ namespace AdvancedScientist
                 {
                     ModHook.OnModItemDirectoryInit += RegisterItems;
                     ModHook.OnGoingSleepLate += TwoDays.OnGoingSleepLate;
+                    ModHook.OnPlaceInventorInventoryItemLate += Progression.OnJacksonStock;
+                    ModHook.OnGameLoadedLate += Progression.OnGameLoaded;
                     hooked = true;
                 }
             }
@@ -42,7 +44,7 @@ namespace AdvancedScientist
             try { Scenario.Register(ModId); }
             catch (Exception e) { Log.Error("登记职业失败: " + Log.Describe(e)); }
 
-            Log.Info("已加载：职业“高级科学家”、空白模组制造机；机器区一天两天" + (Config.TwoDays ? "开" : "关"));
+            Log.Info("已加载：职业“高级科学家”、空白模组制造机、词条提取机、词条镶嵌机；机器区一天两天" + (Config.TwoDays ? "开" : "关"));
         }
 
         private static void RegisterItems(ModItemDirectory dir)
@@ -50,9 +52,21 @@ namespace AdvancedScientist
             try
             {
                 if (dir == null) return;
-                if (dir.factoryDictionary != null && dir.factoryDictionary.ContainsKey(BlankModuleMaker.Id)) return;
-                bool ok = dir.Add(BlankModuleMaker.Id, BlankModuleMaker.Create);
-                Log.Info("登记新物品：空白模组制造机 " + (ok ? "成功" : "失败"));
+                var items = new (string id, Func<GameItem> make, string name)[]
+                {
+                    (BlankModuleMaker.Id, BlankModuleMaker.Create, "空白模组制造机"),
+                    (AffixMachines.ExtractorId, AffixMachines.CreateExtractor, "词条提取机"),
+                    (AffixMachines.InlayerId, AffixMachines.CreateInlayer, "词条镶嵌机"),
+                    (Chips.BaseId, Chips.CreateEmptyBase, "基础芯片"),
+                    (Chips.EffectId, Chips.CreateEmptyEffect, "特殊词条芯片"),
+                };
+                var done = new System.Collections.Generic.List<string>();
+                foreach (var (id, make, name) in items)
+                {
+                    if (dir.factoryDictionary != null && dir.factoryDictionary.ContainsKey(id)) continue;
+                    done.Add(name + (dir.Add(id, make) ? "" : "（失败）"));
+                }
+                if (done.Count > 0) Log.Info("登记新物品：" + string.Join("、", done));
             }
             catch (Exception e) { Log.Error("登记新物品出错: " + Log.Describe(e)); }
         }
@@ -69,6 +83,8 @@ namespace AdvancedScientist
                 {
                     ModHook.OnModItemDirectoryInit -= RegisterItems;
                     ModHook.OnGoingSleepLate -= TwoDays.OnGoingSleepLate;
+                    ModHook.OnPlaceInventorInventoryItemLate -= Progression.OnJacksonStock;
+                    ModHook.OnGameLoadedLate -= Progression.OnGameLoaded;
                     hooked = false;
                 }
             }

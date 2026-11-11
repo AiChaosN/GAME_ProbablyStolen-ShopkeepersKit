@@ -27,7 +27,7 @@ namespace AdvancedScientist
           : tier == 2 ? Lang.T("中级空白模组（2 个词条槽）", "Mid-grade Blank Module (2 slots)")
                       : Lang.T("低级空白模组（1 个词条槽）", "Low-grade Blank Module (1 slot)");
 
-        private static long TierValue(int tier) => tier >= 3 ? 450L : tier == 2 ? 180L : 60L;   // 原版空白模组价值 60
+        internal static long TierValue(int tier) => tier >= 3 ? 450L : tier == 2 ? 180L : 60L;   // 原版空白模组价值 60
 
         internal static GameItem Create(int tier)
         {

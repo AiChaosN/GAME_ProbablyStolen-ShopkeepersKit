@@ -23,7 +23,7 @@ ChaosN 为《Probably Stolen》做的 mod 系列。每个 mod 名字前标出**�
 | [掌柜帮手·柜台不丢货 Counter Overflow](mods/CounterOverflow/README.zh-CN.md) | 【修复】 | Z / X | 卖家摆货时柜台放不下的货不再被销毁，分到后面的页：柜台上方有翻页条，每页记住货的位置，拿下来的货随时能放回去 | `chaos5090.counter-overflow` | [订阅](https://steamcommunity.com/sharedfiles/filedetails/?id=3835916532) |
 | [掌柜帮手·便利替换 Quick Swap](mods/Conveniences/README.zh-CN.md) | 【便利】 | — | 不影响平衡的小便利功能合集。目前：换电池、换滤水器不用打开机器，新件直接拖到机器（水罐）上就换下旧件，旧件放回新件原来的位置 | `chaos5090.conveniences` | 还没上传 |
 | [掌柜帮手·滤水器充能 Filter Recharge](mods/FilterRecharge/README.zh-CN.md) | 【玩法】 | — | 滤水器拖到高级滤水器上把耐久度转过去，高级滤水器上限提高到普通的 20 倍（可调） | `chaos5090.filter-recharge` | 还没上传 |
-| [掌柜帮手·高级科学家 Advanced Scientist](mods/AdvancedScientist/README.zh-CN.md) | 【玩法】 | — | 新职业：模组工艺（空白模组制造机，之后加词条提取 / 合成 / 镶嵌），机器区里的机器一天按两天运转。开发中 | `chaos5090.advanced-scientist` | 还没上传 |
+| [掌柜帮手·高级科学家 Advanced Scientist](mods/AdvancedScientist/README.zh-CN.md) | 【玩法】 | — | 新职业：模组工艺（空白模组制造机、词条提取机、词条镶嵌机，之后加词条合成），机器区里的机器一天按两天运转。开发中 | `chaos5090.advanced-scientist` | 还没上传 |
 | [掌柜帮手·访客预测 Visitor Forecast](mods/VisitorForecast/README.zh-CN.md) | 【情报】 | V | 开门前预测今天谁会来（阵营、来意、想要什么、预算、概率） | `chaos5090.visitor-forecast` | [订阅](https://steamcommunity.com/sharedfiles/filedetails/?id=3835916583) |
 
 归类入箱、柜台不丢货、便利替换、滤水器充能、高级科学家的界面中英双语，跟随游戏的语言设置；访客预测目前只有中文。
