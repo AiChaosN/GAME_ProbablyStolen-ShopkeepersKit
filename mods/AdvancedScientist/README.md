@@ -5,7 +5,7 @@
 > Part of the **Shopkeeper's Kit** series · category **[Gameplay]**: a new profession that changes game mechanics. See the [repository home](../../README.md) for the series and categories.
 > By ChaosN · developed with assistance from [Claude Code](https://claude.com/claude-code) (Anthropic's AI coding assistant). Mod ID: `chaos5090.advanced-scientist`.
 >
-> In development (0.3.2, step two); not on the Steam Workshop yet.
+> 0.3.3 (step two), on the Steam Workshop; the chip merger comes later.
 
 UI in Chinese or English, following the game's language (Chinese shows Chinese, every other language shows English).
 
@@ -16,7 +16,7 @@ Found on **page 2** of the profession screen when starting a new game. A module-
 Starts with:
 
 - a **Machine Bay** (the game's area for placing machines);
-- the **Blank Module Maker** and the **Affix Inlayer**, each with a battery (100 charge), plus materials for one low-grade blank module (2 each of Common Electronic Parts, Scrap Metal and Wire);
+- the **Blank Module Maker** and the **Affix Inlayer**, each with a battery (100 charge), plus materials for one low-grade blank module (2 each of Common Electronic Parts, Metal Ingots and Wire);
 - three random modules (performance / efficiency / quality);
 - 200 less starting cash (the starting equipment is valuable; the base-game chemist has 300 less).
 
@@ -45,11 +45,11 @@ Put materials in the "Materials" grid (12×10) and a battery in the power slot, 
 
 | Output | Slots | Materials | Value |
 |---|---|---|---|
-| Low-grade blank module | 2 | Common Electronic Parts ×2 + Scrap Metal ×2 + Wire ×2 | 60 |
-| Mid-grade blank module | 4 | Common Electronic Parts ×4 + Scrap Metal ×4 + Wire ×4 | 230 |
-| High-grade blank module | 6 | Common Electronic Parts ×6 + Scrap Metal ×6 + Wire ×6 | 350 |
+| Low-grade blank module | 2 | Common Electronic Parts ×2 + Metal Ingot ×2 + Wire ×2 | 60 |
+| Mid-grade blank module | 4 | Common Electronic Parts ×4 + Metal Ingot ×4 + Wire ×4 | 390 |
+| High-grade blank module | 6 | Common Electronic Parts ×6 + Metal Ingot ×6 + Wire ×6 | 590 |
 
-- Values roughly match the material cost (Common Electronic Parts 33, Scrap Metal 10, Wire 16), so crafting them to sell makes no profit.
+- Mid and high values roughly match the material cost (Common Electronic Parts 33, Metal Ingot 50, Wire 16), so crafting them to sell makes no profit; low grade keeps the game's own blank module value of 60 (extracting game modules also yields low-grade blanks).
 - All three are the game's own 2×2 "Blank Module"; the slot count is stored on the item and shown in its name. If you uninstall this mod they turn back into ordinary blank modules instead of vanishing.
 - Uses 30 charge per click; if the output grid is full or there's no charge, nothing is made and no materials are used.
 
@@ -97,11 +97,11 @@ Uninstalling: in existing Advanced Scientist saves the three machines and the ch
 > Back up your saves first (`save_*.es3` in `%USERPROFILE%\AppData\LocalLow\Questing Goose Studio\Probably Stolen\`) and test with a new game.
 
 1. New game → page 2 of the profession screen shows "Advanced Scientist" (icon: a flask and a module). Start with it.
-2. Storage holds the Machine Bay, the Blank Module Maker, the Affix Inlayer, two batteries, three modules, 2 each of Common Electronic Parts, Scrap Metal and Wire.
-3. Put the maker in the Machine Bay, the battery in its power slot, the parts and scrap in "Materials", and sleep: the "Output" grid should have a low-grade blank module.
-4. Add two sets of materials and sleep: in the Machine Bay it makes two per night (the ability).
+2. Storage holds the Machine Bay, the Blank Module Maker, the Affix Inlayer, two batteries, three modules, 2 each of Common Electronic Parts, Metal Ingots and Wire.
+3. Open the maker, put the battery in its power slot and the parts, ingots and wire in "Materials", then click "Make" in the title bar: a low-grade blank module appears in "Output".
+4. Ability: put another machine from the game (e.g. a water purifier) in the Machine Bay and sleep; it should produce two days' worth.
 5. Inlaying: put the low-grade blank module into the inlayer's "Blank module" slot. Chips need the extractor first (next step).
-6. Extracting: buy the Affix Extractor from Dr. Jackson (once the story has introduced him), put a random module in and sleep: the output holds a base chip (maybe affix chips too) and a low-grade blank module. Put the base chip in the inlayer and sleep: the blank becomes "Custom Module (1/1 slots used)"; hover it to see the stats.
+6. Extracting: buy the Affix Extractor from Dr. Jackson (once the story has introduced him), put a random module (a neural core works too) in and click "Extract": the output holds a base chip (maybe affix chips too) and a low-grade blank module. Put the base chip in the inlayer and click "Inlay": the blank becomes "Custom Module (1/2 slots used)"; hover it to see the stats.
 7. Search `Player.log` for `[AdvancedScientist]`: item registration, the profession start, "空白模组制造机：做出 …", "词条提取机：…", "词条镶嵌机：镶上 …", "机器区多运转一天：N 台".
 
 ## Implementation
@@ -122,6 +122,7 @@ Uninstalling: in existing Advanced Scientist saves the three machines and the ch
 
 ## Changelog
 
+- **0.3.3**: Recipes use Metal Ingots instead of Scrap Metal (2 / 4 / 6 each); mid / high values 390 / 590; the start kit gives 2 Metal Ingots. Fixed stale in-game descriptions: saves store item names and descriptions, so existing machines kept showing the old recipes; names and descriptions of this mod's machines, chips and blank modules are now refreshed on load for the current version and language. First Workshop release.
 - **0.3.2**: Recipes add wire: 2 / 4 / 6 each of Common Electronic Parts, Scrap Metal and Wire for low / mid / high; slots are now 2 / 4 / 6 (blank modules from older saves get the new count and name on load); materials grid 9×8 → 12×10; mid / high values 230 / 350; the start kit includes 2 wire.
 - **0.3.1**: Recipes now use only Common Electronic Parts + Scrap Metal: 2 / 4 / 6 of each for low / mid / high; materials grid 9×6 → 9×8 (the high recipe is 12 items of 3×2); mid / high blank values 170 / 260 to match the material cost.
 - **0.3.0**: The three machines now work at the click of a title-bar button ("Make / Extract / Inlay") instead of overnight, with a message about the result or why not; the extractor accepts contraband such as neural cores and stolen goods, and the results are clean; refused modules show why.

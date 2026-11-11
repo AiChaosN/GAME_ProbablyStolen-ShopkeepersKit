@@ -51,7 +51,7 @@ namespace AdvancedScientist
             Give(inv, ItemSpawner.Spawn("random_efficiency_module"), "随机效率模组");
             Give(inv, ItemSpawner.Spawn("random_quality_module"), "随机品质模组");
             for (int i = 0; i < 2; i++) Give(inv, DirectoryMaster.Item("common_electronic"), "普通电子元件");
-            for (int i = 0; i < 2; i++) Give(inv, DirectoryMaster.Item("scrap_metal"), "废金属");
+            for (int i = 0; i < 2; i++) Give(inv, DirectoryMaster.Item("metal_ingot"), "金属锭");
             for (int i = 0; i < 2; i++) Give(inv, DirectoryMaster.Item("wire"), "线缆");
             store.playerCash += StartCashChange;
             Log.Info("高级科学家开局：已发放开局物品，资金 " + StartCashChange);

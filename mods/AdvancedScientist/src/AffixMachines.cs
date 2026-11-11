@@ -50,10 +50,7 @@ namespace AdvancedScientist
                 MachineHelper.PowerPanel(battery),
                 MachineHelper.Panel(Lang.T("模组", "Module"), input, "input"),
                 MachineHelper.Panel(Lang.T("产出", "Output"), output, "output"));
-            var machine = NewMachine(window, "as_affix_extractor", Lang.T("词条提取机", "Affix Extractor"),
-                Lang.T("放一个模组进去，点窗口标题栏的“提取”按钮（耗电）：数值成一块基础芯片，每个特殊词条成一块特殊词条芯片；模组变回空白模组（原生模组变成低级空白模组，定制模组变回同档的空白模组）。神经核心等违禁品、赃物也能提取；功能型模组、节点、损坏的不收。",
-                       "Put a module in and click \"Extract\" in the title bar (uses power): the stats become a base chip and each special affix an affix chip; the module turns back into a blank module (game modules become low-grade blanks, custom modules blanks of the same grade). Contraband such as neural cores and stolen goods can be extracted too; functional modules, nodes and corrupt modules are refused."),
-                600L);
+            var machine = NewMachine(window, "as_affix_extractor", ExtractorName(), ExtractorDesc(), 600L);
             MachineHelper.SetupBatterySlot(battery, machine);
             MachineryHelper.InitMachinery(machine, PowerPerNight);
             input.mayInventoryAddItemFunc = (item, _) =>
@@ -66,6 +63,12 @@ namespace AdvancedScientist
             MachineButtons.Register(window, machine, () => Lang.T("提取", "Extract"), () => Extract(machine, battery, input, output));
             return machine;
         }
+
+        internal static string ExtractorName() => Lang.T("词条提取机", "Affix Extractor");
+
+        internal static string ExtractorDesc() =>
+            Lang.T("放一个模组进去，点窗口标题栏的“提取”按钮（耗电）：数值成一块基础芯片，每个特殊词条成一块特殊词条芯片；模组变回空白模组（原生模组变成低级空白模组，定制模组变回同档的空白模组）。神经核心等违禁品、赃物也能提取；功能型模组、节点、损坏的不收。",
+                   "Put a module in and click \"Extract\" in the title bar (uses power): the stats become a base chip and each special affix an affix chip; the module turns back into a blank module (game modules become low-grade blanks, custom modules blanks of the same grade). Contraband such as neural cores and stolen goods can be extracted too; functional modules, nodes and corrupt modules are refused.");
 
         // 放不进提取机时（松手那一刻）提示原因；同一件东西 1 秒内只提示一次
         private static GameItem lastRefused;
@@ -134,10 +137,7 @@ namespace AdvancedScientist
                 MachineHelper.PowerPanel(battery),
                 MachineHelper.Panel(Lang.T("空白模组", "Blank module"), moduleSlot, "module"),
                 MachineHelper.Panel(Lang.T("芯片", "Chips"), chips, "chips"));
-            var machine = NewMachine(window, "as_affix_inlayer", Lang.T("词条镶嵌机", "Affix Inlayer"),
-                Lang.T("放一个空白模组（或还有空槽的定制模组）和芯片，点窗口标题栏的“镶嵌”按钮（耗电），把芯片镶到空着的词条槽上：低 / 中 / 高级空白模组有 2 / 4 / 6 个槽；先镶基础芯片（数值相加），再镶特殊词条芯片（最多 2 个、不能互斥）。镶不上的芯片留在格子里。",
-                       "Put in a blank module (or a custom module with free slots) and chips, then click \"Inlay\" in the title bar (uses power) to inlay chips into free slots: low / mid / high grade blanks have 2 / 4 / 6 slots; base chips first (stats add up), then affix chips (at most 2, no conflicting ones). Chips that can't be inlaid stay in the grid."),
-                600L);
+            var machine = NewMachine(window, "as_affix_inlayer", InlayerName(), InlayerDesc(), 600L);
             MachineHelper.SetupBatterySlot(battery, machine);
             MachineryHelper.InitMachinery(machine, PowerPerNight);
             moduleSlot.mayInventoryAddItemFunc = (item, _) => item != null && GeneralHelper.IsItemOwned(item) && item.identifier == BlankModules.VanillaId;
@@ -145,6 +145,12 @@ namespace AdvancedScientist
             MachineButtons.Register(window, machine, () => Lang.T("镶嵌", "Inlay"), () => Inlay(machine, battery, moduleSlot, chips));
             return machine;
         }
+
+        internal static string InlayerName() => Lang.T("词条镶嵌机", "Affix Inlayer");
+
+        internal static string InlayerDesc() =>
+            Lang.T("放一个空白模组（或还有空槽的定制模组）和芯片，点窗口标题栏的“镶嵌”按钮（耗电），把芯片镶到空着的词条槽上：低 / 中 / 高级空白模组有 2 / 4 / 6 个槽；先镶基础芯片（数值相加），再镶特殊词条芯片（最多 2 个、不能互斥）。镶不上的芯片留在格子里。",
+                   "Put in a blank module (or a custom module with free slots) and chips, then click \"Inlay\" in the title bar (uses power) to inlay chips into free slots: low / mid / high grade blanks have 2 / 4 / 6 slots; base chips first (stats add up), then affix chips (at most 2, no conflicting ones). Chips that can't be inlaid stay in the grid.");
 
         private static string Inlay(GameItem machine, GameSlotInventory battery, GameSlotInventory moduleSlot, GameGridInventory chipGrid)
         {

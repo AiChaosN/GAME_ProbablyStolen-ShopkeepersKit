@@ -87,8 +87,7 @@ namespace AdvancedScientist
         {
             var it = ItemDirectory.CreateEmptyItem().SetSpriteAndShapeFromMod(ScientistMod.ModId, "as_chip_base");
             it.name = Lang.T("基础芯片", "Base Chip");
-            it.shortDescription = Lang.T("记录一组模组数值（性能 / 效率 / 品质）。放进词条镶嵌机，镶到有空词条槽的空白模组上。",
-                                         "Holds one set of module stats (performance / efficiency / quality). Inlay it into a blank module with a free slot using the Affix Inlayer.");
+            it.shortDescription = BaseDesc();
             it.SetGameItemType("MATERIAL");
             it.unitValue = 1L;
             return it;
@@ -98,11 +97,26 @@ namespace AdvancedScientist
         {
             var it = ItemDirectory.CreateEmptyItem().SetSpriteAndShapeFromMod(ScientistMod.ModId, "as_chip_effect");
             it.name = Lang.T("特殊词条芯片", "Affix Chip");
-            it.shortDescription = Lang.T("记录一个模组特殊词条（优质、过压……）。放进词条镶嵌机，镶到有空词条槽的空白模组上；一个模组最多 2 个特殊词条。",
-                                         "Holds one special module affix (Premium, Overvolted, ...). Inlay it into a blank module with a free slot using the Affix Inlayer; a module holds at most 2 special affixes.");
+            it.shortDescription = EffectDesc();
             it.SetGameItemType("MATERIAL");
             it.unitValue = 30L;
             return it;
+        }
+
+        internal static string BaseDesc() =>
+            Lang.T("记录一组模组数值（性能 / 效率 / 品质）。放进词条镶嵌机，镶到有空词条槽的空白模组上。",
+                   "Holds one set of module stats (performance / efficiency / quality). Inlay it into a blank module with a free slot using the Affix Inlayer.");
+
+        internal static string EffectDesc() =>
+            Lang.T("记录一个模组特殊词条（优质、过压……）。放进词条镶嵌机，镶到有空词条槽的空白模组上；一个模组最多 2 个特殊词条。",
+                   "Holds one special module affix (Premium, Overvolted, ...). Inlay it into a blank module with a free slot using the Affix Inlayer; a module holds at most 2 special affixes.");
+
+        /// <summary>芯片名字（空芯片没有内容时用通用名）。</summary>
+        internal static string NameOf(Affix a, bool isBase)
+        {
+            if (a == null || a.IsEmpty) return isBase ? Lang.T("基础芯片", "Base Chip") : Lang.T("特殊词条芯片", "Affix Chip");
+            return a.IsBase ? Lang.T("基础芯片（", "Base Chip (") + a.Describe() + Lang.T("）", ")")
+                            : Lang.T("特殊词条芯片（", "Affix Chip (") + a.Describe() + Lang.T("）", ")");
         }
 
         /// <summary>做一块写好内容的芯片。</summary>
@@ -116,12 +130,12 @@ namespace AdvancedScientist
                 it.ModifyTag(PTag, s => s.Enable().SetInt(a.P));
                 it.ModifyTag(ETag, s => s.Enable().SetInt(a.E));
                 it.ModifyTag(QTag, s => s.Enable().SetInt(a.Q));
-                it.name = Lang.T("基础芯片（", "Base Chip (") + a.Describe() + Lang.T("）", ")");
+                it.name = NameOf(a, true);
             }
             else
             {
                 it.ModifyTag(EffectTag, s => s.Enable().SetString(a.Effect));
-                it.name = Lang.T("特殊词条芯片（", "Affix Chip (") + a.Describe() + Lang.T("）", ")");
+                it.name = NameOf(a, false);
             }
             it.unitValue = a.Value;
             return it;

@@ -37,8 +37,9 @@ namespace AdvancedScientist
           : tier == 2 ? Lang.T("中级空白模组（4 个词条槽）", "Mid-grade Blank Module (4 slots)")
                       : Lang.T("低级空白模组（2 个词条槽）", "Low-grade Blank Module (2 slots)");
 
-        // 价值跟材料成本差不多（普通电子元件 33、废金属 10、线缆 16）：低级 = 原版空白模组 60，中级 4+4+4 ≈ 236，高级 6+6+6 ≈ 354
-        internal static long TierValue(int tier) => tier >= 3 ? 350L : tier == 2 ? 230L : 60L;
+        // 中级、高级的价值跟材料成本差不多（普通电子元件 33、金属锭 50、线缆 16）：中级 4×99 ≈ 396，高级 6×99 ≈ 594，做出来卖不出差价。
+        // 低级保持原版空白模组的 60：提取原生模组也会出低级空白模组，定高了等于凭空送钱。
+        internal static long TierValue(int tier) => tier >= 3 ? 590L : tier == 2 ? 390L : 60L;
 
         internal static GameItem Create(int tier)
         {
@@ -52,7 +53,7 @@ namespace AdvancedScientist
         }
     }
 
-    /// <summary>空白模组制造机的三档配方：普通电子元件 + 废金属 + 线缆，低 / 中 / 高级各 2 / 4 / 6 个（用户 2026-11-12 定）。</summary>
+    /// <summary>空白模组制造机的三档配方：普通电子元件 + 金属锭 + 线缆，低 / 中 / 高级各 2 / 4 / 6 个（用户 2026-11-12 定）。</summary>
     internal sealed class Recipe
     {
         internal int Tier;
@@ -60,9 +61,9 @@ namespace AdvancedScientist
 
         internal static readonly Recipe[] All =
         {
-            new Recipe { Tier = 3, Needs = new[] { ("common_electronic", 6), ("scrap_metal", 6), ("wire", 6) } },
-            new Recipe { Tier = 2, Needs = new[] { ("common_electronic", 4), ("scrap_metal", 4), ("wire", 4) } },
-            new Recipe { Tier = 1, Needs = new[] { ("common_electronic", 2), ("scrap_metal", 2), ("wire", 2) } },
+            new Recipe { Tier = 3, Needs = new[] { ("common_electronic", 6), ("metal_ingot", 6), ("wire", 6) } },
+            new Recipe { Tier = 2, Needs = new[] { ("common_electronic", 4), ("metal_ingot", 4), ("wire", 4) } },
+            new Recipe { Tier = 1, Needs = new[] { ("common_electronic", 2), ("metal_ingot", 2), ("wire", 2) } },
         };
 
         internal static readonly HashSet<string> Materials = new HashSet<string>(All.SelectMany(r => r.Needs.Select(n => n.id)));

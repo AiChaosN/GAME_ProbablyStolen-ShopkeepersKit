@@ -1,14 +1,23 @@
 [h1]【玩法】掌柜帮手·高级科学家[/h1]
-[b]新职业，改变游戏机制。[/b] 界面中英双语，跟随游戏语言。开发中。
+[b]新职业，改变游戏机制。[/b] 界面中英双语，跟随游戏语言。词条合成机后续加入。
 
 [h2]职业[/h2]
-职业选择界面第 2 页的“高级科学家”，精通模组工艺。开局：机器区、空白模组制造机、词条镶嵌机（各附电池）、三块随机模组。
+职业选择界面第 2 页的“高级科学家”，精通模组工艺。开局：机器区、空白模组制造机、词条镶嵌机、两块电池、三块随机模组、一份低级空白模组的材料。
 [list]
 [*][b]职业能力[/b]：直接放在机器区里的机器每天按两天运转（多耗一次电；冰箱、发电类等不加倍；设置里可关）。
-[*][b]空白模组制造机[/b]：点按钮立刻把电子元件、金属、线缆做成低 / 中 / 高级空白模组（可镶 2 / 4 / 6 个词条）。
-[*][b]词条提取机[/b]（找杰克逊博士买）：把模组的数值做成基础芯片、特殊词条做成特殊词条芯片，模组变回空白模组。
-[*][b]词条镶嵌机[/b]：把芯片镶到空白模组上，数值相加，特殊词条最多 2 个。
-[*]之后加入：词条合成机。
+[/list]
+
+[h2]机器：点按钮立刻做[/h2]
+打开机器窗口，标题栏 × 左边有“制造 / 提取 / 镶嵌”按钮，点一下做一次、从电源槽的电池扣 30 电；提示里写着做出了什么，或者为什么没做成（材料不够、产出格满了、没电……）。
+[list]
+[*][b]空白模组制造机[/b]：材料格放材料，点“制造”。材料够哪档做哪档，优先做高档：
+[list]
+[*]低级空白模组（可镶 2 个词条）= 普通电子元件 ×2 + 金属锭 ×2 + 线缆 ×2
+[*]中级空白模组（可镶 4 个词条）= 普通电子元件 ×4 + 金属锭 ×4 + 线缆 ×4
+[*]高级空白模组（可镶 6 个词条）= 普通电子元件 ×6 + 金属锭 ×6 + 线缆 ×6
+[/list]
+[*][b]词条提取机[/b]（找杰克逊博士买，只卖给高级科学家）：“模组”槽放一个模组，点“提取”：数值成一块基础芯片，每个特殊词条成一块特殊词条芯片，模组变回空白模组。神经核心等违禁品、赃物也能提取，出来的东西是干净的；功能型模组、节点、损坏的不收（放的时候会提示原因）。
+[*][b]词条镶嵌机[/b]：“空白模组”槽放空白模组，“芯片”格放芯片，点“镶嵌”：基础芯片的数值相加（单块芯片每项上限 ±500），特殊词条按游戏规则最多 2 个、不能互斥。
 [/list]
 
 [h2]安装[/h2]
@@ -20,16 +29,25 @@
 ------------------------------------------------------------
 
 [h1][Gameplay] Shopkeeper's Kit: Advanced Scientist[/h1]
-[b]A new profession that changes game mechanics.[/b] UI in Chinese and English, following the game language. In development.
+[b]A new profession that changes game mechanics.[/b] UI in Chinese and English, following the game language. A chip merger comes later.
 
 [h2]Profession[/h2]
-"Advanced Scientist" on page 2 of the profession screen, a module-crafting expert. Starts with a Machine Bay, the Blank Module Maker and the Affix Inlayer (each with a battery) and three random modules.
+"Advanced Scientist" on page 2 of the profession screen, a module-crafting expert. Starts with a Machine Bay, the Blank Module Maker, the Affix Inlayer, two batteries, three random modules and materials for one low-grade blank module.
 [list]
 [*][b]Ability[/b]: machines placed directly in a Machine Bay run two days' worth every day (using power again; fridges, generators etc. excluded; can be turned off).
-[*][b]Blank Module Maker[/b]: at the click of a button it turns electronic parts, metal and wire into low / mid / high grade blank modules (2 / 4 / 6 slots).
-[*][b]Affix Extractor[/b] (sold by Dr. Jackson): turns a module's stats into a base chip and its affixes into affix chips; the module becomes a blank.
-[*][b]Affix Inlayer[/b]: puts chips into blank modules; stats add up, at most 2 special affixes.
-[*]Coming next: a chip merger.
+[/list]
+
+[h2]Machines: click a button, done[/h2]
+Open a machine and click "Make / Extract / Inlay" left of × in its title bar. Each click runs once and takes 30 charge from the battery in the power slot; a message tells you what was made or why not (not enough materials, output full, no power, ...).
+[list]
+[*][b]Blank Module Maker[/b]: put materials in the grid and click "Make". It makes the best grade the materials allow:
+[list]
+[*]Low-grade blank module (2 slots) = Common Electronic Parts ×2 + Metal Ingot ×2 + Wire ×2
+[*]Mid-grade blank module (4 slots) = Common Electronic Parts ×4 + Metal Ingot ×4 + Wire ×4
+[*]High-grade blank module (6 slots) = Common Electronic Parts ×6 + Metal Ingot ×6 + Wire ×6
+[/list]
+[*][b]Affix Extractor[/b] (sold by Dr. Jackson, to Advanced Scientists only): put a module in the "Module" slot and click "Extract": its stats become a base chip and each special affix an affix chip; the module turns back into a blank. Contraband such as neural cores and stolen goods work too, and the results are clean; functional modules, nodes and corrupt modules are refused (with a message saying why).
+[*][b]Affix Inlayer[/b]: put a blank module in the "Blank module" slot and chips in the "Chips" grid, then click "Inlay": base chip stats add up (each chip caps at ±500 per stat); special affixes follow the game's rules (at most 2, no conflicting ones).
 [/list]
 
 [h2]Install[/h2]

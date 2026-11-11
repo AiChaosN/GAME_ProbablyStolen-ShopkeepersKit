@@ -38,25 +38,58 @@ namespace AdvancedScientist
             }
         }
 
+        /// <summary>按当前版本刷新本 mod 物品的名字和说明；是本 mod 的物品返回 true。</summary>
+        internal static bool RefreshTexts(GameItem it)
+        {
+            if (it == null) return false;
+            switch (it.identifier)
+            {
+                case BlankModuleMaker.Id:
+                    Set(it, BlankModuleMaker.Name(), BlankModuleMaker.Describe());
+                    return true;
+                case AffixMachines.ExtractorId:
+                    Set(it, AffixMachines.ExtractorName(), AffixMachines.ExtractorDesc());
+                    return true;
+                case AffixMachines.InlayerId:
+                    Set(it, AffixMachines.InlayerName(), AffixMachines.InlayerDesc());
+                    return true;
+                case Chips.BaseId:
+                    Set(it, Chips.NameOf(Chips.Read(it), true), Chips.BaseDesc());
+                    return true;
+                case Chips.EffectId:
+                    Set(it, Chips.NameOf(Chips.Read(it), false), Chips.EffectDesc());
+                    return true;
+                case BlankModules.VanillaId:
+                    if (!it.IsTag(BlankModules.SlotsTag)) return false;   // 游戏原生的空白模组不动
+                    CustomModules.RefreshName(it);
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        private static void Set(GameItem it, string name, string desc)
+        {
+            if (it.name != name) it.name = name;
+            if (it.shortDescription != desc) it.shortDescription = desc;
+        }
+
         internal static void OnGameLoaded()
         {
-            // 本 mod 做的空白模组 / 定制模组：按当前规则刷新名字（槽数改过）
+            // 游戏存档会连物品的名字和说明一起存下来，读档时用存档里的旧文字（SaveManager 里 name / shortDescription 照存档恢复），
+            // 所以改了配方、槽数或游戏语言后，已有的机器、芯片、空白模组还显示旧的。这里按当前版本和语言重新写一遍。
             try
             {
                 var store = Game.Store;
                 if (store != null)
                 {
                     int n = 0;
-                    foreach (var it in store.FindAllItem())
-                    {
-                        if (it == null || it.identifier != BlankModules.VanillaId || !it.IsTag(BlankModules.SlotsTag)) continue;
-                        CustomModules.RefreshName(it);
-                        n++;
-                    }
-                    if (n > 0) Log.Info("刷新了 " + n + " 个空白 / 定制模组的名字");
+                    foreach (var it in store.FindAllItem(false))
+                        if (RefreshTexts(it)) n++;
+                    if (n > 0) Log.Info("刷新了 " + n + " 件本 mod 物品的名字和说明");
                 }
             }
-            catch (Exception e) { Log.Warn("刷新模组名字出错: " + e.Message); }
+            catch (Exception e) { Log.Warn("刷新物品说明出错: " + e.Message); }
 
             try
             {

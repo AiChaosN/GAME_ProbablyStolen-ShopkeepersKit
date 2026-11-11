@@ -17,7 +17,7 @@ namespace AdvancedScientist
         internal static GameItem Create()
         {
             var battery = new GameSlotInventory();
-            // 材料都很大：普通电子元件、废金属 3×2，线缆 2×2，都不叠放。高级配方 6 + 6 + 6 = 12 件 3×2 + 6 件 2×2 = 96 格；
+            // 材料都很大：普通电子元件、金属锭 3×2，线缆 2×2，都不叠放。高级配方 6 + 6 + 6 = 12 件 3×2 + 6 件 2×2 = 96 格；
             // 12×10 = 120 格，留点余量（0.2.0 的 6×3 连低级都放不下）。
             var input = new GameGridInventory(12, 10);
             var output = new GameGridInventory(4, 4);   // 4 个 2×2 空白模组（机器区一晚做两个，攒几天也放得下）
@@ -27,7 +27,7 @@ namespace AdvancedScientist
                 MachineHelper.Panel(Lang.T("产出", "Output"), output, "output"));
 
             GameItem machine = ItemDirectory.CreateEmptyItem().SetContentWindow(window).SetSpriteAndShapeFromMod(ScientistMod.ModId, Sprite);
-            machine.name = Lang.T("空白模组制造机", "Blank Module Maker");
+            machine.name = Name();
             machine.shortDescription = Describe();
             machine.unitValue = 400L;
             machine.SetGameItemType("MACHINE");
@@ -46,7 +46,9 @@ namespace AdvancedScientist
             return machine;
         }
 
-        private static string Describe()
+        internal static string Name() => Lang.T("空白模组制造机", "Blank Module Maker");
+
+        internal static string Describe()
         {
             string lines = string.Join(Lang.T("；", "; "), Recipe.All.Reverse().Select(r => BlankModules.TierName(r.Tier) + " = " + r.Describe()));
             return Lang.T("点窗口标题栏的“制造”按钮，耗电用材料格里的材料做一个空白模组；材料够哪档做哪档，优先做高档。", "Click \"Make\" in the window's title bar to use power and make one blank module from the materials; it makes the best grade the materials allow. ") + lines;
