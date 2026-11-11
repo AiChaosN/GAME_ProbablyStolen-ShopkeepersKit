@@ -40,9 +40,11 @@ namespace FilterRecharge
         private static readonly string[] MultiplierChoices = { "5", "10", "20", "40" };
 
         internal bool Enabled = true;
+        internal bool FilterInPlace = true;
         internal int Multiplier = 20;
 
         private ConfigEntry<bool> enabledEntry;
+        private ConfigEntry<bool> filterInPlaceEntry;
         private ConfigEntry<string> multiplierEntry;
 
         internal void Init(string modId)
@@ -56,7 +58,11 @@ namespace FilterRecharge
                 tooltip: () => Lang.T("普通滤水器满耐久是 400。20 倍 = 上限 8000。已经充到更高上限的不会被降回去。",
                     "A regular water filter has 400 durability. 20× = a cap of 8000. Filters already charged to a higher cap keep it."));
             enabledEntry.OnChanged += _ => Apply();
+            filterInPlaceEntry = cfg.Define("filterInPlace", true, "General", () => Lang.T("高级滤水器拖到装水的容器上：直接过滤一遍", "Drop an Advanced Water Filter on a water container to filter it in place"),
+                tooltip: () => Lang.T("把高级滤水器拖到大桶、储水罐等装着水的容器上，桶里的水直接过滤一遍（等于整桶倒过一个装着这个滤水器的水罐：去掉的杂质、消耗的耐久都一样），不用来回倒。带滤芯槽的水罐不算（拖上去还是换件 / 充能）。",
+                    "Drop an Advanced Water Filter on a barrel, water tank or other container holding water to filter it in place (the same as pouring it all through a pitcher with this filter: same impurities removed, same durability used), no pouring back and forth. Pitchers with a filter slot are excluded (dropping on them still swaps / recharges)."));
             multiplierEntry.OnChanged += _ => Apply();
+            filterInPlaceEntry.OnChanged += _ => Apply();
             Apply();
             cfg.Save();
         }
@@ -65,6 +71,7 @@ namespace FilterRecharge
         {
             Enabled = enabledEntry?.Value ?? true;
             Multiplier = int.TryParse(multiplierEntry?.Value, out var m) && m > 0 ? m : 20;
+            FilterInPlace = filterInPlaceEntry?.Value ?? true;
         }
     }
 }

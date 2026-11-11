@@ -22,6 +22,16 @@ In the base game the **Advanced Water Filter** has 400 durability and recovers 5
 
 The used-up source filter stays where it was with 0 durability (as used-up filters do in the base game); trash it if you don't want it.
 
+### Filter big containers in place (optional, on by default)
+
+**Drop an Advanced Water Filter on a container holding water** (barrels, water tanks, ...) and the water inside is filtered once, with no pouring into a pitcher and back. It works like dropping the game's UV lamp on a container to sterilise it.
+
+- It's the same as pouring the whole container, one pitcher-load (3000 ml) at a time, through a pitcher holding this filter: same impurities removed and same durability used (it calls the game's own filter function).
+- A message shows "removed N ml of impurities, durability -M". A container whose water you've tested shows its new purity; an untested one keeps showing what you believed, so nothing is revealed.
+- Once the filter is used up, the rest of the water passes unchanged (same as pouring by hand).
+- Not handled: pitchers with a filter slot (dropping on them still swaps / recharges), wine containers, empty containers.
+- Turn it off with `filterInPlace` in the settings.
+
 ### Balance
 
 - one Advanced Water Filter holds as much as 20 regular filters, so you swap filters far less often;
@@ -58,6 +68,7 @@ Mods screen → select this mod → **Settings**, or edit `%USERPROFILE%\AppData
 | Key | Default | Meaning |
 |---|---|---|
 | `enabled` | `true` | Drop a water filter on an Advanced Water Filter to recharge it; off = base game |
+| `filterInPlace` | `true` | Drop an Advanced Water Filter on a water container to filter it in place |
 | `capMultiplier` | `20` | Advanced Water Filter cap = 400 × this (5 / 10 / 20 / 40). Filters already charged to a higher cap keep it |
 
 ## How to test
@@ -82,5 +93,6 @@ Mods screen → select this mod → **Settings**, or edit `%USERPROFILE%\AppData
 
 ## Changelog
 
+- **1.2.0**: Drop an Advanced Water Filter on a barrel, water tank or other water container to filter it in place (in 3000 ml batches, equivalent to pouring through a pitcher); optional, on by default.
 - **1.1.0**: Box-select several filters and drop them together to charge in one go (on the Advanced Water Filter or a pitcher holding one), with one combined message.
 - **1.0.0**: First release: drop a water filter on an Advanced Water Filter (or a pitcher holding one) to recharge it; cap defaults to 20× a regular filter.

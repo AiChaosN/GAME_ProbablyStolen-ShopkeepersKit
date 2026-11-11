@@ -10,6 +10,7 @@
 [*]快满时只转需要的部分，剩下的留在原来的滤水器里。
 [*][b]可以批量[/b]：框选好几个滤水器一起拖上去，一个接一个充进去。
 [*]不用打开水罐：直接拖到装着高级滤水器的水罐上也行。
+[*][b]原地过滤大桶[/b]：把高级滤水器拖到大桶、储水罐等装着水的容器上，里面的水直接过滤一遍，不用来回倒（和倒过装着它的水罐效果一样；设置里可关）。
 [/list]
 
 [h2]对平衡的影响[/h2]
@@ -40,6 +41,7 @@
 [*]Near the cap only what's needed is moved; the rest stays in the source filter.
 [*][b]Batch charging[/b]: box-select several filters and drop them together.
 [*]No need to open the pitcher: drop it on a water pitcher holding an Advanced Water Filter.
+[*][b]Filter big containers in place[/b]: drop an Advanced Water Filter on a barrel or water tank to filter the water inside, with no pouring back and forth (same result as pouring through a pitcher holding it; can be turned off).
 [/list]
 
 [h2]Balance[/h2]

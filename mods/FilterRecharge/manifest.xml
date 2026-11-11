@@ -3,11 +3,11 @@
   <ID>chaos5090.filter-recharge</ID>
   <Name>【玩法】掌柜帮手·滤水器充能 | [Gameplay] Shopkeeper's Kit: Filter Recharge</Name>
   <Author>ChaosN</Author>
-  <ModVersion>1.1.0</ModVersion>
-  <Description>【玩法型：改变游戏机制，影响平衡】高级滤水器可以“充能”：把滤水器（普通、高级、水培芦苇滤芯）拖到高级滤水器上，它剩下的耐久度全部转给高级滤水器，高级滤水器的耐久度上限提高到普通滤水器的 20 倍（8000，可在设置里改成 5/10/40 倍）。也可以直接拖到装着高级滤水器的水罐上，不用打开。快满时只转需要的部分，剩下的留在原来的滤水器里。可以框选多个滤水器一起拖上去批量充能。充满时售价与原版满耐久相同，没充满按比例打折；高级滤水器每天恢复 50 点的效果照旧，可以一直恢复到新上限。界面中英双语，跟随游戏语言。
+  <ModVersion>1.2.0</ModVersion>
+  <Description>【玩法型：改变游戏机制，影响平衡】高级滤水器可以“充能”：把滤水器（普通、高级、水培芦苇滤芯）拖到高级滤水器上，它剩下的耐久度全部转给高级滤水器，高级滤水器的耐久度上限提高到普通滤水器的 20 倍（8000，可在设置里改成 5/10/40 倍）。也可以直接拖到装着高级滤水器的水罐上，不用打开。快满时只转需要的部分，剩下的留在原来的滤水器里。可以框选多个滤水器一起拖上去批量充能。高级滤水器拖到大桶、储水罐等装着水的容器上，直接把里面的水过滤一遍（和倒过装着它的水罐一样，可在设置里关）。充满时售价与原版满耐久相同，没充满按比例打折；高级滤水器每天恢复 50 点的效果照旧，可以一直恢复到新上限。界面中英双语，跟随游戏语言。
 掌柜帮手系列 · 作者 ChaosN · 由 Claude Code（Anthropic 的 AI 编程助手）协助开发。
 
-[Gameplay - changes a game mechanic, affects balance] Advanced Water Filters can be recharged: drop a water filter (regular, advanced or hydroreed) on an Advanced Water Filter and all its remaining durability moves over; the Advanced Water Filter's durability cap rises to 20× a regular filter (8000; 5/10/40× in the settings). You can also drop it on a water pitcher holding an Advanced Water Filter without opening it. Near the cap only what's needed is moved and the rest stays in the source filter. Box-select several filters to charge them in one drop. A fully charged filter sells for the same price as a full one in the base game, less when not full; the Advanced Water Filter's daily recovery of 50 still works, up to the new cap. UI in Chinese and English, following the game language.
+[Gameplay - changes a game mechanic, affects balance] Advanced Water Filters can be recharged: drop a water filter (regular, advanced or hydroreed) on an Advanced Water Filter and all its remaining durability moves over; the Advanced Water Filter's durability cap rises to 20× a regular filter (8000; 5/10/40× in the settings). You can also drop it on a water pitcher holding an Advanced Water Filter without opening it. Near the cap only what's needed is moved and the rest stays in the source filter. Box-select several filters to charge them in one drop. Drop an Advanced Water Filter on a barrel or water tank to filter the water inside in place (same as pouring it through a pitcher holding the filter; can be turned off). A fully charged filter sells for the same price as a full one in the base game, less when not full; the Advanced Water Filter's daily recovery of 50 still works, up to the new cap. UI in Chinese and English, following the game language.
 Part of Shopkeeper's Kit by ChaosN. Developed with assistance from Claude Code (Anthropic's AI coding assistant).</Description>
   <GameVersions>
     <Version>0.46D</Version>

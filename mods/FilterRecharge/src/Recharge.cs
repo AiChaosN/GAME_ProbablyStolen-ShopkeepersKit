@@ -91,14 +91,14 @@ namespace FilterRecharge
         private static void MayTargetPostfix(GameItem __instance, GameItem targetItem, ref bool __result)
         {
             if (__result || busy) return;
-            try { if (Find(__instance, targetItem) != null) __result = true; }
+            try { if (Find(__instance, targetItem) != null || FilterInPlace.Applies(__instance, targetItem)) __result = true; }
             catch (Exception e) { Log.Warn("判断能否充能出错: " + e.Message); }
         }
 
         private static void CanTargetPostfix(GameItem __instance, GameItem targetItem, ref bool __result)
         {
             if (__result || busy) return;
-            try { if (Find(__instance, targetItem) != null) __result = true; }
+            try { if (Find(__instance, targetItem) != null || FilterInPlace.Applies(__instance, targetItem)) __result = true; }
             catch (Exception e) { Log.Warn("判断能否充能出错: " + e.Message); }
         }
 
@@ -108,9 +108,20 @@ namespace FilterRecharge
             try
             {
                 var adv = Find(__instance, targetItem);
-                if (adv == null) return true;
-                Charge(__instance, adv);
-                return false;
+                if (adv != null)
+                {
+                    Charge(__instance, adv);
+                    return false;
+                }
+                // 高级滤水器拖到装着水的容器上：原地过滤一遍（原版对这一对没有任何效果）
+                if (FilterInPlace.Applies(__instance, targetItem))
+                {
+                    busy = true;
+                    try { FilterInPlace.Run(__instance, targetItem); }
+                    finally { busy = false; }
+                    return false;
+                }
+                return true;
             }
             catch (Exception e)
             {
