@@ -3,7 +3,7 @@
 本脚本只整理本地文件，不登录、不上传；上传由你自己运行 SteamCMD 完成（见 workshop/README.zh-CN.md）。
 
 用法（在仓库根目录）：
-    python3 -I workshop/prepare.py                       # 三个 mod 全部，私密（只有自己看得见）
+    python3 -I workshop/prepare.py                       # 所有 mod，新建的物品私密（只有自己看得见）
     python3 -I workshop/prepare.py SortToBoxes           # 只准备一个
     python3 -I workshop/prepare.py --visibility public --note "1.4.2：……"
 
@@ -20,7 +20,7 @@ import argparse, json, pathlib, re, shutil, sys, xml.etree.ElementTree as ET
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 WS = ROOT / "workshop"
 APPID = "4348910"   # Probably Stolen 的 Steam appid（创意工坊内容在 steamapps/workshop/content/4348910/）
-MODS = ["SortToBoxes", "CounterOverflow", "VisitorForecast"]
+MODS = ["SortToBoxes", "CounterOverflow", "VisitorForecast", "DropSwap"]
 VIS = {"public": "0", "friends": "1", "private": "2", "unlisted": "3"}
 
 

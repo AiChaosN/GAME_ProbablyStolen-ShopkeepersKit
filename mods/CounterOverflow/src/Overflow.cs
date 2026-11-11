@@ -23,6 +23,9 @@ namespace CounterOverflow
         private static int current;
         private static StoreClientInstance owner;
         private static float ownerlessSince = -1f;
+        // 夜里外出（杰克逊博士的店）时分的页：属于这个地点，离开这个地点才收尾，不看顾客实例
+        // （到店时先摆货、后生成店主这个“顾客”，顾客实例的变化不代表离开）
+        private static string ownerLocation;
 
         internal static int PageCount => pages.Count;
         internal static int CurrentPage => current;
@@ -35,6 +38,17 @@ namespace CounterOverflow
         private static StoreClientInstance CurrentClient()
         {
             try { return Game.Store?.currentClientInstance; }
+            catch { return null; }
+        }
+
+        /// <summary>夜里外出时所在地点的 id（例如杰克逊博士的店 "dr_jackson"）；在店里时为 null。</summary>
+        internal static string CurrentLocationId()
+        {
+            try
+            {
+                var map = MapUIManager.Instance;
+                return map != null && map.Current != null ? map.Current.Id : null;
+            }
             catch { return null; }
         }
 
@@ -157,6 +171,7 @@ namespace CounterOverflow
             if (pages.Count == 0)
             {
                 owner = cur;
+                ownerLocation = CurrentLocationId();
                 pages.Add(null);   // 第 1 页 = 柜台上正在显示的货
                 current = 0;
             }
@@ -288,10 +303,15 @@ namespace CounterOverflow
             }
         }
 
-        /// <summary>每隔一小段时间调用：顾客走了（或换了人）就收尾。</summary>
+        /// <summary>每隔一小段时间调用：顾客走了（或换了人）就收尾；夜里外出时分的页，离开那个地点才收尾。</summary>
         internal static void Tick()
         {
             if (pages.Count == 0) return;
+            if (ownerLocation != null)
+            {
+                if (CurrentLocationId() != ownerLocation) Release("离开" + ownerLocation);
+                return;
+            }
             var cur = CurrentClient();
             if (owner == null && cur != null) owner = cur;
             if (cur != null && ReferenceEquals(cur, owner))
@@ -351,6 +371,7 @@ namespace CounterOverflow
             pages.Clear();
             current = 0;
             owner = null;
+            ownerLocation = null;
             ownerlessSince = -1f;
             Version++;
         }

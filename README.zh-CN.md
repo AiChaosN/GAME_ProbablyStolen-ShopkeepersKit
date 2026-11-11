@@ -21,9 +21,10 @@ ChaosN 为《Probably Stolen》做的 mod 系列。每个 mod 名字前标出**�
 |---|---|---|---|---|---|
 | [掌柜帮手·归类入箱 Sort To Boxes](mods/SortToBoxes/README.zh-CN.md) | 【便利】 | G / C | 收货：仓库散件按大类（13 类，每件货只属于一个类）归进对应的箱子，箱子可勾选整类或单件、右下角显示内容角标，可选买下时自动归箱。卖货：一键把买家会买的货摆上柜台，放一件自动带上同款 | `chaos5090.sort-to-boxes` | [订阅](https://steamcommunity.com/sharedfiles/filedetails/?id=3835916464) |
 | [掌柜帮手·柜台不丢货 Counter Overflow](mods/CounterOverflow/README.zh-CN.md) | 【修复】 | Z / X | 卖家摆货时柜台放不下的货不再被销毁，分到后面的页：柜台上方有翻页条，每页记住货的位置，拿下来的货随时能放回去 | `chaos5090.counter-overflow` | [订阅](https://steamcommunity.com/sharedfiles/filedetails/?id=3835916532) |
+| [掌柜帮手·拖放换件 Drop Swap](mods/DropSwap/README.zh-CN.md) | 【便利】 | — | 换电池、换滤芯不用打开机器：新电池直接拖到机器上（新滤芯拖到滤水壶上）就换下旧件，旧件放回新件原来的位置 | `chaos5090.drop-swap` | 还没上传 |
 | [掌柜帮手·访客预测 Visitor Forecast](mods/VisitorForecast/README.zh-CN.md) | 【情报】 | V | 开门前预测今天谁会来（阵营、来意、想要什么、预算、概率） | `chaos5090.visitor-forecast` | [订阅](https://steamcommunity.com/sharedfiles/filedetails/?id=3835916583) |
 
-归类入箱、柜台不丢货的界面中英双语，跟随游戏的语言设置；访客预测目前只有中文。
+归类入箱、柜台不丢货、拖放换件的界面中英双语，跟随游戏的语言设置；访客预测目前只有中文。
 
 ## 安装
 

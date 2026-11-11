@@ -31,13 +31,17 @@ The Workshop mod "防止小偷箱子被挤掉" only moves the thief's loot crate
 Items that don't fit go onto extra **pages**; one page is exactly one counter's worth.
 
 - When there is more than one page, a page bar appears **right below** the notification above the customer's head (where "第 1/3 页" is shown): `< 上一页 (Z)    第 2/4 页 · 还有 12 件没摆出    (X) 下一页 >` ("previous / page 2 of 4 · 12 more not shown / next"). Click its buttons to flip;
-- or use the keys: **,** for the previous page and **.** for the next (the keys with `<` and `>` printed on them). Rebind them by pressing a key in the game's **Options** (section "掌柜帮手·柜台不丢货"), or edit them in the mod settings;
+- or use the keys: **Z** for the previous page and **X** for the next. Rebind them by pressing a key in the game's **Options** (section "掌柜帮手·柜台不丢货"), or edit them in the mod settings;
 - every page **remembers where each item sat**: flip away and back and the items return to the same cells;
 - **no automatic refilling**: when you take an item off the counter (e.g. drag it onto the scale to negotiate), the gap it leaves is not filled by other goods. Flip to another page and back and the gap is still there, so you can always put the item back;
 - pages whose items have all been bought are dropped when you flip, except while customer goods are still on the scale (that item may have come from the empty page, so the page stays for you to return it);
 - **when the customer leaves**, pages not on display are handled like leftover counter items in the base game: the customer's items leave with them (destroyed), anything that belongs to you (e.g. story gifts) goes to your storage.
 
-When nothing is paged, pressing , and . does nothing, so the keys stay free for other uses.
+When nothing is paged, pressing Z and X does nothing, so the keys stay free for other uses.
+
+### Dr. Jackson's shop at night
+
+When you visit Dr. Jackson (the scientist) at night, his goods are laid on the counter one by one through the same code. His counter is bigger than the daytime one (14×21 cells), but his equipment is large and plentiful, so with many network upgrades or a "special stock" night it still overflows, and the base game destroys the rest. This mod pages his goods too: the page bar sits right above the counter (there is no customer or notification above their head in his shop), with the same keys. When you leave his shop, pages not on display are handled like the base game (his goods stay, anything that belongs to you goes to your storage).
 
 Unchanged: prices, negotiation and appraisal all happen on the real items, exactly as in the base game.
 
@@ -75,7 +79,7 @@ In game: Mods screen → select this mod → **设置** (Settings). Or edit `%US
 | `enabled` | `true` | Page items that don't fit; off = base game behavior |
 | `prevKey` | `Z` | Previous page (Unity KeyCode name) |
 | `nextKey` | `X` | Next page |
-| `pageBar` | `true` | Show the page bar below the notification above the customer |
+| `pageBar` | `true` | Show the page bar (below the notification above the customer in your shop, above the counter at Dr. Jackson's) |
 | `testMode` | `false` | Test mode, see below |
 
 ## Testing
@@ -90,10 +94,11 @@ The overflow only happens naturally with certain sellers, so the mod has a **tes
 4. Press **Ctrl+X**: the customer lays out an extra batch of large equipment (fridge, water tank, moisture farm, water purifier, ...) through the normal game code. The counter will overflow.
 5. Check:
    - a notification above the customer says the goods were split into N pages, and the page bar appears below it;
-   - click "next" or press **.**: the counter shows the next page; press **,** to go back and the items are in their old cells;
+   - click "next" or press **X**: the counter shows the next page; press **Z** to go back and the items are in their old cells;
    - drag an item onto the scale, flip to the next page and back: its old cell is still empty and you can put it back;
    - after closing, open the game log `Player.log` (same folder) and search for `[CounterOverflow]`: you should see "moved to page N", "flipped to page N" and "customer left" entries, and **no new** `(front counter full)` destroy entries.
-6. Turn test mode off afterwards. The test items are real and can be bought, which amounts to cheating.
+6. Dr. Jackson's shop: visit him at night and press **Ctrl+X** after arriving to make him lay out an extra batch. Check that the page bar appears right above the counter and flips pages; back in your shop, the log shows "离开dr_jackson，收起没摆出来的页" (left the location, pages cleaned up).
+7. Turn test mode off afterwards. The test items are real and can be bought, which amounts to cheating.
 
 Without test mode: Dr. Jackson's equipment offers and thieves at Black Market reputation 100+ overflow the counter easily.
 
@@ -108,10 +113,11 @@ Without test mode: Dr. Jackson's equipment offers and thieves at Black Market re
 
 Each page is an invisible grid with the counter's shape at the time, so an item's coordinates in it are its coordinates on the counter. Both patches run last: if another mod (e.g. Visitor Forecast simulating in its sandbox) asks to skip the original logic, this mod does nothing.
 
-**Status**: builds and passes the game's mod scanner. 1.0.0 was tested in game (overflowing items are kept); the 1.1.0 pages and page bar are **not yet tested in game**.
+**Status**: builds and passes the game's mod scanner. 1.0.0 was tested in game (overflowing items are kept), and paging with the page bar has since been used in the shop; paging at Dr. Jackson's (1.4.0) is **not yet tested in game**.
 
 ## Changelog
 
+- **1.4.0**: The page bar now also shows at Dr. Jackson's shop at night (above the counter); pages there are cleaned up when you leave the location rather than by watching who the customer is (his goods are laid out before he appears). Page keys in this README corrected to Z / X.
 - **1.3.0**: Default page keys moved under the left hand: **Z / X** (previously `,` `.`); keys you already saved are kept. Rebinding a key in the game's Options no longer turns pages.
 - **1.2.2**: Author name changed to ChaosN; screenshots and a Workshop preview added (no functional changes).
 - **1.2.1**: No longer makes the game try to create a new save object in the main menu (it used `PlayerStore.Instance` to check whether a run is loaded; that getter creates one when none exists, which crashed in the constructor with a null reference).

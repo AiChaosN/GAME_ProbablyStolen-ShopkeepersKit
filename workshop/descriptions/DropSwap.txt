@@ -1,0 +1,53 @@
+[h1]【便利】掌柜帮手·拖放换件[/h1]
+[b]不改任何数值，只帮你省操作。[/b] 界面中英双语，跟随游戏语言。
+
+[h2]做什么[/h2]
+原版里换电池、换滤芯要先打开机器窗口，把旧件拖出来再把新件拖进去；直接拖到合着的机器上，槽里有旧件时只会标红。本 mod 让这一下直接生效：
+[list]
+[*][b]换电池[/b]：把新电池拖到机器上，换下里面的旧电池，旧电池放到新电池原来的位置。
+[*][b]换滤芯[/b]：把新滤芯拖到滤水壶上，同理。
+[*]悬停时显示绿色的使用提示，松手就换。
+[/list]
+
+[h2]不会改变的[/h2]
+[list]
+[*]槽空着时照原版直接放进去；电池拖到电池上互换等原版效果照旧。
+[*]槽自己的规则照旧（例如滤水壶不收紫外线滤芯）。
+[*]只对你自己的东西生效，一次换一件。
+[*]电池、滤芯可以在改装件设置里分别关闭。
+[/list]
+
+[h2]安装[/h2]
+订阅后：主菜单 → 改装件 → 选中本 mod → 审阅并启用 → 重启游戏。不需要任何特殊权限。
+
+掌柜帮手系列 · 作者 ChaosN · 由 Claude Code（Anthropic 的 AI 编程助手）协助开发。
+源码（MIT）：https://github.com/AiChaosN/GAME_ProbablyStolen-ShopkeepersKit
+欢迎在 GitHub 上提问题（Issues）和 PR；游戏更新后 mod 不能用了，也请告诉我。
+
+------------------------------------------------------------
+
+[h1][QoL] Shopkeeper's Kit: Drop Swap[/h1]
+[b]No balance changes, it only saves clicks.[/b] UI in Chinese and English, following the game language.
+
+[h2]What it does[/h2]
+In the base game, swapping a battery or a filter means opening the machine, dragging the old part out and the new one in; dropping the new part on the closed machine only shows red while the old part is inside. This mod makes that drop work:
+[list]
+[*][b]Batteries[/b]: drop a new battery on a machine; it replaces the battery inside and the old one goes where the new one was.
+[*][b]Filters[/b]: drop a new filter on a water pitcher, same thing.
+[*]Hovering shows the green "use on" hint; release to swap.
+[/list]
+
+[h2]Unchanged[/h2]
+[list]
+[*]Empty slots are filled as in the base game; battery-on-battery swaps and other base-game drops work as before.
+[*]Slot rules still apply (e.g. a water pitcher refuses UV filters).
+[*]Only your own items, one at a time.
+[*]Batteries and filters can be turned off separately in the mod settings.
+[/list]
+
+[h2]Install[/h2]
+After subscribing: main menu → Mods → select this mod → Review and enable → restart the game. No special capabilities required.
+
+Part of Shopkeeper's Kit by ChaosN. Developed with assistance from Claude Code (Anthropic's AI coding assistant).
+Source (MIT): https://github.com/AiChaosN/GAME_ProbablyStolen-ShopkeepersKit
+Issues and pull requests are welcome on GitHub, including reports when a game update breaks the mod.

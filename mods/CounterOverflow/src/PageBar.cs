@@ -26,8 +26,10 @@ namespace CounterOverflow
             {
                 var entry = EmporiumEntry.Instance;
                 var window = entry != null ? entry.frontInvWindow : null;
+                // 夜里外出时只在摆柜台的地点（杰克逊博士的店）显示；其他地点看不到柜台
+                bool outside = Overflow.CurrentLocationId() != null;
                 bool show = enabled && Overflow.Active && CustomUIManager.Instance != null && Game.Store != null &&
-                            window != null && window.IsVisible() && !(MapUIManager.Instance != null && MapUIManager.Instance.isOutside);
+                            window != null && window.IsVisible() && (!outside || ShowsCounters());
                 if (!show)
                 {
                     if (root != null && root.gameObject.activeSelf) root.gameObject.SetActive(false);
@@ -39,7 +41,7 @@ namespace CounterOverflow
                 if (root == null) return;
                 if (!root.gameObject.activeSelf) root.gameObject.SetActive(true);
                 if (shownVersion != Overflow.Version) Refresh();
-                Place(window);
+                Place(window, outside);
                 errors = 0;
             }
             catch (Exception e)
@@ -108,23 +110,36 @@ namespace CounterOverflow
             try { if (nextButton?.button != null) nextButton.button.interactable = cur < count - 1; } catch { }
         }
 
+        private static bool ShowsCounters()
+        {
+            try
+            {
+                var map = MapUIManager.Instance;
+                return map != null && map.Current != null && map.Current.ShowsStoreCounters;
+            }
+            catch { return false; }
+        }
+
         /// <summary>
-        /// 放在顾客头上那条提示（游戏的提示框，“第 1/3 页”就显示在那里）的正下方；
-        /// 找不到提示框时退回柜台正上方。
+        /// 在店里：放在顾客头上那条提示（游戏的提示框，“第 1/3 页”就显示在那里）的正下方；
+        /// 找不到提示框时、或在杰克逊博士的店里（看不到顾客，柜台挪到了右边），放在柜台正上方。
         /// </summary>
-        private void Place(PixelWindow window)
+        private void Place(PixelWindow window, bool outside)
         {
             if (root == null) return;
             var layer = root.parent as RectTransform;
             if (layer == null) return;
 
             RectTransform anchor = null;
-            try
+            if (!outside)
             {
-                var rep = ReputationUIManager.Instance;
-                if (rep != null && rep.reputationNotifier != null) anchor = rep.reputationNotifier.transform as RectTransform;
+                try
+                {
+                    var rep = ReputationUIManager.Instance;
+                    if (rep != null && rep.reputationNotifier != null) anchor = rep.reputationNotifier.transform as RectTransform;
+                }
+                catch { anchor = null; }
             }
-            catch { anchor = null; }
 
             Vector2 screen;
             if (anchor != null)

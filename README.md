@@ -21,9 +21,10 @@ Developed with assistance from [Claude Code](https://claude.com/claude-code) (An
 |---|---|---|---|---|---|
 | [Sort To Boxes](mods/SortToBoxes/README.md) | [QoL] | G / C | Storing: loose items in storage go into the box for their category (13 categories, each item in exactly one); tag boxes with whole categories or single items; a badge shows each box's contents; optional auto-sort on purchase. Selling: one key puts everything the buyer wants on the counter; placing one item brings its identical copies | `chaos5090.sort-to-boxes` | [Subscribe](https://steamcommunity.com/sharedfiles/filedetails/?id=3835916464) |
 | [Counter Overflow](mods/CounterOverflow/README.md) | [Fix] | Z / X | Items a seller can't fit on the counter go onto extra pages instead of being destroyed: page bar above the counter, each page keeps its layout, items you take off can always go back | `chaos5090.counter-overflow` | [Subscribe](https://steamcommunity.com/sharedfiles/filedetails/?id=3835916532) |
+| [Drop Swap](mods/DropSwap/README.md) | [QoL] | — | Swap batteries and filters without opening anything: drop a new battery on a machine (or a filter on a water pitcher) to replace the old part, which goes where the new one was | `chaos5090.drop-swap` | Not uploaded yet |
 | [Visitor Forecast](mods/VisitorForecast/README.md) | [Info] | V | Before opening, forecasts who will visit today (faction, intent, wanted goods, budget, probability) | `chaos5090.visitor-forecast` | [Subscribe](https://steamcommunity.com/sharedfiles/filedetails/?id=3835916583) |
 
-Sort To Boxes and Counter Overflow show their UI in Chinese or English, following the game's language; Visitor Forecast is currently Chinese only.
+Sort To Boxes, Counter Overflow and Drop Swap show their UI in Chinese or English, following the game's language; Visitor Forecast is currently Chinese only.
 
 ## Install
 

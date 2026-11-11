@@ -149,9 +149,9 @@ namespace CounterOverflow
                 const string section = "keys";
                 ModHelper.AddGameOptionSection(modId, section, () => Lang.T("掌柜帮手·柜台不丢货", "Shopkeeper's Kit: Counter Overflow"));
                 ModHelper.AddGameOptionKeyBind(modId, section, "prev_page", () => Lang.T("柜台上一页", "Counter: previous page"), () => PrevKey, k => SetKey(prevEntry, k, true),
-                    () => Lang.T("顾客的货分成多页时，翻到上一页。默认 ,（逗号）", "When a customer's goods are paged, go to the previous page. Default , (comma)"));
+                    () => Lang.T("顾客的货分成多页时，翻到上一页。默认 Z", "When a customer's goods are paged, go to the previous page. Default Z"));
                 ModHelper.AddGameOptionKeyBind(modId, section, "next_page", () => Lang.T("柜台下一页", "Counter: next page"), () => NextKey, k => SetKey(nextEntry, k, false),
-                    () => Lang.T("顾客的货分成多页时，翻到下一页。默认 .（句号）", "When a customer's goods are paged, go to the next page. Default . (period)"));
+                    () => Lang.T("顾客的货分成多页时，翻到下一页。默认 X", "When a customer's goods are paged, go to the next page. Default X"));
             }
             catch (Exception e)
             {
