@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Mod>
+  <ID>chaos5090.chef</ID>
+  <Name>【玩法】掌柜帮手·厨师 | [Gameplay] Shopkeeper's Kit: Chef</Name>
+  <Author>ChaosN</Author>
+  <ModVersion>0.1.0</ModVersion>
+  <Description>【玩法型：新职业，改变游戏机制】新增职业“厨师”，开快餐店：油锅把营养果炸成薯条、把肉炸成炸鸡；食品加工器把肉、营养果、填料草做成肉汉堡，再配成超级大套餐。品质看肉的千卡、食用油的纯净度、食材比例和机器上的模组，分五档，米其林级价格 +200%。新的食用油：炸多了会脏，大颗粒炸渣用滤油网滤，小颗粒油渣用滤水壶滤，滤过的叫二次食用油。别的职业可以花王尔德的恩惠买人脉“退休大厨”拿到全套厨具。附厨师菜谱。界面中英双语，跟随游戏语言。
+掌柜帮手系列 · 作者 ChaosN · 由 Claude Code（Anthropic 的 AI 编程助手）协助开发。
+
+[Gameplay - new profession, changes game mechanics] Adds the "Chef" profession running a fast-food kitchen: the deep fryer turns nutrifruit into fries and meat into fried chicken; the food processor turns meat, nutrifruit and fillerweed into burgers and plates super combos. Quality depends on the meat's calories, cooking oil purity, ingredient ratio and the machines' modules, in five grades; Michelin-grade food sells for +200%. New cooking oil gets dirty with use: strain large crumbs with an oil strainer and fine residue with a water pitcher; filtered oil becomes recycled oil. Other professions can buy the "Retired Chef" network upgrade from Wild for the full kitchen kit. Includes a chef's recipe book. UI in Chinese and English, following the game language.
+Part of Shopkeeper's Kit by ChaosN. Developed with assistance from Claude Code (Anthropic's AI coding assistant).</Description>
+  <GameVersions>
+    <Version>0.46D</Version>
+  </GameVersions>
+  <Prerequisites />
+  <Assemblies>
+    <Assembly>Chef.dll</Assembly>
+  </Assemblies>
+  <!-- 不需要特殊权限：只用 ModHelper / ModHook 官方接口和游戏公开的类 -->
+  <Capabilities />
+</Mod>

@@ -1,0 +1,682 @@
+{
+ "id": "chef_recipes",
+ "title": "Chef's Recipes",
+ "background": "notebook_manual",
+ "width": 628,
+ "height": 804,
+ "chrome": [
+  {
+   "type": "button",
+   "id": "close",
+   "action": "close",
+   "x": 297,
+   "y": 2.5,
+   "w": 14,
+   "h": 15
+  },
+  {
+   "type": "button",
+   "id": "zoom",
+   "action": "zoom",
+   "x": 273.5,
+   "y": 3.5,
+   "w": 14,
+   "h": 15
+  },
+  {
+   "type": "button",
+   "id": "flip_left",
+   "action": "flip_left",
+   "x": 124,
+   "y": 380,
+   "w": 16,
+   "h": 16
+  },
+  {
+   "type": "button",
+   "id": "flip_right",
+   "action": "flip_right",
+   "x": 176,
+   "y": 380.5,
+   "w": 14,
+   "h": 15
+  },
+  {
+   "type": "text",
+   "id": "page_indicator",
+   "action": "page_indicator",
+   "style": "page_number",
+   "align": "center",
+   "valign": "middle",
+   "wrap": false,
+   "x": 140.5,
+   "y": 374,
+   "w": 33,
+   "h": 25
+  }
+ ],
+ "pages": [
+  {
+   "name": "Dishes",
+   "elements": [
+    {
+     "type": "text",
+     "id": "title1",
+     "style": "serif_title",
+     "align": "center",
+     "wrap": false,
+     "x": 20,
+     "y": 26,
+     "w": 274,
+     "h": 24,
+     "text": "Chef's Recipes",
+     "translations": {
+      "zh": "厨师菜谱",
+      "zh-Hans": "厨师菜谱"
+     }
+    },
+    {
+     "type": "image",
+     "id": "img2",
+     "sprite": "chef_fries",
+     "fit": "fit",
+     "x": 52,
+     "y": 58,
+     "w": 24,
+     "h": 48
+    },
+    {
+     "type": "image",
+     "id": "img3",
+     "sprite": "chef_fried_chicken",
+     "fit": "fit",
+     "x": 96,
+     "y": 66,
+     "w": 40,
+     "h": 40
+    },
+    {
+     "type": "image",
+     "id": "img4",
+     "sprite": "chef_burger",
+     "fit": "fit",
+     "x": 156,
+     "y": 66,
+     "w": 40,
+     "h": 40
+    },
+    {
+     "type": "image",
+     "id": "img5",
+     "sprite": "chef_combo",
+     "fit": "fit",
+     "x": 214,
+     "y": 54,
+     "w": 52,
+     "h": 52
+    },
+    {
+     "type": "flow",
+     "id": "flow6",
+     "x": 35,
+     "y": 114,
+     "w": 253,
+     "h": 256,
+     "spacing": 4
+    },
+    {
+     "type": "text",
+     "id": "t7",
+     "flow": "flow6",
+     "style": "section",
+     "autoHeight": true,
+     "w": 0,
+     "h": 0,
+     "text": "Four dishes",
+     "translations": {
+      "zh": "四道菜",
+      "zh-Hans": "四道菜"
+     }
+    },
+    {
+     "type": "text",
+     "id": "t8",
+     "flow": "flow6",
+     "style": "body",
+     "autoHeight": true,
+     "w": 0,
+     "h": 0,
+     "text": "Fries: 200. Deep fryer, 1 nutrifruit.\nFried chicken: 200. Deep fryer, 1 piece of meat.\nMeat burger: 300. Food processor: meat + nutrifruit + fillerweed.\nSuper combo: 900. Food processor: a burger + fries + fried chicken.",
+     "translations": {
+      "zh": "薯条：200。油锅，营养果 ×1。\n炸鸡：200。油锅，肉 ×1。\n肉汉堡：300。食品加工器：肉 + 营养果 + 填料草。\n超级大套餐：900。食品加工器：汉堡 + 薯条 + 炸鸡。",
+      "zh-Hans": "薯条：200。油锅，营养果 ×1。\n炸鸡：200。油锅，肉 ×1。\n肉汉堡：300。食品加工器：肉 + 营养果 + 填料草。\n超级大套餐：900。食品加工器：汉堡 + 薯条 + 炸鸡。"
+     }
+    },
+    {
+     "type": "text",
+     "id": "t9",
+     "flow": "flow6",
+     "style": "section",
+     "autoHeight": true,
+     "w": 0,
+     "h": 0,
+     "text": "Quality",
+     "translations": {
+      "zh": "品质",
+      "zh-Hans": "品质"
+     }
+    },
+    {
+     "type": "text",
+     "id": "t10",
+     "flow": "flow6",
+     "style": "body",
+     "autoHeight": true,
+     "w": 0,
+     "h": 0,
+     "text": "Every dish scores 0-100 points:\nInedible (under 30): price −50%\nPlain (30-54): base price\nTasty (55-74): +50%\nChef's (75-89): +100%\nMichelin (90+): +200%",
+     "translations": {
+      "zh": "每份菜 0–100 分：\n难以下咽（30 分以下）：价格 −50%\n普通（30–54）：原价\n美味（55–74）：+50%\n主厨（75–89）：+100%\n米其林（90 以上）：+200%",
+      "zh-Hans": "每份菜 0–100 分：\n难以下咽（30 分以下）：价格 −50%\n普通（30–54）：原价\n美味（55–74）：+50%\n主厨（75–89）：+100%\n米其林（90 以上）：+200%"
+     }
+    },
+    {
+     "type": "text",
+     "id": "t11",
+     "flow": "flow6",
+     "style": "body",
+     "autoHeight": true,
+     "w": 0,
+     "h": 0,
+     "text": "Hover over a dish to see its score and where the points came from. Points come from four things: the meat's calories, oil purity, the ingredient ratio and the machine's quality modules.",
+     "translations": {
+      "zh": "鼠标指着菜能看到得分和每一项拿了多少分。分数看四样：肉的千卡、油的纯净度、食材比例、机器上的品质模组。",
+      "zh-Hans": "鼠标指着菜能看到得分和每一项拿了多少分。分数看四样：肉的千卡、油的纯净度、食材比例、机器上的品质模组。"
+     }
+    }
+   ]
+  },
+  {
+   "name": "Deep fryer",
+   "elements": [
+    {
+     "type": "text",
+     "id": "title12",
+     "style": "serif_title",
+     "align": "center",
+     "wrap": false,
+     "x": 20,
+     "y": 26,
+     "w": 274,
+     "h": 24,
+     "text": "Deep Fryer",
+     "translations": {
+      "zh": "油锅：薯条和炸鸡",
+      "zh-Hans": "油锅：薯条和炸鸡"
+     }
+    },
+    {
+     "type": "image",
+     "id": "img13",
+     "sprite": "chef_fryer",
+     "fit": "fit",
+     "x": 133,
+     "y": 52,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "type": "flow",
+     "id": "flow14",
+     "x": 35,
+     "y": 106,
+     "w": 253,
+     "h": 264,
+     "spacing": 4
+    },
+    {
+     "type": "text",
+     "id": "t15",
+     "flow": "flow14",
+     "style": "section",
+     "autoHeight": true,
+     "w": 0,
+     "h": 0,
+     "text": "How to use",
+     "translations": {
+      "zh": "用法",
+      "zh-Hans": "用法"
+     }
+    },
+    {
+     "type": "text",
+     "id": "t16",
+     "flow": "flow14",
+     "style": "body",
+     "autoHeight": true,
+     "w": 0,
+     "h": 0,
+     "text": "Drop a cooking oil jug on the fryer to pour oil in (up to 5 L; it needs at least 1 L to fry). Put a battery in the power slot and nutrifruit or meat in the basket, then sleep: the fried food is in the output. Each portion soaks up 100 ml of oil; one night uses 20 charge.",
+     "translations": {
+      "zh": "把食用油桶拖到油锅上倒油（最多 5 L，至少 1 L 才炸）。电源槽放电池，炸篮放营养果或肉，睡一觉，出锅格里就是炸好的。每份吸掉 100 ml 油，每晚耗 20 电。",
+      "zh-Hans": "把食用油桶拖到油锅上倒油（最多 5 L，至少 1 L 才炸）。电源槽放电池，炸篮放营养果或肉，睡一觉，出锅格里就是炸好的。每份吸掉 100 ml 油，每晚耗 20 电。"
+     }
+    },
+    {
+     "type": "text",
+     "id": "t17",
+     "flow": "flow14",
+     "style": "section",
+     "autoHeight": true,
+     "w": 0,
+     "h": 0,
+     "text": "Score",
+     "translations": {
+      "zh": "得分",
+      "zh-Hans": "得分"
+     }
+    },
+    {
+     "type": "text",
+     "id": "t18",
+     "flow": "flow14",
+     "style": "body",
+     "autoHeight": true,
+     "w": 0,
+     "h": 0,
+     "text": "Fried chicken = meat calories 35 (full at 1200 kcal) + oil purity 45 + modules 20\nFries = nutrifruit calories 25 (full at 384 kcal) + oil purity 55 + modules 20",
+     "translations": {
+      "zh": "炸鸡 = 肉的千卡 35（1200 千卡满分）+ 油的纯净度 45 + 模组 20\n薯条 = 营养果的千卡 25（384 千卡满分）+ 油的纯净度 55 + 模组 20",
+      "zh-Hans": "炸鸡 = 肉的千卡 35（1200 千卡满分）+ 油的纯净度 45 + 模组 20\n薯条 = 营养果的千卡 25（384 千卡满分）+ 油的纯净度 55 + 模组 20"
+     }
+    },
+    {
+     "type": "text",
+     "id": "t19",
+     "flow": "flow14",
+     "style": "body",
+     "autoHeight": true,
+     "w": 0,
+     "h": 0,
+     "text": "Oil purity: full points at 98% or more, none at 70% or less. Modules: put quality modules in the fryer's module grid; +100% quality gives the full 20 points.",
+     "translations": {
+      "zh": "油的纯净度：98% 以上满分，70% 以下 0 分。模组：油锅的模组格放品质模组，品质加成 +100% 拿满 20 分。",
+      "zh-Hans": "油的纯净度：98% 以上满分，70% 以下 0 分。模组：油锅的模组格放品质模组，品质加成 +100% 拿满 20 分。"
+     }
+    }
+   ]
+  },
+  {
+   "name": "Food processor",
+   "elements": [
+    {
+     "type": "text",
+     "id": "title20",
+     "style": "serif_title",
+     "align": "center",
+     "wrap": false,
+     "x": 20,
+     "y": 26,
+     "w": 274,
+     "h": 24,
+     "text": "Food Processor",
+     "translations": {
+      "zh": "食品加工器",
+      "zh-Hans": "食品加工器"
+     }
+    },
+    {
+     "type": "image",
+     "id": "img21",
+     "sprite": "chef_processor",
+     "fit": "fit",
+     "x": 133,
+     "y": 52,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "type": "flow",
+     "id": "flow22",
+     "x": 35,
+     "y": 106,
+     "w": 253,
+     "h": 264,
+     "spacing": 4
+    },
+    {
+     "type": "text",
+     "id": "t23",
+     "flow": "flow22",
+     "style": "section",
+     "autoHeight": true,
+     "w": 0,
+     "h": 0,
+     "text": "Burger",
+     "translations": {
+      "zh": "做汉堡",
+      "zh-Hans": "做汉堡"
+     }
+    },
+    {
+     "type": "text",
+     "id": "t24",
+     "flow": "flow22",
+     "style": "body",
+     "autoHeight": true,
+     "w": 0,
+     "h": 0,
+     "text": "Put meat, nutrifruit and fillerweed in \"Ingredients\" and click \"Burger\" in the title bar: everything in the grid becomes one burger (it needs at least meat and nutrifruit). Each click uses 5 charge.",
+     "translations": {
+      "zh": "“食材”格放肉、营养果、填料草，点标题栏的“做汉堡”：格子里的全部食材做成一个汉堡（至少要有肉和营养果）。每按一次耗 5 电。",
+      "zh-Hans": "“食材”格放肉、营养果、填料草，点标题栏的“做汉堡”：格子里的全部食材做成一个汉堡（至少要有肉和营养果）。每按一次耗 5 电。"
+     }
+    },
+    {
+     "type": "text",
+     "id": "t25",
+     "flow": "flow22",
+     "style": "body",
+     "autoHeight": true,
+     "w": 0,
+     "h": 0,
+     "text": "Score = meat calories 30 (all meat in the burger, full at 1200 kcal) + ratio 50 + modules 20.\nThe ratio is by calories; ideal is meat 55% : nutrifruit 30% : fillerweed 15%. Example: standard raw meat 1200 + 2 nutrifruit 480 + fillerweed 259 = 62 : 25 : 13, about 36 ratio points.",
+     "translations": {
+      "zh": "得分 = 肉的千卡 30（汉堡里所有肉加起来，1200 千卡满分）+ 比例 50 + 模组 20。\n比例按千卡算，理想是 肉 55% : 营养果 30% : 填料草 15%。例：标准生肉 1200 + 营养果 ×2（480）+ 填料草 259 = 62 : 25 : 13，比例分约 36。",
+      "zh-Hans": "得分 = 肉的千卡 30（汉堡里所有肉加起来，1200 千卡满分）+ 比例 50 + 模组 20。\n比例按千卡算，理想是 肉 55% : 营养果 30% : 填料草 15%。例：标准生肉 1200 + 营养果 ×2（480）+ 填料草 259 = 62 : 25 : 13，比例分约 36。"
+     }
+    },
+    {
+     "type": "text",
+     "id": "t26",
+     "flow": "flow22",
+     "style": "section",
+     "autoHeight": true,
+     "w": 0,
+     "h": 0,
+     "text": "Super combo",
+     "translations": {
+      "zh": "配套餐",
+      "zh-Hans": "配套餐"
+     }
+    },
+    {
+     "type": "text",
+     "id": "t27",
+     "flow": "flow22",
+     "style": "body",
+     "autoHeight": true,
+     "w": 0,
+     "h": 0,
+     "text": "Put a burger, fries and fried chicken in \"Plating\" and click \"Combo\". The combo's quality is that of the lowest of the three.",
+     "translations": {
+      "zh": "“配餐”格放汉堡、薯条、炸鸡各一份，点“配套餐”。套餐的品质取三样里最低的。",
+      "zh-Hans": "“配餐”格放汉堡、薯条、炸鸡各一份，点“配套餐”。套餐的品质取三样里最低的。"
+     }
+    }
+   ]
+  },
+  {
+   "name": "Cooking oil",
+   "elements": [
+    {
+     "type": "text",
+     "id": "title28",
+     "style": "serif_title",
+     "align": "center",
+     "wrap": false,
+     "x": 20,
+     "y": 26,
+     "w": 274,
+     "h": 24,
+     "text": "Cooking Oil",
+     "translations": {
+      "zh": "食用油和过滤",
+      "zh-Hans": "食用油和过滤"
+     }
+    },
+    {
+     "type": "image",
+     "id": "img29",
+     "sprite": "chef_oil_barrel",
+     "fit": "fit",
+     "x": 113,
+     "y": 50,
+     "w": 32,
+     "h": 48
+    },
+    {
+     "type": "image",
+     "id": "img30",
+     "sprite": "chef_strainer",
+     "fit": "fit",
+     "x": 169,
+     "y": 58,
+     "w": 40,
+     "h": 40
+    },
+    {
+     "type": "flow",
+     "id": "flow31",
+     "x": 35,
+     "y": 106,
+     "w": 253,
+     "h": 264,
+     "spacing": 4
+    },
+    {
+     "type": "text",
+     "id": "t32",
+     "flow": "flow31",
+     "style": "body",
+     "autoHeight": true,
+     "w": 0,
+     "h": 0,
+     "text": "Every night of frying dirties the oil: some is soaked up, large crumbs and fine residue are left behind, and 4% of the fresh oil turns into aged oil. Purity = the share of fresh oil.",
+     "translations": {
+      "zh": "每炸一晚油都会变脏：一部分被吸掉，留下大颗粒炸渣和小颗粒油渣，还有 4% 的新油变成老化油。纯净度 = 新油占的比例。",
+      "zh-Hans": "每炸一晚油都会变脏：一部分被吸掉，留下大颗粒炸渣和小颗粒油渣，还有 4% 的新油变成老化油。纯净度 = 新油占的比例。"
+     }
+    },
+    {
+     "type": "text",
+     "id": "t33",
+     "flow": "flow31",
+     "style": "section",
+     "autoHeight": true,
+     "w": 0,
+     "h": 0,
+     "text": "Filtering",
+     "translations": {
+      "zh": "过滤",
+      "zh-Hans": "过滤"
+     }
+    },
+    {
+     "type": "text",
+     "id": "t34",
+     "flow": "flow31",
+     "style": "body",
+     "autoHeight": true,
+     "w": 0,
+     "h": 0,
+     "text": "Large crumbs: drop the oil strainer on the fryer (or a jug).\nFine residue: drop the fryer (or a jug) on a water pitcher with a water filter in it. Large crumbs can be filtered this way too, but they wear the filter out fast, so strain first.",
+     "translations": {
+      "zh": "大颗粒炸渣：把滤油网拖到油锅（或油桶）上。\n小颗粒油渣：把油锅（或油桶）拖到装着滤水器的滤水壶上。大颗粒也能这样滤，但很伤滤嘴，先用滤油网。",
+      "zh-Hans": "大颗粒炸渣：把滤油网拖到油锅（或油桶）上。\n小颗粒油渣：把油锅（或油桶）拖到装着滤水器的滤水壶上。大颗粒也能这样滤，但很伤滤嘴，先用滤油网。"
+     }
+    },
+    {
+     "type": "text",
+     "id": "t35",
+     "flow": "flow31",
+     "style": "body",
+     "autoHeight": true,
+     "w": 0,
+     "h": 0,
+     "text": "Aged oil can't be filtered: cleaned oil is \"recycled oil\" and never gets back to 100%. Pouring in fresh oil brings the purity back up. Under 70% it is spent oil; \"Dump oil\" in the fryer's title bar (click twice) empties it.",
+     "translations": {
+      "zh": "老化油滤不掉：滤干净的油叫“二次食用油”，纯净度回不到 100%。往里倒新油能把纯净度拉回来。低于 70% 是废油，点油锅标题栏的“倒掉油”（点两次）清空。",
+      "zh-Hans": "老化油滤不掉：滤干净的油叫“二次食用油”，纯净度回不到 100%。往里倒新油能把纯净度拉回来。低于 70% 是废油，点油锅标题栏的“倒掉油”（点两次）清空。"
+     }
+    },
+    {
+     "type": "text",
+     "id": "t36",
+     "flow": "flow31",
+     "style": "body",
+     "autoHeight": true,
+     "w": 0,
+     "h": 0,
+     "text": "Hover over the fryer or a jug to see the oil's state.",
+     "translations": {
+      "zh": "鼠标指着油锅、油桶能看到油的状态。",
+      "zh-Hans": "鼠标指着油锅、油桶能看到油的状态。"
+     }
+    }
+   ]
+  },
+  {
+   "name": "Calories",
+   "elements": [
+    {
+     "type": "text",
+     "id": "title37",
+     "style": "serif_title",
+     "align": "center",
+     "wrap": false,
+     "x": 20,
+     "y": 26,
+     "w": 274,
+     "h": 24,
+     "text": "Calories",
+     "translations": {
+      "zh": "食材的千卡",
+      "zh-Hans": "食材的千卡"
+     }
+    },
+    {
+     "type": "flow",
+     "id": "flow38",
+     "x": 35,
+     "y": 60,
+     "w": 253,
+     "h": 310,
+     "spacing": 4
+    },
+    {
+     "type": "text",
+     "id": "t39",
+     "flow": "flow38",
+     "style": "section",
+     "autoHeight": true,
+     "w": 0,
+     "h": 0,
+     "text": "Meat",
+     "translations": {
+      "zh": "肉",
+      "zh-Hans": "肉"
+     }
+    },
+    {
+     "type": "text",
+     "id": "t40",
+     "flow": "flow38",
+     "style": "body",
+     "autoHeight": true,
+     "w": 0,
+     "h": 0,
+     "text": "Fat meat 1250 · Raw meat (standard) 1200 · Peat 800 · Raw meat (small) 550 · Meat scrap 350 · Morsel 275 · Small morsel 140. Fish and eel meat depend on their size.",
+     "translations": {
+      "zh": "肥肉 1250 · 生肉（标准）1200 · “泥炭”合成肉 800 · 生肉（小）550 · 肉边角料 350 · 一口食物 275 · 一小口食物 140。鱼肉、鳗鱼肉看大小。",
+      "zh-Hans": "肥肉 1250 · 生肉（标准）1200 · “泥炭”合成肉 800 · 生肉（小）550 · 肉边角料 350 · 一口食物 275 · 一小口食物 140。鱼肉、鳗鱼肉看大小。"
+     }
+    },
+    {
+     "type": "text",
+     "id": "t41",
+     "flow": "flow38",
+     "style": "section",
+     "autoHeight": true,
+     "w": 0,
+     "h": 0,
+     "text": "Nutrifruit",
+     "translations": {
+      "zh": "营养果",
+      "zh-Hans": "营养果"
+     }
+    },
+    {
+     "type": "text",
+     "id": "t42",
+     "flow": "flow38",
+     "style": "body",
+     "autoHeight": true,
+     "w": 0,
+     "h": 0,
+     "text": "Small 144 · Normal 240 · Large 384 · Huge 768. Plant traits change it; hover over a fruit to see.",
+     "translations": {
+      "zh": "小 144 · 普通 240 · 大 384 · 巨大 768。种植特性会改变，鼠标指着能看到。",
+      "zh-Hans": "小 144 · 普通 240 · 大 384 · 巨大 768。种植特性会改变，鼠标指着能看到。"
+     }
+    },
+    {
+     "type": "text",
+     "id": "t43",
+     "flow": "flow38",
+     "style": "section",
+     "autoHeight": true,
+     "w": 0,
+     "h": 0,
+     "text": "Fillerweed",
+     "translations": {
+      "zh": "填料草",
+      "zh-Hans": "填料草"
+     }
+    },
+    {
+     "type": "text",
+     "id": "t44",
+     "flow": "flow38",
+     "style": "body",
+     "autoHeight": true,
+     "w": 0,
+     "h": 0,
+     "text": "Normal 259 · Small 155.",
+     "translations": {
+      "zh": "普通 259 · 小 155。",
+      "zh-Hans": "普通 259 · 小 155。"
+     }
+    },
+    {
+     "type": "text",
+     "id": "t45",
+     "flow": "flow38",
+     "style": "section",
+     "autoHeight": true,
+     "w": 0,
+     "h": 0,
+     "text": "Tips",
+     "translations": {
+      "zh": "小窍门",
+      "zh-Hans": "小窍门"
+     }
+    },
+    {
+     "type": "text",
+     "id": "t46",
+     "flow": "flow38",
+     "style": "body",
+     "autoHeight": true,
+     "w": 0,
+     "h": 0,
+     "text": "Fried chicken from fat meat or standard raw meat in fresh oil, with good quality modules, is Michelin grade. For burgers, balance the ratio with large or small nutrifruit.",
+     "translations": {
+      "zh": "肥肉或标准生肉、新油、好的品质模组，炸鸡就是米其林。做汉堡用大、小营养果来调比例。",
+      "zh-Hans": "肥肉或标准生肉、新油、好的品质模组，炸鸡就是米其林。做汉堡用大、小营养果来调比例。"
+     }
+    }
+   ]
+  }
+ ]
+}

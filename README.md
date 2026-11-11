@@ -24,9 +24,10 @@ Developed with assistance from [Claude Code](https://claude.com/claude-code) (An
 | [Quick Swap](mods/Conveniences/README.md) | [QoL] | W | A collection of small QoL features with no balance impact. Currently: swap batteries and water filters without opening anything by dropping the new part on the machine (or pitcher); hold a bottle over a container and press W to fill it | `chaos5090.conveniences` | [Subscribe](https://steamcommunity.com/sharedfiles/filedetails/?id=3837822167) |
 | [Filter Recharge](mods/FilterRecharge/README.md) | [Gameplay] | — | Drop water filters on an Advanced Water Filter to move their durability over (box-select for batches); the advanced filter's cap rises to 20× a regular one (adjustable); drop the advanced filter on a big container to filter its water in place | `chaos5090.filter-recharge` | [Subscribe](https://steamcommunity.com/sharedfiles/filedetails/?id=3837823741) |
 | [Advanced Scientist](mods/AdvancedScientist/README.md) | [Gameplay] | — | New profession: module crafting (Blank Module Maker, Affix Extractor, Affix Inlayer, each at the click of a button; chip merging to come); machines in the Machine Bay run two days per day | `chaos5090.advanced-scientist` | [Subscribe](https://steamcommunity.com/sharedfiles/filedetails/?id=3837934061) |
+| [Chef](mods/Chef/README.md) | [Gameplay] | — | New profession running a fast-food kitchen (deep fryer, food processor, fries / fried chicken / burger / super combo in five grades up to Michelin); cooking oil gets dirty and needs filtering; other professions can buy Wild's "Retired Chef" upgrade. In development | `chaos5090.chef` | Not uploaded yet |
 | [Visitor Forecast](mods/VisitorForecast/README.md) | [Info] | V | Before opening, forecasts who will visit today (faction, intent, wanted goods, budget, probability) | `chaos5090.visitor-forecast` | [Subscribe](https://steamcommunity.com/sharedfiles/filedetails/?id=3835916583) |
 
-Sort To Boxes, Counter Overflow, Quick Swap, Filter Recharge and Advanced Scientist show their UI in Chinese or English, following the game's language; Visitor Forecast is currently Chinese only.
+Sort To Boxes, Counter Overflow, Quick Swap, Filter Recharge, Advanced Scientist and Chef show their UI in Chinese or English, following the game's language; Visitor Forecast is currently Chinese only.
 
 ## Install
 
