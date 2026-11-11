@@ -96,6 +96,7 @@ The swap uses the game's own `GraphUtils.SwapItemsInPlace` (the same function th
 
 ## Changelog
 
+- **1.1.3**: Fixed the held bottle looking like it jumped back after W: pouring refreshes the item, which pulls the drag ghost back to its slot and hides it; it's now restored to the dragging look right away (same position and orientation).
 - **1.1.2**: After W you keep holding the bottle, so you can fill several containers in a row (1.1.1 put it back after each press). The held item's fill-level sprite update is deferred until you put it down, so it no longer jumps back. Millilitres in messages fixed (the game stores thousandths of a millilitre).
 - **1.1.1**: Pressing W now ends the drag and puts the bottle back. Fixed: after filling, the bottle looked like it went back but was still being dragged, so releasing it over something else poured again.
 - **1.1.0**: New one-key water filling (W): hold a bottle over the tap to fill it, over a container to pour, and an empty bottle over a container fills it up with tap water.

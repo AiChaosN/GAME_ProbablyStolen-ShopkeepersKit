@@ -80,9 +80,56 @@ namespace Conveniences
 
         internal static void OnKey()
         {
+            var held = Swap.DraggedItem();
+            var snap = DragVisual.Capture(held);
             acting = true;
             try { Act(); }
-            finally { acting = false; }
+            finally
+            {
+                acting = false;
+                // 倒水时游戏会刷新这件物品（改标签、加特征都会 Validate），刷新会把拖动的“影子”收回原格子并藏起来
+                // （GameItemElement.ValidateSelect → ToggleFakeBackground(false) + 影子位置复位）：看起来瓶子回到了原位，
+                // 其实还拿在手上（用户 2026-11-12 反馈“看起来很怪”）。这里恢复成拖动时的样子：位置、朝向都放回去。
+                snap?.Restore();
+            }
+        }
+
+        /// <summary>拖动时的“影子”（跟着鼠标的半透明副本）的状态：开始拖动时游戏用 UpdateFakeReal 设置，这里照样恢复。</summary>
+        private sealed class DragVisual
+        {
+            private GameItemElement item;
+            private Vector3 position;
+            private Vector3 rotEuler, rotScale;
+            private Vector2 rotPivot, rotMin, rotMax;
+
+            internal static DragVisual Capture(GameItemElement el)
+            {
+                try
+                {
+                    if (el == null || el.fakeMiddle == null || el.fakeRotator == null) return null;
+                    var r = el.fakeRotator.rectTransform;
+                    return new DragVisual
+                    {
+                        item = el,
+                        position = el.fakeMiddle.rectTransform.position,
+                        rotEuler = r.localEulerAngles, rotScale = r.localScale, rotPivot = r.pivot, rotMin = r.anchorMin, rotMax = r.anchorMax,
+                    };
+                }
+                catch { return null; }
+            }
+
+            internal void Restore()
+            {
+                try
+                {
+                    if (item == null || item.IsDestroyed() || !ReferenceEquals(Swap.DraggedItem(), item)) return;   // 已经放下了：不用管
+                    item.UpdateFakeReal(1);   // 格子里的本体藏起来、影子显示（拖整件；本功能只处理单件瓶子）
+                    var r = item.fakeRotator.rectTransform;
+                    r.anchorMin = rotMin; r.anchorMax = rotMax; r.pivot = rotPivot; r.localScale = rotScale; r.localEulerAngles = rotEuler;
+                    item.fakeMiddle.rectTransform.position = position;
+                }
+                catch (Exception e) { Log.Warn("恢复拖动样子出错: " + e.Message); }
+            }
         }
 
         private static void Act()
