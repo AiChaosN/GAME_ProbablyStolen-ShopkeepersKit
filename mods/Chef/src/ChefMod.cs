@@ -23,7 +23,7 @@ namespace Chef
                 {
                     ModHook.OnModItemDirectoryInit += RegisterItems;
                     ModHook.OnCreateTooltipLate += OnTooltip;
-                    ModHook.OnGameLoadedInit += Scenario.EnsureUpgrade;
+                    ModHook.OnGameLoadedInit += OnGameLoadedInit;
                     ModHook.OnNewGameStarted += OnNewGame;
                     ModHook.OnGameLoadedLate += OnGameLoaded;
                     hooked = true;
@@ -31,10 +31,10 @@ namespace Chef
             }
             catch (Exception e) { Log.Error("订阅游戏事件失败: " + Log.Describe(e)); }
 
-            try { Oil.Register(); }
-            catch (Exception e) { Log.Error("登记食用油液体失败: " + Log.Describe(e)); }
-            try { Patches.Apply(); }
-            catch (Exception e) { Log.Error("油的显示 / 定价补丁失败: " + Log.Describe(e)); }
+            // 注意：这里（mod 刚加载）不能碰游戏的液体表 Liquid 和 WaterFeatureHelper，也不能调 Lang / LocHelper。
+            // 它们的静态初始化会读游戏的多语言表，这时游戏的语言系统还没准备好，读取会出错（invalid operation handle），
+            // 把整个游戏的语言系统弄坏（全变英文），Liquid 的静态初始化也会失败、整局游戏的液体系统都不能用（0.3.0 就是这样）。
+            // 所以登记食用油、打补丁都推迟到进了游戏以后：EnsureLiquids（读档 / 新开局 / 第一次生成油桶时）。
 
             try
             {
@@ -89,7 +89,30 @@ namespace Chef
             catch (Exception e) { Log.Error("登记新物品出错: " + Log.Describe(e)); }
         }
 
-        private static void OnNewGame(string _) => Scenario.EnsureUpgrade();
+        private static void OnNewGame(string _)
+        {
+            EnsureLiquids();
+            Scenario.EnsureUpgrade();
+        }
+
+        private static void OnGameLoadedInit()
+        {
+            EnsureLiquids();
+            Scenario.EnsureUpgrade();
+        }
+
+        private static bool liquidsReady;
+
+        /// <summary>登记食用油（游戏液体表里的四种新成分）、打“按油显示 / 定价”的补丁。只能在进了游戏以后调用（见 Init 的说明）。</summary>
+        internal static void EnsureLiquids()
+        {
+            if (liquidsReady) return;
+            liquidsReady = true;
+            try { Oil.Register(); }
+            catch (Exception e) { Log.Error("登记食用油液体失败: " + Log.Describe(e)); }
+            try { Patches.Apply(); }
+            catch (Exception e) { Log.Error("油的显示 / 定价补丁失败: " + Log.Describe(e)); }
+        }
 
         private static int tooltipErrors;
 
@@ -132,6 +155,7 @@ namespace Chef
         /// </summary>
         private static void OnGameLoaded()
         {
+            EnsureLiquids();
             try { Oil.Register(); } catch { }   // 刷新液体的显示名字（跟随当前语言）
             try
             {
@@ -171,7 +195,7 @@ namespace Chef
                 {
                     ModHook.OnModItemDirectoryInit -= RegisterItems;
                     ModHook.OnCreateTooltipLate -= OnTooltip;
-                    ModHook.OnGameLoadedInit -= Scenario.EnsureUpgrade;
+                    ModHook.OnGameLoadedInit -= OnGameLoadedInit;
                     ModHook.OnNewGameStarted -= OnNewGame;
                     ModHook.OnGameLoadedLate -= OnGameLoaded;
                     hooked = false;

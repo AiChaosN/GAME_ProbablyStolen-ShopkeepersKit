@@ -30,6 +30,7 @@ namespace Chef
 
         internal static GameItem CreateBarrel()
         {
+            ChefMod.EnsureLiquids();   // 第一次生成油桶时（读档、开局发放）登记食用油
             var it = ItemDirectory.CreateEmptyItem().SetSpriteAndShapeFromMod(ChefMod.ModId, "chef_oil_barrel");
             it.name = BarrelName();
             it.shortDescription = BarrelDesc();
