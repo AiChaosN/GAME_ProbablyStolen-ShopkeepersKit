@@ -1,6 +1,8 @@
 [h1]【玩法】掌柜帮手·高级科学家[/h1]
 [b]新职业，改变游戏机制。[/b] 界面中英双语，跟随游戏语言。词条合成机后续加入。
 
+[img]https://raw.githubusercontent.com/AiChaosN/GAME_ProbablyStolen-ShopkeepersKit/main/mods/AdvancedScientist/docs/images/machines.png[/img]
+
 [h2]职业[/h2]
 职业选择界面第 2 页的“高级科学家”，精通模组工艺。开局：机器区、空白模组制造机、词条镶嵌机、两块电池、三块随机模组、一份低级空白模组的材料。
 [list]
@@ -30,6 +32,8 @@
 
 [h1][Gameplay] Shopkeeper's Kit: Advanced Scientist[/h1]
 [b]A new profession that changes game mechanics.[/b] UI in Chinese and English, following the game language. A chip merger comes later.
+
+[img]https://raw.githubusercontent.com/AiChaosN/GAME_ProbablyStolen-ShopkeepersKit/main/mods/AdvancedScientist/docs/images/machines.png[/img]
 
 [h2]Profession[/h2]
 "Advanced Scientist" on page 2 of the profession screen, a module-crafting expert. Starts with a Machine Bay, the Blank Module Maker, the Affix Inlayer, two batteries, three random modules and materials for one low-grade blank module.

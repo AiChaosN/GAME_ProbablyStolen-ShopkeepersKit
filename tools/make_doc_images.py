@@ -33,7 +33,7 @@ def font(path, size):
 
 
 # 中文字体里没有这些符号（会画成方框），交给英文字体
-LATIN_PUNCT = set("·“”‘’…—–×→↓")
+LATIN_PUNCT = set("·“”‘’…—–×→↓±")
 
 
 def runs(text):
@@ -207,6 +207,59 @@ def counter_overflow_explain():
     return out
 
 
+def advanced_scientist_machines():
+    """高级科学家：三台机器和两种芯片（mod 自己的贴图放大），每台写上槽位和用途，中英双语。"""
+    tex = ROOT / "mods" / "AdvancedScientist" / "Textures" / "Items"
+    W, H = 1280, 760
+    im = Image.new("RGB", (W, H), BG)
+    d = ImageDraw.Draw(im)
+    draw_text(d, (W / 2, 44), "高级科学家的机器 · Advanced Scientist machines", 38, INK, bold=True, anchor="m")
+    draw_text(d, (W / 2, 88), "点窗口标题栏的按钮立刻做，每次耗 30 电 · click the title-bar button; 30 charge per use", 21, SUB, anchor="m")
+
+    def sprite(name, scale):
+        s = Image.open(tex / (name + ".png")).convert("RGBA")
+        return s.resize((s.width * scale, s.height * scale), Image.NEAREST)
+
+    cards = [
+        ("as_blank_module_maker", "空白模组制造机", "Blank Module Maker", "制造 · Make",
+         ["电源 → 材料 → 产出", "Power → Materials → Output"]),
+        ("as_affix_extractor", "词条提取机", "Affix Extractor", "提取 · Extract",
+         ["电源 → 模组 → 产出", "Power → Module → Output"]),
+        ("as_affix_inlayer", "词条镶嵌机", "Affix Inlayer", "镶嵌 · Inlay",
+         ["电源 → 空白模组 → 芯片", "Power → Blank module → Chips"]),
+    ]
+    cw = (W - 80 - 2 * 20) // 3
+    for i, (spr, zh, en, btn, lines) in enumerate(cards):
+        cx = 40 + i * (cw + 20)
+        d.rounded_rectangle((cx, 120, cx + cw, 560), 14, fill=PANEL)
+        s = sprite(spr, 5)
+        im.paste(s, (int(cx + (cw - s.width) / 2), 140), s)
+        draw_text(d, (cx + cw / 2, 410), zh, 30, INK, bold=True, anchor="m")
+        draw_text(d, (cx + cw / 2, 444), en, 20, SUB, anchor="m")
+        # 标题栏按钮
+        bw = text_width(d, btn, 18, bold=True) + 24
+        d.rounded_rectangle((cx + cw / 2 - bw / 2, 462, cx + cw / 2 + bw / 2, 490), 6, fill=KEY)
+        draw_text(d, (cx + cw / 2, 476), btn, 18, KEY_INK, bold=True, anchor="m")
+        y = 512
+        draw_text(d, (cx + cw / 2, y), lines[0], 19, AMBER, bold=True, anchor="m")   # 槽位（中文）
+        draw_text(d, (cx + cw / 2, y + 24), lines[1], 16, DIM, anchor="m")            # 槽位（英文）
+    # 第二行：两种芯片 + 每台机器的用途
+    d.rounded_rectangle((40, 580, W - 40, H - 30), 14, fill=PANEL)
+    chips = [("as_chip_base", "基础芯片", "Base chip", "数值（性能 / 效率 / 品质），单项上限 ±500", "stats (perf / eff / quality), ±500 each"),
+             ("as_chip_effect", "特殊词条芯片", "Affix chip", "一个特殊词条（优质、过压……）", "one special affix (Premium, Overvolted, ...)")]
+    for i, (spr, zh, en, dz, de) in enumerate(chips):
+        x = 70 + i * 600
+        s = sprite(spr, 6)
+        im.paste(s, (x, 610), s)
+        draw_text(d, (x + 120, 628), zh + " · " + en, 24, INK, bold=True)
+        draw_text(d, (x + 120, 664), dz, 18, SUB)
+        draw_text(d, (x + 120, 692), de, 16, DIM)
+    out = ROOT / "mods" / "AdvancedScientist" / "docs" / "images" / "machines.png"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    im.save(out, optimize=True)
+    return out
+
+
 if __name__ == "__main__":
-    for p in (sort_to_boxes_keys(), counter_overflow_explain()):
+    for p in (sort_to_boxes_keys(), counter_overflow_explain(), advanced_scientist_machines()):
         print(p.relative_to(ROOT), Image.open(p).size, p.stat().st_size)

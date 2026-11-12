@@ -11,6 +11,8 @@
 
 UI in Chinese or English, following the game's language (Chinese shows Chinese, every other language shows English).
 
+![The three machines and two chips](docs/images/machines.png)
+
 ## Profession: Advanced Scientist
 
 Found on **page 2** of the profession screen when starting a new game. A module-crafting expert.
